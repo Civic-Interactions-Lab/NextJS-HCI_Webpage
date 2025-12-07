@@ -15,7 +15,7 @@ export default async function TabBarLayout({
     <div>
       <Hero pathname={pathname} />
 
-      <div className="flex flex-col flex-1 max-w-7xl mx-auto overflow-hidden mt-6 px-6 md:px-12 space-y-6">
+      <div className="flex flex-col flex-1 max-w-7xl mx-auto overflow-hidden mt-6 mb-12 px-6 md:px-12 space-y-6">
         <TabBarClient />
 
         {/* Main Content */}

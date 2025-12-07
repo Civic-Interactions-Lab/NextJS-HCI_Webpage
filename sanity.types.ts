@@ -19,50 +19,26 @@ export type People = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  heroImages?: {
-    heroes?: Array<{
-      src?: {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        media?: unknown;
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: "image";
-      };
-      alt?: string;
-      title?: string;
-      _type: "heroImage";
-      _key: string;
-    }>;
-  };
-  teamMembers?: Array<{
-    name?: string;
-    url?: string;
-    img?: {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      media?: unknown;
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      _type: "image";
+  name?: string;
+  url?: string;
+  img?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
-    roles?: Array<string>;
-    status?: "active" | "alumni" | "collaborator";
-    start?: number;
-    end?: number;
-    affiliation?: string;
-    now?: string;
-    _type: "teamMember";
-    _key: string;
-  }>;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  roles?: Array<string>;
+  status?: "active" | "alumni" | "collaborator";
+  start?: number;
+  end?: number;
+  affiliation?: string;
+  now?: string;
 };
 
 export type SanityImageCrop = {

@@ -34,297 +34,145 @@
           "type": "string"
         }
       },
-      "heroImages": {
+      "name": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "url": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "img": {
         "type": "objectAttribute",
         "value": {
           "type": "object",
           "attributes": {
-            "heroes": {
+            "asset": {
               "type": "objectAttribute",
               "value": {
-                "type": "array",
-                "of": {
-                  "type": "object",
-                  "attributes": {
-                    "src": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "object",
-                        "attributes": {
-                          "asset": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "object",
-                              "attributes": {
-                                "_ref": {
-                                  "type": "objectAttribute",
-                                  "value": {
-                                    "type": "string"
-                                  }
-                                },
-                                "_type": {
-                                  "type": "objectAttribute",
-                                  "value": {
-                                    "type": "string",
-                                    "value": "reference"
-                                  }
-                                },
-                                "_weak": {
-                                  "type": "objectAttribute",
-                                  "value": {
-                                    "type": "boolean"
-                                  },
-                                  "optional": true
-                                }
-                              },
-                              "dereferencesTo": "sanity.imageAsset"
-                            },
-                            "optional": true
-                          },
-                          "media": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "unknown"
-                            },
-                            "optional": true
-                          },
-                          "hotspot": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "inline",
-                              "name": "sanity.imageHotspot"
-                            },
-                            "optional": true
-                          },
-                          "crop": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "inline",
-                              "name": "sanity.imageCrop"
-                            },
-                            "optional": true
-                          },
-                          "_type": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "string",
-                              "value": "image"
-                            }
-                          }
-                        }
-                      },
-                      "optional": true
-                    },
-                    "alt": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string"
-                      },
-                      "optional": true
-                    },
-                    "title": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string"
-                      },
-                      "optional": true
-                    },
-                    "_type": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string",
-                        "value": "heroImage"
-                      }
+                "type": "object",
+                "attributes": {
+                  "_ref": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
                     }
                   },
-                  "rest": {
-                    "type": "object",
-                    "attributes": {
-                      "_key": {
-                        "type": "objectAttribute",
-                        "value": {
-                          "type": "string"
-                        }
-                      }
+                  "_type": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string",
+                      "value": "reference"
                     }
+                  },
+                  "_weak": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "boolean"
+                    },
+                    "optional": true
                   }
-                }
+                },
+                "dereferencesTo": "sanity.imageAsset"
               },
               "optional": true
+            },
+            "media": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "unknown"
+              },
+              "optional": true
+            },
+            "hotspot": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "sanity.imageHotspot"
+              },
+              "optional": true
+            },
+            "crop": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "sanity.imageCrop"
+              },
+              "optional": true
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "image"
+              }
             }
           }
         },
         "optional": true
       },
-      "teamMembers": {
+      "roles": {
         "type": "objectAttribute",
         "value": {
           "type": "array",
           "of": {
-            "type": "object",
-            "attributes": {
-              "name": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "url": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "img": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "object",
-                  "attributes": {
-                    "asset": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "object",
-                        "attributes": {
-                          "_ref": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "string"
-                            }
-                          },
-                          "_type": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "string",
-                              "value": "reference"
-                            }
-                          },
-                          "_weak": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "boolean"
-                            },
-                            "optional": true
-                          }
-                        },
-                        "dereferencesTo": "sanity.imageAsset"
-                      },
-                      "optional": true
-                    },
-                    "media": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "unknown"
-                      },
-                      "optional": true
-                    },
-                    "hotspot": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "inline",
-                        "name": "sanity.imageHotspot"
-                      },
-                      "optional": true
-                    },
-                    "crop": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "inline",
-                        "name": "sanity.imageCrop"
-                      },
-                      "optional": true
-                    },
-                    "_type": {
-                      "type": "objectAttribute",
-                      "value": {
-                        "type": "string",
-                        "value": "image"
-                      }
-                    }
-                  }
-                },
-                "optional": true
-              },
-              "roles": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "array",
-                  "of": {
-                    "type": "string"
-                  }
-                },
-                "optional": true
-              },
-              "status": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "union",
-                  "of": [
-                    {
-                      "type": "string",
-                      "value": "active"
-                    },
-                    {
-                      "type": "string",
-                      "value": "alumni"
-                    },
-                    {
-                      "type": "string",
-                      "value": "collaborator"
-                    }
-                  ]
-                },
-                "optional": true
-              },
-              "start": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "number"
-                },
-                "optional": true
-              },
-              "end": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "number"
-                },
-                "optional": true
-              },
-              "affiliation": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "now": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                },
-                "optional": true
-              },
-              "_type": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string",
-                  "value": "teamMember"
-                }
-              }
-            },
-            "rest": {
-              "type": "object",
-              "attributes": {
-                "_key": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "type": "string"
           }
+        },
+        "optional": true
+      },
+      "status": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "active"
+            },
+            {
+              "type": "string",
+              "value": "alumni"
+            },
+            {
+              "type": "string",
+              "value": "collaborator"
+            }
+          ]
+        },
+        "optional": true
+      },
+      "start": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "end": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
+      "affiliation": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "now": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }
