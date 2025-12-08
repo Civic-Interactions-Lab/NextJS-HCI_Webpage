@@ -51,7 +51,7 @@ const NavBar = () => {
           <div
             className={`transition-all duration-300 ${isScrolled ? "scale-75" : "scale-100"}`}
           >
-            <Logo size={56} />
+            <Logo size={48} />
           </div>
 
           {/* Mobile Hamburger Menu */}

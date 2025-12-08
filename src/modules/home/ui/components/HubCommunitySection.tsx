@@ -121,7 +121,7 @@ const HubCommunitySection = () => {
             </p>
           </motion.div>
 
-          <TapeTag position="bottom-left" rotation={-16} color="white">
+          <TapeTag position="bottom-left" rotation={16} color="white">
             <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-32 md:max-w-40 line-clamp-3">
               Selfie with the Lab 2024 !!!!!
             </p>

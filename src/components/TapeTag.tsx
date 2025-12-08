@@ -1,4 +1,8 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 interface TapeTagProps {
   children: ReactNode;
@@ -6,6 +10,7 @@ interface TapeTagProps {
   rotation?: number;
   color?: "black" | "white";
   className?: string;
+  delay?: number;
 }
 
 const TapeTag = ({
@@ -14,7 +19,11 @@ const TapeTag = ({
   rotation = -24,
   color = "black",
   className = "",
+  delay = 0,
 }: TapeTagProps) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "50px" });
+
   const getPositionClasses = () => {
     switch (position) {
       case "top-left":
@@ -48,9 +57,21 @@ const TapeTag = ({
   const tapeColor = getColorValue();
 
   return (
-    <div
+    <motion.div
+      ref={ref}
       className={`absolute ${getPositionClasses()} ${className}`}
       style={{ transform: `rotate(${rotation}deg)` }}
+      initial={{ clipPath: "inset(0 100% 0 0)" }}
+      animate={
+        isInView
+          ? { clipPath: "inset(0 0% 0 0)" }
+          : { clipPath: "inset(0 100% 0 0)" }
+      }
+      transition={{
+        duration: 0.8,
+        delay: delay,
+        ease: "easeOut",
+      }}
     >
       <div className="relative">
         {/* SVG with solid background and torn edges cut out */}
@@ -119,7 +140,7 @@ const TapeTag = ({
           {children}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

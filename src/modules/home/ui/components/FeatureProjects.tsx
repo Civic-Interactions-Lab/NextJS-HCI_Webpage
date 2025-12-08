@@ -6,31 +6,25 @@ import { BorderTitle } from "@/components/AppTitle";
 import Image from "next/image";
 import { LinkButton } from "@/components/AppButton";
 import TapeTag from "@/components/TapeTag";
+import { Project } from "../../../../../sanity.types";
+import Link from "next/link";
 
-interface FeaturedProject {
-  id: string;
-  title: string;
-  authors: string;
+interface FeatureProjectsProps {
+  projects: Project[];
 }
 
-const featuredProjects: FeaturedProject[] = [
-  {
-    id: "chatgpt-study",
-    title:
-      '"All Roads Lead to ChatGPT": How Generative AI is Eroding Social Interactions and Student Learning Communities',
-    authors: "I Hou, O Man, K Hamilton, S Muthusekaran...",
-  },
-  {
-    id: "hackathon-leadership",
-    title:
-      '"All Roads Lead to ChatGPT": How Generative AI is Eroding Social Interactions and Student Learning Communities',
-    authors: "I Hou, O Man, K Hamilton, S Muthusekaran...",
-  },
-];
-
-const FeatureProjects = () => {
+const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
+
+  const formatAuthors = (authors?: Project["authors"]) => {
+    if (!authors || authors.length === 0) return "";
+
+    return authors
+      .map((author) => author.name || "")
+      .filter((name) => name)
+      .join(", ");
+  };
 
   return (
     <motion.section
@@ -73,9 +67,9 @@ const FeatureProjects = () => {
 
           {/* Project cards */}
           <div className="space-y-6">
-            {featuredProjects.map((project, index) => (
+            {projects.map((project, index) => (
               <motion.div
-                key={project.id}
+                key={project._id}
                 initial={{ opacity: 0, x: 50 }}
                 animate={
                   isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }
@@ -85,17 +79,24 @@ const FeatureProjects = () => {
                   delay: index * 0.2,
                   ease: "easeOut",
                 }}
-                className="border-2 border-cyan-700 rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-shadow"
+                className="border-2 border-cyan-700 rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-all duration-300 hover:scale-105"
               >
                 {/* Blue circle avatar */}
                 <div className="flex items-start gap-4">
                   <div className="size-12 md:size-16 bg-cyan-700 rounded-full flex-shrink-0" />
                   <div className="flex-1">
-                    <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight underline decoration-gray-300 hover:decoration-gray-600 transition-colors cursor-pointer line-clamp-2">
-                      {project.title}
-                    </h4>
+                    <Link
+                      href={project.link || ""}
+                      aria-label={project.title}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight underline decoration-gray-300 hover:decoration-gray-600 transition-colors cursor-pointer line-clamp-2">
+                        {project.title}
+                      </h4>
+                    </Link>
                     <p className="text-gray-600 text-xs md:text-sm line-clamp-1">
-                      {project.authors}
+                      {formatAuthors(project.authors)}
                     </p>
                   </div>
                 </div>
