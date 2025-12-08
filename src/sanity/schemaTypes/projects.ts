@@ -1,10 +1,12 @@
 import { defineField, defineType } from "sanity";
+import { orderRankField } from "@sanity/orderable-document-list";
 
 export const projectType = defineType({
   name: "project",
   title: "Projects",
   type: "document",
   fields: [
+    orderRankField({ type: "project" }),
     defineField({
       name: "title",
       title: "Title",

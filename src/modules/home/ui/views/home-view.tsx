@@ -7,11 +7,11 @@ import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySectio
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
 import { getNews } from "@/sanity/lib/news/getNews";
 import CallToActionSection from "@/modules/home/ui/components/CallToActionSection";
-import { getProjects } from "@/sanity/lib/projects/getProjects";
+import { getProjectsOrdered } from "@/sanity/lib/projects/getProjects";
 
 const HomeView = async () => {
   const news = await getNews();
-  const projects = await getProjects();
+  const projects = await getProjectsOrdered();
 
   return (
     <>

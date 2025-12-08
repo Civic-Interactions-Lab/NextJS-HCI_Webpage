@@ -5,7 +5,7 @@ const JoinView = () => {
   return (
     <>
       <Hero
-        image="/images/cover/IMG_3673.jpg"
+        image="/images/cover/HCI_OpenHouse-38.jpg"
         title="Join Us"
         height="small"
         pathname="/join"
