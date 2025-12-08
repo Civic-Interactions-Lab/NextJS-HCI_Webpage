@@ -10,7 +10,7 @@ interface CustomButtonProps {
 const CustomButton = ({ text, ariaLabel, ...props }: CustomButtonProps) => {
   return (
     <Button
-      className="!bg-black text-white !rounded-full hover:!bg-gray-700 transition-colors w-fit uppercase !p-3 md:!p-5 xl:!p-6"
+      className="!bg-black text-white !rounded-full hover:!bg-gray-700 transition-colors w-fit uppercase !p-3 md:!p-5 xl:!p-6 cursor-pointer"
       size="sm"
       aria-label={ariaLabel}
       {...props}
@@ -23,13 +23,13 @@ const CustomButton = ({ text, ariaLabel, ...props }: CustomButtonProps) => {
   );
 };
 
-interface NavButtonProps {
+interface LinkButtonProps {
   text: string;
   ariaLabel: string;
   href: string;
 }
 
-const NavButton = ({ href, ...props }: NavButtonProps) => {
+const LinkButton = ({ href, ...props }: LinkButtonProps) => {
   return (
     <Link href={href}>
       <CustomButton {...props} />
@@ -37,4 +37,4 @@ const NavButton = ({ href, ...props }: NavButtonProps) => {
   );
 };
 
-export { CustomButton, NavButton };
+export { CustomButton, LinkButton };

@@ -6,7 +6,7 @@ import {
   getCurrentMembers,
 } from "@/sanity/lib/people/getPeople";
 import { People } from "../../../../../sanity.types";
-import { NavButton } from "@/components/AppButton";
+import { LinkButton } from "@/components/AppButton";
 
 interface PeopleViewProps {
   currentSub?: string;
@@ -73,7 +73,7 @@ const PeopleView = async ({ currentSub }: PeopleViewProps) => {
           </p>
 
           <div className="text-center">
-            <NavButton href="/join" text="Apply Here" ariaLabel="Apply Here" />
+            <LinkButton href="/join" text="Apply Here" ariaLabel="Apply Here" />
           </div>
         </div>
       )}
