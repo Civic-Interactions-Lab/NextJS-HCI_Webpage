@@ -31,7 +31,7 @@ interface LinkButtonProps {
 
 const LinkButton = ({ href, ...props }: LinkButtonProps) => {
   return (
-    <Link href={href}>
+    <Link href={href} className="w-fit">
       <CustomButton {...props} />
     </Link>
   );

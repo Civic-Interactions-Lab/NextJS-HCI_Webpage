@@ -5,43 +5,36 @@ import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BorderTitle } from "@/components/AppTitle";
+import { News } from "../../../../../sanity.types";
+import { urlFor } from "@/sanity/lib/image";
 
-interface NewsItem {
-  id: string;
-  date: string;
-  title: string;
-  link: string;
-  imageUrl: string;
+interface RecentNewsSectionProps {
+  news: News[];
 }
 
-const newsItems: NewsItem[] = [
-  {
-    id: "news-1",
-    date: "MAY 2025",
-    title:
-      "Researchers receive $1.5 million grant to develop communication technology",
-    link: "https://www.hcilab.org/",
-    imageUrl: "/images/cover/5-studio.JPG",
-  },
-  {
-    id: "news-2",
-    date: "APR 2025",
-    title: "New breakthrough in human-computer interaction research published",
-    link: "https://www.hcilab.org/",
-    imageUrl: "/images/cover/5-studio.JPG",
-  },
-  {
-    id: "news-3",
-    date: "APR 2025",
-    title: "Lab members present findings at international conference",
-    link: "https://www.hcilab.org/",
-    imageUrl: "/images/cover/5-studio.JPG",
-  },
-];
-
-const RecentNewsSection = () => {
+const RecentNewsSection = ({ news }: RecentNewsSectionProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
+
+  // Format date to MMM, YYYY
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // Reorder news
+  const orderedNews = [...news].sort((a, b) => {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+
+    const dateA = a.date ? new Date(a.date).getTime() : 0;
+    const dateB = b.date ? new Date(b.date).getTime() : 0;
+    return dateB - dateA;
+  });
 
   return (
     <motion.section
@@ -71,11 +64,10 @@ const RecentNewsSection = () => {
           <div className="absolute top-12 right-0 xl:top-14 size-12 xl:size-14 bg-white" />
         </motion.div>
 
-        {/* News items - takes remaining 3/4 */}
-        {newsItems.map((news, index) => (
+        {orderedNews.map((newsItem, index) => (
           <motion.a
-            key={news.id}
-            href={news.link}
+            key={newsItem._id}
+            href={newsItem.link}
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, y: 30 }}
@@ -87,30 +79,39 @@ const RecentNewsSection = () => {
             }}
             className="group relative overflow-hidden rounded-lg bg-gray-900 cursor-pointer size-full hidden lg:block"
           >
-            <Image
-              src={news.imageUrl}
-              alt=""
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+            {newsItem.imageUrl && (
+              <Image
+                src={urlFor(newsItem.imageUrl).url() || ""}
+                alt=""
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            )}
 
             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300" />
 
             <div className="absolute inset-0 flex flex-col justify-end p-6">
-              <div className="bg-primary-red-800 text-white text-xs font-medium px-2 py-1 rounded mb-3 w-fit">
-                FEATURES
+              <div className="flex items-end space-x-3 mb-1.5">
+                {newsItem.featured && (
+                  <div className="bg-primary-red-800 text-white text-xs font-medium px-2 py-1 rounded w-fit">
+                    FEATURED
+                  </div>
+                )}
+                <p className="text-sm text-white underline">
+                  {formatDate(newsItem.date)}
+                </p>
               </div>
-              <h3 className="text-white font-semibold text-lg leading-tight">
-                {news.title}
+              <h3 className="text-white font-semibold text-lg leading-tight line-clamp-3">
+                {newsItem.title}
               </h3>
             </div>
           </motion.a>
         ))}
 
-        <div className="col-span-3 space-y-3 w-full flex-1 flex-col lg:hidden">
-          {newsItems.map((news, index) => (
+        <div className="col-span-3 space-y-2 w-full flex-1 flex-col ml-3 lg:hidden">
+          {orderedNews.map((newsItem, index) => (
             <motion.div
-              key={news.id}
+              key={newsItem._id}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{
@@ -118,21 +119,34 @@ const RecentNewsSection = () => {
                 delay: 0.2 + index * 0.1,
                 ease: "easeOut",
               }}
-              className="px-4 py-2 bg-gray-50 rounded-lg"
+              className="px-4 py-2 bg-gray-200/80 rounded-lg hover:border-primary-red-800 hover:scale-105 transition-all duration-300 border-2 border-transparent"
             >
-              <Link href={news.link} target="_blank" rel="noopener noreferrer">
-                <p className="font-semibold text-gray-900 mb-2 text-sm hover:text-primary-red transition-colors">
-                  {news.title}
+              <Link
+                href={newsItem.link || ""}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <p className="font-semibold text-gray-900 text-sm hover:text-primary-red transition-colors flex-1 line-clamp-2">
+                    {newsItem.title}
+                  </p>
+                  {newsItem.featured && (
+                    <div className="border-primary-red-800 border-2 text-primary-red-800 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0">
+                      FEATURED
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-gray-600">
+                  {formatDate(newsItem.date)}
                 </p>
-                <p className="text-xs text-gray-600">{news.date}</p>
               </Link>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Mobile Layout - Simple list */}
-      <div className="md:hidden space-y-8">
+      {/* Mobile Layout */}
+      <div className="md:hidden space-y-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -141,9 +155,9 @@ const RecentNewsSection = () => {
           <BorderTitle title="Recent News" />
         </motion.div>
 
-        {newsItems.map((news, index) => (
+        {orderedNews.map((newsItem, index) => (
           <motion.div
-            key={news.id}
+            key={newsItem._id}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{
@@ -151,13 +165,26 @@ const RecentNewsSection = () => {
               delay: 0.2 + index * 0.1,
               ease: "easeOut",
             }}
-            className="px-4 py-2 bg-gray-50 rounded-lg mb-3"
+            className="px-4 py-1.5 bg-gray-200/80 rounded-lg hover:border-primary-red-800 hover:scale-105 transition-all duration-300 border-2 border-transparent"
           >
-            <Link href={news.link} target="_blank" rel="noopener noreferrer">
-              <p className="font-semibold text-gray-900 mb-2 text-sm hover:text-primary-red transition-colors">
-                {news.title}
+            <Link
+              href={newsItem.link || ""}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <p className="font-semibold text-gray-900 text-sm hover:text-primary-red transition-colors flex-1 line-clamp-2">
+                  {newsItem.title}
+                </p>
+                {newsItem.featured && (
+                  <div className="border-primary-red-800 border-2 text-primary-red-800 text-[10px] font-medium px-1.5 py-0.5 rounded-full flex-shrink-0">
+                    FEATURED
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-gray-600">
+                {formatDate(newsItem.date)}
               </p>
-              <p className="text-xs text-gray-600">{news.date}</p>
             </Link>
           </motion.div>
         ))}

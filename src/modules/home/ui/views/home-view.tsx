@@ -5,8 +5,11 @@ import WhyHCILabSection from "@/modules/home/ui/components/WhyHCILabSection";
 import FeatureProjects from "@/modules/home/ui/components/FeatureProjects";
 import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
+import { getNews } from "@/sanity/lib/news/getNews";
 
-const HomeView = () => {
+const HomeView = async () => {
+  const news = await getNews();
+
   return (
     <>
       <Hero
@@ -27,7 +30,7 @@ const HomeView = () => {
 
         <HubCommunitySection />
 
-        <RecentNewsSection />
+        <RecentNewsSection news={news} />
       </div>
     </>
   );
