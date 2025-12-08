@@ -1,7 +1,18 @@
 import React from "react";
 import Hero from "@/components/Hero";
+import HCITagsHero from "@/modules/home/ui/components/HCITagsHero";
+import WhyHCILabSection from "@/modules/home/ui/components/WhyHCILabSection";
+import FeatureProjects from "@/modules/home/ui/components/FeatureProjects";
+import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
+import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
+import { getNews } from "@/sanity/lib/news/getNews";
+import CallToActionSection from "@/modules/home/ui/components/CallToActionSection";
+import { getProjects } from "@/sanity/lib/projects/getProjects";
 
-const HomeView = () => {
+const HomeView = async () => {
+  const news = await getNews();
+  const projects = await getProjects();
+
   return (
     <>
       <Hero
@@ -13,10 +24,19 @@ const HomeView = () => {
         pathname="/"
       />
 
-      <div className="container mx-auto px-4 py-8">
-        <h2>Welcome to HCI Lab</h2>
-        <p>Home page content goes here</p>
+      <div className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-6 pb-12 px-6 md:px-12 space-y-6">
+        <HCITagsHero />
+
+        <WhyHCILabSection />
+
+        <FeatureProjects projects={projects} />
+
+        <HubCommunitySection />
+
+        <RecentNewsSection news={news} />
       </div>
+
+      <CallToActionSection />
     </>
   );
 };
