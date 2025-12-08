@@ -8,16 +8,18 @@ import {
 } from "@/components/ui/accordion";
 
 const AnimatedAccordionItem = ({
-  item,
+  topic,
+  content,
   index,
 }: {
-  item: {
-    topic: string;
-    content: string;
-    defaultOpen?: boolean;
-  };
+  topic?: string;
+  content?: string;
   index: number;
 }) => {
+  if (!topic || !content) {
+    return null;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -30,15 +32,15 @@ const AnimatedAccordionItem = ({
     >
       <AccordionItem
         key={index}
-        value={item.topic}
+        value={topic}
         className="rounded-4xl shadow-lg"
       >
-        <AccordionTrigger className="px-6 py-5 !bg-white !border-2 !rounded-full text-left !text-base md:!text-2xl font-medium shadow shadow-gray-300">
-          {item.topic}
+        <AccordionTrigger className="px-6 py-5 !bg-white !border-2 !rounded-full text-left !text-base md:!text-xl lg:!text-2xl font-medium shadow shadow-gray-300 font-jetbrains-mono">
+          {topic}
         </AccordionTrigger>
-        {item.content && (
-          <AccordionContent className="px-6 py-5 text-gray-700 leading-relaxed text-sm md:text-lg">
-            {item.content}
+        {content && (
+          <AccordionContent className="px-6 py-5 text-gray-700 leading-relaxed text-sm md:text-base lg:text-lg font-roboto">
+            {content}
           </AccordionContent>
         )}
       </AccordionItem>

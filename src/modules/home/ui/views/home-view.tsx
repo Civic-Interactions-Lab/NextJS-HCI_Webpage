@@ -6,7 +6,7 @@ import FeatureProjects from "@/modules/home/ui/components/FeatureProjects";
 import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
 import { getNews } from "@/sanity/lib/news/getNews";
-import CallToActionSection from "@/modules/home/ui/components/CallToActionSection";
+import CallToActionSection from "@/components/CallToActionSection";
 import { getProjectsOrdered } from "@/sanity/lib/projects/getProjects";
 
 const HomeView = async () => {
@@ -24,7 +24,7 @@ const HomeView = async () => {
         pathname="/"
       />
 
-      <div className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-6 pb-12 px-6 md:px-12 space-y-6">
+      <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-8 pb-16 px-6 md:px-12 space-y-6">
         <HCITagsHero />
 
         <WhyHCILabSection />
@@ -34,9 +34,11 @@ const HomeView = async () => {
         <HubCommunitySection />
 
         <RecentNewsSection news={news} />
-      </div>
+      </main>
 
       <CallToActionSection />
+
+      <div className="h-10" />
     </>
   );
 };

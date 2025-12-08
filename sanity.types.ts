@@ -13,12 +13,25 @@
  */
 
 // Source: schema.json
+export type Faq = {
+  _id: string;
+  _type: "faq";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  question?: string;
+  answer?: string;
+  defaultOpen?: boolean;
+};
+
 export type Project = {
   _id: string;
   _type: "project";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  orderRank?: string;
   title?: string;
   date?: string;
   link?: string;
@@ -72,6 +85,7 @@ export type News = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  orderRank?: string;
   title?: string;
   date?: string;
   link?: string;
@@ -96,6 +110,7 @@ export type People = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  orderRank?: string;
   name?: string;
   url?: string;
   img?: {
@@ -220,17 +235,33 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Project | SanityImageCrop | SanityImageHotspot | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Faq | Project | SanityImageCrop | SanityImageHotspot | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/sanity/lib/faq/getFAQs.ts
+// Variable: faqsQuery
+// Query: *[_type == "faq"] | order(orderRank)
+export type FaqsQueryResult = Array<{
+  _id: string;
+  _type: "faq";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  question?: string;
+  answer?: string;
+  defaultOpen?: boolean;
+}>;
+
 // Source: ./src/sanity/lib/news/getNews.ts
-// Variable: query
+// Variable: newsQuery
 // Query: *[_type == "news"] | order(date desc)[0...3]
-export type QueryResult = Array<{
+export type NewsQueryResult = Array<{
   _id: string;
   _type: "news";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  orderRank?: string;
   title?: string;
   date?: string;
   link?: string;
@@ -249,10 +280,178 @@ export type QueryResult = Array<{
   featured?: boolean;
 }>;
 
+// Source: ./src/sanity/lib/people/getPeople.ts
+// Variable: currentPeopleQuery
+// Query: *[_type == "people" && status == "active"] | order(name asc)
+export type CurrentPeopleQueryResult = Array<{
+  _id: string;
+  _type: "people";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  url?: string;
+  img?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  roles?: Array<string>;
+  status?: "active" | "alumni" | "collaborator";
+  start?: number;
+  end?: number;
+  affiliation?: string;
+  now?: string;
+}>;
+// Variable: alumniPeopleQuery
+// Query: *[_type == "people" && status == "alumni"] | order(end desc, name asc)
+export type AlumniPeopleQueryResult = Array<{
+  _id: string;
+  _type: "people";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  url?: string;
+  img?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  roles?: Array<string>;
+  status?: "active" | "alumni" | "collaborator";
+  start?: number;
+  end?: number;
+  affiliation?: string;
+  now?: string;
+}>;
+// Variable: collaboratorsPeopleQuery
+// Query: *[_type == "people" && status == "collaborator"] | order(name asc)
+export type CollaboratorsPeopleQueryResult = Array<{
+  _id: string;
+  _type: "people";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  url?: string;
+  img?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  roles?: Array<string>;
+  status?: "active" | "alumni" | "collaborator";
+  start?: number;
+  end?: number;
+  affiliation?: string;
+  now?: string;
+}>;
+
+// Source: ./src/sanity/lib/projects/getProjects.ts
+// Variable: projectQuery
+// Query: *[_type == "project"] | order(date desc)[0...2] {      ...,      authors[] {        authorType,        authorType == "person" => {          "name": person->name        },        authorType == "name" => {          name        }      }    }
+export type ProjectQueryResult = Array<{
+  _id: string;
+  _type: "project";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  date?: string;
+  link?: string;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  description?: string;
+  authors: Array<{
+    authorType: "name" | "person" | null;
+    name: string | null;
+  } | {
+    authorType: "name" | "person" | null;
+  }> | null;
+  tags?: Array<string>;
+  status?: "draft" | "progress" | "published" | "review";
+}>;
+// Variable: projectOrderedQuery
+// Query: *[_type == "project"] | order(orderRank)[0...2] {      ...,      authors[] {        authorType,        authorType == "person" => {          "name": person->name        },        authorType == "name" => {          name        }      }    }
+export type ProjectOrderedQueryResult = Array<{
+  _id: string;
+  _type: "project";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  date?: string;
+  link?: string;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  description?: string;
+  authors: Array<{
+    authorType: "name" | "person" | null;
+    name: string | null;
+  } | {
+    authorType: "name" | "person" | null;
+  }> | null;
+  tags?: Array<string>;
+  status?: "draft" | "progress" | "published" | "review";
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": QueryResult;
+    "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
+    "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": NewsQueryResult;
+    "\n    *[_type == \"people\" && status == \"active\"] | order(name asc)\n  ": CurrentPeopleQueryResult;
+    "\n    *[_type == \"people\" && status == \"alumni\"] | order(end desc, name asc)\n  ": AlumniPeopleQueryResult;
+    "\n    *[_type == \"people\" && status == \"collaborator\"] | order(name asc)\n  ": CollaboratorsPeopleQueryResult;
+    "\n    *[_type == \"project\"] | order(date desc)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectQueryResult;
+    "\n    *[_type == \"project\"] | order(orderRank)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectOrderedQueryResult;
   }
 }

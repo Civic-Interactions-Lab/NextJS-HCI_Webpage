@@ -12,7 +12,7 @@ const CallToActionSection = () => {
   return (
     <motion.div
       ref={ref}
-      className="w-full bg-primary-red-800 mb-12 mt-4 overflow-hidden"
+      className="w-full bg-primary-red-800 overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
