@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { BorderTitle } from "@/components/AppTitle";
+import { BorderHeading } from "@/components/AppTitle";
 import Image from "next/image";
 import { LinkButton } from "@/components/AppButton";
 import TapeTag from "@/components/TapeTag";
@@ -63,7 +63,7 @@ const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
         {/* Right side */}
         <div className="order-1 lg:order-2 pl-0 lg:pl-8 space-y-6">
           {/* Header with red border */}
-          <BorderTitle title="Featured Projects" />
+          <BorderHeading title="Featured Projects" />
 
           {/* Project cards */}
           <div className="space-y-6">

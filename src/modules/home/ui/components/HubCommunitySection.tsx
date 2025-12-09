@@ -2,7 +2,7 @@
 
 import { motion, useInView, Variants } from "framer-motion";
 import { useRef } from "react";
-import { BorderTitle } from "@/components/AppTitle";
+import { BorderHeading } from "@/components/AppTitle";
 import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
@@ -55,7 +55,7 @@ const HubCommunitySection = () => {
       }}
     >
       <motion.div className="flex flex-col gap-6" variants={slideUpVariants}>
-        <BorderTitle title="A Hub for Communities" />
+        <BorderHeading title="A Hub for Communities" />
         <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
           The HCI Lab empowers students with the skills and confidence to
           design, lead, and innovate within their own communities. Through

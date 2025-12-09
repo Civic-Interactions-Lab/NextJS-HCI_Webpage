@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BorderTitle } from "@/components/AppTitle";
+import { BorderHeading } from "@/components/AppTitle";
 import { News } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 
@@ -152,7 +152,7 @@ const RecentNewsSection = ({ news }: RecentNewsSectionProps) => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <BorderTitle title="Recent News" />
+          <BorderHeading title="Recent News" />
         </motion.div>
 
         {orderedNews.map((newsItem, index) => (

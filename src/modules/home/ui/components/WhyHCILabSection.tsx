@@ -1,7 +1,7 @@
 "use client";
 
 import ImageCarousel from "@/components/ImageCarousel";
-import { BorderTitle } from "@/components/AppTitle";
+import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import { motion, Variants } from "framer-motion";
 
@@ -64,7 +64,7 @@ const WhyHCILabSection = ({
       }}
     >
       <motion.div className="flex flex-col gap-6" variants={slideUpVariants}>
-        <BorderTitle title="Why join HCI Lab?" />
+        <BorderHeading title="Why join HCI Lab?" />
         <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
           Being part of a research lab builds real-world skills, from critical
           thinking to teamwork. Students gain mentorship and hands-on
