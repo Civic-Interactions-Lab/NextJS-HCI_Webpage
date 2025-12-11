@@ -3,7 +3,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 
 export async function getCurrentMembers() {
   const currentPeopleQuery = defineQuery(`
-    *[_type == "people" && status == "active"] | order(name asc)
+    *[_type == "people" && status == "active"] | order(orderRank)
   `);
 
   const people = await sanityFetch({ query: currentPeopleQuery });
@@ -12,7 +12,7 @@ export async function getCurrentMembers() {
 
 export async function getAlumni() {
   const alumniPeopleQuery = defineQuery(`
-    *[_type == "people" && status == "alumni"] | order(end desc, name asc)
+    *[_type == "people" && status == "alumni"] | order(orderRank)
   `);
 
   const people = await sanityFetch({ query: alumniPeopleQuery });
@@ -21,7 +21,7 @@ export async function getAlumni() {
 
 export async function getCollaborators() {
   const collaboratorsPeopleQuery = defineQuery(`
-    *[_type == "people" && status == "collaborator"] | order(name asc)
+    *[_type == "people" && status == "collaborator"] | order(orderRank)
   `);
 
   const people = await sanityFetch({ query: collaboratorsPeopleQuery });

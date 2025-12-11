@@ -7,13 +7,12 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 
-// Role configurations
 const statusColors: Record<string, string> = {
-  pi: "#8b5cf6", // Purple for PI
-  phd: "#3b82f6", // Blue for PhD
-  ms: "#10b981", // Green for Masters
-  ug: "#f59e0b", // Orange for Undergraduate
-  hs: "#ef4444", // Red for High School
+  pi: "#8b5cf6",
+  phd: "#3b82f6",
+  ms: "#10b981",
+  ug: "#f59e0b",
+  hs: "#ef4444",
 };
 
 const statusLabels: Record<string, string> = {
@@ -44,7 +43,7 @@ function PersonCard({
 }) {
   const [hoveredRoleIndex, setHoveredRoleIndex] = useState<number | null>(null);
 
-  if (!person.img || !person.name) return null;
+  if (!person.name) return null;
 
   const roles = Array.isArray(person.roles) ? person.roles : [];
 
@@ -74,7 +73,7 @@ function PersonCard({
           <div className="flex justify-center">
             <Avatar className="size-20 lg:size-32">
               <AvatarImage
-                src={urlFor(person.img).url() || ""}
+                src={person.img ? urlFor(person.img).url() : ""}
                 alt={altText}
                 className="object-cover"
                 loading="lazy"
