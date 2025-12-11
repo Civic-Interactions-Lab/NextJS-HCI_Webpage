@@ -1,19 +1,15 @@
 import React from "react";
-import Hero from "@/components/Hero";
+import CommonResearchAreas from "@/modules/research/ui/components/CommonResearchAreas";
+import ResearchAtHci from "@/modules/research/ui/components/ResearchAtHCI";
 
 const ResearchView = () => {
   return (
     <>
-      <Hero
-        image="/images/cover/442_72A2112.jpg"
-        title="Research"
-        height="small"
-        pathname="/research"
-      />
+      <main className="w-full max-w-7xl mx-auto px-6 md:px-12 space-y-12 mb-16">
+        <ResearchAtHci />
 
-      <div className="container mx-auto px-4 py-8">
-        <p>Research page content goes here</p>
-      </div>
+        <CommonResearchAreas />
+      </main>
     </>
   );
 };

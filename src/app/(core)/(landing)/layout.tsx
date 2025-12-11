@@ -13,7 +13,7 @@ export default async function LandingLayout({
   return (
     <>
       <Hero pathname={pathname} />
-      <main className="flex-1 flex flex-col overflow-hidden mt-8">
+      <main className="flex-1 flex flex-col overflow-hidden mt-12">
         {children}
       </main>
     </>
