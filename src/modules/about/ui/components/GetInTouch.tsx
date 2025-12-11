@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const GetInTouch = () => {
   return (
-    <div className="flex flex-col space-y-6 md:space-y-12 mb-24">
+    <div className="flex flex-col space-y-6 md:space-y-12">
       <BorderHeading title="Get In Touch With Us!" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start mr-0 md:mr-12">

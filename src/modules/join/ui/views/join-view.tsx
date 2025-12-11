@@ -14,7 +14,7 @@ const JoinView = async () => {
   return (
     <>
       <main className="w-full max-w-7xl mx-auto px-6 md:px-12 space-y-6 mb-16">
-        <h1 className="font-bold text-gray-900 !text-2xl md:!text-3xl xl:!text-4xl mb-8">
+        <h1 className="font-bold text-gray-900 !text-2xl md:!text-3xl xl:!text-4xl mb-8 font-outfit">
           Any questions before joining?
         </h1>
 

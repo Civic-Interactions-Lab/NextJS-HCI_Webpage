@@ -7,7 +7,7 @@ import WorldMap from "@/modules/about/ui/components/WorldMap";
 
 const ConferenceTravel = () => {
   return (
-    <div className="flex flex-col space-y-6 md:space-y-12 pt-0 md:pt-6">
+    <div className="flex flex-col space-y-6 md:space-y-12 pt-0 md:pt-6 -mb-8">
       <BorderHeading title="Conference Travel" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-12 items-center mb-6 md:mb-8">

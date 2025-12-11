@@ -1,6 +1,14 @@
 import React from "react";
+import NewsTimeline from "@/modules/about/ui/components/NewsTimeline";
+import UploadNews from "@/modules/about/ui/components/UploadNews";
 
 const NewsView = () => {
-  return <div>NewsView</div>;
+  return (
+    <>
+      <NewsTimeline />
+
+      <UploadNews />
+    </>
+  );
 };
 export default NewsView;
