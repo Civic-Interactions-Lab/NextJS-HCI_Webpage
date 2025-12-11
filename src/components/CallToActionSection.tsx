@@ -12,7 +12,7 @@ const CallToActionSection = () => {
   return (
     <motion.div
       ref={ref}
-      className="w-full bg-primary-red-800 mb-12 mt-4 overflow-hidden"
+      className="w-full bg-primary-red-800 overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -38,7 +38,11 @@ const CallToActionSection = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
           >
-            <Link href="/join">
+            <Link
+              href="https://docs.google.com/forms/d/e/1FAIpQLScuzv5spPPiuG0sSvb7KFvMucBhJtgParffTVDwC7dWefcCMQ/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <motion.div
                 className="border-3 border-white rounded-sm px-8 md:px-16 py-1.5 w-fit mb-8 mx-auto md:mx-0 cursor-pointer hover:bg-white hover:text-primary-red-800 text-sm md:text-lg text-white font-medium font-outfit transition-colors duration-300 ease-in-out"
                 whileHover={{

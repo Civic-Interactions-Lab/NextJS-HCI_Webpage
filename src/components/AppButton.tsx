@@ -15,7 +15,7 @@ const CustomButton = ({ text, ariaLabel, ...props }: CustomButtonProps) => {
       aria-label={ariaLabel}
       {...props}
     >
-      <p className="text-xs md:text-sm xl:text-lg font-bold font-jetbrains-mono">
+      <p className="text-xs md:text-sm lg:text-base font-bold font-jetbrains-mono">
         {text}
       </p>
       <ArrowRight className="size-4 md:size-5 xl:size-6" />

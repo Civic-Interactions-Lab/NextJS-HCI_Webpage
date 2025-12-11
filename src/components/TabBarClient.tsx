@@ -16,6 +16,7 @@ const TabBarClient = () => {
       case "/about":
         return [
           { label: "About", path: "/about", isMain: true },
+          { label: "News", path: "/about?sub=news" },
           { label: "Events", path: "/about?sub=events" },
           { label: "Contact Us", path: "/about?sub=contact-us" },
         ];

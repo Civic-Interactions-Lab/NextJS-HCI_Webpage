@@ -27,11 +27,11 @@ const TapeTag = ({
   const getPositionClasses = () => {
     switch (position) {
       case "top-left":
-        return "top-0 -left-8";
+        return "top-2 -left-8";
       case "top-right":
         return "top-0 -right-10";
       case "bottom-left":
-        return "-bottom-1 -left-8";
+        return "bottom-6 -left-8";
       case "bottom-right":
         return "-bottom-1 -right-10";
       default:

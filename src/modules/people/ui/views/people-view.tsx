@@ -19,23 +19,10 @@ const PeopleView = async ({ currentSub }: PeopleViewProps) => {
     getCollaborators(),
   ]);
 
-  const activeCategory = currentSub || "current";
-
-  const getActiveTab = (): "current" | "alumni" | "collaborators" => {
-    switch (activeCategory) {
-      case "alumni":
-        return "alumni";
-      case "collaborators":
-        return "collaborators";
-      default:
-        return "current";
-    }
-  };
-
-  const currentTab = getActiveTab();
+  const activeSection = currentSub || "current";
 
   const getPeopleData = () => {
-    switch (currentTab) {
+    switch (activeSection) {
       case "alumni":
         return alumni;
       case "collaborators":
@@ -51,7 +38,8 @@ const PeopleView = async ({ currentSub }: PeopleViewProps) => {
     return (
       <div className="flex-1 flex flex-col h-32 items-center justify-center">
         <p className="text-muted-foreground text-center">
-          No {currentTab === "current" ? "current members" : currentTab} found.
+          No {activeSection === "current" ? "current members" : activeSection}{" "}
+          found.
         </p>
       </div>
     );
@@ -59,7 +47,7 @@ const PeopleView = async ({ currentSub }: PeopleViewProps) => {
 
   return (
     <div className="flex-1">
-      {currentTab === "current" && (
+      {activeSection === "current" && (
         <div className="p-4 md:p-6 xl:p-8  mb-8 border-2 border-primary-red-800">
           <p className="font-jetbrains-mono text-sm md:text-base xl:text-lg mb-6">
             <span className="text-primary-red-800 font-bold uppercase">

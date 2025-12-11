@@ -2,26 +2,26 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { BorderTitle } from "@/components/AppTitle";
+import { BorderHeading } from "@/components/AppTitle";
 import Image from "next/image";
 import { LinkButton } from "@/components/AppButton";
 import TapeTag from "@/components/TapeTag";
-import { Project } from "../../../../../sanity.types";
+import { ProjectOrderedQueryResult } from "../../../../../sanity.types";
 import Link from "next/link";
 
 interface FeatureProjectsProps {
-  projects: Project[];
+  projects: ProjectOrderedQueryResult;
 }
 
 const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
 
-  const formatAuthors = (authors?: Project["authors"]) => {
+  const formatAuthors = (authors?: ProjectOrderedQueryResult[0]["authors"]) => {
     if (!authors || authors.length === 0) return "";
 
     return authors
-      .map((author) => author.name || "")
+      .map((author) => ("name" in author ? author.name : "Author") || "Author")
       .filter((name) => name)
       .join(", ");
   };
@@ -63,7 +63,7 @@ const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
         {/* Right side */}
         <div className="order-1 lg:order-2 pl-0 lg:pl-8 space-y-6">
           {/* Header with red border */}
-          <BorderTitle title="Featured Projects" />
+          <BorderHeading title="Featured Projects" />
 
           {/* Project cards */}
           <div className="space-y-6">

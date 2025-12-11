@@ -1,19 +1,31 @@
 import React from "react";
-import Hero from "@/components/Hero";
+import HighlightStatement from "@/components/HighlightStatement";
+import CourseList from "@/modules/courses/ui/components/CourseList";
+import JobOutcomes from "@/modules/courses/ui/components/JobOutcomes";
+import OtherOpportunities from "@/modules/courses/ui/components/OtherOpportunities";
 
 const CoursesView = () => {
   return (
     <>
-      <Hero
-        image="/images/cover/HCI_OpenHouse-5.jpg"
-        title="Pathways"
-        height="small"
-        pathname="/courses"
-      />
+      <main className="w-full max-w-7xl mx-auto px-6 md:px-12 space-y-8 mb-16">
+        <HighlightStatement
+          mainText="THE HCI LAB OPENS PATHWAYS"
+          subText="for students to explore careers in technology, design, and research. Through hands-on projects, mentorship, and industry connections, students gain the skills and experiences to turn curiosity into impact."
+          borderPosition="right"
+        />
 
-      <div className="container mx-auto px-4 py-8">
-        <p>Courses page content goes here</p>
-      </div>
+        <CourseList />
+
+        <JobOutcomes />
+
+        <HighlightStatement
+          mainText="OUR LAB STRIVES TO ADVANCE"
+          subText="the tech, design, and research communities here in Philadelphia. While we support many students directly, we're often at or nearing capacity for mentorship."
+          borderPosition="left"
+        />
+
+        <OtherOpportunities />
+      </main>
     </>
   );
 };
