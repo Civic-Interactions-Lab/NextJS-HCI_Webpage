@@ -3,7 +3,7 @@ import { BorderHeading } from "@/components/AppTitle";
 const CommunityResearchApproach = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-      <div className="flex flex-col gap-6 justify-start items-start text-start mt-3">
+      <div className="flex flex-col gap-6 justify-start items-start text-start">
         <BorderHeading title="Community Research Approach" />
         <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
           Our lab takes a community-centered approach where students

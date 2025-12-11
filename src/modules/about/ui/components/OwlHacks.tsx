@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const OwlHacks = () => {
   return (
-    <div className="flex flex-col space-y-4 md:space-y-0 mt-3">
+    <div className="flex flex-col space-y-4 md:space-y-0 mt-0 md:mt-3">
       <BorderHeading title="Owl Hacks" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-12 items-center mb-6 md:mb-8">
