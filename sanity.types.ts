@@ -13,6 +13,24 @@
  */
 
 // Source: schema.json
+export type Testimonials = {
+  _id: string;
+  _type: "testimonials";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  quote?: string;
+  person?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "people";
+  };
+  role?: string;
+  isActive?: boolean;
+};
+
 export type Faq = {
   _id: string;
   _type: "faq";
@@ -235,7 +253,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Faq | Project | SanityImageCrop | SanityImageHotspot | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Testimonials | Faq | Project | SanityImageCrop | SanityImageHotspot | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/faq/getFAQs.ts
 // Variable: faqsQuery
@@ -442,6 +460,30 @@ export type ProjectOrderedQueryResult = Array<{
   status?: "draft" | "progress" | "published" | "review";
 }>;
 
+// Source: ./src/sanity/lib/testimonials/getTestimonials.ts
+// Variable: testimonialsQuery
+// Query: *[_type == "testimonials" && isActive == true] | order(orderRank) {      _id,      quote,      role,      person-> {        name,        img      }    }
+export type TestimonialsQueryResult = Array<{
+  _id: string;
+  quote: string | null;
+  role: string | null;
+  person: {
+    name: string | null;
+    img: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  } | null;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -453,5 +495,6 @@ declare module "@sanity/client" {
     "\n    *[_type == \"people\" && status == \"collaborator\"] | order(name asc)\n  ": CollaboratorsPeopleQueryResult;
     "\n    *[_type == \"project\"] | order(date desc)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectQueryResult;
     "\n    *[_type == \"project\"] | order(orderRank)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectOrderedQueryResult;
+    "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ": TestimonialsQueryResult;
   }
 }

@@ -9,22 +9,21 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from "./src/sanity/env";
-import { schema } from "./src/sanity/schemaTypes";
-import { structure } from "./src/sanity/structure";
+import { apiVersion, dataset, projectId } from "@/sanity/env";
+import { schema } from "@/sanity/schemaTypes";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   ChartBarIncreasing,
   CircleQuestionMark,
   NewspaperIcon,
   User,
+  UserRoundCheck,
 } from "lucide-react";
 
 export default defineConfig({
   basePath: "/studio",
   projectId,
   dataset,
-  // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
     structureTool({
@@ -62,6 +61,14 @@ export default defineConfig({
               S,
               context,
               icon: CircleQuestionMark,
+            }),
+
+            orderableDocumentListDeskItem({
+              type: "testimonials",
+              title: "Testimonials",
+              S,
+              context,
+              icon: UserRoundCheck,
             }),
           ]);
       },

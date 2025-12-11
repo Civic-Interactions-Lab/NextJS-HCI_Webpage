@@ -1,10 +1,11 @@
 import React from "react";
+import SponsorList from "@/modules/sponsors/ui/components/SponsorList";
 
 const SponsorsView = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <p>Sponsors page content goes here</p>
-    </div>
+    <>
+      <SponsorList />
+    </>
   );
 };
 export default SponsorsView;
