@@ -549,6 +549,13 @@
         },
         "optional": true
       },
+      "description": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "date": {
         "type": "objectAttribute",
         "value": {
@@ -629,6 +636,35 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "category": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "Collaborations"
+            },
+            {
+              "type": "string",
+              "value": "Grants / Awards"
+            },
+            {
+              "type": "string",
+              "value": "Conference Talk"
+            },
+            {
+              "type": "string",
+              "value": "Published Papers"
+            },
+            {
+              "type": "string",
+              "value": "Alumni"
+            }
+          ]
         },
         "optional": true
       },

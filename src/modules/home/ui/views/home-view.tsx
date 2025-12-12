@@ -5,12 +5,12 @@ import WhyHCILabSection from "@/modules/home/ui/components/WhyHCILabSection";
 import FeatureProjects from "@/modules/home/ui/components/FeatureProjects";
 import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
-import { getNews } from "@/sanity/lib/news/getNews";
+import { getRecentNews } from "@/sanity/lib/news/getNews";
 import CallToActionSection from "@/components/CallToActionSection";
 import { getProjectsOrdered } from "@/sanity/lib/projects/getProjects";
 
 const HomeView = async () => {
-  const news = await getNews();
+  const recentNews = await getRecentNews();
   const projects = await getProjectsOrdered();
 
   return (
@@ -33,7 +33,7 @@ const HomeView = async () => {
 
         <HubCommunitySection />
 
-        <RecentNewsSection news={news} />
+        <RecentNewsSection recentNews={recentNews} />
       </main>
 
       <CallToActionSection />

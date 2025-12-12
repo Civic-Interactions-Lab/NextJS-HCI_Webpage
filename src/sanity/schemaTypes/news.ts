@@ -14,6 +14,11 @@ export const newsType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+    }),
+    defineField({
       name: "date",
       title: "Date",
       type: "datetime",
@@ -23,7 +28,6 @@ export const newsType = defineType({
       name: "link",
       title: "Link",
       type: "url",
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "imageUrl",
@@ -32,6 +36,21 @@ export const newsType = defineType({
       options: {
         hotspot: true,
       },
+    }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "string",
+      options: {
+        list: [
+          { title: "Collaborations", value: "Collaborations" },
+          { title: "Grants / Awards", value: "Grants / Awards" },
+          { title: "Conference Talk", value: "Conference Talk" },
+          { title: "Published Papers", value: "Published Papers" },
+          { title: "Alumni", value: "Alumni" },
+        ],
+      },
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "featured",

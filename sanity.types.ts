@@ -105,6 +105,7 @@ export type News = {
   _rev: string;
   orderRank?: string;
   title?: string;
+  description?: string;
   date?: string;
   link?: string;
   imageUrl?: {
@@ -119,6 +120,7 @@ export type News = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  category?: "Collaborations" | "Grants / Awards" | "Conference Talk" | "Published Papers" | "Alumni";
   featured?: boolean;
 };
 
@@ -271,9 +273,9 @@ export type FaqsQueryResult = Array<{
 }>;
 
 // Source: ./src/sanity/lib/news/getNews.ts
-// Variable: newsQuery
+// Variable: recentNewsQuery
 // Query: *[_type == "news"] | order(date desc)[0...3]
-export type NewsQueryResult = Array<{
+export type RecentNewsQueryResult = Array<{
   _id: string;
   _type: "news";
   _createdAt: string;
@@ -281,6 +283,7 @@ export type NewsQueryResult = Array<{
   _rev: string;
   orderRank?: string;
   title?: string;
+  description?: string;
   date?: string;
   link?: string;
   imageUrl?: {
@@ -295,12 +298,41 @@ export type NewsQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
+  category?: "Alumni" | "Collaborations" | "Conference Talk" | "Grants / Awards" | "Published Papers";
+  featured?: boolean;
+}>;
+// Variable: allNewsQuery
+// Query: *[_type == "news"] | order(date desc)
+export type AllNewsQueryResult = Array<{
+  _id: string;
+  _type: "news";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  link?: string;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category?: "Alumni" | "Collaborations" | "Conference Talk" | "Grants / Awards" | "Published Papers";
   featured?: boolean;
 }>;
 
 // Source: ./src/sanity/lib/people/getPeople.ts
 // Variable: currentPeopleQuery
-// Query: *[_type == "people" && status == "active"] | order(name asc)
+// Query: *[_type == "people" && status == "active"] | order(orderRank)
 export type CurrentPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -330,7 +362,7 @@ export type CurrentPeopleQueryResult = Array<{
   now?: string;
 }>;
 // Variable: alumniPeopleQuery
-// Query: *[_type == "people" && status == "alumni"] | order(end desc, name asc)
+// Query: *[_type == "people" && status == "alumni"] | order(orderRank)
 export type AlumniPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -360,7 +392,7 @@ export type AlumniPeopleQueryResult = Array<{
   now?: string;
 }>;
 // Variable: collaboratorsPeopleQuery
-// Query: *[_type == "people" && status == "collaborator"] | order(name asc)
+// Query: *[_type == "people" && status == "collaborator"] | order(orderRank)
 export type CollaboratorsPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -489,10 +521,11 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
-    "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": NewsQueryResult;
-    "\n    *[_type == \"people\" && status == \"active\"] | order(name asc)\n  ": CurrentPeopleQueryResult;
-    "\n    *[_type == \"people\" && status == \"alumni\"] | order(end desc, name asc)\n  ": AlumniPeopleQueryResult;
-    "\n    *[_type == \"people\" && status == \"collaborator\"] | order(name asc)\n  ": CollaboratorsPeopleQueryResult;
+    "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
+    "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
+    "\n    *[_type == \"people\" && status == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;
+    "\n    *[_type == \"people\" && status == \"alumni\"] | order(orderRank)\n  ": AlumniPeopleQueryResult;
+    "\n    *[_type == \"people\" && status == \"collaborator\"] | order(orderRank)\n  ": CollaboratorsPeopleQueryResult;
     "\n    *[_type == \"project\"] | order(date desc)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectQueryResult;
     "\n    *[_type == \"project\"] | order(orderRank)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectOrderedQueryResult;
     "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ": TestimonialsQueryResult;
