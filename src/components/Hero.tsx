@@ -1,9 +1,19 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import HeroClient from "@/components/HeroClient";
+import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+
+// interface HeroImage {
+//   src: string;
+//   alt: string;
+//   title: string;
+// }
 
 interface HeroProps {
-  image?: string;
+  image?: string | SanityImageSource | null;
+  alt?: string;
   title?: string;
   height?: "small" | "large";
   subtitle?: string;
@@ -12,8 +22,11 @@ interface HeroProps {
   pathname?: string;
 }
 
+// const TRANSITION_DELAY = 10000;
+
 const Hero = ({
-  image = "/images/cover/442_72A2112.jpg",
+  image,
+  alt,
   title,
   height = "small",
   subtitle,
@@ -21,6 +34,11 @@ const Hero = ({
   searchParams,
   pathname = "/",
 }: HeroProps) => {
+  // Multiple images functionality - commented out for now
+  // const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // const [isTransitioning, setIsTransitioning] = useState(false);
+  // const [count, setCount] = useState(0);
+
   const heightClass =
     height === "large"
       ? "h-[500px] md:h-[600px] lg:h-[700px]"
@@ -37,45 +55,91 @@ const Hero = ({
   const isHomePage = pathname === "/";
   const showBreadcrumb = subSection && title;
 
-  const getImagePath = (imagePath: string) => {
-    return imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-  };
-
-  const getHeroImages = () => {
-    if (pathname === "/people") {
-      return [
-        {
-          src: image,
-          alt: "Research team collaboration",
-          title: "",
-        },
-        {
-          src: "/images/cover/442_72A2112.jpg",
-          alt: "Lab meeting discussion",
-          title: "",
-        },
-        {
-          src: "/images/cover/NC_05301.jpg",
-          alt: "Student presentations",
-          title: "",
-        },
-      ];
+  const getImageSrc = (
+    img: string | SanityImageSource | null | undefined,
+  ): string => {
+    if (!img) return "/images/cover/442_72A2112.jpg"; // fallback
+    if (typeof img === "string") {
+      return img.startsWith("/") ? img : `/${img}`;
     }
-    return [{ src: image, alt: title || "Hero background", title: "" }];
+    // It's a Sanity image
+    return urlFor(img).url();
   };
 
-  const heroImages = getHeroImages();
-  const currentImage = heroImages[0]; // Start with first image for server render
+  // const getHeroImages = (): HeroImage[] => {
+  //   if (pathname === "/people") {
+  //     return [
+  //       {
+  //         src: getImageSrc(image),
+  //         alt: "Research team collaboration",
+  //         title: "",
+  //       },
+  //       {
+  //         src: "/images/cover/442_72A2112.jpg",
+  //         alt: "Lab meeting discussion",
+  //         title: "",
+  //       },
+  //       {
+  //         src: "/images/cover/NC_05301.jpg",
+  //         alt: "Student presentations",
+  //         title: "",
+  //       },
+  //     ];
+  //   }
+  //   return [{ src: getImageSrc(image), alt: title || "Hero background", title: "" }];
+  // };
+  //
+  // const heroImages = getHeroImages();
+  // const currentImage = heroImages[0];
+
+  // Auto-transition effect for multiple images - commented out
+  // useEffect(() => {
+  //   if (heroImages.length > 1) {
+  //     const interval = setInterval(() => {
+  //       setIsTransitioning(true);
+  //       setTimeout(() => {
+  //         setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+  //         setCount(count + 1);
+  //         setIsTransitioning(false);
+  //       }, 100);
+  //     }, TRANSITION_DELAY);
+
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [heroImages.length, currentImageIndex, count]);
+
+  // Multiple images functionality - commented out
+  // const changeToImage = (index: number) => {
+  //   if (index === currentImageIndex || isTransitioning) return;
+
+  //   setIsTransitioning(true);
+  //   setTimeout(() => {
+  //     setCurrentImageIndex(index);
+  //     setCount(count + 1);
+  //     setIsTransitioning(false);
+  //   }, 100);
+  // };
+
+  // const slideVariants = {
+  //   enter: { x: "100%", opacity: 1, zIndex: 1 },
+  //   center: { x: 0, opacity: 1, zIndex: 2 },
+  //   exit: { x: "-100%", opacity: 1, zIndex: 1 },
+  // };
+
+  // const transition = {
+  //   duration: 1,
+  //   ease: [0.45, 0.05, 0.55, 0.95] as const,
+  // };
 
   return (
     <div
       className={`relative w-screen mx-auto bg-cover ${heightClass} overflow-hidden`}
     >
-      {/* Server-rendered initial image for SEO */}
+      {/* Simple single image display */}
       <div className="absolute inset-0">
         <Image
-          src={getImagePath(currentImage.src)}
-          alt={currentImage.alt}
+          src={getImageSrc(image)}
+          alt={alt || "Hero background"}
           fill
           className="object-cover"
           style={{
@@ -86,12 +150,62 @@ const Hero = ({
         />
       </div>
 
+      {/* Animated image transitions - commented out for multiple images
+      <div className="absolute inset-0 overflow-hidden">
+        <AnimatePresence custom={currentImageIndex}>
+          <motion.div
+            key={currentImageIndex}
+            className="absolute inset-0"
+            variants={slideVariants}
+            initial={count === 0 ? "center" : "enter"}
+            animate="center"
+            exit="exit"
+            transition={transition}
+          >
+            <Image
+              src={currentImage.src}
+              alt={currentImage.alt}
+              fill
+              className="object-cover"
+              style={{
+                objectPosition: "center 36%",
+              }}
+              priority
+              sizes="100vw"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      */}
+
       <div
         className={`absolute inset-0 z-10 ${isHomePage ? "bg-black/50" : "bg-black/40"}`}
       />
 
-      {/* Client component for interactive features */}
-      {heroImages.length > 1 && <HeroClient heroImages={heroImages} />}
+      {/* Dot Indicators - commented out for single image display
+      {heroImages.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 items-center z-20">
+          {heroImages.map((_, index) => (
+            <Button
+              key={index}
+              onClick={() => changeToImage(index)}
+              disabled={isTransitioning}
+              variant="ghost"
+              className={`
+                !p-0 !m-0 !rounded-full !size-3 !bg-white transition-all duration-300 ease-out transform
+                ${
+                  index === currentImageIndex
+                    ? "scale-125 !border-2 !border-black shadow-[0_0_0_1px_white]"
+                    : "scale-100 opacity-80 hover:opacity-100"
+                }
+                ${isTransitioning ? "cursor-not-allowed opacity-60" : "cursor-pointer"}
+              `}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+      */}
 
       <div className="relative z-10 w-full h-full flex flex-col max-w-7xl mx-auto pt-16 md:pt-20 lg:pt-0">
         {title && (

@@ -13,6 +13,63 @@
  */
 
 // Source: schema.json
+export type ImageSettings = {
+  _id: string;
+  _type: "imageSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  sectionKey?: "home-hero" | "home-why-hci" | "home-hub-community" | "home-feature-projects" | "about-hero" | "about-studio-time" | "about-community-research" | "about-testimonials" | "projects-hero" | "projects-featured" | "join-hero" | "join-application-process" | "news-hero" | "news-featured" | "contact-hero" | "contact-office";
+  singleImage?: {
+    asset?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    alt?: string;
+  };
+  imageArray?: Array<{
+    asset?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    alt?: string;
+    _key: string;
+  }>;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type Testimonials = {
   _id: string;
   _type: "testimonials";
@@ -79,22 +136,6 @@ export type Project = {
   }>;
   tags?: Array<string>;
   status?: "published" | "review" | "progress" | "draft";
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type News = {
@@ -255,7 +296,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Testimonials | Faq | Project | SanityImageCrop | SanityImageHotspot | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = ImageSettings | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Project | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/faq/getFAQs.ts
 // Variable: faqsQuery
@@ -271,6 +312,25 @@ export type FaqsQueryResult = Array<{
   answer?: string;
   defaultOpen?: boolean;
 }>;
+
+// Source: ./src/sanity/lib/imageSettings/homeImages.ts
+// Variable: homeHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "home-hero"][0].singleImage
+export type HomeHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
 
 // Source: ./src/sanity/lib/news/getNews.ts
 // Variable: recentNewsQuery
@@ -521,6 +581,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-hero\"][0].singleImage\n  ": HomeHeroQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
     "\n    *[_type == \"people\" && status == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;
