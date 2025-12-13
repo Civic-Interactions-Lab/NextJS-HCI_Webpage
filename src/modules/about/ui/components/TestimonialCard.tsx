@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface TestimonialStyle {
   backgroundColor: string;
@@ -68,7 +68,7 @@ const testimonialStyles: TestimonialStyle[] = [
 
 const TestimonialCard = ({ testimonial, index }: TestimonialCardProps) => {
   const imageUrl = testimonial.person?.img
-    ? urlFor(testimonial.person.img).width(200).height(200).url()
+    ? getImageSrc(testimonial.person.img)
     : undefined;
   const style = testimonialStyles[index % testimonialStyles.length];
 

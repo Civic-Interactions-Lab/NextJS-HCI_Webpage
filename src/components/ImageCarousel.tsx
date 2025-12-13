@@ -28,8 +28,7 @@ interface ImageCarouselProps {
   showNavigation?: boolean;
   // SEO props
   title?: string;
-  description?: string;
-  priority?: boolean; // For above-the-fold images
+  priority?: boolean;
 }
 
 const ImageCarousel = ({
@@ -40,7 +39,6 @@ const ImageCarousel = ({
   showPagination = true,
   showNavigation = true,
   title = "Temple HCI Lab Gallery",
-  description = "Images from Temple University Human-Computer Interaction Research Lab",
   priority = false,
 }: ImageCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
@@ -88,12 +86,11 @@ const ImageCarousel = ({
     <div className={`relative ${className}`}>
       {/* SEO: Hidden title and description */}
       <h3 className="sr-only">{title}</h3>
-      <p className="sr-only">{description}</p>
 
       <div className={`overflow-hidden ${roundedClassName}`}>
         <Carousel setApi={setApi} className="w-full" aria-label={title}>
           <CarouselContent>
-            {images.map((image, index) => (
+            {images.slice(0, 5).map((image, index) => (
               <CarouselItem key={index}>
                 <Card className="border-0 py-0 shadow-none">
                   <CardContent className="p-0">
@@ -112,7 +109,6 @@ const ImageCarousel = ({
                           console.warn(`Failed to load image: ${image.src}`);
                         }}
                       />
-                      {/* SEO: Hidden context for each image */}
                       <span className="sr-only">{altText(image.alt)}</span>
                     </div>
                   </CardContent>
@@ -126,13 +122,13 @@ const ImageCarousel = ({
             <>
               {!isFirst && (
                 <CarouselPrevious
-                  className="left-4 size-10 !bg-white/90 hover:!bg-white !rounded-full cursor-pointer"
+                  className="left-4 size-10 bg-white/90! hover:bg-white! rounded-full cursor-pointer"
                   aria-label="Previous image"
                 />
               )}
               {!isLast && (
                 <CarouselNext
-                  className="right-4 size-10 !bg-white/90 hover:!bg-white !rounded-full cursor-pointer"
+                  className="right-4 size-10 bg-white/90! hover:bg-white! rounded-full! cursor-pointer"
                   aria-label="Next image"
                 />
               )}
@@ -144,15 +140,15 @@ const ImageCarousel = ({
       {/* Pagination dots */}
       {showPagination && images.length > 1 && (
         <div className="mt-6 flex items-center justify-center gap-3">
-          {Array.from({ length: count }).map((_, index) => (
+          {Array.from({ length: 5 }).map((_, index) => (
             <Button
               key={index}
               onClick={() => api?.scrollTo(index)}
               className={cn(
-                "size-4 !rounded-full !p-0 transition-all duration-200 hover:scale-110",
+                "size-4 rounded-full! p-0! transition-all duration-200 hover:scale-110",
                 current === index + 1
-                  ? "!bg-gray-600 shadow-md"
-                  : "!bg-gray-300 hover:!bg-gray-400",
+                  ? "bg-gray-600! shadow-md"
+                  : "bg-gray-300! hover:bg-gray-400!",
               )}
               aria-label={`Go to slide ${index + 1}`}
             />

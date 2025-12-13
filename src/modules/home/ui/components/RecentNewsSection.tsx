@@ -6,28 +6,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { BorderHeading } from "@/components/AppTitle";
 import { News } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { formatDate, getImageSrc } from "@/lib/utils";
 
 interface RecentNewsSectionProps {
-  news: News[];
+  recentNews: News[];
 }
 
-const RecentNewsSection = ({ news }: RecentNewsSectionProps) => {
+const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
 
-  // Format date to MMM, YYYY
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  // Reorder news
-  const orderedNews = [...news].sort((a, b) => {
+  const orderedNews = [...recentNews].sort((a, b) => {
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
 
@@ -81,7 +70,7 @@ const RecentNewsSection = ({ news }: RecentNewsSectionProps) => {
           >
             {newsItem.imageUrl && (
               <Image
-                src={urlFor(newsItem.imageUrl).url() || ""}
+                src={getImageSrc(newsItem.imageUrl)}
                 alt=""
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"

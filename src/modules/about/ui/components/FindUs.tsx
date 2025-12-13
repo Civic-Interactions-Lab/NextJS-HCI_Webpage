@@ -3,8 +3,14 @@ import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import TapeTag from "@/components/TapeTag";
+import { AboutSercQueryResult } from "../../../../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
-const FindUs = () => {
+interface FindUsProps {
+  image: AboutSercQueryResult;
+}
+
+const FindUs = ({ image }: FindUsProps) => {
   return (
     <div className="flex flex-col space-y-6 md:space-y-12">
       <BorderHeading title="Find Us At SERC" />
@@ -13,14 +19,14 @@ const FindUs = () => {
         <div className="relative order-2 md:order-1 mx-0 md:mx-8">
           <div className="h-64 md:h-96">
             <Image
-              src="https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="Science Education and Research Center (SERC) building at Temple University"
+              src={getImageSrc(image?.asset)}
+              alt={image?.alt || "Temple HCI Lab - SERC Building"}
               fill
               className="object-cover"
               priority
             />
             <TapeTag position="top-left" color="white">
-              <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
+              <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight wrap-break-word whitespace-normal max-w-56 line-clamp-3">
                 Front doors of the Science Research Education Center (SERC)
               </p>
             </TapeTag>

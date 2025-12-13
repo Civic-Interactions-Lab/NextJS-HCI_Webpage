@@ -2,34 +2,23 @@
 
 import ImageCarousel from "@/components/ImageCarousel";
 import { BorderHeading } from "@/components/AppTitle";
-
-const labImages = [
-  {
-    src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzZWFyY2glMjB0ZWFtfGVufDB8fDB8fHww",
-    alt: "Research team collaboration",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmVzZWFyY2glMjB0ZWFtfGVufDB8fDB8fHww",
-    alt: "Lab team working together",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8cmVzZWFyY2glMjB0ZWFtfGVufDB8fDB8fHww",
-    alt: "Research lab environment",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHJlc2VhcmNoJTIwdGVhbXxlbnwwfHwwfHx8MA%3D%3D",
-    alt: "Lab team discussion",
-  },
-];
+import { AboutLabValuesQueryResult } from "../../../../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
 interface LabValuesProps {
-  images?: Array<{
-    src: string;
-    alt: string;
-  }>;
+  images?: AboutLabValuesQueryResult;
 }
 
-const LabValues = ({ images = labImages }: LabValuesProps) => {
+const LabValues = ({ images }: LabValuesProps) => {
+  const convertSanityImages = (sanityImages?: AboutLabValuesQueryResult) => {
+    if (!sanityImages) return [];
+
+    return sanityImages.map((img) => ({
+      src: getImageSrc(img?.asset),
+      alt: img.alt || "",
+    }));
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center mt-0 md:mt-12">
       <div className="flex flex-col gap-6">
@@ -48,13 +37,12 @@ const LabValues = ({ images = labImages }: LabValuesProps) => {
 
       <div className="relative">
         <ImageCarousel
-          images={images}
+          images={convertSanityImages(images)}
           height="h-64 md:h-80"
           roundedClassName="rounded-tl-[100px]"
           showPagination={true}
           showNavigation={true}
           title="Lab Values Gallery"
-          description="Images showcasing our lab's collaborative environment"
           priority={true}
         />
       </div>

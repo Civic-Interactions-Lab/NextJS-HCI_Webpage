@@ -1,32 +1,104 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import HeroClient from "@/components/HeroClient";
+import { usePathname, useSearchParams } from "next/navigation";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import {
+  AboutHeroQueryResult,
+  CoursesHeroQueryResult,
+  JoinHeroQueryResult,
+  PeopleHeroQueryResult,
+  ResearchHeroQueryResult,
+  SponsorsHeroQueryResult,
+} from "../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
 interface HeroProps {
-  image?: string;
+  imageMap?: {
+    about?: AboutHeroQueryResult;
+    research?: ResearchHeroQueryResult;
+    people?: PeopleHeroQueryResult;
+    courses?: CoursesHeroQueryResult;
+    sponsors?: SponsorsHeroQueryResult;
+    join?: JoinHeroQueryResult;
+  };
+  image?: string | SanityImageSource | null;
+  alt?: string;
   title?: string;
   height?: "small" | "large";
   subtitle?: string;
   showCTA?: boolean;
-  searchParams?: { [key: string]: string | string[] | undefined };
-  pathname?: string;
 }
 
 const Hero = ({
-  image = "/images/cover/442_72A2112.jpg",
-  title,
+  imageMap,
+  image: fallbackImage,
+  alt: fallbackAlt,
+  title: fallbackTitle,
   height = "small",
   subtitle,
   showCTA = false,
-  searchParams,
-  pathname = "/",
 }: HeroProps) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Determine image, alt, and title based on pathname
+  const getHeroData = () => {
+    if (pathname.startsWith("/about")) {
+      return {
+        image: imageMap?.about?.asset,
+        alt: imageMap?.about?.alt,
+        title: "About",
+      };
+    } else if (pathname.startsWith("/people")) {
+      return {
+        image: imageMap?.people?.asset,
+        alt: imageMap?.people?.alt,
+        title: "People",
+      };
+    } else if (pathname.startsWith("/sponsors")) {
+      return {
+        image: imageMap?.sponsors?.asset,
+        alt: imageMap?.sponsors?.alt,
+        title: "Sponsors",
+      };
+    } else if (pathname.startsWith("/courses")) {
+      return {
+        image: imageMap?.courses?.asset,
+        alt: imageMap?.courses?.alt,
+        title: "Courses",
+      };
+    } else if (pathname.startsWith("/join")) {
+      return {
+        image: imageMap?.join?.asset,
+        alt: imageMap?.join?.alt,
+        title: "Join",
+      };
+    } else if (pathname.startsWith("/research")) {
+      return {
+        image: imageMap?.research?.asset,
+        alt: imageMap?.research?.alt,
+        title: "Research",
+      };
+    }
+
+    // Fallback to individual props (for home page, etc.)
+    return {
+      image: fallbackImage,
+      alt: fallbackAlt,
+      title: fallbackTitle,
+    };
+  };
+
+  const { image, alt, title } = getHeroData();
+
   const heightClass =
     height === "large"
       ? "h-[500px] md:h-[600px] lg:h-[700px]"
       : "h-[400px] md:h-[450px] lg:h-[500px]";
 
-  const subSection = searchParams?.sub as string;
+  const subSection = searchParams.get("sub");
   const formattedSubSection = subSection
     ? subSection
         .split("-")
@@ -37,45 +109,14 @@ const Hero = ({
   const isHomePage = pathname === "/";
   const showBreadcrumb = subSection && title;
 
-  const getImagePath = (imagePath: string) => {
-    return imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-  };
-
-  const getHeroImages = () => {
-    if (pathname === "/people") {
-      return [
-        {
-          src: image,
-          alt: "Research team collaboration",
-          title: "",
-        },
-        {
-          src: "/images/cover/442_72A2112.jpg",
-          alt: "Lab meeting discussion",
-          title: "",
-        },
-        {
-          src: "/images/cover/NC_05301.jpg",
-          alt: "Student presentations",
-          title: "",
-        },
-      ];
-    }
-    return [{ src: image, alt: title || "Hero background", title: "" }];
-  };
-
-  const heroImages = getHeroImages();
-  const currentImage = heroImages[0]; // Start with first image for server render
-
   return (
     <div
       className={`relative w-screen mx-auto bg-cover ${heightClass} overflow-hidden`}
     >
-      {/* Server-rendered initial image for SEO */}
       <div className="absolute inset-0">
         <Image
-          src={getImagePath(currentImage.src)}
-          alt={currentImage.alt}
+          src={getImageSrc(image)}
+          alt={alt || "Hero background"}
           fill
           className="object-cover"
           style={{
@@ -89,9 +130,6 @@ const Hero = ({
       <div
         className={`absolute inset-0 z-10 ${isHomePage ? "bg-black/50" : "bg-black/40"}`}
       />
-
-      {/* Client component for interactive features */}
-      {heroImages.length > 1 && <HeroClient heroImages={heroImages} />}
 
       <div className="relative z-10 w-full h-full flex flex-col max-w-7xl mx-auto pt-16 md:pt-20 lg:pt-0">
         {title && (

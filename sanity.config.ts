@@ -15,6 +15,7 @@ import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   ChartBarIncreasing,
   CircleQuestionMark,
+  ImagesIcon,
   NewspaperIcon,
   User,
   UserRoundCheck,
@@ -69,6 +70,14 @@ export default defineConfig({
               S,
               context,
               icon: UserRoundCheck,
+            }),
+
+            orderableDocumentListDeskItem({
+              type: "imageSettings",
+              title: "Image Settings",
+              S,
+              context,
+              icon: ImagesIcon,
             }),
           ]);
       },

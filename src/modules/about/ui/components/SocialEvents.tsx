@@ -1,8 +1,17 @@
 import React from "react";
 import { BorderHeading } from "@/components/AppTitle";
 import Image from "next/image";
+import { AboutEventSocialQueryResult } from "../../../../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
-const SocialEvents = () => {
+interface SocialEventsProps {
+  images?: AboutEventSocialQueryResult;
+}
+
+const SocialEvents = ({ images }: SocialEventsProps) => {
+  const firstImage = images?.[0];
+  const secondImage = images?.[1];
+
   return (
     <div className="flex flex-col space-y-4 md:space-y-0 pt-6 md:pt-12">
       <BorderHeading title="SOCIAL EVENTS" />
@@ -23,8 +32,8 @@ const SocialEvents = () => {
         <div className="relative order-2 md:order-2 mx-0 md:mx-8">
           <div className="h-64 md:h-72">
             <Image
-              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="HCI Lab team gathering"
+              src={getImageSrc(firstImage?.asset)}
+              alt={firstImage?.alt || "HCI Social Event"}
               fill
               className="object-cover rounded-br-[150px]"
               priority
@@ -50,8 +59,8 @@ const SocialEvents = () => {
         <div className="relative order-4 md:order-2 mx-0 md:mx-8">
           <div className="relative h-64 md:h-72 w-full">
             <Image
-              src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="Lab members playing basketball"
+              src={getImageSrc(secondImage?.asset)}
+              alt={secondImage?.alt || "HCI Social Event"}
               fill
               className="object-cover rounded-tl-[150px]"
               priority

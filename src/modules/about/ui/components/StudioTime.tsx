@@ -2,15 +2,21 @@ import { BorderHeading } from "@/components/AppTitle";
 import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
+import { AboutStudioTimeQueryResult } from "../../../../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
-const StudioTime = () => {
+interface StudioTimeProps {
+  studioTimeImage: AboutStudioTimeQueryResult;
+}
+
+const StudioTime = ({ studioTimeImage }: StudioTimeProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center">
       <div className="relative p-4 md:p-6 order-2 md:order-1">
         <div className="-rotate-6">
           <Image
-            src="/images/cover/3-studio.jpg"
-            alt="HCI Lab members collaborating at Studio Time"
+            src={getImageSrc(studioTimeImage?.asset)}
+            alt={studioTimeImage?.alt || ""}
             width={500}
             height={300}
             className="w-full h-64 md:h-80 object-cover p-0 md:p-8"
@@ -18,7 +24,7 @@ const StudioTime = () => {
 
           <TapeTag position="top-left" rotation={-16} color="black">
             <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-48 line-clamp-3 px-3">
-              HCI Lab members collaborating at Studio Time
+              {studioTimeImage?.alt}
             </p>
           </TapeTag>
         </div>
