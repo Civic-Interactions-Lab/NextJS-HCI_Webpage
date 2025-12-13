@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import PeopleView from "@/modules/people/ui/views/people-view";
 
 interface PageProps {
@@ -8,7 +8,11 @@ interface PageProps {
 const PeoplePage = async ({ searchParams }: PageProps) => {
   const { sub } = await searchParams;
 
-  return <PeopleView currentSub={sub} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PeopleView currentSub={sub} />
+    </Suspense>
+  );
 };
 
 export default PeoplePage;
