@@ -56,11 +56,11 @@
             },
             {
               "type": "string",
-              "value": "home-hub-community"
+              "value": "home-featured-projects"
             },
             {
               "type": "string",
-              "value": "home-feature-projects"
+              "value": "home-hub-community"
             },
             {
               "type": "string",
@@ -72,43 +72,31 @@
             },
             {
               "type": "string",
-              "value": "about-community-research"
+              "value": "about-lab-values"
             },
             {
               "type": "string",
-              "value": "about-testimonials"
+              "value": "events-owl-hacks"
             },
             {
               "type": "string",
-              "value": "projects-hero"
+              "value": "research-hero"
             },
             {
               "type": "string",
-              "value": "projects-featured"
+              "value": "people-hero"
+            },
+            {
+              "type": "string",
+              "value": "courses-hero"
+            },
+            {
+              "type": "string",
+              "value": "sponsors-hero"
             },
             {
               "type": "string",
               "value": "join-hero"
-            },
-            {
-              "type": "string",
-              "value": "join-application-process"
-            },
-            {
-              "type": "string",
-              "value": "news-hero"
-            },
-            {
-              "type": "string",
-              "value": "news-featured"
-            },
-            {
-              "type": "string",
-              "value": "contact-hero"
-            },
-            {
-              "type": "string",
-              "value": "contact-office"
             }
           ]
         },

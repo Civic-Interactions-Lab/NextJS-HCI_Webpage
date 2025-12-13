@@ -28,8 +28,7 @@ interface ImageCarouselProps {
   showNavigation?: boolean;
   // SEO props
   title?: string;
-  description?: string;
-  priority?: boolean; // For above-the-fold images
+  priority?: boolean;
 }
 
 const ImageCarousel = ({
@@ -40,7 +39,6 @@ const ImageCarousel = ({
   showPagination = true,
   showNavigation = true,
   title = "Temple HCI Lab Gallery",
-  description = "Images from Temple University Human-Computer Interaction Research Lab",
   priority = false,
 }: ImageCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
@@ -88,7 +86,6 @@ const ImageCarousel = ({
     <div className={`relative ${className}`}>
       {/* SEO: Hidden title and description */}
       <h3 className="sr-only">{title}</h3>
-      <p className="sr-only">{description}</p>
 
       <div className={`overflow-hidden ${roundedClassName}`}>
         <Carousel setApi={setApi} className="w-full" aria-label={title}>
@@ -112,7 +109,6 @@ const ImageCarousel = ({
                           console.warn(`Failed to load image: ${image.src}`);
                         }}
                       />
-                      {/* SEO: Hidden context for each image */}
                       <span className="sr-only">{altText(image.alt)}</span>
                     </div>
                   </CardContent>

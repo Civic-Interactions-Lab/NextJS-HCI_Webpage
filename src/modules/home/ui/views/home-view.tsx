@@ -8,12 +8,21 @@ import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
 import { getRecentNews } from "@/sanity/lib/news/getNews";
 import CallToActionSection from "@/components/CallToActionSection";
 import { getProjectsOrdered } from "@/sanity/lib/projects/getProjects";
-import { getHomeHeroImage } from "@/sanity/lib/imageSettings/homeImages";
+import {
+  getHomeFeaturedProjectsImage,
+  getHomeHeroImage,
+  getHomeHubCommunityImage,
+  getHomeWhyHCIImages,
+} from "@/sanity/lib/imageSettings/homeImages";
 
 const HomeView = async () => {
   const heroImage = await getHomeHeroImage();
   const recentNews = await getRecentNews();
   const projects = await getProjectsOrdered();
+
+  const whyHCILabImages = await getHomeWhyHCIImages();
+  const featuredProjectsImage = await getHomeFeaturedProjectsImage();
+  const hubCommunityImage = await getHomeHubCommunityImage();
 
   return (
     <>
@@ -24,17 +33,19 @@ const HomeView = async () => {
         height="large"
         subtitle="Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate learning and empower non-experts to participate in work that has been previously reserved for trained professionals."
         showCTA={true}
-        pathname="/"
       />
 
       <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-8 pb-16 px-6 md:px-12 space-y-6">
         <HCITagsHero />
 
-        <WhyHCILabSection />
+        <WhyHCILabSection images={whyHCILabImages} />
 
-        <FeatureProjects projects={projects} />
+        <FeatureProjects
+          featuredProjectsImage={featuredProjectsImage}
+          projects={projects}
+        />
 
-        <HubCommunitySection />
+        <HubCommunitySection hubCommunityImage={hubCommunityImage} />
 
         <RecentNewsSection recentNews={recentNews} />
       </main>

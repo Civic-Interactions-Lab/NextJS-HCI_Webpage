@@ -4,40 +4,14 @@ import ImageCarousel from "@/components/ImageCarousel";
 import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import { motion, Variants } from "framer-motion";
-
-const developerImages = [
-  {
-    src: "https://images.unsplash.com/photo-1573497619860-6d82917e4ec8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGV2ZWxvcGVyJTIwY29uZmVyZW5jZXxlbnwwfHwwfHx8MA%3D%3D",
-    alt: "Developer conference presentation with audience",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1573166364839-1bfe9196c23e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGV2ZWxvcGVyJTIwY29uZmVyZW5jZXxlbnwwfHwwfHx8MA%3D%3D",
-    alt: "Developers networking at tech conference",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1560439514-0fc9d2cd5e1b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGRldmVsb3BlciUyMGNvbmZlcmVuY2V8ZW58MHx8MHx8fDA%3D",
-    alt: "Technology conference stage with speaker",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1582192493926-93f4847e1323?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGRldmVsb3BlciUyMGNvbmZlcmVuY2V8ZW58MHx8MHx8fDA%3D",
-    alt: "Developer conference audience and presentation",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1560523160-754a9e25c68f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGRldmVsb3BlciUyMGNvbmZlcmVuY2V8ZW58MHx8MHx8fDA%3D",
-    alt: "Tech professionals collaborating at conference",
-  },
-];
+import { HomeWhyHCIQueryResult } from "../../../../../sanity.types";
+import { urlFor } from "@/sanity/lib/image";
 
 interface WhyHCILabSectionProps {
-  images?: Array<{
-    src: string;
-    alt: string;
-  }>;
+  images?: HomeWhyHCIQueryResult;
 }
 
-const WhyHCILabSection = ({
-  images = developerImages,
-}: WhyHCILabSectionProps) => {
+const WhyHCILabSection = ({ images }: WhyHCILabSectionProps) => {
   const slideUpVariants: Variants = {
     hidden: {
       opacity: 0,
@@ -53,6 +27,15 @@ const WhyHCILabSection = ({
     },
   };
 
+  const convertSanityImages = (sanityImages?: HomeWhyHCIQueryResult) => {
+    if (!sanityImages) return [];
+
+    return sanityImages.map((img) => ({
+      src: urlFor(img?.asset || "").url(),
+      alt: img.alt || "",
+    }));
+  };
+
   return (
     <motion.div
       className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center mt-0 md:mt-12"
@@ -63,7 +46,10 @@ const WhyHCILabSection = ({
         staggerChildren: 0.2,
       }}
     >
-      <motion.div className="flex flex-col gap-6" variants={slideUpVariants}>
+      <motion.div
+        className="flex flex-col gap-6 mb-0 md:mb-3"
+        variants={slideUpVariants}
+      >
         <BorderHeading title="Why join HCI Lab?" />
         <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
           Being part of a research lab builds real-world skills, from critical
@@ -80,13 +66,12 @@ const WhyHCILabSection = ({
 
       <motion.div className="relative" variants={slideUpVariants}>
         <ImageCarousel
-          images={images}
+          images={convertSanityImages(images)}
           height="h-64 md:h-72"
           roundedClassName="rounded-bl-[100px]"
           showPagination={true}
           showNavigation={true}
-          title="Developer Conference Gallery"
-          description="Images showcasing developer conferences and tech collaboration"
+          title="Why HCI Lab? Section"
           priority={true}
         />
       </motion.div>

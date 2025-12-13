@@ -3,48 +3,102 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
-
-// interface HeroImage {
-//   src: string;
-//   alt: string;
-//   title: string;
-// }
+import {
+  AboutHeroQueryResult,
+  CoursesHeroQueryResult,
+  JoinHeroQueryResult,
+  PeopleHeroQueryResult,
+  ResearchHeroQueryResult,
+  SponsorsHeroQueryResult,
+} from "../../sanity.types";
 
 interface HeroProps {
+  imageMap?: {
+    about?: AboutHeroQueryResult;
+    research?: ResearchHeroQueryResult;
+    people?: PeopleHeroQueryResult;
+    courses?: CoursesHeroQueryResult;
+    sponsors?: SponsorsHeroQueryResult;
+    join?: JoinHeroQueryResult;
+  };
   image?: string | SanityImageSource | null;
   alt?: string;
   title?: string;
   height?: "small" | "large";
   subtitle?: string;
   showCTA?: boolean;
-  searchParams?: { [key: string]: string | string[] | undefined };
-  pathname?: string;
 }
 
-// const TRANSITION_DELAY = 10000;
-
 const Hero = ({
-  image,
-  alt,
-  title,
+  imageMap,
+  image: fallbackImage,
+  alt: fallbackAlt,
+  title: fallbackTitle,
   height = "small",
   subtitle,
   showCTA = false,
-  searchParams,
-  pathname = "/",
 }: HeroProps) => {
-  // Multiple images functionality - commented out for now
-  // const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // const [isTransitioning, setIsTransitioning] = useState(false);
-  // const [count, setCount] = useState(0);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Determine image, alt, and title based on pathname
+  const getHeroData = () => {
+    if (pathname.startsWith("/about")) {
+      return {
+        image: imageMap?.about?.asset,
+        alt: imageMap?.about?.alt,
+        title: "About",
+      };
+    } else if (pathname.startsWith("/people")) {
+      return {
+        image: imageMap?.people?.asset,
+        alt: imageMap?.people?.alt,
+        title: "People",
+      };
+    } else if (pathname.startsWith("/sponsors")) {
+      return {
+        image: imageMap?.sponsors?.asset,
+        alt: imageMap?.sponsors?.alt,
+        title: "Sponsors",
+      };
+    } else if (pathname.startsWith("/courses")) {
+      return {
+        image: imageMap?.courses?.asset,
+        alt: imageMap?.courses?.alt,
+        title: "Courses",
+      };
+    } else if (pathname.startsWith("/join")) {
+      return {
+        image: imageMap?.join?.asset,
+        alt: imageMap?.join?.alt,
+        title: "Join",
+      };
+    } else if (pathname.startsWith("/research")) {
+      return {
+        image: imageMap?.research?.asset,
+        alt: imageMap?.research?.alt,
+        title: "Research",
+      };
+    }
+
+    // Fallback to individual props (for home page, etc.)
+    return {
+      image: fallbackImage,
+      alt: fallbackAlt,
+      title: fallbackTitle,
+    };
+  };
+
+  const { image, alt, title } = getHeroData();
 
   const heightClass =
     height === "large"
       ? "h-[500px] md:h-[600px] lg:h-[700px]"
       : "h-[400px] md:h-[450px] lg:h-[500px]";
 
-  const subSection = searchParams?.sub as string;
+  const subSection = searchParams.get("sub");
   const formattedSubSection = subSection
     ? subSection
         .split("-")
@@ -66,76 +120,10 @@ const Hero = ({
     return urlFor(img).url();
   };
 
-  // const getHeroImages = (): HeroImage[] => {
-  //   if (pathname === "/people") {
-  //     return [
-  //       {
-  //         src: getImageSrc(image),
-  //         alt: "Research team collaboration",
-  //         title: "",
-  //       },
-  //       {
-  //         src: "/images/cover/442_72A2112.jpg",
-  //         alt: "Lab meeting discussion",
-  //         title: "",
-  //       },
-  //       {
-  //         src: "/images/cover/NC_05301.jpg",
-  //         alt: "Student presentations",
-  //         title: "",
-  //       },
-  //     ];
-  //   }
-  //   return [{ src: getImageSrc(image), alt: title || "Hero background", title: "" }];
-  // };
-  //
-  // const heroImages = getHeroImages();
-  // const currentImage = heroImages[0];
-
-  // Auto-transition effect for multiple images - commented out
-  // useEffect(() => {
-  //   if (heroImages.length > 1) {
-  //     const interval = setInterval(() => {
-  //       setIsTransitioning(true);
-  //       setTimeout(() => {
-  //         setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-  //         setCount(count + 1);
-  //         setIsTransitioning(false);
-  //       }, 100);
-  //     }, TRANSITION_DELAY);
-
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [heroImages.length, currentImageIndex, count]);
-
-  // Multiple images functionality - commented out
-  // const changeToImage = (index: number) => {
-  //   if (index === currentImageIndex || isTransitioning) return;
-
-  //   setIsTransitioning(true);
-  //   setTimeout(() => {
-  //     setCurrentImageIndex(index);
-  //     setCount(count + 1);
-  //     setIsTransitioning(false);
-  //   }, 100);
-  // };
-
-  // const slideVariants = {
-  //   enter: { x: "100%", opacity: 1, zIndex: 1 },
-  //   center: { x: 0, opacity: 1, zIndex: 2 },
-  //   exit: { x: "-100%", opacity: 1, zIndex: 1 },
-  // };
-
-  // const transition = {
-  //   duration: 1,
-  //   ease: [0.45, 0.05, 0.55, 0.95] as const,
-  // };
-
   return (
     <div
       className={`relative w-screen mx-auto bg-cover ${heightClass} overflow-hidden`}
     >
-      {/* Simple single image display */}
       <div className="absolute inset-0">
         <Image
           src={getImageSrc(image)}
@@ -150,62 +138,9 @@ const Hero = ({
         />
       </div>
 
-      {/* Animated image transitions - commented out for multiple images
-      <div className="absolute inset-0 overflow-hidden">
-        <AnimatePresence custom={currentImageIndex}>
-          <motion.div
-            key={currentImageIndex}
-            className="absolute inset-0"
-            variants={slideVariants}
-            initial={count === 0 ? "center" : "enter"}
-            animate="center"
-            exit="exit"
-            transition={transition}
-          >
-            <Image
-              src={currentImage.src}
-              alt={currentImage.alt}
-              fill
-              className="object-cover"
-              style={{
-                objectPosition: "center 36%",
-              }}
-              priority
-              sizes="100vw"
-            />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-      */}
-
       <div
         className={`absolute inset-0 z-10 ${isHomePage ? "bg-black/50" : "bg-black/40"}`}
       />
-
-      {/* Dot Indicators - commented out for single image display
-      {heroImages.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 items-center z-20">
-          {heroImages.map((_, index) => (
-            <Button
-              key={index}
-              onClick={() => changeToImage(index)}
-              disabled={isTransitioning}
-              variant="ghost"
-              className={`
-                !p-0 !m-0 !rounded-full !size-3 !bg-white transition-all duration-300 ease-out transform
-                ${
-                  index === currentImageIndex
-                    ? "scale-125 !border-2 !border-black shadow-[0_0_0_1px_white]"
-                    : "scale-100 opacity-80 hover:opacity-100"
-                }
-                ${isTransitioning ? "cursor-not-allowed opacity-60" : "cursor-pointer"}
-              `}
-              aria-label={`Go to image ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-      */}
 
       <div className="relative z-10 w-full h-full flex flex-col max-w-7xl mx-auto pt-16 md:pt-20 lg:pt-0">
         {title && (

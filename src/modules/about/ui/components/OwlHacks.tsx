@@ -1,8 +1,17 @@
 import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
+import { AboutEventOwlHacksQueryResult } from "../../../../../sanity.types";
+import { urlFor } from "@/sanity/lib/image";
 
-const OwlHacks = () => {
+interface OwlHacksProps {
+  images?: AboutEventOwlHacksQueryResult;
+}
+
+const OwlHacks = ({ images }: OwlHacksProps) => {
+  const firstImage = images?.[0];
+  const secondImage = images?.[1];
+
   return (
     <div className="flex flex-col space-y-4 md:space-y-0 mt-0 md:mt-3">
       <BorderHeading title="Owl Hacks" />
@@ -22,8 +31,8 @@ const OwlHacks = () => {
         <div className="order-2 md:order-2 mx-0 md:mx-8">
           <div className="relative  h-64 md:h-72 rounded-bl-[200px] overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="OwlHacks team photo"
+              src={urlFor(firstImage?.asset || "").url()}
+              alt={firstImage?.alt || ""}
               fill
               className="object-cover"
               priority
@@ -55,8 +64,8 @@ const OwlHacks = () => {
         <div className="relative order-4 md:order-2 mx-0 md:mx-8">
           <div className="h-64 md:h-72 overflow-hidden w-full">
             <Image
-              src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="OwlHacks hackathon event"
+              src={urlFor(secondImage?.asset || "").url()}
+              alt={secondImage?.alt || ""}
               fill
               className="object-cover"
               priority

@@ -20,7 +20,7 @@ export type ImageSettings = {
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
-  sectionKey?: "home-hero" | "home-why-hci" | "home-hub-community" | "home-feature-projects" | "about-hero" | "about-studio-time" | "about-community-research" | "about-testimonials" | "projects-hero" | "projects-featured" | "join-hero" | "join-application-process" | "news-hero" | "news-featured" | "contact-hero" | "contact-office";
+  sectionKey?: "home-hero" | "home-why-hci" | "home-featured-projects" | "home-hub-community" | "about-hero" | "about-studio-time" | "about-lab-values" | "events-owl-hacks" | "research-hero" | "people-hero" | "courses-hero" | "sponsors-hero" | "join-hero";
   singleImage?: {
     asset?: {
       asset?: {
@@ -313,10 +313,229 @@ export type FaqsQueryResult = Array<{
   defaultOpen?: boolean;
 }>;
 
+// Source: ./src/sanity/lib/imageSettings/aboutImages.ts
+// Variable: aboutHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "about-hero"][0].singleImage
+export type AboutHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+// Variable: aboutStudioTimeQuery
+// Query: *[_type == "imageSettings" && sectionKey == "about-studio-time"][0].singleImage
+export type AboutStudioTimeQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+// Variable: aboutLabValuesQuery
+// Query: *[_type == "imageSettings" && sectionKey == "about-lab-values"][0].imageArray
+export type AboutLabValuesQueryResult = Array<{
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+  _key: string;
+}> | null;
+// Variable: aboutEventOwlHacksQuery
+// Query: *[_type == "imageSettings" && sectionKey == "events-owl-hacks"][0].imageArray
+export type AboutEventOwlHacksQueryResult = Array<{
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+  _key: string;
+}> | null;
+
+// Source: ./src/sanity/lib/imageSettings/coursesImages.ts
+// Variable: coursesHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "courses-hero"][0].singleImage
+export type CoursesHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+
 // Source: ./src/sanity/lib/imageSettings/homeImages.ts
 // Variable: homeHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "home-hero"][0].singleImage
 export type HomeHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+// Variable: homeWhyHCIQuery
+// Query: *[_type == "imageSettings" && sectionKey == "home-why-hci"][0].imageArray
+export type HomeWhyHCIQueryResult = Array<{
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+  _key: string;
+}> | null;
+// Variable: homeFeaturedProjectsQuery
+// Query: *[_type == "imageSettings" && sectionKey == "home-featured-projects"][0].singleImage
+export type HomeFeaturedProjectsQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+// Variable: homeHubCommunityQuery
+// Query: *[_type == "imageSettings" && sectionKey == "home-hub-community"][0].singleImage
+export type HomeHubCommunityQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+
+// Source: ./src/sanity/lib/imageSettings/joinImages.ts
+// Variable: joinHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "join-hero"][0].singleImage
+export type JoinHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+
+// Source: ./src/sanity/lib/imageSettings/peopleImages.ts
+// Variable: peopleHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "people-hero"][0].singleImage
+export type PeopleHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+
+// Source: ./src/sanity/lib/imageSettings/researchImages.ts
+// Variable: researchHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "research-hero"][0].singleImage
+export type ResearchHeroQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+
+// Source: ./src/sanity/lib/imageSettings/sponsorsImages.ts
+// Variable: sponsorsHeroQuery
+// Query: *[_type == "imageSettings" && sectionKey == "sponsors-hero"][0].singleImage
+export type SponsorsHeroQueryResult = {
   asset?: {
     asset?: {
       _ref: string;
@@ -581,7 +800,19 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-hero\"][0].singleImage\n  ": AboutHeroQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-studio-time\"][0].singleImage\n  ": AboutStudioTimeQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-lab-values\"][0].imageArray\n  ": AboutLabValuesQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-owl-hacks\"][0].imageArray\n  ": AboutEventOwlHacksQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"courses-hero\"][0].singleImage\n  ": CoursesHeroQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"home-hero\"][0].singleImage\n  ": HomeHeroQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-why-hci\"][0].imageArray\n  ": HomeWhyHCIQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-featured-projects\"][0].singleImage\n  ": HomeFeaturedProjectsQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-hub-community\"][0].singleImage\n  ": HomeHubCommunityQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"join-hero\"][0].singleImage\n  ": JoinHeroQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"people-hero\"][0].singleImage\n  ": PeopleHeroQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"research-hero\"][0].singleImage\n  ": ResearchHeroQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"sponsors-hero\"][0].singleImage\n  ": SponsorsHeroQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
     "\n    *[_type == \"people\" && status == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;

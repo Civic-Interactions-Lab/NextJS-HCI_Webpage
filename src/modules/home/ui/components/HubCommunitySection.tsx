@@ -6,8 +6,16 @@ import { BorderHeading } from "@/components/AppTitle";
 import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
+import { HomeHubCommunityQueryResult } from "../../../../../sanity.types";
+import { urlFor } from "@/sanity/lib/image";
 
-const HubCommunitySection = () => {
+interface HubCommunitySectionProps {
+  hubCommunityImage: HomeHubCommunityQueryResult;
+}
+
+const HubCommunitySection = ({
+  hubCommunityImage,
+}: HubCommunitySectionProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
 
@@ -74,8 +82,8 @@ const HubCommunitySection = () => {
         {/* Image container */}
         <div className="shadow-lg">
           <Image
-            src="/images/cover/3-studio.jpg"
-            alt="Lab/Event participants collaborating"
+            src={urlFor(hubCommunityImage?.asset || "").url()}
+            alt={hubCommunityImage?.alt || ""}
             width={500}
             height={300}
             className="w-full h-64 md:h-80 object-cover ml-4 md:ml-0"
@@ -123,7 +131,7 @@ const HubCommunitySection = () => {
 
           <TapeTag position="bottom-left" rotation={16} color="white">
             <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-32 md:max-w-40 line-clamp-3">
-              Selfie with the Lab 2024 !!!!!
+              {hubCommunityImage?.alt}
             </p>
           </TapeTag>
         </div>

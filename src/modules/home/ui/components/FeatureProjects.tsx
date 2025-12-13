@@ -6,14 +6,22 @@ import { BorderHeading } from "@/components/AppTitle";
 import Image from "next/image";
 import { LinkButton } from "@/components/AppButton";
 import TapeTag from "@/components/TapeTag";
-import { ProjectOrderedQueryResult } from "../../../../../sanity.types";
+import {
+  HomeFeaturedProjectsQueryResult,
+  ProjectOrderedQueryResult,
+} from "../../../../../sanity.types";
 import Link from "next/link";
+import { urlFor } from "@/sanity/lib/image";
 
 interface FeatureProjectsProps {
+  featuredProjectsImage: HomeFeaturedProjectsQueryResult;
   projects: ProjectOrderedQueryResult;
 }
 
-const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
+const FeatureProjects = ({
+  featuredProjectsImage,
+  projects,
+}: FeatureProjectsProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
 
@@ -40,8 +48,8 @@ const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
             {/* Image container */}
             <div className="relative shadow-lg">
               <Image
-                src="/images/cover/6-studio.JPG"
-                alt=""
+                src={urlFor(featuredProjectsImage?.asset || "").url()}
+                alt={featuredProjectsImage?.alt || ""}
                 width={500}
                 height={300}
                 className="w-full h-64 md:h-80 object-cover"
@@ -52,8 +60,7 @@ const FeatureProjects = ({ projects }: FeatureProjectsProps) => {
 
               <TapeTag position="bottom-right" rotation={-24} color="black">
                 <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
-                  Omar Shakir presenting &quot;Feed-stack&quot; at Temple&apos;s
-                  CIS
+                  {featuredProjectsImage?.alt}
                 </p>
               </TapeTag>
             </div>

@@ -8,49 +8,48 @@ import type {
 export const IMAGE_SECTIONS = {
   // Home page sections
   "home-hero": { title: "Home - Hero Section", defaultType: "single" },
-  "home-why-hci": { title: "Home - Why HCI Lab", defaultType: "array" },
-  "home-hub-community": {
-    title: "Home - Hub Community",
+  "home-why-hci": {
+    title: "Home - Why Join HCI Lab Section",
+    defaultType: "array",
+  },
+  "home-featured-projects": {
+    title: "Home - Featured Projects Section",
     defaultType: "single",
   },
-  "home-feature-projects": {
-    title: "Home - Feature Projects",
-    defaultType: "array",
+  "home-hub-community": {
+    title: "Home - Hub Community Section",
+    defaultType: "single",
   },
 
   // About page sections
   "about-hero": { title: "About - Hero Section", defaultType: "single" },
-  "about-studio-time": { title: "About - Studio Time", defaultType: "single" },
-  "about-community-research": {
-    title: "About - Community Research",
-    defaultType: "array",
-  },
-  "about-testimonials": {
-    title: "About - Testimonials Background",
+  "about-studio-time": {
+    title: "About - Studio Time Section",
     defaultType: "single",
   },
-
-  // Projects page sections
-  "projects-hero": { title: "Projects - Hero Section", defaultType: "single" },
-  "projects-featured": {
-    title: "Projects - Featured Gallery",
+  "about-lab-values": {
+    title: "About - Lab Values Section",
     defaultType: "array",
   },
+  "events-owl-hacks": {
+    title: "About - Owl Hacks Event Section",
+    defaultType: "array",
+  },
+
+  // People page sections
+  "research-hero": { title: "Research - Hero Section", defaultType: "single" },
+
+  // People page sections
+  "people-hero": { title: "People - Hero Section", defaultType: "single" },
+
+  // Courses page sections
+  "courses-hero": { title: "Courses - Hero Section", defaultType: "single" },
+
+  // Sponsors page sections
+  "sponsors-hero": { title: "Sponsors - Hero Section", defaultType: "single" },
 
   // Join page sections
   "join-hero": { title: "Join - Hero Section", defaultType: "single" },
-  "join-application-process": {
-    title: "Join - Application Process",
-    defaultType: "array",
-  },
-
-  // News page sections
-  "news-hero": { title: "News - Hero Section", defaultType: "single" },
-  "news-featured": { title: "News - Featured Stories", defaultType: "array" },
-
-  // Contact page sections
-  "contact-hero": { title: "Contact - Hero Section", defaultType: "single" },
-  "contact-office": { title: "Contact - Office Images", defaultType: "array" },
 } as const;
 
 export type ImageSectionKey = keyof typeof IMAGE_SECTIONS;
@@ -82,9 +81,24 @@ export const imageSettingsType = defineType({
             const client = context.getClient({ apiVersion: "2023-01-01" });
             const currentDocId = context.document?._id;
 
+            // Handle both draft and published document IDs
+            const currentPublishedId = currentDocId?.replace(/^drafts\./, "");
+            const currentDraftId = currentDocId?.startsWith("drafts.")
+              ? currentDocId
+              : `drafts.${currentDocId}`;
+
             const existingDocs = await client.fetch(
-              `*[_type == "imageSettings" && _id != $currentDocId && sectionKey == $sectionKey]`,
-              { currentDocId, sectionKey },
+              `*[_type == "imageSettings" && 
+            _id != $currentDocId && 
+            _id != $currentPublishedId && 
+            _id != $currentDraftId && 
+            sectionKey == $sectionKey]`,
+              {
+                currentDocId,
+                currentPublishedId,
+                currentDraftId,
+                sectionKey,
+              },
             );
 
             if (existingDocs.length > 0) {

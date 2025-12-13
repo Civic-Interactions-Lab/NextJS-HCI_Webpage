@@ -3,11 +3,14 @@ import OwlHacks from "@/modules/about/ui/components/OwlHacks";
 import HCIOpenHouse from "@/modules/about/ui/components/HCIOpenHouse";
 import SocialEvents from "@/modules/about/ui/components/SocialEvents";
 import ConferenceTravel from "@/modules/about/ui/components/ConferenceTravel";
+import { getAboutEventOwlHacksImages } from "@/sanity/lib/imageSettings/aboutImages";
 
-const EventsView = () => {
+const EventsView = async () => {
+  const owlHacksImages = await getAboutEventOwlHacksImages();
+
   return (
     <>
-      <OwlHacks />
+      <OwlHacks images={owlHacksImages} />
 
       <HCIOpenHouse />
 
