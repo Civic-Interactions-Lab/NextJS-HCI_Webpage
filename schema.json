@@ -80,6 +80,22 @@
             },
             {
               "type": "string",
+              "value": "events-open-house"
+            },
+            {
+              "type": "string",
+              "value": "events-social"
+            },
+            {
+              "type": "string",
+              "value": "events-conference"
+            },
+            {
+              "type": "string",
+              "value": "contact-serc"
+            },
+            {
+              "type": "string",
               "value": "research-hero"
             },
             {

@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import {
@@ -13,6 +12,7 @@ import {
   ResearchHeroQueryResult,
   SponsorsHeroQueryResult,
 } from "../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
 interface HeroProps {
   imageMap?: {
@@ -108,17 +108,6 @@ const Hero = ({
 
   const isHomePage = pathname === "/";
   const showBreadcrumb = subSection && title;
-
-  const getImageSrc = (
-    img: string | SanityImageSource | null | undefined,
-  ): string => {
-    if (!img) return "/images/cover/442_72A2112.jpg"; // fallback
-    if (typeof img === "string") {
-      return img.startsWith("/") ? img : `/${img}`;
-    }
-    // It's a Sanity image
-    return urlFor(img).url();
-  };
 
   return (
     <div

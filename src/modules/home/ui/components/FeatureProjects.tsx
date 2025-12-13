@@ -11,7 +11,7 @@ import {
   ProjectOrderedQueryResult,
 } from "../../../../../sanity.types";
 import Link from "next/link";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface FeatureProjectsProps {
   featuredProjectsImage: HomeFeaturedProjectsQueryResult;
@@ -48,7 +48,7 @@ const FeatureProjects = ({
             {/* Image container */}
             <div className="relative shadow-lg">
               <Image
-                src={urlFor(featuredProjectsImage?.asset || "").url()}
+                src={getImageSrc(featuredProjectsImage?.asset)}
                 alt={featuredProjectsImage?.alt || ""}
                 width={500}
                 height={300}

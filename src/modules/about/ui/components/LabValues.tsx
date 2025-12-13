@@ -3,7 +3,7 @@
 import ImageCarousel from "@/components/ImageCarousel";
 import { BorderHeading } from "@/components/AppTitle";
 import { AboutLabValuesQueryResult } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface LabValuesProps {
   images?: AboutLabValuesQueryResult;
@@ -14,7 +14,7 @@ const LabValues = ({ images }: LabValuesProps) => {
     if (!sanityImages) return [];
 
     return sanityImages.map((img) => ({
-      src: urlFor(img?.asset || "").url(),
+      src: getImageSrc(img?.asset),
       alt: img.alt || "",
     }));
   };

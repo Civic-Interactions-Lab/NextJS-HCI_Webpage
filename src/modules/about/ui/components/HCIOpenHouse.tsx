@@ -2,8 +2,17 @@ import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import TapeTag from "@/components/TapeTag";
+import { getImageSrc } from "@/lib/utils";
+import { AboutEventOpenHouseQueryResult } from "../../../../../sanity.types";
 
-const HciOpenHouse = () => {
+interface HciOpenHouseProps {
+  images?: AboutEventOpenHouseQueryResult;
+}
+
+const HciOpenHouse = ({ images }: HciOpenHouseProps) => {
+  const firstImage = images?.[0];
+  const secondImage = images?.[1];
+
   return (
     <div className="flex flex-col space-y-6 md:space-y-12 pt-0 md:pt-6">
       <BorderHeading title="HCI OPEN HOUSE" />
@@ -12,8 +21,8 @@ const HciOpenHouse = () => {
         <div className="relative order-2 md:order-1 mx-0 md:mx-8">
           <div className="h-64 md:h-72 overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="HCI Lab Open House with students and researchers"
+              src={getImageSrc(firstImage?.asset)}
+              alt={firstImage?.alt || "HCI Open House Event"}
               fill
               className="object-cover"
               priority
@@ -42,14 +51,14 @@ const HciOpenHouse = () => {
         <div className="relative order-4 md:order-1 mx-0 md:mx-8">
           <div className=" h-64 md:h-72 overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="Icebreaker activities at HCI Open House"
+              src={getImageSrc(secondImage?.asset)}
+              alt={secondImage?.alt || "Icebreaker at HCI Open House"}
               fill
               className="object-cover"
             />
             <TapeTag>
-              <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
-                Icebreaker at Open House Description
+              <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight wrap-break-word whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
+                {secondImage?.alt || "Icebreaker at HCI Open House"}
               </p>
             </TapeTag>
           </div>

@@ -35,6 +35,22 @@ export const IMAGE_SECTIONS = {
     title: "About - Owl Hacks Event Section",
     defaultType: "array",
   },
+  "events-open-house": {
+    title: "About - Open House Event Section",
+    defaultType: "array",
+  },
+  "events-social": {
+    title: "About - Social Event Section",
+    defaultType: "array",
+  },
+  "events-conference": {
+    title: "About - Conference Travel Section",
+    defaultType: "single",
+  },
+  "contact-serc": {
+    title: "About - SERC Image Section",
+    defaultType: "single",
+  },
 
   // People page sections
   "research-hero": { title: "Research - Hero Section", defaultType: "single" },

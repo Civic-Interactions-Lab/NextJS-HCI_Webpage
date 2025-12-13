@@ -2,7 +2,7 @@ import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import { AboutEventOwlHacksQueryResult } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface OwlHacksProps {
   images?: AboutEventOwlHacksQueryResult;
@@ -31,7 +31,7 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
         <div className="order-2 md:order-2 mx-0 md:mx-8">
           <div className="relative  h-64 md:h-72 rounded-bl-[200px] overflow-hidden">
             <Image
-              src={urlFor(firstImage?.asset || "").url()}
+              src={getImageSrc(firstImage?.asset)}
               alt={firstImage?.alt || ""}
               fill
               className="object-cover"
@@ -64,7 +64,7 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
         <div className="relative order-4 md:order-2 mx-0 md:mx-8">
           <div className="h-64 md:h-72 overflow-hidden w-full">
             <Image
-              src={urlFor(secondImage?.asset || "").url()}
+              src={getImageSrc(secondImage?.asset)}
               alt={secondImage?.alt || ""}
               fill
               className="object-cover"

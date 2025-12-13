@@ -20,7 +20,7 @@ export type ImageSettings = {
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
-  sectionKey?: "home-hero" | "home-why-hci" | "home-featured-projects" | "home-hub-community" | "about-hero" | "about-studio-time" | "about-lab-values" | "events-owl-hacks" | "research-hero" | "people-hero" | "courses-hero" | "sponsors-hero" | "join-hero";
+  sectionKey?: "home-hero" | "home-why-hci" | "home-featured-projects" | "home-hub-community" | "about-hero" | "about-studio-time" | "about-lab-values" | "events-owl-hacks" | "events-open-house" | "events-social" | "events-conference" | "contact-serc" | "research-hero" | "people-hero" | "courses-hero" | "sponsors-hero" | "join-hero";
   singleImage?: {
     asset?: {
       asset?: {
@@ -384,6 +384,76 @@ export type AboutEventOwlHacksQueryResult = Array<{
   alt?: string;
   _key: string;
 }> | null;
+// Variable: aboutEventOpenHouseQuery
+// Query: *[_type == "imageSettings" && sectionKey == "events-open-house"][0].imageArray
+export type AboutEventOpenHouseQueryResult = Array<{
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+  _key: string;
+}> | null;
+// Variable: aboutEventSocialQuery
+// Query: *[_type == "imageSettings" && sectionKey == "events-social"][0].imageArray
+export type AboutEventSocialQueryResult = Array<{
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+  _key: string;
+}> | null;
+// Variable: aboutConferenceTravelQuery
+// Query: *[_type == "imageSettings" && sectionKey == "events-conference"][0].singleImage
+export type AboutConferenceTravelQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+// Variable: aboutSercQuery
+// Query: *[_type == "imageSettings" && sectionKey == "contact-serc"][0].singleImage
+export type AboutSercQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
 
 // Source: ./src/sanity/lib/imageSettings/coursesImages.ts
 // Variable: coursesHeroQuery
@@ -804,6 +874,10 @@ declare module "@sanity/client" {
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-studio-time\"][0].singleImage\n  ": AboutStudioTimeQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-lab-values\"][0].imageArray\n  ": AboutLabValuesQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"events-owl-hacks\"][0].imageArray\n  ": AboutEventOwlHacksQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-open-house\"][0].imageArray\n  ": AboutEventOpenHouseQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-social\"][0].imageArray\n  ": AboutEventSocialQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-conference\"][0].singleImage\n  ": AboutConferenceTravelQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"contact-serc\"][0].singleImage\n  ": AboutSercQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"courses-hero\"][0].singleImage\n  ": CoursesHeroQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"home-hero\"][0].singleImage\n  ": HomeHeroQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"home-why-hci\"][0].imageArray\n  ": HomeWhyHCIQueryResult;

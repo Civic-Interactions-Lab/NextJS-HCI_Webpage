@@ -4,8 +4,14 @@ import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import TapeTag from "@/components/TapeTag";
 import WorldMap from "@/modules/about/ui/components/WorldMap";
+import { AboutConferenceTravelQueryResult } from "../../../../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
-const ConferenceTravel = () => {
+interface ConferenceTravelProps {
+  image?: AboutConferenceTravelQueryResult;
+}
+
+const ConferenceTravel = ({ image }: ConferenceTravelProps) => {
   return (
     <div className="flex flex-col space-y-6 md:space-y-12 pt-0 md:pt-6 -mb-8">
       <BorderHeading title="Conference Travel" />
@@ -14,15 +20,15 @@ const ConferenceTravel = () => {
         <div className="relative order-2 md:order-1 mx-0 md:mx-8 ">
           <div className="h-64 md:h-72">
             <Image
-              src="https://images.unsplash.com/photo-1543269664-56d93c1b41a6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0"
-              alt="HCI Lab members at conference "
+              src={getImageSrc(image?.asset)}
+              alt={image?.alt || "HCI Conference Travel"}
               fill
               className="object-cover rounded-br-[200px]"
               priority
             />
-            <TapeTag position="top-left" color="white">
-              <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
-                Lab members at place description
+            <TapeTag position="top-right" color="black" rotation={24}>
+              <p className="text-xs font-light font-jetbrains-mono leading-tight wrap-break-word whitespace-normal max-w-60 line-clamp-3">
+                {image?.alt || "HCI Conference Travel"}
               </p>
             </TapeTag>
           </div>

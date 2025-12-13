@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { News } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 const categories = [
   { name: "Collaborations", color: "bg-yellow-500" },
@@ -135,7 +135,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                         {news.imageUrl && (
                           <div className="w-full md:w-48 lg:w-64 h-40 lg:h-48 rounded-lg overflow-hidden flex-shrink-0 relative">
                             <Image
-                              src={urlFor(news.imageUrl).url()}
+                              src={getImageSrc(news.imageUrl)}
                               alt=""
                               fill
                               className="object-cover"

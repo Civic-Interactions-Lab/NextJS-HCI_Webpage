@@ -90,7 +90,7 @@ const ImageCarousel = ({
       <div className={`overflow-hidden ${roundedClassName}`}>
         <Carousel setApi={setApi} className="w-full" aria-label={title}>
           <CarouselContent>
-            {images.map((image, index) => (
+            {images.slice(0, 5).map((image, index) => (
               <CarouselItem key={index}>
                 <Card className="border-0 py-0 shadow-none">
                   <CardContent className="p-0">
@@ -122,13 +122,13 @@ const ImageCarousel = ({
             <>
               {!isFirst && (
                 <CarouselPrevious
-                  className="left-4 size-10 !bg-white/90 hover:!bg-white !rounded-full cursor-pointer"
+                  className="left-4 size-10 bg-white/90! hover:bg-white! rounded-full cursor-pointer"
                   aria-label="Previous image"
                 />
               )}
               {!isLast && (
                 <CarouselNext
-                  className="right-4 size-10 !bg-white/90 hover:!bg-white !rounded-full cursor-pointer"
+                  className="right-4 size-10 bg-white/90! hover:bg-white! rounded-full! cursor-pointer"
                   aria-label="Next image"
                 />
               )}
@@ -140,15 +140,15 @@ const ImageCarousel = ({
       {/* Pagination dots */}
       {showPagination && images.length > 1 && (
         <div className="mt-6 flex items-center justify-center gap-3">
-          {Array.from({ length: count }).map((_, index) => (
+          {Array.from({ length: 5 }).map((_, index) => (
             <Button
               key={index}
               onClick={() => api?.scrollTo(index)}
               className={cn(
-                "size-4 !rounded-full !p-0 transition-all duration-200 hover:scale-110",
+                "size-4 rounded-full! p-0! transition-all duration-200 hover:scale-110",
                 current === index + 1
-                  ? "!bg-gray-600 shadow-md"
-                  : "!bg-gray-300 hover:!bg-gray-400",
+                  ? "bg-gray-600! shadow-md"
+                  : "bg-gray-300! hover:bg-gray-400!",
               )}
               aria-label={`Go to slide ${index + 1}`}
             />

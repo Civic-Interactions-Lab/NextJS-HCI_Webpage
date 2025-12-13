@@ -5,7 +5,7 @@ import { BorderHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import { motion, Variants } from "framer-motion";
 import { HomeWhyHCIQueryResult } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface WhyHCILabSectionProps {
   images?: HomeWhyHCIQueryResult;
@@ -31,7 +31,7 @@ const WhyHCILabSection = ({ images }: WhyHCILabSectionProps) => {
     if (!sanityImages) return [];
 
     return sanityImages.map((img) => ({
-      src: urlFor(img?.asset || "").url(),
+      src: getImageSrc(img?.asset),
       alt: img.alt || "",
     }));
   };

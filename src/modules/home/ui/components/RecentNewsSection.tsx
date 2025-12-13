@@ -6,8 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { BorderHeading } from "@/components/AppTitle";
 import { News } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getImageSrc } from "@/lib/utils";
 
 interface RecentNewsSectionProps {
   recentNews: News[];
@@ -71,7 +70,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
           >
             {newsItem.imageUrl && (
               <Image
-                src={urlFor(newsItem.imageUrl).url() || ""}
+                src={getImageSrc(newsItem.imageUrl)}
                 alt=""
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-300"

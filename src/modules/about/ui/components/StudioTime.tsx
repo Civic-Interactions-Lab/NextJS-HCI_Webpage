@@ -3,7 +3,7 @@ import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import { AboutStudioTimeQueryResult } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface StudioTimeProps {
   studioTimeImage: AboutStudioTimeQueryResult;
@@ -15,7 +15,7 @@ const StudioTime = ({ studioTimeImage }: StudioTimeProps) => {
       <div className="relative p-4 md:p-6 order-2 md:order-1">
         <div className="-rotate-6">
           <Image
-            src={urlFor(studioTimeImage?.asset || "").url()}
+            src={getImageSrc(studioTimeImage?.asset)}
             alt={studioTimeImage?.alt || ""}
             width={500}
             height={300}

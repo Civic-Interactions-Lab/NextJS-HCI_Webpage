@@ -7,7 +7,7 @@ import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import { HomeHubCommunityQueryResult } from "../../../../../sanity.types";
-import { urlFor } from "@/sanity/lib/image";
+import { getImageSrc } from "@/lib/utils";
 
 interface HubCommunitySectionProps {
   hubCommunityImage: HomeHubCommunityQueryResult;
@@ -82,7 +82,7 @@ const HubCommunitySection = ({
         {/* Image container */}
         <div className="shadow-lg">
           <Image
-            src={urlFor(hubCommunityImage?.asset || "").url()}
+            src={getImageSrc(hubCommunityImage?.asset)}
             alt={hubCommunityImage?.alt || ""}
             width={500}
             height={300}
