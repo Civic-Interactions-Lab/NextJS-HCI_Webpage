@@ -31,7 +31,7 @@ const TabBarClient = () => {
           { label: "Our Sponsors", path: "/sponsors", isMain: true },
           {
             label: "Interested in sponsoring?",
-            path: "/sponsors?sub=interested-in-sponsoring",
+            path: "/sponsors?sub=interested-in-sponsoring?",
           },
         ];
       default:
@@ -49,7 +49,10 @@ const TabBarClient = () => {
     const itemSub = new URLSearchParams(item.path.split("?")[1] || "").get(
       "sub",
     );
-    return currentSub === itemSub;
+    const cleanItemSub = itemSub?.replace(/\?$/, "");
+    const cleanCurrentSub = currentSub?.replace(/\?$/, "");
+
+    return cleanCurrentSub === cleanItemSub;
   };
 
   if (tabItems.length === 0) {

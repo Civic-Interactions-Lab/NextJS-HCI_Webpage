@@ -1,5 +1,6 @@
 import React from "react";
 import SponsorsView from "@/modules/sponsors/ui/views/sponsors-view";
+import BecomeASponsorView from "@/modules/sponsors/ui/views/become-a-sponsor-view";
 
 interface PageProps {
   searchParams: Promise<{ sub?: string }> | { sub?: string };
@@ -11,7 +12,7 @@ const SponsorsPage = async ({ searchParams }: PageProps) => {
   const renderContent = () => {
     switch (sub) {
       case "interested-in-sponsoring":
-        return <div>Become Our Sponsor</div>;
+        return <BecomeASponsorView />;
       default:
         return <SponsorsView />;
     }
