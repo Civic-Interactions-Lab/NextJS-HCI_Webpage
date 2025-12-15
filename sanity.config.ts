@@ -14,6 +14,7 @@ import { schema } from "@/sanity/schemaTypes";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   ChartBarIncreasing,
+  CircleDollarSignIcon,
   CircleQuestionMark,
   Globe,
   ImagesIcon,
@@ -76,13 +77,71 @@ export default defineConfig({
                   ]),
               ),
 
-            orderableDocumentListDeskItem({
-              type: "news",
-              title: "News",
-              S,
-              context,
-              icon: NewspaperIcon,
-            }),
+            S.listItem()
+              .title("News")
+              .icon(NewspaperIcon)
+              .child(
+                S.list()
+                  .title("News")
+                  .items([
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "All News",
+                      id: "all-news",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "Featured News",
+                      filter: "featured == true",
+                      id: "featured-news",
+                      S,
+                      context,
+                    }),
+                    S.divider(),
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "Collaborations",
+                      filter: 'category == "Collaborations"',
+                      id: "collaborations-news",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "Grants / Awards",
+                      filter: 'category == "Grants / Awards"',
+                      id: "grants-awards-news",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "Conference Talk",
+                      filter: 'category == "Conference Talk"',
+                      id: "conference-talk-news",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "Published Papers",
+                      filter: 'category == "Published Papers"',
+                      id: "published-papers-news",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "news",
+                      title: "Alumni",
+                      filter: 'category == "Alumni"',
+                      id: "alumni-news",
+                      S,
+                      context,
+                    }),
+                  ]),
+              ),
 
             S.listItem()
               .title("Research")
@@ -150,13 +209,80 @@ export default defineConfig({
               icon: UserRoundCheck,
             }),
 
-            orderableDocumentListDeskItem({
-              type: "imageSettings",
-              title: "Image Settings",
-              S,
-              context,
-              icon: ImagesIcon,
-            }),
+            S.listItem()
+              .title("Image Settings")
+              .icon(ImagesIcon)
+              .child(
+                S.list()
+                  .title("Image Settings")
+                  .items([
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "All Image Settings",
+                      id: "all-image-settings",
+                      S,
+                      context,
+                    }),
+                    S.divider(),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "Home Page",
+                      filter: 'sectionKey match "home-*"',
+                      id: "home-image-settings",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "About Page",
+                      filter:
+                        'sectionKey match "about-*" || sectionKey match "events-*" || sectionKey == "contact-serc"',
+                      id: "about-image-settings",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "Research Page",
+                      filter: 'sectionKey match "research-*"',
+                      id: "research-image-settings",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "People Page",
+                      filter: 'sectionKey match "people-*"',
+                      id: "people-image-settings",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "Courses Page",
+                      filter: 'sectionKey match "courses-*"',
+                      id: "courses-image-settings",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "Sponsors Page",
+                      filter: 'sectionKey match "sponsors-*"',
+                      id: "sponsors-image-settings",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "imageSettings",
+                      title: "Join Page",
+                      filter: 'sectionKey match "join-*"',
+                      id: "join-image-settings",
+                      S,
+                      context,
+                    }),
+                  ]),
+              ),
 
             orderableDocumentListDeskItem({
               type: "conference",
@@ -164,6 +290,14 @@ export default defineConfig({
               S,
               context,
               icon: Globe,
+            }),
+
+            orderableDocumentListDeskItem({
+              type: "sponsors",
+              title: "Sponsors",
+              S,
+              context,
+              icon: CircleDollarSignIcon,
             }),
           ]);
       },

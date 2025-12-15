@@ -43,7 +43,6 @@ const Hero = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // Determine image, alt, and title based on pathname
   const getHeroData = () => {
     if (pathname.startsWith("/about")) {
       return {
@@ -83,7 +82,6 @@ const Hero = ({
       };
     }
 
-    // Fallback to individual props (for home page, etc.)
     return {
       image: fallbackImage,
       alt: fallbackAlt,
@@ -148,14 +146,16 @@ const Hero = ({
               {showBreadcrumb && (
                 <p className="text-white text-base md:text-lg mb-2">
                   {title} /{" "}
-                  <span className="font-semibold">{formattedSubSection}</span>
+                  <span className="font-semibold font-outfit">
+                    {formattedSubSection}
+                  </span>
                 </p>
               )}
               <h1
                 className={`text-white leading-tight ${
                   height === "large"
                     ? "text-5xl! md:text-7xl! xl:text-[110px]! font-semibold"
-                    : "md:text-6xl! text-4xl! font-bold"
+                    : "md:text-6xl! text-4xl! font-bold font-outfit"
                 }`}
               >
                 {showBreadcrumb ? formattedSubSection : title}

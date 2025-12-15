@@ -6,6 +6,7 @@ import { testimonialsType } from "@/sanity/schemaTypes/testimonialsType";
 import { imageSettingsType } from "@/sanity/schemaTypes/imageSettings";
 import { conferenceType } from "@/sanity/schemaTypes/conferenceType";
 import { researchType } from "@/sanity/schemaTypes/research";
+import { sponsorType } from "@/sanity/schemaTypes/sponsors";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -16,5 +17,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     testimonialsType,
     imageSettingsType,
     conferenceType,
+    sponsorType,
   ],
 };

@@ -13,6 +13,58 @@
  */
 
 // Source: schema.json
+export type Sponsors = {
+  _id: string;
+  _type: "sponsors";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  logo?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  url?: string;
+  altText?: string;
+  description?: string;
+  grants?: Array<{
+    title?: string;
+    grantNumber?: string;
+    startDate?: string;
+    endDate?: string;
+    amount?: number;
+    currency?: "USD" | "EUR" | "GBP" | "CAD";
+    url?: string;
+    _type: "grant";
+    _key: string;
+  }>;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type Conference = {
   _id: string;
   _type: "conference";
@@ -41,22 +93,6 @@ export type Conference = {
   link?: string;
   dates?: string;
   abbreviation?: string;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type ImageSettings = {
@@ -331,7 +367,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Conference | SanityImageCrop | SanityImageHotspot | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/conference/getConference.ts
 // Variable: conferencesQuery
@@ -1015,6 +1051,45 @@ export type SocialComputingQueryResult = Array<{
   featured?: boolean;
 }>;
 
+// Source: ./src/sanity/lib/sponsors/getSponsors.ts
+// Variable: sponsorsQuery
+// Query: *[_type == "sponsors"] | order(orderRank)
+export type SponsorsQueryResult = Array<{
+  _id: string;
+  _type: "sponsors";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  logo?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  url?: string;
+  altText?: string;
+  description?: string;
+  grants?: Array<{
+    title?: string;
+    grantNumber?: string;
+    startDate?: string;
+    endDate?: string;
+    amount?: number;
+    currency?: "CAD" | "EUR" | "GBP" | "USD";
+    url?: string;
+    _type: "grant";
+    _key: string;
+  }>;
+}>;
+
 // Source: ./src/sanity/lib/testimonials/getTestimonials.ts
 // Variable: testimonialsQuery
 // Query: *[_type == "testimonials" && isActive == true] | order(orderRank) {      _id,      quote,      role,      person-> {        name,        img      }    }
@@ -1071,6 +1146,7 @@ declare module "@sanity/client" {
     "\n    *[_type == \"research\" && category == \"Gen AI & Education\"] | order(orderRank)\n  ": GenAIEducationQueryResult;
     "\n    *[_type == \"research\" && category == \"Accessibility Technology\"] | order(orderRank)\n  ": AccessibilityTechQueryResult;
     "\n    *[_type == \"research\" && category == \"Social Computing\"] | order(orderRank)\n  ": SocialComputingQueryResult;
+    "\n    *[_type == \"sponsors\"] | order(orderRank)\n  ": SponsorsQueryResult;
     "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ": TestimonialsQueryResult;
   }
 }
