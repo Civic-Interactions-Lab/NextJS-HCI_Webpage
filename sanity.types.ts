@@ -178,6 +178,17 @@ export type Research = {
   title?: string;
   description?: string;
   category?: "Gen AI & Education" | "Accessibility Technology" | "Social Computing";
+  authors?: Array<{
+    authorType?: "person" | "name";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -935,6 +946,48 @@ export type ProjectOrderedQueryResult = Array<{
 }>;
 
 // Source: ./src/sanity/lib/research/getResearch.ts
+// Variable: featuredResearchQuery
+// Query: *[_type == "research" && featured == true] | order(orderRank)
+export type FeaturedResearchQueryResult = Array<{
+  _id: string;
+  _type: "research";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
+}>;
 // Variable: genAIEducationQuery
 // Query: *[_type == "research" && category == "Gen AI & Education"] | order(orderRank)
 export type GenAIEducationQueryResult = Array<{
@@ -947,6 +1000,17 @@ export type GenAIEducationQueryResult = Array<{
   title?: string;
   description?: string;
   category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -978,6 +1042,17 @@ export type AccessibilityTechQueryResult = Array<{
   title?: string;
   description?: string;
   category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -1009,6 +1084,17 @@ export type SocialComputingQueryResult = Array<{
   title?: string;
   description?: string;
   category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -1083,6 +1169,7 @@ declare module "@sanity/client" {
     "\n    *[_type == \"people\" && status == \"collaborator\"] | order(orderRank)\n  ": CollaboratorsPeopleQueryResult;
     "\n    *[_type == \"project\"] | order(date desc)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectQueryResult;
     "\n    *[_type == \"project\"] | order(orderRank)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectOrderedQueryResult;
+    "\n    *[_type == \"research\" && featured == true] | order(orderRank)\n  ": FeaturedResearchQueryResult;
     "\n    *[_type == \"research\" && category == \"Gen AI & Education\"] | order(orderRank)\n  ": GenAIEducationQueryResult;
     "\n    *[_type == \"research\" && category == \"Accessibility Technology\"] | order(orderRank)\n  ": AccessibilityTechQueryResult;
     "\n    *[_type == \"research\" && category == \"Social Computing\"] | order(orderRank)\n  ": SocialComputingQueryResult;

@@ -8,30 +8,52 @@ import { LinkButton } from "@/components/AppButton";
 import TapeTag from "@/components/TapeTag";
 import {
   HomeFeaturedProjectsQueryResult,
-  ProjectOrderedQueryResult,
+  FeaturedResearchQueryResult,
 } from "../../../../../sanity.types";
 import Link from "next/link";
 import { getImageSrc } from "@/lib/utils";
 
 interface FeatureProjectsProps {
   featuredProjectsImage: HomeFeaturedProjectsQueryResult;
-  projects: ProjectOrderedQueryResult;
+  research: FeaturedResearchQueryResult;
 }
 
 const FeatureProjects = ({
   featuredProjectsImage,
-  projects,
+  research,
 }: FeatureProjectsProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "50px" });
 
-  const formatAuthors = (authors?: ProjectOrderedQueryResult[0]["authors"]) => {
+  const formatAuthors = (
+    authors?: FeaturedResearchQueryResult[0]["authors"],
+  ) => {
     if (!authors || authors.length === 0) return "";
 
     return authors
-      .map((author) => ("name" in author ? author.name : "Author") || "Author")
+      .map((author) => {
+        if (author.authorType === "person") {
+          return "Team Member";
+        } else {
+          return author.name || "Author";
+        }
+      })
       .filter((name) => name)
       .join(", ");
+  };
+
+  const getPrimaryAction = (
+    actions?: FeaturedResearchQueryResult[0]["actions"],
+  ) => {
+    if (!actions || actions.length === 0) return null;
+    // Return the first action, or prioritize specific types
+    const priorityOrder = ["pdf", "demo", "code", "talk", "cite"];
+    const sortedActions = actions.sort((a, b) => {
+      const aIndex = priorityOrder.indexOf(a.label || "");
+      const bIndex = priorityOrder.indexOf(b.label || "");
+      return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
+    });
+    return sortedActions[0];
   };
 
   return (
@@ -70,47 +92,55 @@ const FeatureProjects = ({
         {/* Right side */}
         <div className="order-1 lg:order-2 pl-0 lg:pl-8 space-y-6">
           {/* Header with red border */}
-          <BorderHeading title="Featured Projects" />
-
-          {/* Project cards */}
+          <BorderHeading title="Featured Research" /> {/* Updated title */}
+          {/* Research cards */}
           <div className="space-y-6">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project._id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={
-                  isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }
-                }
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.2,
-                  ease: "easeOut",
-                }}
-                className="border-2 border-cyan-700 rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-all duration-300 hover:scale-105"
-              >
-                {/* Blue circle avatar */}
-                <div className="flex items-start gap-4">
-                  <div className="size-12 md:size-16 bg-cyan-700 rounded-full flex-shrink-0" />
-                  <div className="flex-1">
-                    <Link
-                      href={project.link || ""}
-                      aria-label={project.title}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight underline decoration-gray-300 hover:decoration-gray-600 transition-colors cursor-pointer line-clamp-2">
-                        {project.title}
-                      </h4>
-                    </Link>
-                    <p className="text-gray-600 text-xs md:text-sm line-clamp-1">
-                      {formatAuthors(project.authors)}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+            {research.map((researchItem, index) => {
+              const primaryAction = getPrimaryAction(researchItem.actions);
 
+              return (
+                <motion.div
+                  key={researchItem._id}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={
+                    isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }
+                  }
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.2,
+                    ease: "easeOut",
+                  }}
+                  className="border-2 border-cyan-700 rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-all duration-300 hover:scale-105"
+                >
+                  {/* Blue circle avatar */}
+                  <div className="flex items-start gap-4">
+                    <div className="size-12 md:size-16 bg-cyan-700 rounded-full flex-shrink-0" />
+                    <div className="flex-1">
+                      {primaryAction?.url ? (
+                        <Link
+                          href={primaryAction.url}
+                          aria-label={researchItem.title}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight underline decoration-gray-300 hover:decoration-gray-600 transition-colors cursor-pointer line-clamp-2">
+                            {researchItem.title}
+                          </h4>
+                        </Link>
+                      ) : (
+                        <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight line-clamp-2">
+                          {researchItem.title}
+                        </h4>
+                      )}
+                      <p className="text-gray-600 text-xs md:text-sm line-clamp-1">
+                        {formatAuthors(researchItem.authors)}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
           {/* Explore button */}
           <LinkButton
             href="/research"

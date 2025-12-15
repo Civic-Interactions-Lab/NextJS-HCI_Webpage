@@ -1,6 +1,15 @@
 import { defineQuery } from "groq";
 import { sanityFetch } from "@/sanity/lib/live";
 
+export async function getFeaturedResearch() {
+  const featuredResearchQuery = defineQuery(`
+    *[_type == "research" && featured == true] | order(orderRank)
+  `);
+
+  const research = await sanityFetch({ query: featuredResearchQuery });
+  return research.data;
+}
+
 export async function getGenAIEducationResearch() {
   const genAIEducationQuery = defineQuery(`
     *[_type == "research" && category == "Gen AI & Education"] | order(orderRank)

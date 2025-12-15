@@ -36,6 +36,79 @@ export const researchType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "authors",
+      title: "Authors",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "authorType",
+              title: "Author Type",
+              type: "string",
+              options: {
+                list: [
+                  { title: "Team Member", value: "person" },
+                  { title: "External Author", value: "name" },
+                ],
+                layout: "radio",
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "person",
+              title: "Team Member",
+              type: "reference",
+              to: [{ type: "people" }],
+              hidden: ({ parent }) => parent?.authorType !== "person",
+              validation: (rule) =>
+                rule.custom((person, context) => {
+                  const authorType = (context.parent as { authorType?: string })
+                    ?.authorType;
+                  if (authorType === "person" && !person) {
+                    return "Please select a team member";
+                  }
+                  return true;
+                }),
+            }),
+            defineField({
+              name: "name",
+              title: "Author Name",
+              type: "string",
+              hidden: ({ parent }) => parent?.authorType !== "name",
+              validation: (rule) =>
+                rule.custom((name, context) => {
+                  const authorType = (context.parent as { authorType?: string })
+                    ?.authorType;
+                  if (authorType === "name" && !name) {
+                    return "Please enter the author's name";
+                  }
+                  return true;
+                }),
+            }),
+          ],
+          preview: {
+            select: {
+              authorType: "authorType",
+              personName: "person.name",
+              name: "name",
+            },
+            prepare({ authorType, personName, name }) {
+              const displayName = authorType === "person" ? personName : name;
+              const type = authorType === "person" ? "Team Member" : "External";
+              return {
+                title: displayName || "Unnamed Author",
+                subtitle: type,
+              };
+            },
+          },
+        },
+      ],
+      validation: (rule) =>
+        rule.min(1).error("At least one author is required"),
+    }),
+    defineField({
       name: "imageUrl",
       title: "Image",
       type: "image",
@@ -95,17 +168,32 @@ export const researchType = defineType({
       description:
         "Mark as featured research (maximum 2 can be featured at a time)",
       initialValue: false,
-      validation: (rule) =>
+      validation: (rule) => [
         rule.custom(async (featured, context) => {
           if (!featured) return true;
 
-          const { document, getClient } = context;
-          const client = getClient({ apiVersion: "2023-05-03" });
+          // Check for maximum featured limit across all documents in the system
+          const client = context.getClient({ apiVersion: "2023-01-01" });
+          const currentDocId = context.document?._id;
 
-          const query = `*[_type == "research" && featured == true && _id != $currentId]`;
-          const existingFeatured = await client.fetch(query, {
-            currentId: document?._id || "",
-          });
+          // Handle both draft and published document IDs
+          const currentPublishedId = currentDocId?.replace(/^drafts\./, "");
+          const currentDraftId = currentDocId?.startsWith("drafts.")
+            ? currentDocId
+            : `drafts.${currentDocId}`;
+
+          const existingFeatured = await client.fetch(
+            `*[_type == "research" && 
+            featured == true && 
+            _id != $currentDocId && 
+            _id != $currentPublishedId && 
+            _id != $currentDraftId]`,
+            {
+              currentDocId,
+              currentPublishedId,
+              currentDraftId,
+            },
+          );
 
           if (existingFeatured && existingFeatured.length >= 2) {
             return `Maximum of 2 research items can be featured. Currently featured: ${existingFeatured.map((item: { title: string }) => item.title).join(", ")}`;
@@ -113,6 +201,7 @@ export const researchType = defineType({
 
           return true;
         }),
+      ],
     }),
   ],
   preview: {
