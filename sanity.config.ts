@@ -34,13 +34,47 @@ export default defineConfig({
         return S.list()
           .title("Content")
           .items([
-            orderableDocumentListDeskItem({
-              type: "people",
-              title: "People",
-              S,
-              context,
-              icon: User,
-            }),
+            S.listItem()
+              .title("People")
+              .icon(User)
+              .child(
+                S.list()
+                  .title("People")
+                  .items([
+                    orderableDocumentListDeskItem({
+                      type: "people",
+                      title: "All People",
+                      id: "all-people",
+                      S,
+                      context,
+                    }),
+                    S.divider(),
+                    orderableDocumentListDeskItem({
+                      type: "people",
+                      title: "Active",
+                      filter: 'association == "active"',
+                      id: "active-people",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "people",
+                      title: "Alumni",
+                      filter: 'association == "alumni"',
+                      id: "alumni-people",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "people",
+                      title: "Collaborator",
+                      filter: 'association == "collaborator"',
+                      id: "collaborator-people",
+                      S,
+                      context,
+                    }),
+                  ]),
+              ),
 
             orderableDocumentListDeskItem({
               type: "news",
@@ -99,14 +133,6 @@ export default defineConfig({
                     }),
                   ]),
               ),
-
-            orderableDocumentListDeskItem({
-              type: "project",
-              title: "Projects",
-              S,
-              context,
-              icon: ChartBarIncreasing,
-            }),
 
             orderableDocumentListDeskItem({
               type: "faq",

@@ -54,7 +54,7 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
           </p>
           <div className="flex">
             <LinkButton
-              href="/owlhacks"
+              href="https://www.linkedin.com/company/templeowlhacks/"
               ariaLabel="Learn more about OwlHacks"
               text="More OwlHacks"
             />

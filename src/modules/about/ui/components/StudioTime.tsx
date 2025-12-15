@@ -23,7 +23,7 @@ const StudioTime = ({ studioTimeImage }: StudioTimeProps) => {
           />
 
           <TapeTag position="top-left" rotation={-16} color="black">
-            <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-48 line-clamp-3 px-3">
+            <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight wrap-break-word whitespace-normal max-w-48 line-clamp-3 px-3">
               {studioTimeImage?.alt}
             </p>
           </TapeTag>
@@ -40,7 +40,7 @@ const StudioTime = ({ studioTimeImage }: StudioTimeProps) => {
           people&apos;s needs.
         </p>
         <LinkButton
-          href="/join"
+          href="/about?sub=events"
           text="Learn More"
           ariaLabel="Learn more about Studio Time"
         />

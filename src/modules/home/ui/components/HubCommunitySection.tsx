@@ -72,7 +72,7 @@ const HubCommunitySection = ({
           students to turn ideas into real-world impact.
         </p>
         <LinkButton
-          href="/about"
+          href="/about?sub=events"
           text="Explore"
           ariaLabel="Learn more about HCI Lab community"
         />
@@ -130,7 +130,7 @@ const HubCommunitySection = ({
           </motion.div>
 
           <TapeTag position="bottom-left" rotation={16} color="white">
-            <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-32 md:max-w-40 line-clamp-3">
+            <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight wrap-break-word whitespace-normal max-w-32 md:max-w-40 line-clamp-3">
               {hubCommunityImage?.alt}
             </p>
           </TapeTag>

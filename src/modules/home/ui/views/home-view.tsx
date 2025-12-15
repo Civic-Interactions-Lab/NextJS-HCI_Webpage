@@ -37,7 +37,7 @@ const HomeView = async () => {
           showCTA={true}
         />
 
-        <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-8 pb-16 px-6 md:px-12 space-y-6">
+        <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-8 pb-12 px-6 md:px-12 space-y-6">
           <HCITagsHero />
 
           <WhyHCILabSection images={whyHCILabImages} />

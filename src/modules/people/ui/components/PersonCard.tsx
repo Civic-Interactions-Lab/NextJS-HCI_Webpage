@@ -6,22 +6,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-
-const statusColors: Record<string, string> = {
-  pi: "#8b5cf6",
-  phd: "#3b82f6",
-  ms: "#10b981",
-  ug: "#f59e0b",
-  hs: "#ef4444",
-};
-
-const statusLabels: Record<string, string> = {
-  pi: "Assistant Professor",
-  phd: "PhD Student",
-  ms: "Masters Student",
-  ug: "Undergraduate",
-  hs: "High School",
-};
+import {
+  statusColors,
+  statusLabels,
+  areaColors,
+  areaLabels,
+  accomplishmentColors,
+  accomplishmentLabels,
+} from "@/modules/people/constants/roleConfig";
 
 type TeamMember = NonNullable<People>;
 
@@ -41,11 +33,11 @@ function PersonCard({
   person: TeamMember;
   index?: number;
 }) {
-  const [hoveredRoleIndex, setHoveredRoleIndex] = useState<number | null>(null);
+  const [hoveredIndicatorIndex, setHoveredIndicatorIndex] = useState<
+    number | null
+  >(null);
 
   if (!person.name) return null;
-
-  const roles = Array.isArray(person.roles) ? person.roles : [];
 
   const handleCardClick = () => {
     if (person.url) {
@@ -53,7 +45,41 @@ function PersonCard({
     }
   };
 
-  const altText = `${person.name}, ${roles[0] ? statusLabels[roles[0]] || roles[0] : "Research Team Member"} at ${person.affiliation || "Research Lab"}`;
+  const indicators: {
+    type: "status" | "area" | "accomplishment";
+    value: string;
+    color: string;
+    label: string;
+  }[] = [];
+
+  if (person.status) {
+    indicators.push({
+      type: "status",
+      value: person.status,
+      color: statusColors[person.status],
+      label: statusLabels[person.status],
+    });
+  }
+
+  if (person.areas) {
+    indicators.push({
+      type: "area",
+      value: person.areas,
+      color: areaColors[person.areas],
+      label: areaLabels[person.areas],
+    });
+  }
+
+  if (person.accomplishments) {
+    indicators.push({
+      type: "accomplishment",
+      value: person.accomplishments,
+      color: accomplishmentColors[person.accomplishments],
+      label: accomplishmentLabels[person.accomplishments],
+    });
+  }
+
+  const altText = `${person.name}, ${indicators[0]?.label || "Research Team Member"} at ${person.affiliation || "Research Lab"}`;
 
   return (
     <motion.div
@@ -94,55 +120,66 @@ function PersonCard({
           )}
 
           {/* Show additional info for alumni */}
-          {person.status === "alumni" && person.now && (
+          {person.association === "alumni" && person.now && (
             <p className="text-sm text-gray-500 italic">Now: {person.now}</p>
-          )}
-
-          {/* Show years */}
-          {(person.start || person.end) && (
-            <p className="text-xs text-gray-400">
-              {person.start}
-              {person.end ? ` - ${person.end}` : " - Present"}
-            </p>
           )}
         </CardHeader>
 
         <CardContent className="-mt-2">
-          {/* Role indicators */}
+          {/* Indicator circles */}
           <div className="flex justify-center items-center gap-2 mb-3 flex-wrap">
-            <AnimatePresence>
-              {roles.map((role, roleIndex) => {
-                const isExpanded = hoveredRoleIndex === roleIndex;
+            <AnimatePresence mode="popLayout">
+              {indicators.map((indicator, indicatorIndex) => {
+                const isHovered = hoveredIndicatorIndex === indicatorIndex;
+                const isAnyHovered = hoveredIndicatorIndex !== null;
+                const shouldHide = isAnyHovered && !isHovered;
+
                 return (
                   <motion.div
-                    key={roleIndex}
-                    layout
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    key={`${indicator.type}-${indicatorIndex}`}
+                    layout="position"
+                    initial={{ opacity: 1, scale: 1 }}
+                    animate={{
+                      opacity: shouldHide ? 0 : 1,
+                      scale: shouldHide ? 0.8 : 1,
+                      width: isHovered ? "auto" : "1.5rem",
+                      minWidth: isHovered ? "2rem" : "1.5rem",
+                    }}
+                    transition={{
+                      opacity: { duration: 0.15, delay: shouldHide ? 0 : 0.1 },
+                      scale: { duration: 0.15, delay: shouldHide ? 0 : 0.1 },
+                      width: { duration: 0.2, delay: isHovered ? 0.15 : 0 },
+                      minWidth: { duration: 0.2, delay: isHovered ? 0.15 : 0 },
+                    }}
+                    whileHover={{ scale: shouldHide ? 0.8 : 1.05 }}
+                    whileTap={{ scale: shouldHide ? 0.8 : 0.95 }}
                     className={`
                       cursor-pointer rounded-full
                       flex items-center justify-center overflow-hidden
-                      ${isExpanded ? "px-4 h-6 lg:h-8 min-w-[2rem]" : "size-6 lg:size-8"}
+                      h-6
                     `}
-                    style={{ backgroundColor: statusColors[role] || "#6b7280" }}
-                    title={!isExpanded ? statusLabels[role] || role : undefined}
-                    onMouseEnter={() => setHoveredRoleIndex(roleIndex)}
-                    onMouseLeave={() => setHoveredRoleIndex(null)}
+                    style={{ backgroundColor: indicator.color }}
+                    title={!isHovered ? indicator.label : undefined}
+                    onMouseEnter={() =>
+                      setHoveredIndicatorIndex(indicatorIndex)
+                    }
+                    onMouseLeave={() => setHoveredIndicatorIndex(null)}
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
                   >
                     <motion.span
-                      className="text-white text-xs font-medium whitespace-nowrap"
+                      className="text-white text-xs font-medium whitespace-nowrap px-2"
                       initial={{ opacity: 0 }}
-                      animate={{ opacity: isExpanded ? 1 : 0 }}
-                      transition={{ duration: 0.2 }}
+                      animate={{
+                        opacity: isHovered ? 1 : 0,
+                      }}
+                      transition={{
+                        duration: 0.15,
+                        delay: isHovered ? 0.2 : 0,
+                      }}
                     >
-                      {statusLabels[role] || role}
+                      {indicator.label}
                     </motion.span>
                   </motion.div>
                 );

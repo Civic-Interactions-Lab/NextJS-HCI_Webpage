@@ -69,7 +69,7 @@ const ConferenceTravel = ({ image, conferences }: ConferenceTravelProps) => {
           </p>
           <div className="flex">
             <LinkButton
-              href="/travel"
+              href="/research"
               ariaLabel="Learn more about conference travel opportunities"
               text="LEARN MORE"
             />
