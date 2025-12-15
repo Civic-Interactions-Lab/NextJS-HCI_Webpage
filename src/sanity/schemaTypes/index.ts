@@ -5,14 +5,18 @@ import { projectType } from "@/sanity/schemaTypes/projects";
 import { faqType } from "@/sanity/schemaTypes/faqType";
 import { testimonialsType } from "@/sanity/schemaTypes/testimonialsType";
 import { imageSettingsType } from "@/sanity/schemaTypes/imageSettings";
+import { conferenceType } from "@/sanity/schemaTypes/conferenceType";
+import { researchType } from "@/sanity/schemaTypes/research";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     peopleType,
     newsType,
+    researchType,
     projectType,
     faqType,
     testimonialsType,
     imageSettingsType,
+    conferenceType,
   ],
 };

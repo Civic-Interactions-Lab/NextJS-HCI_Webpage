@@ -154,8 +154,8 @@ const Hero = ({
               <h1
                 className={`text-white leading-tight ${
                   height === "large"
-                    ? "!text-5xl md:!text-7xl xl:!text-[110px] font-semibold"
-                    : "md:!text-6xl !text-4xl font-bold"
+                    ? "text-5xl! md:text-7xl! xl:text-[110px]! font-semibold"
+                    : "md:text-6xl! text-4xl! font-bold"
                 }`}
               >
                 {showBreadcrumb ? formattedSubSection : title}
@@ -172,7 +172,7 @@ const Hero = ({
                   <Button
                     variant="outline"
                     size="lg"
-                    className="text-sm md:text-base border-2 !border-white !bg-transparent text-white hover:!bg-white hover:text-black px-6 md:px-8"
+                    className="text-sm md:text-base border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-6 md:px-8"
                   >
                     Learn more about us
                   </Button>

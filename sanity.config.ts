@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * This configuration is used to for the Sanity Studio that’s mounted on the `/app/studio/[[...tool]]/page.tsx` route
+ * This configuration is used to for the Sanity Studio that's mounted on the `/app/studio/[[...tool]]/page.tsx` route
  */
 
 import { visionTool } from "@sanity/vision";
@@ -15,7 +15,9 @@ import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   ChartBarIncreasing,
   CircleQuestionMark,
+  Globe,
   ImagesIcon,
+  MicroscopeIcon,
   NewspaperIcon,
   User,
   UserRoundCheck,
@@ -48,6 +50,56 @@ export default defineConfig({
               icon: NewspaperIcon,
             }),
 
+            S.listItem()
+              .title("Research")
+              .icon(MicroscopeIcon)
+              .child(
+                S.list()
+                  .title("Research")
+                  .items([
+                    orderableDocumentListDeskItem({
+                      type: "research",
+                      title: "All Research",
+                      id: "all-research",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "research",
+                      title: "Featured Research",
+                      filter: "featured == true",
+                      id: "featured-research",
+                      S,
+                      context,
+                    }),
+                    S.divider(),
+                    orderableDocumentListDeskItem({
+                      type: "research",
+                      title: "Gen AI & Education",
+                      filter: 'category == "Gen AI & Education"',
+                      id: "genai-research",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "research",
+                      title: "Accessibility Technology",
+                      filter: 'category == "Accessibility Technology"',
+                      id: "accessibility-research",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "research",
+                      title: "Social Computing",
+                      filter: 'category == "Social Computing"',
+                      id: "social-research",
+                      S,
+                      context,
+                    }),
+                  ]),
+              ),
+
             orderableDocumentListDeskItem({
               type: "project",
               title: "Projects",
@@ -78,6 +130,14 @@ export default defineConfig({
               S,
               context,
               icon: ImagesIcon,
+            }),
+
+            orderableDocumentListDeskItem({
+              type: "conference",
+              title: "Conference",
+              S,
+              context,
+              icon: Globe,
             }),
           ]);
       },

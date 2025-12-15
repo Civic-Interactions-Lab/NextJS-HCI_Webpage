@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import AboutView from "@/modules/about/ui/views/about-view";
 import EventsView from "@/modules/about/ui/views/events-view";
 import NewsView from "@/modules/about/ui/views/news-view";
@@ -26,7 +26,7 @@ const AboutPage = async ({ searchParams }: PageProps) => {
 
   return (
     <div className="flex-1 space-y-12 mt-0 md:mt-6 mb-16 relative">
-      <Suspense fallback={<div>Loading...</div>}>{renderContent()}</Suspense>
+      {renderContent()}
     </div>
   );
 };
