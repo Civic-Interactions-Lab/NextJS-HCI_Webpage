@@ -140,7 +140,7 @@ const ImageCarousel = ({
       {/* Pagination dots */}
       {showPagination && images.length > 1 && (
         <div className="mt-6 flex items-center justify-center gap-3">
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: Math.min(count, 5) }).map((_, index) => (
             <Button
               key={index}
               onClick={() => api?.scrollTo(index)}

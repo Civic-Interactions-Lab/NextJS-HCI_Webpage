@@ -7,6 +7,7 @@ import Image from "next/image";
 import { BorderHeading } from "@/components/AppTitle";
 import { News } from "../../../../../sanity.types";
 import { formatDate, getImageSrc } from "@/lib/utils";
+import { LinkButton } from "@/components/AppButton";
 
 interface RecentNewsSectionProps {
   recentNews: News[];
@@ -36,7 +37,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
       {/* Desktop Layout - 4 column grid */}
       <div className="hidden md:grid md:grid-cols-4 md:gap-6 md:h-48 lg:h-64 xl:h-72">
         <motion.div
-          className="bg-primary-red-950 text-white pl-3 xl:pl-4.5 pb-3 font-bold flex-shrink-0 relative size-full items-end justify-end"
+          className="bg-primary-red-950 text-white pl-3 xl:pl-4.5 pb-3 font-bold shrink-0 relative size-full items-end justify-end"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={
             isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
@@ -44,8 +45,8 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <div className="flex flex-col h-full justify-end">
-            <p className="text-4xl xl:!text-6xl !font-outfit">recent</p>
-            <p className="text-4xl xl:!text-6xl !font-outfit">news</p>
+            <p className="text-4xl xl:text-6xl! font-outfit!">recent</p>
+            <p className="text-4xl xl:text-6xl! font-outfit!">news</p>
           </div>
 
           <div className="absolute top-0 right-12 xl:right-14 size-12 xl:size-14 bg-white" />
@@ -120,7 +121,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
                     {newsItem.title}
                   </p>
                   {newsItem.featured && (
-                    <div className="border-primary-red-800 border-2 text-primary-red-800 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0">
+                    <div className="border-primary-red-800 border-2 text-primary-red-800 text-xs font-medium px-2 py-1 rounded-full shrink-0">
                       FEATURED
                     </div>
                   )}
@@ -135,13 +136,20 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden space-y-4">
+      <div className="md:hidden space-y-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex items-center justify-between"
         >
           <BorderHeading title="Recent News" />
+
+          <LinkButton
+            href="/about?sub=news"
+            text="More"
+            ariaLabel="Read more about HCI Lab news"
+          />
         </motion.div>
 
         {orderedNews.map((newsItem, index) => (
@@ -166,7 +174,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
                   {newsItem.title}
                 </p>
                 {newsItem.featured && (
-                  <div className="border-primary-red-800 border-2 text-primary-red-800 text-[10px] font-medium px-1.5 py-0.5 rounded-full flex-shrink-0">
+                  <div className="border-primary-red-800 border-2 text-primary-red-800 text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0">
                     FEATURED
                   </div>
                 )}
@@ -178,6 +186,19 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
           </motion.div>
         ))}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
+        className="hidden md:flex justify-end mt-12 lg:mt-6"
+      >
+        <LinkButton
+          href="/about?sub=news"
+          text="More"
+          ariaLabel="Read more about HCI Lab news"
+        />
+      </motion.div>
     </motion.section>
   );
 };

@@ -29,23 +29,48 @@ export const peopleType = defineType({
       },
     }),
     defineField({
-      name: "roles",
-      title: "Roles",
-      type: "array",
-      of: [{ type: "string" }],
+      name: "status",
+      title: "Status",
+      type: "string",
       options: {
         list: [
-          { title: "Assistant Professor", value: "pi" },
-          { title: "PhD Student", value: "phd" },
-          { title: "Masters Student", value: "ms" },
-          { title: "Undergraduate", value: "ug" },
-          { title: "High School", value: "hs" },
+          { title: "Assistant Professor", value: "assistant_professor" },
+          { title: "PhD Student", value: "phd_student" },
+          { title: "Master Student", value: "master_student" },
+          { title: "Undergraduate", value: "undergraduate" },
+          { title: "High School", value: "highschool" },
         ],
       },
     }),
     defineField({
-      name: "status",
-      title: "Status",
+      name: "areas",
+      title: "Areas",
+      type: "string",
+      options: {
+        list: [
+          { title: "Research Lead", value: "research_lead" },
+          {
+            title: "Undergraduate Researcher",
+            value: "undergraduate_researcher",
+          },
+          { title: "Operations Team", value: "operations_team" },
+        ],
+      },
+    }),
+    defineField({
+      name: "accomplishments",
+      title: "Accomplishments",
+      type: "string",
+      options: {
+        list: [
+          { title: "Published", value: "published" },
+          { title: "First Author", value: "first_author" },
+        ],
+      },
+    }),
+    defineField({
+      name: "association",
+      title: "Association",
       type: "string",
       validation: (rule) => rule.required(),
       options: {
@@ -84,13 +109,13 @@ export const peopleType = defineType({
   preview: {
     select: {
       name: "name",
-      status: "status",
+      association: "association",
       media: "img",
     },
-    prepare({ name, status, media }) {
+    prepare({ name, association, media }) {
       return {
         title: name || "New Team Member",
-        subtitle: status,
+        subtitle: association,
         media,
       };
     },

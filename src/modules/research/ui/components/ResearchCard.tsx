@@ -1,24 +1,25 @@
 import { Code, FileText, Mic, Share2, SquarePlay } from "lucide-react";
-import { ResearchProject } from "@/modules/research/ui/components/ResearchAccordionItem";
 import Image from "next/image";
 import Link from "next/link";
+import { Research } from "../../../../../sanity.types";
+import { getImageSrc } from "@/lib/utils";
 
 interface ResearchCardProps {
-  research: ResearchProject;
+  research: Research;
 }
 
 export function ResearchCard({ research }: ResearchCardProps) {
   const renderIcon = (label: string) => {
-    switch (label) {
-      case "PDF":
+    switch (label.toLowerCase()) {
+      case "pdf":
         return <FileText size={12} />;
-      case "Code":
+      case "code":
         return <Code size={12} />;
-      case "Demo":
+      case "demo":
         return <SquarePlay size={12} />;
-      case "Talk":
+      case "talk":
         return <Mic size={12} />;
-      case "Cite":
+      case "cite":
         return <Share2 size={12} />;
       default:
         return null;
@@ -29,8 +30,8 @@ export function ResearchCard({ research }: ResearchCardProps) {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="w-full h-48 overflow-hidden">
         <Image
-          src={research.image}
-          alt={research.title}
+          src={getImageSrc(research.imageUrl)}
+          alt={research.title || "Research project"}
           width={500}
           height={500}
           className="w-full h-full object-cover"
@@ -49,16 +50,18 @@ export function ResearchCard({ research }: ResearchCardProps) {
         </p>
 
         <div className="flex flex-wrap gap-2">
-          {research.actions.map((action, actionIndex) => (
-            <Link
-              key={actionIndex}
-              href={action.url}
-              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-200"
-            >
-              {renderIcon(action.label)}
-              <span>{action.label}</span>
-            </Link>
-          ))}
+          {research.actions?.map((action) =>
+            action.url && action.label ? (
+              <Link
+                key={action._key}
+                href={action.url}
+                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors duration-200"
+              >
+                {renderIcon(action.label)}
+                <span>{action.label}</span>
+              </Link>
+            ) : null,
+          )}
         </div>
       </div>
     </div>

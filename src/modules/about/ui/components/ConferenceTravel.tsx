@@ -4,14 +4,18 @@ import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import TapeTag from "@/components/TapeTag";
 import WorldMap from "@/modules/about/ui/components/WorldMap";
-import { AboutConferenceTravelQueryResult } from "../../../../../sanity.types";
+import {
+  AboutConferenceTravelQueryResult,
+  ConferencesQueryResult,
+} from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
 
 interface ConferenceTravelProps {
   image?: AboutConferenceTravelQueryResult;
+  conferences: ConferencesQueryResult;
 }
 
-const ConferenceTravel = ({ image }: ConferenceTravelProps) => {
+const ConferenceTravel = ({ image, conferences }: ConferenceTravelProps) => {
   return (
     <div className="flex flex-col space-y-6 md:space-y-12 pt-0 md:pt-6 -mb-8">
       <BorderHeading title="Conference Travel" />
@@ -49,7 +53,7 @@ const ConferenceTravel = ({ image }: ConferenceTravelProps) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center h-[300px]">
         <div className="hidden md:block order-4 md:order-1 mx-0 md:mx-8">
-          <WorldMap />
+          <WorldMap conferences={conferences} />
         </div>
 
         <div className="flex flex-col space-y-3 order-3 md:order-2 relative">
@@ -65,7 +69,7 @@ const ConferenceTravel = ({ image }: ConferenceTravelProps) => {
           </p>
           <div className="flex">
             <LinkButton
-              href="/travel"
+              href="/research"
               ariaLabel="Learn more about conference travel opportunities"
               text="LEARN MORE"
             />
@@ -74,7 +78,7 @@ const ConferenceTravel = ({ image }: ConferenceTravelProps) => {
       </div>
 
       <div className="block md:hidden -mt-6">
-        <WorldMap />
+        <WorldMap conferences={conferences} />
       </div>
     </div>
   );

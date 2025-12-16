@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { News } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
+import NewsCategoryLegend from "@/modules/about/ui/components/NewsCategoryLegend";
 
 const categories = [
   { name: "Collaborations", color: "bg-yellow-500" },
@@ -13,12 +14,18 @@ const categories = [
   { name: "Alumni", color: "bg-orange-500" },
 ];
 
+interface FilterState {
+  categories: string[];
+}
+
 interface NewsTimelineProps {
   allNews: News[];
 }
 
 const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [filters, setFilters] = useState<FilterState>({
+    categories: [],
+  });
 
   const years = useMemo(() => {
     const uniqueYears = [
@@ -34,9 +41,11 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
   }, [allNews]);
 
   const filteredNews = useMemo(() => {
-    if (!selectedCategory) return allNews;
-    return allNews.filter((news) => news.category === selectedCategory);
-  }, [selectedCategory, allNews]);
+    if (filters.categories.length === 0) return allNews;
+    return allNews.filter(
+      (news) => news.category && filters.categories.includes(news.category),
+    );
+  }, [filters.categories, allNews]);
 
   const newsByYear = useMemo(() => {
     return filteredNews.reduce(
@@ -51,6 +60,10 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
       {} as Record<number, News[]>,
     );
   }, [filteredNews]);
+
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+  };
 
   const scrollToYear = (year: number) => {
     const element = document.getElementById(`year-${year}`);
@@ -67,7 +80,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
 
   return (
     <div className="flex gap-4 lg:gap-8">
-      <aside className="hidden md:block w-16 lg:w-20 flex-shrink-0 sticky top-8 self-start bg-white/80 backdrop-blur-sm py-3 lg:py-4 px-2 rounded-lg">
+      <aside className="hidden md:block w-16 lg:w-20 shrink-0 sticky top-8 self-start bg-white/80 backdrop-blur-sm py-3 lg:py-4 px-2 rounded-lg">
         <h3 className="text-base lg:text-lg font-semibold text-gray-900 mb-3 lg:mb-4 font-outfit">
           Year
         </h3>
@@ -89,31 +102,8 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
           HCI Lab News
         </h1>
 
-        <div className="flex flex-wrap gap-2 lg:gap-3 mb-6 md:mb-8">
-          <button
-            onClick={() => setSelectedCategory(null)}
-            className={`px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-medium transition-colors ${
-              !selectedCategory
-                ? "bg-gray-800 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
-          >
-            All
-          </button>
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              onClick={() => setSelectedCategory(category.name)}
-              className={`px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-medium text-white transition-colors ${
-                selectedCategory === category.name
-                  ? category.color
-                  : `${category.color} opacity-60 hover:opacity-100`
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
+        {/* Category Legend */}
+        <NewsCategoryLegend onFilterChange={handleFilterChange} />
 
         {years.map((year) => {
           const yearNews = newsByYear[year];
@@ -128,12 +118,12 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
               <div className="space-y-6 md:space-y-8">
                 {yearNews.map((news) => (
                   <div key={news._id} className="flex gap-4 lg:gap-6">
-                    <div className="flex-shrink-0 w-0.5 md:w-1 bg-red-500 rounded-full"></div>
+                    <div className="shrink-0 w-0.5 md:w-1 bg-red-500 rounded-full"></div>
 
                     <div className="flex-1 py-2 md:py-4">
                       <div className="flex flex-col md:flex-row gap-4 lg:gap-6">
                         {news.imageUrl && (
-                          <div className="w-full md:w-48 lg:w-64 h-40 lg:h-48 rounded-lg overflow-hidden flex-shrink-0 relative">
+                          <div className="w-full md:w-48 lg:w-64 h-40 lg:h-48 rounded-lg overflow-hidden shrink-0 relative">
                             <Image
                               src={getImageSrc(news.imageUrl)}
                               alt=""

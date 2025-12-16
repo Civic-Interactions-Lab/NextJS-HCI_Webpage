@@ -50,11 +50,11 @@ const LocationMap = ({
     <div className={`w-full ${className}`}>
       {showTitle && (
         <div className="mb-3 font-outfit">
-          <h3 className="text-base md:text-lg font-semibold text-gray-800">
+          <h3 className="text-base md:text-lg font-bold text-primary-red-800">
             {title}
           </h3>
           {placeName && (
-            <h4 className="ext-base md:text-lg font-semibold text-primary-red-800 mt-1">
+            <h4 className="ext-base md:text-lg font-medium text-gray-800">
               {placeName}
             </h4>
           )}

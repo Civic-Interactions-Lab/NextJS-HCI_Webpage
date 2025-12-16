@@ -31,7 +31,7 @@ const TabBarClient = () => {
           { label: "Our Sponsors", path: "/sponsors", isMain: true },
           {
             label: "Interested in sponsoring?",
-            path: "/sponsors?sub=become-our-sponsor",
+            path: "/sponsors?sub=interested-in-sponsoring?",
           },
         ];
       default:
@@ -49,7 +49,10 @@ const TabBarClient = () => {
     const itemSub = new URLSearchParams(item.path.split("?")[1] || "").get(
       "sub",
     );
-    return currentSub === itemSub;
+    const cleanItemSub = itemSub?.replace(/\?$/, "");
+    const cleanCurrentSub = currentSub?.replace(/\?$/, "");
+
+    return cleanCurrentSub === cleanItemSub;
   };
 
   if (tabItems.length === 0) {
@@ -75,7 +78,7 @@ const TabBarClient = () => {
             <Button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`
-                flex-shrink-0 p-3 text-xs rounded-full font-jetbrains-mono !font-bold transition-all duration-300 cursor-pointer
+                shrink-0 p-3 text-xs rounded-full font-jetbrains-mono font-bold! transition-all duration-300 cursor-pointer
                 bg-primary-red-800 text-white border border-gray-600 hover:bg-primary-red-800/80
               `}
             >
@@ -91,7 +94,7 @@ const TabBarClient = () => {
                   href={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
-                    flex-shrink-0 transition-all duration-300 ease-in-out
+                    shrink-0 transition-all duration-300 ease-in-out
                     ${
                       isMobileMenuOpen
                         ? "opacity-100 translate-x-0 scale-100 pointer-events-auto"
@@ -106,7 +109,7 @@ const TabBarClient = () => {
                 >
                   <Button
                     variant="outline"
-                    className="p-3 text-xs rounded-full font-jetbrains-mono font-bold transition-colors border border-gray-600 hover:bg-primary-red-800/60 hover:!text-white cursor-pointer"
+                    className="p-3 text-xs rounded-full font-jetbrains-mono font-bold transition-colors border border-gray-600 hover:bg-primary-red-800/60 hover:text-white! cursor-pointer"
                   >
                     {item.label}
                   </Button>
@@ -125,8 +128,8 @@ const TabBarClient = () => {
               py-3 px-4 rounded-full font-jetbrains-mono text-base xl:text-lg font-bold transition-colors border border-gray-600 cursor-pointer
               ${
                 isActive(item)
-                  ? "!bg-primary-red-800 !text-blue hover:!bg-primary-red-800/80"
-                  : "bg-white !text-gray-800 hover:bg-primary-red-800/60 hover:!text-white"
+                  ? "bg-primary-red-800! text-blue! hover:bg-primary-red-800/80!"
+                  : "bg-white text-gray-800! hover:bg-primary-red-800/60 hover:text-white!"
               }
             `}
             >

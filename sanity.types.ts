@@ -13,6 +13,88 @@
  */
 
 // Source: schema.json
+export type Sponsors = {
+  _id: string;
+  _type: "sponsors";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  logo?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  url?: string;
+  altText?: string;
+  description?: string;
+  grants?: Array<{
+    title?: string;
+    grantNumber?: string;
+    startDate?: string;
+    endDate?: string;
+    amount?: number;
+    currency?: "USD" | "EUR" | "GBP" | "CAD";
+    url?: string;
+    _type: "grant";
+    _key: string;
+  }>;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type Conference = {
+  _id: string;
+  _type: "conference";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  location?: string;
+  coordinates?: {
+    lat?: number;
+    lng?: number;
+  };
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  link?: string;
+  dates?: string;
+  abbreviation?: string;
+};
+
 export type ImageSettings = {
   _id: string;
   _type: "imageSettings";
@@ -54,22 +136,6 @@ export type ImageSettings = {
   }>;
 };
 
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
 export type Testimonials = {
   _id: string;
   _type: "testimonials";
@@ -100,16 +166,27 @@ export type Faq = {
   defaultOpen?: boolean;
 };
 
-export type Project = {
+export type Research = {
   _id: string;
-  _type: "project";
+  _type: "research";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
   title?: string;
-  date?: string;
-  link?: string;
+  description?: string;
+  category?: "Gen AI & Education" | "Accessibility Technology" | "Social Computing";
+  authors?: Array<{
+    authorType?: "person" | "name";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -122,20 +199,12 @@ export type Project = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  description?: string;
-  authors?: Array<{
-    authorType?: "person" | "name";
-    person?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "people";
-    };
-    name?: string;
+  actions?: Array<{
+    label?: "pdf" | "demo" | "code" | "cite" | "talk";
+    url?: string;
     _key: string;
   }>;
-  tags?: Array<string>;
-  status?: "published" | "review" | "progress" | "draft";
+  featured?: boolean;
 };
 
 export type News = {
@@ -186,8 +255,10 @@ export type People = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  roles?: Array<string>;
-  status?: "active" | "alumni" | "collaborator";
+  status?: "assistant_professor" | "phd_student" | "master_student" | "undergraduate" | "highschool";
+  areas?: "research_lead" | "undergraduate_researcher" | "operations_team";
+  accomplishments?: "published" | "first_author";
+  association?: "active" | "alumni" | "collaborator";
   start?: number;
   end?: number;
   affiliation?: string;
@@ -296,8 +367,41 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = ImageSettings | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Project | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/sanity/lib/conference/getConference.ts
+// Variable: conferencesQuery
+// Query: *[_type == "conference"]
+export type ConferencesQueryResult = Array<{
+  _id: string;
+  _type: "conference";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  location?: string;
+  coordinates?: {
+    lat?: number;
+    lng?: number;
+  };
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  link?: string;
+  dates?: string;
+  abbreviation?: string;
+}>;
+
 // Source: ./src/sanity/lib/faq/getFAQs.ts
 // Variable: faqsQuery
 // Query: *[_type == "faq"] | order(orderRank)
@@ -681,7 +785,7 @@ export type AllNewsQueryResult = Array<{
 
 // Source: ./src/sanity/lib/people/getPeople.ts
 // Variable: currentPeopleQuery
-// Query: *[_type == "people" && status == "active"] | order(orderRank)
+// Query: *[_type == "people" && association == "active"] | order(orderRank)
 export type CurrentPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -703,15 +807,17 @@ export type CurrentPeopleQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  roles?: Array<string>;
-  status?: "active" | "alumni" | "collaborator";
+  status?: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate";
+  areas?: "operations_team" | "research_lead" | "undergraduate_researcher";
+  accomplishments?: "first_author" | "published";
+  association?: "active" | "alumni" | "collaborator";
   start?: number;
   end?: number;
   affiliation?: string;
   now?: string;
 }>;
 // Variable: alumniPeopleQuery
-// Query: *[_type == "people" && status == "alumni"] | order(orderRank)
+// Query: *[_type == "people" && association == "alumni"] | order(orderRank)
 export type AlumniPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -733,15 +839,17 @@ export type AlumniPeopleQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  roles?: Array<string>;
-  status?: "active" | "alumni" | "collaborator";
+  status?: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate";
+  areas?: "operations_team" | "research_lead" | "undergraduate_researcher";
+  accomplishments?: "first_author" | "published";
+  association?: "active" | "alumni" | "collaborator";
   start?: number;
   end?: number;
   affiliation?: string;
   now?: string;
 }>;
 // Variable: collaboratorsPeopleQuery
-// Query: *[_type == "people" && status == "collaborator"] | order(orderRank)
+// Query: *[_type == "people" && association == "collaborator"] | order(orderRank)
 export type CollaboratorsPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -763,27 +871,40 @@ export type CollaboratorsPeopleQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  roles?: Array<string>;
-  status?: "active" | "alumni" | "collaborator";
+  status?: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate";
+  areas?: "operations_team" | "research_lead" | "undergraduate_researcher";
+  accomplishments?: "first_author" | "published";
+  association?: "active" | "alumni" | "collaborator";
   start?: number;
   end?: number;
   affiliation?: string;
   now?: string;
 }>;
 
-// Source: ./src/sanity/lib/projects/getProjects.ts
-// Variable: projectQuery
-// Query: *[_type == "project"] | order(date desc)[0...2] {      ...,      authors[] {        authorType,        authorType == "person" => {          "name": person->name        },        authorType == "name" => {          name        }      }    }
-export type ProjectQueryResult = Array<{
+// Source: ./src/sanity/lib/research/getResearch.ts
+// Variable: featuredResearchQuery
+// Query: *[_type == "research" && featured == true] | order(orderRank)
+export type FeaturedResearchQueryResult = Array<{
   _id: string;
-  _type: "project";
+  _type: "research";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
   title?: string;
-  date?: string;
-  link?: string;
+  description?: string;
+  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -796,28 +917,36 @@ export type ProjectQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  description?: string;
-  authors: Array<{
-    authorType: "name" | "person" | null;
-    name: string | null;
-  } | {
-    authorType: "name" | "person" | null;
-  }> | null;
-  tags?: Array<string>;
-  status?: "draft" | "progress" | "published" | "review";
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
 }>;
-// Variable: projectOrderedQuery
-// Query: *[_type == "project"] | order(orderRank)[0...2] {      ...,      authors[] {        authorType,        authorType == "person" => {          "name": person->name        },        authorType == "name" => {          name        }      }    }
-export type ProjectOrderedQueryResult = Array<{
+// Variable: genAIEducationQuery
+// Query: *[_type == "research" && category == "Gen AI & Education"] | order(orderRank)
+export type GenAIEducationQueryResult = Array<{
   _id: string;
-  _type: "project";
+  _type: "research";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
   title?: string;
-  date?: string;
-  link?: string;
+  description?: string;
+  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
   imageUrl?: {
     asset?: {
       _ref: string;
@@ -830,15 +959,135 @@ export type ProjectOrderedQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
+}>;
+// Variable: accessibilityTechQuery
+// Query: *[_type == "research" && category == "Accessibility Technology"] | order(orderRank)
+export type AccessibilityTechQueryResult = Array<{
+  _id: string;
+  _type: "research";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
   description?: string;
-  authors: Array<{
-    authorType: "name" | "person" | null;
-    name: string | null;
-  } | {
-    authorType: "name" | "person" | null;
-  }> | null;
-  tags?: Array<string>;
-  status?: "draft" | "progress" | "published" | "review";
+  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
+}>;
+// Variable: socialComputingQuery
+// Query: *[_type == "research" && category == "Social Computing"] | order(orderRank)
+export type SocialComputingQueryResult = Array<{
+  _id: string;
+  _type: "research";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
+}>;
+
+// Source: ./src/sanity/lib/sponsors/getSponsors.ts
+// Variable: sponsorsQuery
+// Query: *[_type == "sponsors"] | order(orderRank)
+export type SponsorsQueryResult = Array<{
+  _id: string;
+  _type: "sponsors";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  name?: string;
+  logo?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  url?: string;
+  altText?: string;
+  description?: string;
+  grants?: Array<{
+    title?: string;
+    grantNumber?: string;
+    startDate?: string;
+    endDate?: string;
+    amount?: number;
+    currency?: "CAD" | "EUR" | "GBP" | "USD";
+    url?: string;
+    _type: "grant";
+    _key: string;
+  }>;
 }>;
 
 // Source: ./src/sanity/lib/testimonials/getTestimonials.ts
@@ -869,6 +1118,7 @@ export type TestimonialsQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    "\n    *[_type == \"conference\"]\n  ": ConferencesQueryResult;
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-hero\"][0].singleImage\n  ": AboutHeroQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-studio-time\"][0].singleImage\n  ": AboutStudioTimeQueryResult;
@@ -889,11 +1139,14 @@ declare module "@sanity/client" {
     "\n    *[_type == \"imageSettings\" && sectionKey == \"sponsors-hero\"][0].singleImage\n  ": SponsorsHeroQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
-    "\n    *[_type == \"people\" && status == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;
-    "\n    *[_type == \"people\" && status == \"alumni\"] | order(orderRank)\n  ": AlumniPeopleQueryResult;
-    "\n    *[_type == \"people\" && status == \"collaborator\"] | order(orderRank)\n  ": CollaboratorsPeopleQueryResult;
-    "\n    *[_type == \"project\"] | order(date desc)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectQueryResult;
-    "\n    *[_type == \"project\"] | order(orderRank)[0...2] {\n      ...,\n      authors[] {\n        authorType,\n        authorType == \"person\" => {\n          \"name\": person->name\n        },\n        authorType == \"name\" => {\n          name\n        }\n      }\n    }\n  ": ProjectOrderedQueryResult;
+    "\n    *[_type == \"people\" && association == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;
+    "\n    *[_type == \"people\" && association == \"alumni\"] | order(orderRank)\n  ": AlumniPeopleQueryResult;
+    "\n    *[_type == \"people\" && association == \"collaborator\"] | order(orderRank)\n  ": CollaboratorsPeopleQueryResult;
+    "\n    *[_type == \"research\" && featured == true] | order(orderRank)\n  ": FeaturedResearchQueryResult;
+    "\n    *[_type == \"research\" && category == \"Gen AI & Education\"] | order(orderRank)\n  ": GenAIEducationQueryResult;
+    "\n    *[_type == \"research\" && category == \"Accessibility Technology\"] | order(orderRank)\n  ": AccessibilityTechQueryResult;
+    "\n    *[_type == \"research\" && category == \"Social Computing\"] | order(orderRank)\n  ": SocialComputingQueryResult;
+    "\n    *[_type == \"sponsors\"] | order(orderRank)\n  ": SponsorsQueryResult;
     "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ": TestimonialsQueryResult;
   }
 }

@@ -62,13 +62,28 @@ export const newsType = defineType({
         rule.custom(async (featured, context) => {
           if (!featured) return true;
 
-          const { document, getClient } = context;
-          const client = getClient({ apiVersion: "2023-05-03" });
+          // Check for featured limit across all documents in the system
+          const client = context.getClient({ apiVersion: "2023-05-03" });
+          const currentDocId = context.document?._id;
 
-          const query = `*[_type == "news" && featured == true && _id != $currentId][0]`;
-          const existingFeatured = await client.fetch(query, {
-            currentId: document?._id || "",
-          });
+          // Handle both draft and published document IDs
+          const currentPublishedId = currentDocId?.replace(/^drafts\./, "");
+          const currentDraftId = currentDocId?.startsWith("drafts.")
+            ? currentDocId
+            : `drafts.${currentDocId}`;
+
+          const existingFeatured = await client.fetch(
+            `*[_type == "news" && 
+        featured == true && 
+        _id != $currentDocId && 
+        _id != $currentPublishedId && 
+        _id != $currentDraftId][0]`,
+            {
+              currentDocId,
+              currentPublishedId,
+              currentDraftId,
+            },
+          );
 
           if (existingFeatured) {
             return `Another news item "${existingFeatured.title}" is already featured.`;
