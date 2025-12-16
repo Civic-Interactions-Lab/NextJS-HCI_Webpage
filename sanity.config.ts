@@ -20,6 +20,7 @@ import {
   ImagesIcon,
   MicroscopeIcon,
   NewspaperIcon,
+  Pencil,
   User,
   UserRoundCheck,
 } from "lucide-react";
@@ -298,6 +299,14 @@ export default defineConfig({
               S,
               context,
               icon: CircleDollarSignIcon,
+            }),
+
+            orderableDocumentListDeskItem({
+              type: "annotation",
+              title: "Annotation Page",
+              S,
+              context,
+              icon: Pencil,
             }),
           ]);
       },

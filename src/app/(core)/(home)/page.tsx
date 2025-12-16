@@ -1,7 +1,41 @@
 import React from "react";
+import { getRecentNews } from "@/sanity/lib/news/getNews";
+import { getFeaturedResearch } from "@/sanity/lib/research/getResearch";
+import {
+  getHomeFeaturedProjectsImage,
+  getHomeHeroImage,
+  getHomeHubCommunityImage,
+  getHomeWhyHCIImages,
+} from "@/sanity/lib/imageSettings/homeImages";
 import HomeView from "@/modules/home/ui/views/home-view";
 
-const HomePage = () => {
-  return <HomeView />;
+const HomePageServer = async () => {
+  const [
+    heroImage,
+    recentNews,
+    featuredResearch,
+    whyHCILabImages,
+    featuredProjectsImage,
+    hubCommunityImage,
+  ] = await Promise.all([
+    getHomeHeroImage(),
+    getRecentNews(),
+    getFeaturedResearch(),
+    getHomeWhyHCIImages(),
+    getHomeFeaturedProjectsImage(),
+    getHomeHubCommunityImage(),
+  ]);
+
+  return (
+    <HomeView
+      heroImage={heroImage}
+      recentNews={recentNews}
+      featuredResearch={featuredResearch}
+      whyHCILabImages={whyHCILabImages}
+      featuredProjectsImage={featuredProjectsImage}
+      hubCommunityImage={hubCommunityImage}
+    />
+  );
 };
-export default HomePage;
+
+export default HomePageServer;

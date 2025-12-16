@@ -1,29 +1,58 @@
-import React, { Suspense } from "react";
+"use client";
+
+import React, { Suspense, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Hero from "@/components/Hero";
 import HCITagsHero from "@/modules/home/ui/components/HCITagsHero";
 import WhyHCILabSection from "@/modules/home/ui/components/WhyHCILabSection";
 import FeatureProjects from "@/modules/home/ui/components/FeatureProjects";
 import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
-import { getRecentNews } from "@/sanity/lib/news/getNews";
 import CallToActionSection from "@/components/CallToActionSection";
-import { getFeaturedResearch } from "@/sanity/lib/research/getResearch";
-import {
-  getHomeFeaturedProjectsImage,
-  getHomeHeroImage,
-  getHomeHubCommunityImage,
-  getHomeWhyHCIImages,
-} from "@/sanity/lib/imageSettings/homeImages";
 import { Loader } from "lucide-react";
+import FeedbackToggle from "@/modules/annotation/ui/components/FeedbackToggle";
+import FeedbackOverlay from "@/modules/annotation/ui/views/FeedbackOverlay";
 
-const HomeView = async () => {
-  const heroImage = await getHomeHeroImage();
-  const recentNews = await getRecentNews();
-  const featuredResearch = await getFeaturedResearch();
+interface HomeViewProps {
+  heroImage: any;
+  recentNews: any;
+  featuredResearch: any;
+  whyHCILabImages: any;
+  featuredProjectsImage: any;
+  hubCommunityImage: any;
+}
 
-  const whyHCILabImages = await getHomeWhyHCIImages();
-  const featuredProjectsImage = await getHomeFeaturedProjectsImage();
-  const hubCommunityImage = await getHomeHubCommunityImage();
+const HomeView: React.FC<HomeViewProps> = ({
+  heroImage,
+  recentNews,
+  featuredResearch,
+  whyHCILabImages,
+  featuredProjectsImage,
+  hubCommunityImage,
+}) => {
+  const [isFeedbackEnabled, setIsFeedbackEnabled] = useState(false);
+  const pathname = usePathname();
+
+  const toggleFeedback = () => {
+    setIsFeedbackEnabled(!isFeedbackEnabled);
+  };
+
+  // Disable feedback mode when pressing Escape or navigating away
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isFeedbackEnabled) {
+        setIsFeedbackEnabled(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isFeedbackEnabled]);
+
+  // Reset feedback mode on route change
+  useEffect(() => {
+    setIsFeedbackEnabled(false);
+  }, [pathname]);
 
   return (
     <>
@@ -56,6 +85,15 @@ const HomeView = async () => {
 
         <div className="h-10" />
       </Suspense>
+
+      {/* Feedback System */}
+      <FeedbackToggle isEnabled={isFeedbackEnabled} onToggle={toggleFeedback} />
+
+      <FeedbackOverlay
+        pageUrl={pathname}
+        isEnabled={isFeedbackEnabled}
+        onToggle={toggleFeedback}
+      />
     </>
   );
 };
