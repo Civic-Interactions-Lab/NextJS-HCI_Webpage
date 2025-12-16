@@ -11,7 +11,7 @@ const SponsorsPage = async ({ searchParams }: PageProps) => {
 
   const renderContent = () => {
     switch (sub) {
-      case "interested-in-sponsoring":
+      case "interested-in-sponsoring?":
         return <BecomeASponsorView />;
       default:
         return <SponsorsView />;

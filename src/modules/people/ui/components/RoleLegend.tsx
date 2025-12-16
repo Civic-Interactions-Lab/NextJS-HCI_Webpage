@@ -134,7 +134,7 @@ const RoleLegend = ({ onFilterChange }: RoleLegendProps) => {
             </Button>
           </PopoverTrigger>
           <PopoverContent
-            className="w-80 p-4 bg-white border-gray-400 ml-6 z-20!"
+            className="w-80 p-4 bg-white border-gray-400 ml-12 z-20!"
             align="center"
           >
             <div className="space-y-4">
