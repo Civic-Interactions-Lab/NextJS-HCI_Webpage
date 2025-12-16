@@ -6,6 +6,7 @@ import {
   getAnnotationsForPage,
   updateAnnotationStatus,
 } from "@/sanity/lib/annotations/createAnnotation";
+import { RedirectToSignIn, useUser } from "@clerk/nextjs";
 
 interface FeedbackOverlayProps {
   pageUrl: string;
@@ -42,6 +43,7 @@ const FeedbackOverlay: React.FC<FeedbackOverlayProps> = ({
   isEnabled,
   onToggle,
 }) => {
+  const { user, isSignedIn } = useUser();
   const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedAnnotation, setSelectedAnnotation] =
@@ -104,8 +106,9 @@ const FeedbackOverlay: React.FC<FeedbackOverlayProps> = ({
         pageUrl,
         content,
         author: {
-          name: "Current User", // Replace with actual user data
-          email: "user@example.com",
+          name: user?.fullName || user?.firstName || "Anonymous",
+          email: user?.primaryEmailAddress?.emailAddress || "",
+          avatar: user?.imageUrl || "",
         },
         position: {
           x: newAnnotation.x,
@@ -131,6 +134,10 @@ const FeedbackOverlay: React.FC<FeedbackOverlayProps> = ({
   };
 
   if (!isEnabled) return null;
+
+  if (!isSignedIn) {
+    return <RedirectToSignIn />;
+  }
 
   return (
     <div
