@@ -1,29 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Loader2 } from "lucide-react";
-import { createAnnotation } from "@/sanity/lib/annotations/createAnnotation";
+"use client";
 
-interface Position {
-  x: number;
-  y: number;
-  viewport: {
-    width: number;
-    height: number;
-  };
-}
-
-interface FeedbackData {
-  content: string;
-  author: {
-    name: string;
-    email?: string;
-  };
-  priority: "low" | "medium" | "high" | "critical";
-  tags: string[];
-}
-
-interface ActiveFeedback extends Position {
-  id: string;
-}
+import React, { useState, useEffect, useRef } from "react";
+import {
+  createAnnotation,
+  getAnnotationsForPage,
+  updateAnnotationStatus,
+} from "@/sanity/lib/annotations/createAnnotation";
 
 interface FeedbackOverlayProps {
   pageUrl: string;
@@ -31,319 +13,397 @@ interface FeedbackOverlayProps {
   onToggle: () => void;
 }
 
+interface Annotation {
+  _id: string;
+  content: string;
+  author: {
+    name: string;
+    email?: string;
+    avatar?: string;
+  };
+  position: {
+    x: number;
+    y: number;
+    viewport: {
+      width: number;
+      height: number;
+      scrollY: number;
+    };
+  };
+  priority: "low" | "medium" | "high" | "critical";
+  tags: string[];
+  status: "open" | "in-progress" | "resolved" | "rejected";
+  createdAt: string;
+  replies?: any[];
+}
+
 const FeedbackOverlay: React.FC<FeedbackOverlayProps> = ({
   pageUrl,
   isEnabled,
   onToggle,
 }) => {
-  const [activeFeedback, setActiveFeedback] = useState<ActiveFeedback | null>(
-    null,
-  );
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [selectedAnnotation, setSelectedAnnotation] =
+    useState<Annotation | null>(null);
+  const [newAnnotation, setNewAnnotation] = useState<{
+    x: number;
+    y: number;
+    content: string;
+  } | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (!isEnabled || e.target !== overlayRef.current) return;
+  // Fetch existing annotations
+  useEffect(() => {
+    if (isEnabled) {
+      loadAnnotations();
+    }
+  }, [isEnabled, pageUrl]);
 
-    const rect = overlayRef.current!.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const newFeedback: ActiveFeedback = {
-      id: Date.now().toString(),
-      x,
-      y,
-      viewport: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      },
-    };
-
-    setActiveFeedback(newFeedback);
-  };
-
-  const handleSubmitFeedback = async (feedbackData: FeedbackData) => {
-    if (!activeFeedback) return;
-
-    setIsSubmitting(true);
+  const loadAnnotations = async () => {
     try {
-      await createAnnotation({
-        pageUrl,
-        content: feedbackData.content,
-        author: feedbackData.author,
-        position: {
-          x: activeFeedback.x,
-          y: activeFeedback.y,
-          viewport: activeFeedback.viewport,
-        },
-        priority: feedbackData.priority,
-        tags: feedbackData.tags,
-        status: "open",
-      });
-
-      setActiveFeedback(null);
-      // Optional: Show success notification
+      const fetchedAnnotations = await getAnnotationsForPage(pageUrl);
+      setAnnotations(fetchedAnnotations);
     } catch (error) {
-      console.error("Failed to submit feedback:", error);
-      // Optional: Show error notification
-    } finally {
-      setIsSubmitting(false);
+      console.error("Failed to load annotations:", error);
     }
   };
 
-  const handleCancel = () => {
-    setActiveFeedback(null);
+  // Handle click to create new annotation
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (!isCreating && e.target === overlayRef.current) {
+      const currentScrollY =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      // Get position relative to the document
+      const x = e.clientX;
+      const y = e.clientY + currentScrollY;
+
+      setNewAnnotation({
+        x,
+        y,
+        content: "",
+      });
+      setIsCreating(true);
+      setSelectedAnnotation(null);
+    }
   };
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        if (activeFeedback) {
-          handleCancel();
-        } else if (isEnabled) {
-          onToggle();
-        }
-      }
-    };
+  // Handle creating annotation
+  const handleCreateAnnotation = async (
+    content: string,
+    priority: "low" | "medium" | "high" | "critical" = "medium",
+  ) => {
+    if (!newAnnotation) return;
 
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [activeFeedback, isEnabled, onToggle]);
+    try {
+      const currentScrollY =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      const annotationData = {
+        pageUrl,
+        content,
+        author: {
+          name: "Current User", // Replace with actual user data
+          email: "user@example.com",
+        },
+        position: {
+          x: newAnnotation.x,
+          y: newAnnotation.y, // Store document position
+          viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            scrollY: currentScrollY,
+          },
+        },
+        priority,
+        tags: [],
+        status: "open" as const,
+      };
+
+      await createAnnotation(annotationData);
+      await loadAnnotations(); // Refresh annotations
+      setIsCreating(false);
+      setNewAnnotation(null);
+    } catch (error) {
+      console.error("Failed to create annotation:", error);
+    }
+  };
 
   if (!isEnabled) return null;
 
   return (
-    <>
-      {/* Overlay for capturing clicks */}
-      <div
-        ref={overlayRef}
-        className="fixed inset-0 z-50 cursor-crosshair bg-blue-500/5"
-        onClick={handleOverlayClick}
-        style={{ pointerEvents: isEnabled ? "auto" : "none" }}
-      />
+    <div
+      ref={overlayRef}
+      className="absolute inset-0 z-50 cursor-crosshair"
+      style={{
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: `${Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)}px`,
+        pointerEvents: "auto",
+      }}
+      onClick={handleOverlayClick}
+    >
+      {/* Existing annotations */}
+      {annotations.map((annotation) => (
+        <AnnotationMarker
+          key={annotation._id}
+          annotation={annotation}
+          x={annotation.position.x}
+          y={annotation.position.y}
+          isSelected={selectedAnnotation?._id === annotation._id}
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedAnnotation(annotation);
+            setIsCreating(false);
+            setNewAnnotation(null);
+          }}
+        />
+      ))}
 
-      {/* Feedback pin and form */}
-      {activeFeedback && (
-        <FeedbackPin
-          position={activeFeedback}
-          onSubmit={handleSubmitFeedback}
-          onCancel={handleCancel}
-          isSubmitting={isSubmitting}
+      {/* New annotation being created */}
+      {isCreating && newAnnotation && (
+        <AnnotationCreator
+          x={newAnnotation.x}
+          y={newAnnotation.y}
+          onSave={handleCreateAnnotation}
+          onCancel={() => {
+            setIsCreating(false);
+            setNewAnnotation(null);
+          }}
         />
       )}
 
-      {/* Instructions */}
-      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-white shadow-lg rounded-lg px-4 py-2 border">
-        <p className="text-sm text-gray-700 flex items-center gap-2">
-          <MessageCircle className="w-4 h-4" />
-          Click anywhere to add feedback • Press ESC to exit
-        </p>
-      </div>
-    </>
+      {/* Selected annotation details */}
+      {selectedAnnotation && !isCreating && (
+        <AnnotationDetails
+          annotation={selectedAnnotation}
+          x={selectedAnnotation.position.x}
+          y={selectedAnnotation.position.y}
+          onClose={() => setSelectedAnnotation(null)}
+          onStatusChange={async (status) => {
+            try {
+              await updateAnnotationStatus(selectedAnnotation._id, status);
+              await loadAnnotations();
+              setSelectedAnnotation(null);
+            } catch (error) {
+              console.error("Failed to update status:", error);
+            }
+          }}
+        />
+      )}
+    </div>
   );
 };
 
-interface FeedbackPinProps {
-  position: Position;
-  onSubmit: (data: FeedbackData) => Promise<void>;
-  onCancel: () => void;
-  isSubmitting: boolean;
-}
-
-const FeedbackPin: React.FC<FeedbackPinProps> = ({
-  position,
-  onSubmit,
-  onCancel,
-  isSubmitting,
-}) => {
-  const [formData, setFormData] = useState<FeedbackData>({
-    content: "",
-    author: { name: "", email: "" },
-    priority: "medium",
-    tags: [],
-  });
-
-  const [isFormVisible, setIsFormVisible] = useState(false);
-
-  useEffect(() => {
-    // Show form after a brief delay for better UX
-    const timer = setTimeout(() => setIsFormVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.content.trim() || !formData.author.name.trim()) return;
-    await onSubmit(formData);
+// Annotation marker component
+const AnnotationMarker: React.FC<{
+  annotation: Annotation;
+  x: number;
+  y: number;
+  isSelected: boolean;
+  onClick: (e: React.MouseEvent) => void;
+}> = ({ annotation, x, y, isSelected, onClick }) => {
+  const priorityColors = {
+    low: "bg-green-500 hover:bg-green-600",
+    medium: "bg-yellow-500 hover:bg-yellow-600",
+    high: "bg-orange-500 hover:bg-orange-600",
+    critical: "bg-red-500 hover:bg-red-600",
   };
 
-  const handleTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const tagValue = e.currentTarget.value.trim();
-      if (tagValue && !formData.tags.includes(tagValue)) {
-        setFormData((prev) => ({
-          ...prev,
-          tags: [...prev.tags, tagValue],
-        }));
-        e.currentTarget.value = "";
-      }
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }));
+  const statusColors = {
+    open: "border-white",
+    "in-progress": "border-blue-300",
+    resolved: "border-green-300",
+    rejected: "border-red-300",
   };
 
   return (
-    <>
-      {/* Pin indicator */}
-      <div
-        className="fixed w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2 z-50"
-        style={{ left: position.x, top: position.y }}
-      />
+    <div
+      className={`absolute w-8 h-8 rounded-full border-4 shadow-lg cursor-pointer flex items-center justify-center transition-all ${
+        priorityColors[annotation.priority]
+      } ${statusColors[annotation.status]} ${
+        isSelected ? "scale-110 ring-4 ring-blue-300" : ""
+      }`}
+      style={{
+        left: `${x}px`,
+        top: `${y}px`,
+        transform: "translate(-50%, -50%)",
+      }}
+      onClick={onClick}
+      title={`${annotation.content.substring(0, 100)}...`}
+    >
+      <span className="text-white text-xs font-bold">
+        {annotation.priority === "critical"
+          ? "!"
+          : annotation.priority.charAt(0).toUpperCase()}
+      </span>
+    </div>
+  );
+};
 
-      {/* Feedback form */}
-      {isFormVisible && (
-        <div
-          className="fixed z-50 bg-white rounded-lg shadow-xl border w-80 p-4"
-          style={{
-            left: Math.min(position.x + 20, window.innerWidth - 320 - 20),
-            top: Math.min(position.y + 20, window.innerHeight - 400 - 20),
-          }}
-        >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-gray-900">Add Feedback</h3>
-            <button
-              onClick={onCancel}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+// Annotation creator component
+const AnnotationCreator: React.FC<{
+  x: number;
+  y: number;
+  onSave: (
+    content: string,
+    priority: "low" | "medium" | "high" | "critical",
+  ) => void;
+  onCancel: () => void;
+}> = ({ x, y, onSave, onCancel }) => {
+  const [content, setContent] = useState("");
+  const [priority, setPriority] = useState<
+    "low" | "medium" | "high" | "critical"
+  >("medium");
 
-          <form onSubmit={handleSubmit} className="space-y-3">
-            {/* Author info */}
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                type="text"
-                placeholder="Your name"
-                value={formData.author.name}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    author: { ...prev.author, name: e.target.value },
-                  }))
-                }
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Email (optional)"
-                value={formData.author.email || ""}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    author: { ...prev.author, email: e.target.value },
-                  }))
-                }
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (content.trim()) {
+      onSave(content, priority);
+    }
+  };
 
-            {/* Content */}
-            <textarea
-              placeholder="Describe your feedback..."
-              value={formData.content}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, content: e.target.value }))
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              rows={3}
-              maxLength={500}
-              required
-            />
-
-            {/* Priority */}
-            <select
-              value={formData.priority}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  priority: e.target.value as FeedbackData["priority"],
-                }))
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="low">Low Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="high">High Priority</option>
-              <option value="critical">Critical</option>
-            </select>
-
-            {/* Tags */}
-            <div>
-              <input
-                type="text"
-                placeholder="Add tags (press Enter)"
-                onKeyDown={handleTagInput}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              {formData.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-2">
-                  {formData.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-xs flex items-center gap-1"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => removeTag(tag)}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-2 pt-2">
-              <button
-                type="button"
-                onClick={onCancel}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={
-                  isSubmitting ||
-                  !formData.content.trim() ||
-                  !formData.author.name.trim()
-                }
-                className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Send className="w-4 h-4" />
-                )}
-                Submit
-              </button>
-            </div>
-          </form>
+  return (
+    <div
+      className="absolute bg-white border border-gray-300 rounded-lg shadow-xl p-4 min-w-80 z-60"
+      style={{
+        left: `${x}px`,
+        top: `${y}px`,
+        transform: "translate(-50%, -100%)",
+      }}
+    >
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Priority
+          </label>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value as any)}
+            className="w-full p-2 border border-gray-300 rounded text-sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </select>
         </div>
-      )}
-    </>
+        <textarea
+          autoFocus
+          className="w-full p-3 border border-gray-300 rounded resize-none text-sm"
+          rows={4}
+          placeholder="Add your feedback..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          onClick={(e) => e.stopPropagation()}
+        />
+        <div className="flex justify-end gap-2 mt-3">
+          <button
+            type="button"
+            className="px-4 py-2 text-sm bg-gray-200 rounded hover:bg-gray-300 transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCancel();
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            disabled={!content.trim()}
+          >
+            Save Feedback
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+// Annotation details component
+const AnnotationDetails: React.FC<{
+  annotation: Annotation;
+  x: number;
+  y: number;
+  onClose: () => void;
+  onStatusChange: (
+    status: "open" | "in-progress" | "resolved" | "rejected",
+  ) => void;
+}> = ({ annotation, x, y, onClose, onStatusChange }) => {
+  return (
+    <div
+      className="absolute bg-white border border-gray-300 rounded-lg shadow-xl p-4 min-w-80 max-w-96 z-60"
+      style={{
+        left: `${x}px`,
+        top: `${y}px`,
+        transform: "translate(-50%, -100%)",
+      }}
+    >
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center gap-2">
+          <span
+            className={`px-2 py-1 text-xs rounded ${
+              annotation.priority === "critical"
+                ? "bg-red-100 text-red-800"
+                : annotation.priority === "high"
+                  ? "bg-orange-100 text-orange-800"
+                  : annotation.priority === "medium"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-green-100 text-green-800"
+            }`}
+          >
+            {annotation.priority}
+          </span>
+          <span
+            className={`px-2 py-1 text-xs rounded ${
+              annotation.status === "resolved"
+                ? "bg-green-100 text-green-800"
+                : annotation.status === "in-progress"
+                  ? "bg-blue-100 text-blue-800"
+                  : annotation.status === "rejected"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-gray-100 text-gray-800"
+            }`}
+          >
+            {annotation.status.replace("-", " ")}
+          </span>
+        </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          className="text-gray-400 hover:text-gray-600"
+        >
+          ×
+        </button>
+      </div>
+
+      <p className="text-sm text-gray-800 mb-3">{annotation.content}</p>
+
+      <div className="text-xs text-gray-500 mb-3">
+        By {annotation.author.name} •{" "}
+        {new Date(annotation.createdAt).toLocaleDateString()}
+      </div>
+
+      <div className="flex gap-2">
+        <select
+          value={annotation.status}
+          onChange={(e) => onStatusChange(e.target.value as any)}
+          className="flex-1 p-2 border border-gray-300 rounded text-sm"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <option value="open">Open</option>
+          <option value="in-progress">In Progress</option>
+          <option value="resolved">Resolved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+    </div>
   );
 };
 

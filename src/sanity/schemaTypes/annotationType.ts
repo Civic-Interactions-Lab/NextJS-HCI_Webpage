@@ -75,6 +75,11 @@ export const annotationType = defineType({
               title: "Viewport Height",
               type: "number",
             }),
+            defineField({
+              name: "scrollY",
+              title: "Scroll Position",
+              type: "number",
+            }),
           ],
         }),
       ],

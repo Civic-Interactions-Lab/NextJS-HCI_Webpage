@@ -14,6 +14,7 @@ interface CreateAnnotationData {
     viewport: {
       width: number;
       height: number;
+      scrollY: number;
     };
   };
   priority: "low" | "medium" | "high" | "critical";
@@ -34,10 +35,11 @@ export async function createAnnotation(data: CreateAnnotationData) {
       },
       position: {
         x: data.position.x,
-        y: data.position.y,
+        y: data.position.y + data.position.viewport.scrollY, // Store document-relative position
         viewport: {
           width: data.position.viewport.width,
           height: data.position.viewport.height,
+          scrollY: data.position.viewport.scrollY,
         },
       },
       status: data.status,
@@ -69,14 +71,13 @@ export async function updateAnnotationStatus(
   status: "open" | "in-progress" | "resolved" | "rejected",
 ) {
   try {
-    const result = await client
+    return await client
       .patch(annotationId)
       .set({
         status,
         updatedAt: new Date().toISOString(),
       })
       .commit();
-    return result;
   } catch (error) {
     console.error("Error updating annotation status:", error);
     throw new Error("Failed to update annotation status");
