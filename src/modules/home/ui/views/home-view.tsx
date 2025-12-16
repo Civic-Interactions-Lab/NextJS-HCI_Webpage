@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState } from "react";
 import { usePathname } from "next/navigation";
 import Hero from "@/components/Hero";
 import HCITagsHero from "@/modules/home/ui/components/HCITagsHero";
@@ -12,9 +12,10 @@ import CallToActionSection from "@/components/CallToActionSection";
 import { Loader } from "lucide-react";
 import FeedbackToggle from "@/modules/annotation/ui/components/FeedbackToggle";
 import FeedbackOverlay from "@/modules/annotation/ui/views/FeedbackOverlay";
+import { HomeHeroQueryResult } from "../../../../../sanity.types";
 
 interface HomeViewProps {
-  heroImage: any;
+  heroImage: HomeHeroQueryResult;
   recentNews: any;
   featuredResearch: any;
   whyHCILabImages: any;
@@ -22,37 +23,20 @@ interface HomeViewProps {
   hubCommunityImage: any;
 }
 
-const HomeView: React.FC<HomeViewProps> = ({
+const HomeView = ({
   heroImage,
   recentNews,
   featuredResearch,
   whyHCILabImages,
   featuredProjectsImage,
   hubCommunityImage,
-}) => {
+}: HomeViewProps) => {
   const [isFeedbackEnabled, setIsFeedbackEnabled] = useState(false);
   const pathname = usePathname();
 
   const toggleFeedback = () => {
     setIsFeedbackEnabled(!isFeedbackEnabled);
   };
-
-  // Disable feedback mode when pressing Escape or navigating away
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isFeedbackEnabled) {
-        setIsFeedbackEnabled(false);
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isFeedbackEnabled]);
-
-  // Reset feedback mode on route change
-  useEffect(() => {
-    setIsFeedbackEnabled(false);
-  }, [pathname]);
 
   return (
     <>
@@ -86,14 +70,9 @@ const HomeView: React.FC<HomeViewProps> = ({
         <div className="h-10" />
       </Suspense>
 
-      {/* Feedback System */}
       <FeedbackToggle isEnabled={isFeedbackEnabled} onToggle={toggleFeedback} />
 
-      <FeedbackOverlay
-        pageUrl={pathname}
-        isEnabled={isFeedbackEnabled}
-        onToggle={toggleFeedback}
-      />
+      <FeedbackOverlay pageUrl={pathname} isEnabled={isFeedbackEnabled} />
     </>
   );
 };

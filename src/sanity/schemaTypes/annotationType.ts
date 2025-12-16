@@ -85,45 +85,27 @@ export const annotationType = defineType({
       ],
     }),
     defineField({
-      name: "status",
-      title: "Status",
+      name: "category",
+      title: "Issue Category",
       type: "string",
       options: {
         list: [
-          { title: "Open", value: "open" },
-          { title: "In Progress", value: "in-progress" },
-          { title: "Resolved", value: "resolved" },
-          { title: "Rejected", value: "rejected" },
+          { title: "Content", value: "content" },
+          { title: "Bug", value: "bug" },
+          { title: "Color", value: "color" },
+          { title: "Transition", value: "transition" },
+          { title: "Layout", value: "layout" },
+          { title: "Performance", value: "performance" },
+          { title: "Accessibility", value: "accessibility" },
+          { title: "Other", value: "other" },
         ],
       },
-      initialValue: "open",
+      initialValue: "other",
+      validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "priority",
-      title: "Priority",
-      type: "string",
-      options: {
-        list: [
-          { title: "Low", value: "low" },
-          { title: "Medium", value: "medium" },
-          { title: "High", value: "high" },
-          { title: "Critical", value: "critical" },
-        ],
-      },
-      initialValue: "medium",
-    }),
-    defineField({
-      name: "tags",
-      title: "Tags",
-      type: "array",
-      of: [{ type: "string" }],
-      options: {
-        layout: "tags",
-      },
-    }),
-    defineField({
-      name: "replies",
-      title: "Replies",
+      name: "comments",
+      title: "Conversation",
       type: "array",
       of: [
         {
@@ -131,13 +113,13 @@ export const annotationType = defineType({
           fields: [
             defineField({
               name: "content",
-              title: "Reply Content",
+              title: "Comment Content",
               type: "text",
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "author",
-              title: "Reply Author",
+              title: "Comment Author",
               type: "object",
               fields: [
                 defineField({ name: "name", title: "Name", type: "string" }),
@@ -161,12 +143,6 @@ export const annotationType = defineType({
       type: "datetime",
       initialValue: () => new Date().toISOString(),
     }),
-    defineField({
-      name: "updatedAt",
-      title: "Updated At",
-      type: "datetime",
-      initialValue: () => new Date().toISOString(),
-    }),
   ],
   orderings: [
     {
@@ -175,29 +151,37 @@ export const annotationType = defineType({
       by: [{ field: "createdAt", direction: "desc" }],
     },
     {
-      title: "Status",
-      name: "statusAsc",
-      by: [{ field: "status", direction: "asc" }],
+      title: "Category",
+      name: "categoryAsc",
+      by: [{ field: "category", direction: "asc" }],
     },
   ],
   preview: {
     select: {
       title: "content",
       subtitle: "author.name",
-      status: "status",
-      priority: "priority",
+      category: "category",
+      commentCount: "comments",
     },
-    prepare({ title, subtitle, status, priority }) {
-      const statusEmojis = {
-        open: "🔵",
-        "in-progress": "🟡",
-        resolved: "✅",
-        rejected: "❌",
+    prepare({ title, subtitle, category, commentCount }) {
+      const categoryEmojis = {
+        content: "📝",
+        bug: "🐛",
+        color: "🎨",
+        transition: "✨",
+        layout: "📐",
+        performance: "⚡",
+        accessibility: "♿",
+        other: "💭",
       };
+
+      const count = commentCount?.length || 0;
+      const commentText =
+        count > 0 ? ` • ${count} comment${count === 1 ? "" : "s"}` : "";
 
       return {
         title: title?.length > 50 ? `${title.slice(0, 50)}...` : title,
-        subtitle: `${statusEmojis[status as keyof typeof statusEmojis] || "🔵"} ${subtitle || "Anonymous"} • ${priority}`,
+        subtitle: `${categoryEmojis[category as keyof typeof categoryEmojis] || "💭"} ${subtitle || "Anonymous"} • ${category}${commentText}`,
       };
     },
   },

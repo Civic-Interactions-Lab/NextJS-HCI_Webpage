@@ -17,9 +17,15 @@ interface CreateAnnotationData {
       scrollY: number;
     };
   };
-  priority: "low" | "medium" | "high" | "critical";
-  tags: string[];
-  status: "open" | "in-progress" | "resolved" | "rejected";
+  category:
+    | "content"
+    | "bug"
+    | "color"
+    | "transition"
+    | "layout"
+    | "performance"
+    | "accessibility"
+    | "other";
 }
 
 export async function createAnnotation(data: CreateAnnotationData) {
@@ -42,11 +48,9 @@ export async function createAnnotation(data: CreateAnnotationData) {
           scrollY: data.position.viewport.scrollY,
         },
       },
-      status: data.status,
-      priority: data.priority,
-      tags: data.tags,
+      category: data.category,
+      comments: [],
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
     };
 
     return await client.create(annotation);
@@ -58,7 +62,7 @@ export async function createAnnotation(data: CreateAnnotationData) {
 
 export async function getAnnotationsForPage(pageUrl: string) {
   try {
-    const query = `*[_type == "annotation" && pageUrl == $pageUrl] | order(_createdAt desc)`;
+    const query = `*[_type == "annotation" && pageUrl == $pageUrl] | order(createdAt desc)`;
     return await client.fetch(query, { pageUrl });
   } catch (error) {
     console.error("Error fetching annotations:", error);
@@ -66,27 +70,9 @@ export async function getAnnotationsForPage(pageUrl: string) {
   }
 }
 
-export async function updateAnnotationStatus(
+export async function addCommentToAnnotation(
   annotationId: string,
-  status: "open" | "in-progress" | "resolved" | "rejected",
-) {
-  try {
-    return await client
-      .patch(annotationId)
-      .set({
-        status,
-        updatedAt: new Date().toISOString(),
-      })
-      .commit();
-  } catch (error) {
-    console.error("Error updating annotation status:", error);
-    throw new Error("Failed to update annotation status");
-  }
-}
-
-export async function addReplyToAnnotation(
-  annotationId: string,
-  reply: {
+  comment: {
     content: string;
     author: {
       name: string;
@@ -96,20 +82,19 @@ export async function addReplyToAnnotation(
   },
 ) {
   try {
-    const replyData = {
-      content: reply.content,
-      author: reply.author,
+    const commentData = {
+      content: comment.content,
+      author: comment.author,
       createdAt: new Date().toISOString(),
     };
 
     return await client
       .patch(annotationId)
-      .setIfMissing({ replies: [] })
-      .append("replies", [replyData])
-      .set({ updatedAt: new Date().toISOString() })
+      .setIfMissing({ comments: [] })
+      .append("comments", [commentData])
       .commit();
   } catch (error) {
-    console.error("Error adding reply to annotation:", error);
-    throw new Error("Failed to add reply");
+    console.error("Error adding comment to annotation:", error);
+    throw new Error("Failed to add comment");
   }
 }

@@ -13,6 +13,43 @@
  */
 
 // Source: schema.json
+export type Annotation = {
+  _id: string;
+  _type: "annotation";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  pageUrl?: string;
+  content?: string;
+  author?: {
+    name?: string;
+    email?: string;
+    avatar?: string;
+  };
+  position?: {
+    x?: number;
+    y?: number;
+    viewport?: {
+      width?: number;
+      height?: number;
+      scrollY?: number;
+    };
+  };
+  category?: "content" | "bug" | "color" | "transition" | "layout" | "performance" | "accessibility" | "other";
+  comments?: Array<{
+    content?: string;
+    author?: {
+      name?: string;
+      email?: string;
+      avatar?: string;
+    };
+    createdAt?: string;
+    _key: string;
+  }>;
+  createdAt?: string;
+};
+
 export type Sponsors = {
   _id: string;
   _type: "sponsors";
@@ -367,7 +404,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Annotation | Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/conference/getConference.ts
 // Variable: conferencesQuery
