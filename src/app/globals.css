@@ -48,6 +48,9 @@
     --color-primary-red-900: #963145;
     --color-primary-red-950: #620719;
     --color-primary-red-foreground: oklch(0.985 0 0);
+    --color-primary-blue-800: #067AAB;
+    --color-primary-yellow-800: #E29500;
+    --color-primary-green-800: #028683;
 }
 
 :root {
@@ -88,6 +91,9 @@
     --color-primary-red-900: #963145;
     --color-primary-red-950: #620719;
     --color-primary-red-foreground: oklch(0.985 0 0);
+    --color-primary-blue-800: #067AAB;
+    --color-primary-yellow-800: #E29500;
+    --color-primary-green-800: #028683;
 }
 
 .dark {
@@ -127,6 +133,9 @@
     --color-primary-red-900: #963145;
     --color-primary-red-950: #620719;
     --color-primary-red-foreground: oklch(0.985 0 0);
+    --color-primary-blue-800: #067AAB;
+    --color-primary-yellow-800: #E29500;
+    --color-primary-green-800: #028683;
 }
 
 @layer base {
