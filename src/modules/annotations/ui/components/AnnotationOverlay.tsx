@@ -9,9 +9,10 @@ import { MessageCircle, XIcon } from "lucide-react";
 
 interface AnnotationOverlayProps {
   children: React.ReactNode;
+  path: string;
 }
 
-const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
+const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
   const {
     annotations,
     isAnnotationMode,
@@ -22,7 +23,7 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
     deleteAnnotation,
     calculateCurrentPosition,
     positionUpdateTrigger,
-  } = useAnnotations();
+  } = useAnnotations(path);
 
   const [activeAnnotation, setActiveAnnotation] = useState<string | null>(null);
   const [pendingAnnotation, setPendingAnnotation] = useState<{

@@ -18,6 +18,7 @@ import {
   CircleQuestionMark,
   Globe,
   ImagesIcon,
+  MessageCircleIcon,
   MicroscopeIcon,
   NewspaperIcon,
   User,
@@ -298,6 +299,14 @@ export default defineConfig({
               S,
               context,
               icon: CircleDollarSignIcon,
+            }),
+
+            orderableDocumentListDeskItem({
+              type: "annotation",
+              title: "Annotations",
+              S,
+              context,
+              icon: MessageCircleIcon,
             }),
           ]);
       },

@@ -7,6 +7,7 @@ import { imageSettingsType } from "@/sanity/schemaTypes/imageSettings";
 import { conferenceType } from "@/sanity/schemaTypes/conferenceType";
 import { researchType } from "@/sanity/schemaTypes/research";
 import { sponsorType } from "@/sanity/schemaTypes/sponsors";
+import { annotationType } from "@/sanity/schemaTypes/annotations";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -18,5 +19,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     imageSettingsType,
     conferenceType,
     sponsorType,
+    annotationType,
   ],
 };

@@ -15,7 +15,7 @@ interface CommentModalProps {
   onDelete?: () => void;
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({
+const CommentModal = ({
   annotation,
   position,
   isNewAnnotation = false,
@@ -26,9 +26,9 @@ const CommentModal: React.FC<CommentModalProps> = ({
   onAddComment,
   onToggleResolved,
   onDelete,
-}) => {
+}: CommentModalProps) => {
   const [comment, setComment] = useState("");
-  const [author, setAuthor] = useState("Anonymous"); // You can integrate with your auth system
+  const [author, setAuthor] = useState("Anonymous");
   const [showMenu, setShowMenu] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -40,7 +40,6 @@ const CommentModal: React.FC<CommentModalProps> = ({
     }
   }, []);
 
-  // Scroll to bottom when new comments are added
   useEffect(() => {
     if (commentsScrollRef.current && annotation?.comments) {
       const scrollContainer = commentsScrollRef.current;
@@ -199,8 +198,11 @@ const CommentModal: React.FC<CommentModalProps> = ({
           </div>
 
           {/* Additional comments */}
-          {annotation.comments.map((comment) => (
-            <div key={comment.id} className="p-4 border-b border-gray-50">
+          {annotation.comments.map((comment, index) => (
+            <div
+              key={`${comment.id}-${index}`}
+              className="p-4 border-b border-gray-50"
+            >
               <div className="flex items-start space-x-3">
                 <div className="w-8 h-8 bg-gray-400 text-white rounded-full flex items-center justify-center text-sm font-medium">
                   {comment.author.charAt(0).toUpperCase()}
@@ -259,9 +261,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
                 <Send className="w-3 h-3" />
               </button>
             </div>
-            <p className="text-xs text-gray-500">
-              Press Enter to submit, Shift+Enter for new line
-            </p>
+            {/*<p className="text-xs text-gray-500">Press Enter to submit</p>*/}
           </div>
         </form>
       )}

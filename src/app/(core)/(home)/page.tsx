@@ -4,7 +4,7 @@ import AnnotationOverlay from "@/modules/annotations/ui/components/AnnotationOve
 
 const HomePage = () => {
   return (
-    <AnnotationOverlay>
+    <AnnotationOverlay path={"/"}>
       <HomeView />
     </AnnotationOverlay>
   );
