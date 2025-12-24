@@ -1,9 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
-import { getAnnotationsForPage } from "@/sanity/lib/annotations/getAnnotations";
-import {
-  addCommentToAnnotation,
-  createAnnotation,
-} from "@/sanity/lib/conference/createAnnotations";
+import { useCallback, useEffect, useState } from "react";
+import { useMutation, useQuery } from "convex/react";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
 
 export interface AnnotationPosition {
   x: number;
@@ -20,78 +18,67 @@ export interface AnnotationPosition {
 }
 
 export interface Annotation {
-  id: string;
+  id: Id<"annotations">;
   position: AnnotationPosition;
   content: string;
+  authorId: string;
   author: string;
   timestamp: Date;
   comments: Comment[];
   resolved: boolean;
+  category:
+    | "content"
+    | "bug"
+    | "color"
+    | "transition"
+    | "layout"
+    | "performance"
+    | "accessibility"
+    | "other";
 }
 
 export interface Comment {
-  id: string;
+  id: Id<"comments">;
   content: string;
   author: string;
   timestamp: Date;
 }
 
 export const useAnnotations = (path: string) => {
-  const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [isAnnotationMode, setIsAnnotationMode] = useState(false);
   const [positionUpdateTrigger, setPositionUpdateTrigger] = useState(0);
 
-  // Load annotations for the current path
-  useEffect(() => {
-    const loadAnnotations = async () => {
-      try {
-        const data = await getAnnotationsForPage(path);
-        if (data) {
-          // Transform Sanity data to frontend format
-          const transformedAnnotations: Annotation[] = data.map(
-            (sanityAnnotation) => ({
-              id: sanityAnnotation._id,
-              position: {
-                x: sanityAnnotation.position?.x || 0,
-                y: sanityAnnotation.position?.y || 0,
-                viewportX: sanityAnnotation.position?.viewportX || 0,
-                viewportY: sanityAnnotation.position?.viewportY || 0,
-                scrollX: sanityAnnotation.position?.scrollX || 0,
-                scrollY: sanityAnnotation.position?.scrollY || 0,
-                elementSelector: sanityAnnotation.position?.elementSelector,
-                elementOffsetX: sanityAnnotation.position?.elementOffsetX,
-                elementOffsetY: sanityAnnotation.position?.elementOffsetY,
-                viewportWidth: sanityAnnotation.position?.viewportWidth || 0,
-                viewportHeight: sanityAnnotation.position?.viewportHeight || 0,
-              },
-              content: sanityAnnotation.content || "",
-              author: sanityAnnotation.author || "Anonymous",
-              timestamp: sanityAnnotation.timestamp
-                ? new Date(sanityAnnotation.timestamp)
-                : new Date(),
-              comments:
-                sanityAnnotation.comments?.map((comment) => ({
-                  id: comment._key,
-                  content: comment.content || "",
-                  author: comment.author || "Anonymous",
-                  timestamp: comment.timestamp
-                    ? new Date(comment.timestamp)
-                    : new Date(),
-                })) || [],
-              resolved: sanityAnnotation.resolved || false,
-            }),
-          );
-          setAnnotations(transformedAnnotations);
-        }
-      } catch (error) {
-        // Handle error silently or show notification
-      }
-    };
+  // Convex queries and mutations
+  const annotationsData = useQuery(api.annotations.getAnnotationsForPage, {
+    path,
+  });
+  const createAnnotationMutation = useMutation(
+    api.annotations.createAnnotation,
+  );
+  const addCommentMutation = useMutation(api.annotations.addComment);
+  const toggleResolvedMutation = useMutation(api.annotations.toggleResolved);
+  const deleteAnnotationMutation = useMutation(
+    api.annotations.deleteAnnotation,
+  );
 
-    if (path) {
-      loadAnnotations();
-    }
-  }, [path]);
+  // Transform Convex data to frontend format
+  const annotations: Annotation[] =
+    annotationsData?.map((annotation) => ({
+      id: annotation._id,
+      position: annotation.position,
+      content: annotation.content,
+      authorId: annotation.authorId,
+      author: annotation.author,
+      timestamp: new Date(annotation.timestamp),
+      comments: annotation.comments.map((comment) => ({
+        id: comment._id,
+        content: comment.content,
+        author: comment.author,
+        timestamp: new Date(comment.timestamp),
+      })),
+      resolved: annotation.resolved,
+      category: annotation.category,
+    })) || [];
 
   // Force re-calculation of positions on scroll and resize
   useEffect(() => {
@@ -118,7 +105,7 @@ export const useAnnotations = (path: string) => {
       const absoluteX = event.clientX + window.scrollX;
       const absoluteY = event.clientY + window.scrollY;
 
-      const position: AnnotationPosition = {
+      return {
         x: absoluteX,
         y: absoluteY,
         viewportX: event.clientX,
@@ -131,8 +118,6 @@ export const useAnnotations = (path: string) => {
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
       };
-
-      return position;
     },
     [],
   );
@@ -197,83 +182,79 @@ export const useAnnotations = (path: string) => {
   );
 
   const createNewAnnotation = useCallback(
-    async (event: MouseEvent, content: string, author: string) => {
+    async (
+      event: MouseEvent,
+      content: string,
+      authorId: string,
+      author: string,
+      category:
+        | "content"
+        | "bug"
+        | "color"
+        | "transition"
+        | "layout"
+        | "performance"
+        | "accessibility"
+        | "other" = "other",
+    ) => {
       const position = capturePosition(event);
-      const annotationData = {
-        path,
-        position,
-        content,
-        author,
-        timestamp: new Date().toISOString(),
-        comments: [],
-        resolved: false,
-      };
 
       try {
-        const result = await createAnnotation(annotationData);
-        const newAnnotation: Annotation = {
-          id: result._id,
+        await createAnnotationMutation({
+          path,
           position,
           content,
+          authorId,
           author,
-          timestamp: new Date(),
-          comments: [],
-          resolved: false,
-        };
-        setAnnotations((prev) => [...prev, newAnnotation]);
-        return newAnnotation;
+          category,
+        });
       } catch (error) {
         throw error;
       }
     },
-    [capturePosition, path],
+    [capturePosition, path, createAnnotationMutation],
   );
 
   const addComment = useCallback(
-    async (annotationId: string, content: string, author: string) => {
-      const comment: Comment = {
-        id: `comment-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        content,
-        author,
-        timestamp: new Date(),
-      };
-
+    async (
+      annotationId: Id<"annotations">,
+      content: string,
+      author: string,
+    ) => {
       try {
-        await addCommentToAnnotation(annotationId, {
+        await addCommentMutation({
+          annotationId,
           content,
           author,
-          timestamp: new Date().toISOString(),
         });
-
-        setAnnotations((prev) =>
-          prev.map((annotation) =>
-            annotation.id === annotationId
-              ? { ...annotation, comments: [...annotation.comments, comment] }
-              : annotation,
-          ),
-        );
       } catch (error) {
         throw error;
       }
     },
-    [],
+    [addCommentMutation],
   );
 
-  const toggleResolved = useCallback((annotationId: string) => {
-    setAnnotations((prev) =>
-      prev.map((annotation) =>
-        annotation.id === annotationId
-          ? { ...annotation, resolved: !annotation.resolved }
-          : annotation,
-      ),
-    );
-  }, []);
+  const toggleResolved = useCallback(
+    async (annotationId: Id<"annotations">, authorId: string) => {
+      try {
+        await toggleResolvedMutation({ annotationId, authorId });
+      } catch (error) {
+        throw error;
+      }
+    },
+    [toggleResolvedMutation],
+  );
 
-  const deleteAnnotation = useCallback((annotationId: string) => {
-    setAnnotations((prev) =>
-      prev.filter((annotation) => annotation.id !== annotationId),
-    );
-  }, []);
+  const deleteAnnotation = useCallback(
+    async (annotationId: Id<"annotations">, authorId: string) => {
+      try {
+        await deleteAnnotationMutation({ annotationId, authorId });
+      } catch (error) {
+        throw error;
+      }
+    },
+    [deleteAnnotationMutation],
+  );
 
   return {
     annotations,
@@ -314,7 +295,6 @@ function isValidCSSSelector(selector: string): boolean {
   }
 }
 
-// Helper function to generate a reliable CSS selector for an element
 function generateElementSelector(element: HTMLElement): string {
   // For images, try to use src or alt attributes for uniqueness
   if (element.tagName.toLowerCase() === "img") {

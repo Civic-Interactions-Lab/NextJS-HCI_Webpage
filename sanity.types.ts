@@ -13,38 +13,6 @@
  */
 
 // Source: schema.json
-export type Annotation = {
-  _id: string;
-  _type: "annotation";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  path?: string;
-  position?: {
-    x?: number;
-    y?: number;
-    viewportX?: number;
-    viewportY?: number;
-    scrollX?: number;
-    scrollY?: number;
-    elementSelector?: string;
-    elementOffsetX?: number;
-    elementOffsetY?: number;
-    viewportWidth?: number;
-    viewportHeight?: number;
-  };
-  content?: string;
-  author?: string;
-  timestamp?: string;
-  comments?: Array<{
-    content?: string;
-    author?: string;
-    timestamp?: string;
-    _key: string;
-  }>;
-  resolved?: boolean;
-};
-
 export type Sponsors = {
   _id: string;
   _type: "sponsors";
@@ -399,43 +367,8 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Annotation | Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./src/sanity/lib/annotations/getAnnotations.ts
-// Variable: annotationsQuery
-// Query: *[_type == "annotation" && path == $path] | order(timestamp desc)
-export type AnnotationsQueryResult = Array<{
-  _id: string;
-  _type: "annotation";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  path?: string;
-  position?: {
-    x?: number;
-    y?: number;
-    viewportX?: number;
-    viewportY?: number;
-    scrollX?: number;
-    scrollY?: number;
-    elementSelector?: string;
-    elementOffsetX?: number;
-    elementOffsetY?: number;
-    viewportWidth?: number;
-    viewportHeight?: number;
-  };
-  content?: string;
-  author?: string;
-  timestamp?: string;
-  comments?: Array<{
-    content?: string;
-    author?: string;
-    timestamp?: string;
-    _key: string;
-  }>;
-  resolved?: boolean;
-}>;
-
 // Source: ./src/sanity/lib/conference/getConference.ts
 // Variable: conferencesQuery
 // Query: *[_type == "conference"]
@@ -1185,7 +1118,6 @@ export type TestimonialsQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n    *[_type == \"annotation\" && path == $path] | order(timestamp desc)\n  ": AnnotationsQueryResult;
     "\n    *[_type == \"conference\"]\n  ": ConferencesQueryResult;
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-hero\"][0].singleImage\n  ": AboutHeroQueryResult;

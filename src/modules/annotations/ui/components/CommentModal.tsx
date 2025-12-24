@@ -1,16 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, Send, MoreHorizontal, Check, Trash2 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
+import { useUser } from "@clerk/nextjs";
 import { Annotation } from "@/modules/annotations/hooks/useAnnotations";
+import {
+  categoryConfig,
+  CategoryType,
+} from "@/modules/annotations/config/categoryConfig";
 
 interface CommentModalProps {
   annotation?: Annotation;
   position?: { x: number; y: number };
   isNewAnnotation?: boolean;
-  isPopover?: boolean; // New prop to indicate if it's inside a popover
-  onSubmit?: (content: string, author: string) => void;
+  isPopover?: boolean;
+  onSubmit?: (content: string, category: CategoryType) => void;
   onCancel?: () => void;
   onClose?: () => void;
-  onAddComment?: (content: string, author: string) => void;
+  onAddComment?: (content: string) => void;
   onToggleResolved?: () => void;
   onDelete?: () => void;
 }
@@ -28,11 +52,13 @@ const CommentModal = ({
   onDelete,
 }: CommentModalProps) => {
   const [comment, setComment] = useState("");
-  const [author, setAuthor] = useState("Anonymous");
-  const [showMenu, setShowMenu] = useState(false);
+  const [category, setCategory] = useState<CategoryType>("other");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const commentsScrollRef = useRef<HTMLDivElement>(null);
+  const { user } = useUser();
+
+  const isAnnotationCreator = user?.id === annotation?.authorId;
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -41,31 +67,41 @@ const CommentModal = ({
   }, []);
 
   useEffect(() => {
-    if (commentsScrollRef.current && annotation?.comments) {
-      const scrollContainer = commentsScrollRef.current;
-      scrollContainer.scrollTo({
-        top: scrollContainer.scrollHeight,
-        behavior: "smooth",
+    if (
+      commentsScrollRef.current &&
+      annotation?.comments &&
+      annotation.comments.length > 0
+    ) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (commentsScrollRef.current) {
+            commentsScrollRef.current.scrollTop =
+              commentsScrollRef.current.scrollHeight;
+          }
+        });
       });
     }
-  }, [annotation?.comments.length]);
+  }, [annotation?.comments]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
     if (isNewAnnotation && onSubmit) {
-      onSubmit(comment, author);
+      onSubmit(comment, category);
     } else if (onAddComment) {
-      onAddComment(comment, author);
-      // Small delay to ensure DOM update, then scroll and refocus
+      onAddComment(comment);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (commentsScrollRef.current) {
+            commentsScrollRef.current.scrollTo({
+              top: commentsScrollRef.current.scrollHeight,
+              behavior: "smooth",
+            });
+          }
+        });
+      });
       setTimeout(() => {
-        if (commentsScrollRef.current) {
-          commentsScrollRef.current.scrollTo({
-            top: commentsScrollRef.current.scrollHeight,
-            behavior: "smooth",
-          });
-        }
         if (textareaRef.current) {
           textareaRef.current.focus();
         }
@@ -82,198 +118,302 @@ const CommentModal = ({
     }
   };
 
-  // Calculate modal position for new annotations (not in popover)
-  const modalPosition =
-    position && !isPopover
-      ? {
-          left: Math.min(position.x + 10, window.innerWidth - 350),
-          top: Math.min(position.y + 10, window.innerHeight - 400),
-        }
-      : undefined;
-
-  // For existing annotations not in popover, position relative to center
-  const existingAnnotationStyle =
-    annotation && !position && !isPopover
-      ? {
-          position: "fixed" as const,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 10000,
-        }
-      : {};
-
-  // Base modal classes - don't include positioning when in popover
-  const baseClasses =
-    "bg-white rounded-lg shadow-xl border border-gray-200 w-80 max-h-96 overflow-hidden";
-  const modalClasses = isPopover
-    ? baseClasses
-    : `fixed ${baseClasses} z-[10000]`;
-
-  const modalStyle = isPopover
-    ? {}
-    : position
-      ? modalPosition
-      : existingAnnotationStyle;
-
   return (
-    <div
+    <Card
       ref={modalRef}
       data-comment-modal
-      className={modalClasses}
-      style={modalStyle}
+      className={`${isPopover ? "" : "fixed"} w-80 pointer-events-auto border-2 border-border z-10000 overflow-hidden pb-0`}
+      style={
+        isPopover
+          ? {}
+          : position
+            ? {
+                left: Math.min(position.x + 10, window.innerWidth - 350),
+                top: Math.min(position.y + 10, window.innerHeight - 400),
+              }
+            : {
+                position: "fixed" as const,
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }
+      }
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-100">
-        <h3 className="font-medium text-gray-900">
-          {isNewAnnotation ? "Add Comment" : "Comments"}
-        </h3>
-        <div className="flex items-center space-x-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 ">
+        <div className="flex items-center space-x-3">
+          <h3 className="font-semibold text-sm">
+            {isNewAnnotation ? "Feedback" : "Comments"}
+          </h3>
           {annotation && !isNewAnnotation && (
-            <button
-              onClick={() => setShowMenu(!showMenu)}
-              className="p-1 hover:bg-gray-100 rounded"
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
+            <div className="flex items-center space-x-2">
+              <Badge variant="secondary" className="gap-1">
+                {React.createElement(categoryConfig[annotation.category].icon, {
+                  className: `w-3 h-3 ${categoryConfig[annotation.category].textColor}`,
+                })}
+                <span className="text-xs capitalize">
+                  {categoryConfig[annotation.category].label}
+                </span>
+              </Badge>
+            </div>
           )}
-          <button
+        </div>
+        <div className="flex items-center space-x-1">
+          {annotation && !isNewAnnotation && isAnnotationCreator && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreHorizontal className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => onToggleResolved?.()}
+                  className="cursor-pointer"
+                >
+                  <Check className="w-4 h-4 mr-2" />
+                  {annotation.resolved ? "Unresolve" : "Resolve"}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => onDelete?.()}
+                  className="cursor-pointer text-red-600 focus:text-red-600"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
             onClick={isNewAnnotation ? onCancel : onClose}
-            className="p-1 hover:bg-gray-100 rounded"
           >
             <X className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
-      </div>
+      </CardHeader>
 
-      {/* Menu dropdown */}
-      {showMenu && annotation && (
-        <div className="absolute right-4 top-12 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-32">
-          <button
-            onClick={() => {
-              onToggleResolved?.();
-              setShowMenu(false);
-            }}
-            className="flex items-center space-x-2 w-full px-3 py-2 text-sm hover:bg-gray-50 text-left"
+      <CardContent className="p-0 flex flex-col max-h-72">
+        {/* Existing comments */}
+        {annotation && !isNewAnnotation && (
+          <div
+            ref={commentsScrollRef}
+            className="flex-1 overflow-y-auto px-6 py-4"
           >
-            <Check className="w-4 h-4" />
-            <span>{annotation.resolved ? "Unresolve" : "Resolve"}</span>
-          </button>
-          <button
-            onClick={() => {
-              onDelete?.();
-              setShowMenu(false);
-            }}
-            className="flex items-center space-x-2 w-full px-3 py-2 text-sm hover:bg-gray-50 text-red-600"
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>Delete</span>
-          </button>
-        </div>
-      )}
-
-      {/* Existing comments */}
-      {annotation && !isNewAnnotation && (
-        <div ref={commentsScrollRef} className="max-h-48 overflow-y-auto">
-          {/* Original comment */}
-          <div className="p-4 border-b border-gray-50">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                {annotation.author.charAt(0).toUpperCase()}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium text-sm">
-                    {annotation.author}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {annotation.timestamp.toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-900 mt-1">
-                  {annotation.content}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional comments */}
-          {annotation.comments.map((comment, index) => (
-            <div
-              key={`${comment.id}-${index}`}
-              className="p-4 border-b border-gray-50"
-            >
+            {/* Original comment */}
+            <div className="pb-4">
               <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-gray-400 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                  {comment.author.charAt(0).toUpperCase()}
-                </div>
-                <div className="flex-1">
+                <Avatar className="h-8 w-8">
+                  {user &&
+                  (annotation.author ===
+                    `${user.firstName} ${user.lastName || ""}`.trim() ||
+                    annotation.author ===
+                      user.emailAddresses?.[0]?.emailAddress) &&
+                  user.imageUrl ? (
+                    <AvatarImage src={user.imageUrl} alt={annotation.author} />
+                  ) : null}
+                  <AvatarFallback
+                    className={
+                      user &&
+                      (annotation.author ===
+                        `${user.firstName} ${user.lastName || ""}`.trim() ||
+                        annotation.author ===
+                          user.emailAddresses?.[0]?.emailAddress)
+                        ? "bg-blue-500 text-white text-sm"
+                        : "bg-muted text-sm"
+                    }
+                  >
+                    {annotation.author.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 space-y-1">
                   <div className="flex items-center space-x-2">
                     <span className="font-medium text-sm">
-                      {comment.author}
+                      {annotation.author}
                     </span>
-                    <span className="text-xs text-gray-500">
-                      {comment.timestamp.toLocaleDateString()}
+                    <span className="text-xs text-muted-foreground">
+                      {annotation.timestamp.toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-900 mt-1">
-                    {comment.content}
+                  <p className="text-sm text-foreground">
+                    {annotation.content}
                   </p>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* Comment form */}
-      {!annotation?.resolved && (
-        <form onSubmit={handleSubmit} className="p-4 border-t border-gray-100">
-          <div className="space-y-3">
-            {isNewAnnotation && (
-              <input
-                type="text"
-                placeholder="Your name"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            )}
-            <div className="relative">
-              <textarea
-                ref={textareaRef}
-                placeholder={
-                  isNewAnnotation
-                    ? "Add a comment..."
-                    : "Add another comment..."
-                }
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                onKeyDown={handleKeyDown}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-200 rounded-md text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                disabled={!comment.trim()}
-                className="absolute bottom-2 right-2 p-1.5 bg-blue-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-600"
+            {/* Additional comments */}
+            {annotation.comments.map((comment, index) => (
+              <div
+                key={`${comment.id}-${index}`}
+                className="pt-4 border-t border-border/50"
               >
-                <Send className="w-3 h-3" />
-              </button>
-            </div>
-            {/*<p className="text-xs text-gray-500">Press Enter to submit</p>*/}
+                <div className="flex items-start space-x-3">
+                  <Avatar className="h-8 w-8">
+                    {user &&
+                    (comment.author ===
+                      `${user.firstName} ${user.lastName || ""}`.trim() ||
+                      comment.author ===
+                        user.emailAddresses?.[0]?.emailAddress) &&
+                    user.imageUrl ? (
+                      <AvatarImage src={user.imageUrl} alt={comment.author} />
+                    ) : null}
+                    <AvatarFallback
+                      className={
+                        user &&
+                        (comment.author ===
+                          `${user.firstName} ${user.lastName || ""}`.trim() ||
+                          comment.author ===
+                            user.emailAddresses?.[0]?.emailAddress)
+                          ? "bg-blue-500 text-white text-sm"
+                          : "bg-muted text-sm"
+                      }
+                    >
+                      {comment.author.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center space-x-2">
+                      <span className="font-medium text-sm">
+                        {comment.author}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {comment.timestamp.toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-foreground">{comment.content}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </form>
-      )}
+        )}
 
-      {annotation?.resolved && (
-        <div className="p-4 bg-green-50 text-center">
-          <p className="text-sm text-green-700 font-medium">
-            This comment has been resolved
-          </p>
-        </div>
-      )}
-    </div>
+        {/* Comment form - fixed at bottom */}
+        {!annotation?.resolved && (
+          <div className="border-t border-border shrink-0">
+            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              {isNewAnnotation && (
+                <>
+                  {/* User Info */}
+                  <div className="flex items-center space-x-3 pb-3 border-b border-border/50">
+                    <Avatar className="h-10 w-10">
+                      {user?.imageUrl ? (
+                        <AvatarImage
+                          src={user.imageUrl}
+                          alt={user.firstName || "User"}
+                        />
+                      ) : null}
+                      <AvatarFallback className="bg-blue-500 text-white">
+                        {user?.firstName?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium text-sm">
+                        {user?.firstName && user?.lastName
+                          ? `${user.firstName} ${user.lastName}`
+                          : user?.firstName
+                            ? user.firstName
+                            : user?.emailAddresses?.[0]?.emailAddress
+                              ? user.emailAddresses[0].emailAddress
+                              : "Anonymous"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {user?.emailAddresses?.[0]?.emailAddress}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label htmlFor="category">Category</Label>
+                    <Select
+                      value={category}
+                      onValueChange={(value) =>
+                        setCategory(value as CategoryType)
+                      }
+                    >
+                      <SelectTrigger className="w-full border-gray-400/80">
+                        <SelectValue>
+                          <div className="flex items-center space-x-2">
+                            {React.createElement(
+                              categoryConfig[category].icon,
+                              {
+                                className: `w-4 h-4 ${categoryConfig[category].textColor}`,
+                              },
+                            )}
+                            <span>{categoryConfig[category].label}</span>
+                          </div>
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent
+                        className="max-h-[200px] overflow-y-auto z-10001 w-full border-gray-400/80"
+                        position="popper"
+                        sideOffset={4}
+                      >
+                        {Object.entries(categoryConfig).map(([key, config]) => {
+                          const Icon = config.icon;
+                          return (
+                            <SelectItem
+                              key={key}
+                              value={key}
+                              className="cursor-pointer"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <Icon
+                                  className={`w-2.5 h-2.5 ${config.textColor}`}
+                                />
+                                <span>{config.label}</span>
+                              </div>
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
+              )}
+
+              <div className="space-y-4">
+                <div className="relative">
+                  <Textarea
+                    id="comment"
+                    ref={textareaRef}
+                    placeholder={
+                      isNewAnnotation
+                        ? "Add a comment..."
+                        : "Add another comment..."
+                    }
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    rows={3}
+                    className="resize-none pr-12 border-gray-400/80"
+                  />
+                  <Button
+                    type="submit"
+                    size="icon"
+                    disabled={!comment.trim()}
+                    className="absolute bottom-2 right-2 h-8 w-8"
+                  >
+                    <Send className="w-3 h-3" />
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {annotation?.resolved && (
+          <div className="p-6 text-center border-t border-border shrink-0">
+            <Badge variant="secondary" className="bg-green-50 text-green-700">
+              ✓ This comment has been resolved
+            </Badge>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

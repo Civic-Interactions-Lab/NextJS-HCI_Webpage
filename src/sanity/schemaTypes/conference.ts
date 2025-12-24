@@ -1,7 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { orderRankField } from "@sanity/orderable-document-list";
 
-export const conferenceType = defineType({
+export const conference = defineType({
   name: "conference",
   title: "Conference",
   type: "document",

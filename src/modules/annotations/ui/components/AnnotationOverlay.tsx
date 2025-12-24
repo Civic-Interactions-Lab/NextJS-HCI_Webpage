@@ -6,13 +6,22 @@ import CommentModal from "./CommentModal";
 import { useAnnotations } from "@/modules/annotations/hooks/useAnnotations";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, XIcon } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Id } from "../../../../../convex/_generated/dataModel";
+import { CategoryType } from "@/modules/annotations/config/categoryConfig";
 
 interface AnnotationOverlayProps {
   children: React.ReactNode;
-  path: string;
 }
 
-const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
+const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
+  const { user, isSignedIn } = useUser();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const search = searchParams.toString();
+  const path = search ? `${pathname}?${search}` : pathname;
+
   const {
     annotations,
     isAnnotationMode,
@@ -35,17 +44,15 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
-      // Only handle clicks when in annotation mode
-      if (!isAnnotationMode) return;
+    if (!isSignedIn || !isAnnotationMode) return;
 
-      // Don't create annotation if clicking on existing annotation or modal
+    const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (
         target.closest("[data-annotation]") ||
         target.closest("[data-comment-modal]") ||
         target.closest("[data-annotation-toggle]") ||
-        target.closest("[data-radix-popper-content-wrapper]") // Exclude popover content
+        target.closest("[data-radix-popper-content-wrapper]")
       ) {
         return;
       }
@@ -53,7 +60,6 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
       event.preventDefault();
       event.stopPropagation();
 
-      // Store the click position and event for creating annotation
       setPendingAnnotation({
         x: event.clientX,
         y: event.clientY,
@@ -61,12 +67,20 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
       });
     };
 
+    document.addEventListener("click", handleClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleClick, true);
+    };
+  }, [isAnnotationMode, isSignedIn]);
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Toggle annotation mode with 'A' key
       if (event.key === "a" || event.key === "A") {
         if (!event.ctrlKey && !event.metaKey && !event.altKey) {
           const target = event.target as HTMLElement;
-          // Don't toggle if typing in an input or textarea
           if (
             target.tagName !== "INPUT" &&
             target.tagName !== "TEXTAREA" &&
@@ -78,7 +92,6 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
         }
       }
 
-      // Escape key to exit annotation mode or close modals
       if (event.key === "Escape") {
         setIsAnnotationMode(false);
         setActiveAnnotation(null);
@@ -86,20 +99,29 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
       }
     };
 
-    if (isAnnotationMode) {
-      document.addEventListener("click", handleClick, true);
-    }
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener("click", handleClick, true);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isAnnotationMode]);
+  }, [isSignedIn, setIsAnnotationMode]);
 
-  const handleCreateAnnotation = (content: string, author: string) => {
-    if (pendingAnnotation) {
-      createAnnotation(pendingAnnotation.event, content, author);
+  const handleCreateAnnotation = async (
+    content: string,
+    category: CategoryType,
+  ) => {
+    if (pendingAnnotation && user) {
+      const authorName = user.firstName
+        ? `${user.firstName} ${user.lastName || ""}`.trim()
+        : user.emailAddresses[0]?.emailAddress || "Anonymous";
+
+      await createAnnotation(
+        pendingAnnotation.event,
+        content,
+        user.id,
+        authorName,
+        category,
+      );
       setPendingAnnotation(null);
     }
   };
@@ -114,12 +136,37 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
     );
   };
 
+  const handleAddComment = async (
+    annotationId: Id<"annotations">,
+    content: string,
+  ) => {
+    if (user) {
+      const authorName = user.firstName
+        ? `${user.firstName} ${user.lastName || ""}`.trim()
+        : user.emailAddresses[0]?.emailAddress || "Anonymous";
+
+      await addComment(annotationId, content, authorName);
+    }
+  };
+
+  const handleToggleAnnotationMode = () => {
+    setIsAnnotationMode(!isAnnotationMode);
+
+    if (isAnnotationMode) {
+      setPendingAnnotation(null);
+    }
+  };
+
+  // If not signed in, just render children
+  if (!isSignedIn) {
+    return <>{children}</>;
+  }
+
   return (
     <div ref={overlayRef} className="relative">
-      {/* Toggle button */}
       <Button
         data-annotation-toggle
-        onClick={() => setIsAnnotationMode(!isAnnotationMode)}
+        onClick={handleToggleAnnotationMode}
         className={`fixed bottom-4 right-4 z-999 size-14 rounded-full font-medium transition-colors ${
           isAnnotationMode
             ? "bg-red-500 hover:bg-red-600 text-white"
@@ -133,45 +180,46 @@ const AnnotationOverlay = ({ children, path }: AnnotationOverlayProps) => {
         )}
       </Button>
 
-      {/* Main content with click overlay */}
       <div
         className={`relative ${isAnnotationMode ? "cursor-crosshair" : "cursor-default"}`}
         style={{ position: "relative", minHeight: "100vh" }}
       >
         {children}
 
-        {/* Annotation markers container - positioned relative to content */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-40">
-          {annotations.map((annotation) => {
-            const positionData = calculateCurrentPosition(annotation);
+        {/* Only show markers when in annotation mode */}
+        {isAnnotationMode && (
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-40">
+            {annotations.map((annotation) => {
+              const positionData = calculateCurrentPosition(annotation);
 
-            // Only render if annotation is visible in or near viewport
-            if (!positionData.isVisible) {
-              return null;
-            }
+              if (!positionData.isVisible) {
+                return null;
+              }
 
-            return (
-              <AnnotationMarker
-                key={`${annotation.id}-${positionUpdateTrigger}`}
-                annotation={annotation}
-                position={{ x: positionData.x, y: positionData.y }}
-                isActive={activeAnnotation === annotation.id}
-                onClick={() => handleMarkerClick(annotation.id)}
-                onAddComment={(content, author) =>
-                  addComment(annotation.id, content, author)
-                }
-                onToggleResolved={() => toggleResolved(annotation.id)}
-                onDelete={() => {
-                  deleteAnnotation(annotation.id);
-                  setActiveAnnotation(null);
-                }}
-              />
-            );
-          })}
-        </div>
+              return (
+                <AnnotationMarker
+                  key={`${annotation.id}-${positionUpdateTrigger}`}
+                  annotation={annotation}
+                  position={{ x: positionData.x, y: positionData.y }}
+                  isActive={activeAnnotation === annotation.id}
+                  onClick={() => handleMarkerClick(annotation.id)}
+                  onAddComment={(content) =>
+                    handleAddComment(annotation.id, content)
+                  }
+                  onToggleResolved={() =>
+                    toggleResolved(annotation.id, user?.id)
+                  }
+                  onDelete={async () => {
+                    await deleteAnnotation(annotation.id, user?.id);
+                    setActiveAnnotation(null);
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {/* Comment modal for new annotations */}
       {pendingAnnotation && (
         <CommentModal
           position={pendingAnnotation}

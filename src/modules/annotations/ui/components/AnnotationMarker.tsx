@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageCircle, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Annotation } from "@/modules/annotations/hooks/useAnnotations";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,13 +8,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import CommentModal from "./CommentModal";
+import { categoryConfig } from "@/modules/annotations/config/categoryConfig";
 
 interface AnnotationMarkerProps {
   annotation: Annotation;
   position: { x: number; y: number };
   isActive: boolean;
   onClick: () => void;
-  onAddComment: (content: string, author: string) => void;
+  onAddComment: (content: string) => void;
   onToggleResolved: () => void;
   onDelete: () => void;
 }
@@ -30,6 +31,9 @@ const AnnotationMarker = ({
 }: AnnotationMarkerProps) => {
   const commentCount = annotation.comments.length;
   const hasComments = commentCount > 0;
+
+  const categoryInfo = categoryConfig[annotation.category];
+  const CategoryIcon = categoryInfo.icon;
 
   return (
     <div
@@ -50,19 +54,21 @@ const AnnotationMarker = ({
               annotation.resolved
                 ? "bg-green-100 border-green-500 text-green-700"
                 : isActive
-                  ? "bg-blue-100 border-blue-500 text-blue-700"
-                  : "bg-white border-orange-500 text-orange-700 shadow-lg hover:shadow-xl"
+                  ? `bg-white ${categoryInfo.borderColor} ${categoryInfo.textColor} shadow-lg`
+                  : `bg-white ${categoryInfo.borderColor} ${categoryInfo.textColor} shadow-lg hover:shadow-xl`
             }`}
           >
             {annotation.resolved ? (
               <CheckCircle className="size-6" />
             ) : (
-              <MessageCircle className="size-6" />
+              <CategoryIcon className="size-6" />
             )}
 
             {/* Comment count indicator */}
             {hasComments && !annotation.resolved && (
-              <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+              <div
+                className={`absolute -top-1 -right-1 ${categoryInfo.color} text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold`}
+              >
                 {commentCount > 9 ? "9+" : commentCount}
               </div>
             )}
@@ -82,7 +88,7 @@ const AnnotationMarker = ({
             onAddComment={onAddComment}
             onToggleResolved={onToggleResolved}
             onDelete={onDelete}
-            isPopover={true} // New prop to indicate it's in a popover
+            isPopover={true} // Indicates it's in a popover
           />
         </PopoverContent>
       </Popover>

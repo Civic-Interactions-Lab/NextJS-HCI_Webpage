@@ -13,12 +13,10 @@ import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { schema } from "@/sanity/schemaTypes";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
-  ChartBarIncreasing,
   CircleDollarSignIcon,
   CircleQuestionMark,
   Globe,
   ImagesIcon,
-  MessageCircleIcon,
   MicroscopeIcon,
   NewspaperIcon,
   User,
@@ -299,14 +297,6 @@ export default defineConfig({
               S,
               context,
               icon: CircleDollarSignIcon,
-            }),
-
-            orderableDocumentListDeskItem({
-              type: "annotation",
-              title: "Annotations",
-              S,
-              context,
-              icon: MessageCircleIcon,
             }),
           ]);
       },
