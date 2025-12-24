@@ -6,12 +6,10 @@ import CommentModal from "./CommentModal";
 import { useAnnotations } from "@/modules/annotations/hooks/useAnnotations";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, XIcon } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import { useUser, RedirectToSignIn } from "@clerk/nextjs";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { CategoryType } from "@/modules/annotations/config/categoryConfig";
-
-export const dynamic = "force-dynamic";
 
 interface AnnotationOverlayProps {
   children: React.ReactNode;
@@ -42,6 +40,7 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
     y: number;
     event: MouseEvent;
   } | null>(null);
+  const [showSignIn, setShowSignIn] = useState(false);
 
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -152,6 +151,12 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
   };
 
   const handleToggleAnnotationMode = () => {
+    // Show sign-in if not signed in
+    if (!isSignedIn) {
+      setShowSignIn(true);
+      return;
+    }
+
     setIsAnnotationMode(!isAnnotationMode);
 
     if (isAnnotationMode) {
@@ -159,13 +164,14 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
     }
   };
 
-  // If not signed in, just render children
-  if (!isSignedIn) {
-    return <>{children}</>;
+  // Show sign-in redirect if triggered
+  if (showSignIn) {
+    return <RedirectToSignIn />;
   }
 
   return (
     <div ref={overlayRef} className="relative">
+      {/* Always show the button */}
       <Button
         data-annotation-toggle
         onClick={handleToggleAnnotationMode}
@@ -188,8 +194,8 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
       >
         {children}
 
-        {/* Only show markers when in annotation mode */}
-        {isAnnotationMode && (
+        {/* Only show markers when signed in and in annotation mode */}
+        {isSignedIn && isAnnotationMode && (
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-40">
             {annotations.map((annotation) => {
               const positionData = calculateCurrentPosition(annotation);
@@ -222,7 +228,7 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
         )}
       </div>
 
-      {pendingAnnotation && (
+      {pendingAnnotation && isSignedIn && (
         <CommentModal
           position={pendingAnnotation}
           onSubmit={handleCreateAnnotation}

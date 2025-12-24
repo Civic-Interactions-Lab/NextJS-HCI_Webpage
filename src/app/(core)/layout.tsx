@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnnotationOverlay from "@/modules/annotations/ui/components/AnnotationOverlay";
-import { Loader } from "lucide-react";
+import Loading from "@/components/Loading";
 
 export default async function CoreLayout({
   children,
@@ -10,7 +10,7 @@ export default async function CoreLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loading />}>
       <AnnotationOverlay>
         <div className="min-h-screen flex flex-col">
           <NavBar />
