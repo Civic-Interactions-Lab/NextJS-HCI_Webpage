@@ -5,7 +5,7 @@ import {
   getCollaborators,
   getCurrentMembers,
 } from "@/sanity/lib/people/getPeople";
-import { Loader2 } from "lucide-react";
+import Loading from "@/components/Loading";
 
 interface PageProps {
   searchParams: Promise<{ sub?: string }> | { sub?: string };
@@ -33,11 +33,3 @@ const PeoplePage = async ({ searchParams }: PageProps) => {
 };
 
 export default PeoplePage;
-
-const Loading = () => {
-  return (
-    <div className="flex items-center justify-center flex-1">
-      <Loader2 className="animate-spin" />
-    </div>
-  );
-};

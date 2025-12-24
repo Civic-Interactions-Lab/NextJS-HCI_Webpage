@@ -14,7 +14,7 @@ import {
   getHomeHubCommunityImage,
   getHomeWhyHCIImages,
 } from "@/sanity/lib/imageSettings/homeImages";
-import { Loader } from "lucide-react";
+import Loading from "@/components/Loading";
 
 const HomeView = async () => {
   const heroImage = await getHomeHeroImage();
@@ -27,7 +27,7 @@ const HomeView = async () => {
 
   return (
     <>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<Loading />}>
         <Hero
           image={heroImage?.asset}
           alt={heroImage?.alt}

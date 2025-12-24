@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import { getAboutHeroImage } from "@/sanity/lib/imageSettings/aboutImages";
 import { getPeopleHeroImage } from "@/sanity/lib/imageSettings/peopleImages";
 import { getSponsorsHeroImage } from "@/sanity/lib/imageSettings/sponsorsImages";
-import { Loader2 } from "lucide-react";
+import Loading from "@/components/Loading";
 
 export default async function TabBarLayout({
   children,
@@ -30,11 +30,3 @@ export default async function TabBarLayout({
     </>
   );
 }
-
-const Loading = () => {
-  return (
-    <div className="flex items-center justify-center flex-1 min-h-screen">
-      <Loader2 className="animate-spin" />
-    </div>
-  );
-};
