@@ -2,9 +2,9 @@ import { type SchemaTypeDefinition } from "sanity";
 import { peopleType } from "@/sanity/schemaTypes/people";
 import { newsType } from "@/sanity/schemaTypes/news";
 import { faqType } from "@/sanity/schemaTypes/faqType";
-import { testimonialsType } from "@/sanity/schemaTypes/testimonialsType";
+import { testimonials } from "@/sanity/schemaTypes/testimonials";
 import { imageSettingsType } from "@/sanity/schemaTypes/imageSettings";
-import { conferenceType } from "@/sanity/schemaTypes/conferenceType";
+import { conference } from "@/sanity/schemaTypes/conference";
 import { researchType } from "@/sanity/schemaTypes/research";
 import { sponsorType } from "@/sanity/schemaTypes/sponsors";
 
@@ -14,9 +14,9 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     newsType,
     researchType,
     faqType,
-    testimonialsType,
+    testimonials,
     imageSettingsType,
-    conferenceType,
+    conference,
     sponsorType,
   ],
 };

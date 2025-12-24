@@ -13,7 +13,6 @@ import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { schema } from "@/sanity/schemaTypes";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
-  ChartBarIncreasing,
   CircleDollarSignIcon,
   CircleQuestionMark,
   Globe,
