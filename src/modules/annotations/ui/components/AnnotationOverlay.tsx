@@ -11,6 +11,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { CategoryType } from "@/modules/annotations/config/categoryConfig";
 
+export const dynamic = "force-dynamic";
+
 interface AnnotationOverlayProps {
   children: React.ReactNode;
 }
