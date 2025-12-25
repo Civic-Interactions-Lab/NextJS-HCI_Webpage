@@ -50,7 +50,8 @@ export const createAnnotation = mutation({
     }),
     content: v.string(),
     authorId: v.string(),
-    author: v.string(),
+    authorName: v.string(),
+    authorImageUrl: v.optional(v.string()),
     category: v.union(
       v.literal("content"),
       v.literal("bug"),
@@ -68,7 +69,8 @@ export const createAnnotation = mutation({
       position: args.position,
       content: args.content,
       authorId: args.authorId,
-      author: args.author,
+      authorName: args.authorName,
+      authorImageUrl: args.authorImageUrl,
       category: args.category,
       timestamp: Date.now(),
       resolved: false,
@@ -80,13 +82,17 @@ export const addComment = mutation({
   args: {
     annotationId: v.id("annotations"),
     content: v.string(),
-    author: v.string(),
+    authorId: v.string(),
+    authorName: v.string(),
+    authorImageUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("comments", {
       annotationId: args.annotationId,
       content: args.content,
-      author: args.author,
+      authorId: args.authorId,
+      authorName: args.authorName,
+      authorImageUrl: args.authorImageUrl,
       timestamp: Date.now(),
     });
   },

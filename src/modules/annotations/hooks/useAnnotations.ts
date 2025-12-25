@@ -22,7 +22,8 @@ export interface Annotation {
   position: AnnotationPosition;
   content: string;
   authorId: string;
-  author: string;
+  authorName: string;
+  authorImageUrl?: string;
   timestamp: Date;
   comments: Comment[];
   resolved: boolean;
@@ -40,7 +41,9 @@ export interface Annotation {
 export interface Comment {
   id: Id<"comments">;
   content: string;
-  author: string;
+  authorId: string;
+  authorName: string;
+  authorImageUrl?: string;
   timestamp: Date;
 }
 
@@ -68,12 +71,15 @@ export const useAnnotations = (path: string) => {
       position: annotation.position,
       content: annotation.content,
       authorId: annotation.authorId,
-      author: annotation.author,
+      authorName: annotation.authorName,
+      authorImageUrl: annotation.authorImageUrl,
       timestamp: new Date(annotation.timestamp),
       comments: annotation.comments.map((comment) => ({
         id: comment._id,
         content: comment.content,
-        author: comment.author,
+        authorId: comment.authorId,
+        authorName: comment.authorName,
+        authorImageUrl: comment.authorImageUrl,
         timestamp: new Date(comment.timestamp),
       })),
       resolved: annotation.resolved,
@@ -186,7 +192,8 @@ export const useAnnotations = (path: string) => {
       event: MouseEvent,
       content: string,
       authorId: string,
-      author: string,
+      authorName: string,
+      authorImageUrl: string,
       category:
         | "content"
         | "bug"
@@ -205,7 +212,8 @@ export const useAnnotations = (path: string) => {
           position,
           content,
           authorId,
-          author,
+          authorName,
+          authorImageUrl,
           category,
         });
       } catch (error) {
@@ -219,13 +227,17 @@ export const useAnnotations = (path: string) => {
     async (
       annotationId: Id<"annotations">,
       content: string,
-      author: string,
+      authorId: string,
+      authorName: string,
+      authorImageUrl: string,
     ) => {
       try {
         await addCommentMutation({
           annotationId,
           content,
-          author,
+          authorId,
+          authorName,
+          authorImageUrl,
         });
       } catch (error) {
         throw error;

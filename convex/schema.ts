@@ -19,7 +19,8 @@ export default defineSchema({
     }),
     content: v.string(),
     authorId: v.string(),
-    author: v.string(),
+    authorName: v.string(),
+    authorImageUrl: v.optional(v.string()),
     timestamp: v.number(),
     resolved: v.boolean(),
     category: v.union(
@@ -39,7 +40,9 @@ export default defineSchema({
   comments: defineTable({
     annotationId: v.id("annotations"),
     content: v.string(),
-    author: v.string(),
+    authorId: v.string(),
+    authorName: v.string(),
+    authorImageUrl: v.optional(v.string()),
     timestamp: v.number(),
   })
     .index("by_annotation", ["annotationId"])

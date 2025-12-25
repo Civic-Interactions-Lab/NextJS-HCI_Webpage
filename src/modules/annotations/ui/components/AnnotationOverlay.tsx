@@ -121,6 +121,7 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
         content,
         user.id,
         authorName,
+        user.imageUrl,
         category,
       );
       setPendingAnnotation(null);
@@ -146,7 +147,13 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
         ? `${user.firstName} ${user.lastName || ""}`.trim()
         : user.emailAddresses[0]?.emailAddress || "Anonymous";
 
-      await addComment(annotationId, content, authorName);
+      await addComment(
+        annotationId,
+        content,
+        user.id,
+        authorName,
+        user.imageUrl,
+      );
     }
   };
 
