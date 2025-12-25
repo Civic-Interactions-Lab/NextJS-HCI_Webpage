@@ -122,7 +122,7 @@ const CommentModal = ({
     <Card
       ref={modalRef}
       data-comment-modal
-      className={`${isPopover ? "" : "fixed"} w-80 pointer-events-auto border-2 border-border z-10000 overflow-hidden pb-0`}
+      className={`${isPopover ? "" : "fixed"} w-80 md:w-96 pointer-events-auto border-2 border-border z-10000 overflow-hidden pb-0`}
       style={
         isPopover
           ? {}
@@ -206,32 +206,26 @@ const CommentModal = ({
             <div className="pb-4">
               <div className="flex items-start space-x-3">
                 <Avatar className="h-8 w-8">
-                  {user &&
-                  (annotation.author ===
-                    `${user.firstName} ${user.lastName || ""}`.trim() ||
-                    annotation.author ===
-                      user.emailAddresses?.[0]?.emailAddress) &&
-                  user.imageUrl ? (
-                    <AvatarImage src={user.imageUrl} alt={annotation.author} />
+                  {annotation.authorImageUrl ? (
+                    <AvatarImage
+                      src={annotation.authorImageUrl}
+                      alt={annotation.authorName}
+                    />
                   ) : null}
                   <AvatarFallback
                     className={
-                      user &&
-                      (annotation.author ===
-                        `${user.firstName} ${user.lastName || ""}`.trim() ||
-                        annotation.author ===
-                          user.emailAddresses?.[0]?.emailAddress)
+                      user?.id === annotation.authorId
                         ? "bg-blue-500 text-white text-sm"
                         : "bg-muted text-sm"
                     }
                   >
-                    {annotation.author.charAt(0).toUpperCase()}
+                    {annotation.authorName.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center space-x-2">
                     <span className="font-medium text-sm">
-                      {annotation.author}
+                      {annotation.authorName}
                     </span>
                     <span className="text-xs text-muted-foreground">
                       {annotation.timestamp.toLocaleDateString()}
@@ -252,32 +246,26 @@ const CommentModal = ({
               >
                 <div className="flex items-start space-x-3">
                   <Avatar className="h-8 w-8">
-                    {user &&
-                    (comment.author ===
-                      `${user.firstName} ${user.lastName || ""}`.trim() ||
-                      comment.author ===
-                        user.emailAddresses?.[0]?.emailAddress) &&
-                    user.imageUrl ? (
-                      <AvatarImage src={user.imageUrl} alt={comment.author} />
+                    {comment.authorImageUrl ? (
+                      <AvatarImage
+                        src={comment.authorImageUrl}
+                        alt={comment.authorName}
+                      />
                     ) : null}
                     <AvatarFallback
                       className={
-                        user &&
-                        (comment.author ===
-                          `${user.firstName} ${user.lastName || ""}`.trim() ||
-                          comment.author ===
-                            user.emailAddresses?.[0]?.emailAddress)
+                        user?.id === comment.authorId
                           ? "bg-blue-500 text-white text-sm"
                           : "bg-muted text-sm"
                       }
                     >
-                      {comment.author.charAt(0).toUpperCase()}
+                      {comment.authorName.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center space-x-2">
                       <span className="font-medium text-sm">
-                        {comment.author}
+                        {comment.authorName}
                       </span>
                       <span className="text-xs text-muted-foreground">
                         {comment.timestamp.toLocaleDateString()}
