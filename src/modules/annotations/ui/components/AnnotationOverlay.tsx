@@ -36,8 +36,6 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
 
   const [activeAnnotation, setActiveAnnotation] = useState<string | null>(null);
   const [pendingAnnotation, setPendingAnnotation] = useState<{
-    x: number;
-    y: number;
     event: MouseEvent;
   } | null>(null);
   const [showSignIn, setShowSignIn] = useState(false);
@@ -58,12 +56,15 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
         return;
       }
 
+      // Don't allow new annotations when viewing an existing annotation OR when pending annotation modal is open
+      if (activeAnnotation || pendingAnnotation) {
+        return;
+      }
+
       event.preventDefault();
       event.stopPropagation();
 
       setPendingAnnotation({
-        x: event.clientX,
-        y: event.clientY,
         event: event,
       });
     };
@@ -73,7 +74,7 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
     return () => {
       document.removeEventListener("click", handleClick, true);
     };
-  }, [isAnnotationMode, isSignedIn]);
+  }, [isAnnotationMode, isSignedIn, activeAnnotation, pendingAnnotation]);
 
   useEffect(() => {
     if (!isSignedIn) return;
@@ -158,7 +159,6 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
   };
 
   const handleToggleAnnotationMode = () => {
-    // Show sign-in if not signed in
     if (!isSignedIn) {
       setShowSignIn(true);
       return;
@@ -168,17 +168,21 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
 
     if (isAnnotationMode) {
       setPendingAnnotation(null);
+      setActiveAnnotation(null);
     }
   };
 
-  // Show sign-in redirect if triggered
+  // Get the active annotation object
+  const activeAnnotationObj = activeAnnotation
+    ? annotations.find((a) => a.id === activeAnnotation)
+    : null;
+
   if (showSignIn) {
     return <RedirectToSignIn />;
   }
 
   return (
     <div ref={overlayRef} className="relative">
-      {/* Always show the button */}
       <Button
         data-annotation-toggle
         onClick={handleToggleAnnotationMode}
@@ -201,7 +205,6 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
       >
         {children}
 
-        {/* Only show markers when signed in and in annotation mode */}
         {isSignedIn && isAnnotationMode && (
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-40">
             {annotations.map((annotation) => {
@@ -218,16 +221,6 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
                   position={{ x: positionData.x, y: positionData.y }}
                   isActive={activeAnnotation === annotation.id}
                   onClick={() => handleMarkerClick(annotation.id)}
-                  onAddComment={(content) =>
-                    handleAddComment(annotation.id, content)
-                  }
-                  onToggleResolved={() =>
-                    toggleResolved(annotation.id, user?.id)
-                  }
-                  onDelete={async () => {
-                    await deleteAnnotation(annotation.id, user?.id);
-                    setActiveAnnotation(null);
-                  }}
                 />
               );
             })}
@@ -235,12 +228,30 @@ const AnnotationOverlay = ({ children }: AnnotationOverlayProps) => {
         )}
       </div>
 
+      {/* Modal for creating new annotations */}
       {pendingAnnotation && isSignedIn && (
         <CommentModal
-          position={pendingAnnotation}
           onSubmit={handleCreateAnnotation}
           onCancel={handleCancelAnnotation}
           isNewAnnotation
+        />
+      )}
+
+      {/* Modal for viewing/commenting on existing annotations */}
+      {activeAnnotationObj && isSignedIn && (
+        <CommentModal
+          annotation={activeAnnotationObj}
+          onClose={() => setActiveAnnotation(null)}
+          onAddComment={(content) =>
+            handleAddComment(activeAnnotationObj.id, content)
+          }
+          onToggleResolved={() =>
+            toggleResolved(activeAnnotationObj.id, user?.id)
+          }
+          onDelete={async () => {
+            await deleteAnnotation(activeAnnotationObj.id, user?.id);
+            setActiveAnnotation(null);
+          }}
         />
       )}
     </div>
