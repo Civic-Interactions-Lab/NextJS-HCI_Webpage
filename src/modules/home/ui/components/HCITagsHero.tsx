@@ -26,7 +26,7 @@ const HciTagsHero = () => {
     <div className="flex flex-row items-start space-x-4 md:space-x-6 xl:space-x-12 w-full">
       {/* Main title block */}
       <motion.div
-        className="bg-primary-red-800 text-white pl-3 xl:pl-4.5 pb-3 font-bold shrink-0 relative size-36 md:size-48 lg:size-64 xl:size-72 items-end justify-end"
+        className="bg-well-red text-white pl-3 xl:pl-4.5 pb-3 font-bold shrink-0 relative size-36 md:size-48 lg:size-64 xl:size-72 items-end justify-end"
         variants={itemVariants}
         initial="hidden"
         animate="visible"
@@ -42,7 +42,7 @@ const HciTagsHero = () => {
         </div>
 
         <div className="absolute top-0 right-8 md:right-12 xl:right-16 size-8 md:size-12 xl:size-16 bg-white" />
-        <div className="absolute top-0 right-0 size-8 md:size-12 xl:size-16 bg-primary-red-950" />
+        <div className="absolute top-0 right-0 size-8 md:size-12 xl:size-16 bg-deep-red" />
         <div className="absolute top-8 md:top-12 right-0 xl:top-16 size-8 md:size-12 xl:size-16 bg-white" />
       </motion.div>
 
@@ -57,7 +57,7 @@ const HciTagsHero = () => {
       >
         {/* Social Computing tag */}
         <motion.div
-          className="bg-primary-blue-800 text-white px-2 md:px-4 xl:px-6 py-1 md:py-2 xl:py-3 rounded-2xl text-sm md:text-2xl xl:text-3xl shrink-0 font-medium tracking-wider font-jetbrains-mono uppercase"
+          className="bg-sky text-white px-2 md:px-4 xl:px-6 py-1 md:py-2 xl:py-3 rounded-2xl text-sm md:text-2xl xl:text-3xl shrink-0 font-medium tracking-wider font-jetbrains-mono uppercase"
           variants={itemVariants}
         >
           Social Computing
@@ -69,7 +69,7 @@ const HciTagsHero = () => {
 
         {/* GenAI tag */}
         <motion.div
-          className="bg-primary-yellow-800 px-2 md:px-4 xl:px-6 py-1 md:py-2 xl:py-3 rounded-full text-sm md:text-2xl xl:text-3xl font-medium tracking-wide shrink-0 font-roboto"
+          className="bg-gold px-2 md:px-4 xl:px-6 py-1 md:py-2 xl:py-3 rounded-full text-sm md:text-2xl xl:text-3xl font-medium tracking-wide shrink-0 font-roboto"
           variants={itemVariants}
         >
           GenAI & Education
@@ -81,7 +81,7 @@ const HciTagsHero = () => {
 
         {/* Accessible Technology tag */}
         <motion.div
-          className="bg-primary-green-800 text-white px-2 md:px-4 xl:px-6 py-1 md:py-2 xl:py-3 rounded-2xl text-sm md:text-2xl xl:text-3xl font-semibold shrink-0 font-outfit"
+          className="bg-grass text-white px-2 md:px-4 xl:px-6 py-1 md:py-2 xl:py-3 rounded-2xl text-sm md:text-2xl xl:text-3xl font-semibold shrink-0 font-outfit"
           variants={itemVariants}
         >
           Accessible Technology

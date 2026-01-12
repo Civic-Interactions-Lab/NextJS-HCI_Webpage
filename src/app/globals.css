@@ -51,6 +51,16 @@
     --color-primary-blue-800: #067AAB;
     --color-primary-yellow-800: #E29500;
     --color-primary-green-800: #028683;
+
+    --color-thunder: #292727;
+    --color-deep-red: #620719;
+    --color-well-red: #AA2C45;
+    --color-alabaster: #F5F5F0;
+    --color-grass: #028683;
+    --color-sky: #067AAB;
+    --color-gold: #E29500;
+    --color-violet: #7A25C3;
+    --color-ember: #E26200
 }
 
 :root {
@@ -94,6 +104,16 @@
     --color-primary-blue-800: #067AAB;
     --color-primary-yellow-800: #E29500;
     --color-primary-green-800: #028683;
+
+    --thunder: #292727;
+    --deep-red: #620719;
+    --well-red: #AA2C45;
+    --alabaster: #F5F5F0;
+    --grass: #028683;
+    --sky: #067AAB;
+    --gold: #E29500;
+    --violet: #7A25C3;
+    --ember: #E26200
 }
 
 .dark {
@@ -136,6 +156,16 @@
     --color-primary-blue-800: #067AAB;
     --color-primary-yellow-800: #E29500;
     --color-primary-green-800: #028683;
+
+    --thunder: #292727;
+    --deep-red: #620719;
+    --well-red: #AA2C45;
+    --alabaster: #F5F5F0;
+    --grass: #028683;
+    --sky: #067AAB;
+    --gold: #E29500;
+    --violet: #7A25C3;
+    --ember: #E26200
 }
 
 @layer base {

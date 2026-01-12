@@ -81,7 +81,7 @@ const FeatureProjects = ({
               />
 
               <TapeTag position="bottom-right" rotation={-24} color="black">
-                <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight break-words whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
+                <p className="text-xs md:text-sm font-light font-jetbrains-mono leading-tight wrap-break-word whitespace-normal max-w-40 md:max-w-48 line-clamp-3">
                   {featuredProjectsImage?.alt}
                 </p>
               </TapeTag>
@@ -110,11 +110,11 @@ const FeatureProjects = ({
                     delay: index * 0.2,
                     ease: "easeOut",
                   }}
-                  className="border-2 border-cyan-700 rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-all duration-300 hover:scale-105"
+                  className="border-2 border-sky rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-all duration-300 hover:scale-105"
                 >
                   {/* Blue circle avatar */}
                   <div className="flex items-start gap-4">
-                    <div className="size-12 md:size-16 bg-cyan-700 rounded-full flex-shrink-0" />
+                    <div className="size-12 md:size-16 bg-sky rounded-full shrink-0" />
                     <div className="flex-1">
                       {primaryAction?.url ? (
                         <Link
