@@ -70,7 +70,7 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
               className="object-cover"
               priority
             />
-            <div className="absolute top-12 -right-8 rotate-12 bg-orange-300 text-white px-4 py-2 rounded-full font-bold text-sm md:text-base">
+            <div className="absolute top-12 -right-8 rotate-12 bg-gold text-white px-4 py-2 rounded-full font-bold text-sm md:text-base">
               #COMMUNITY
             </div>
           </div>

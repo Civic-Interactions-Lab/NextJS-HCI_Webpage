@@ -65,7 +65,7 @@ const SocialEvents = ({ images }: SocialEventsProps) => {
               className="object-cover rounded-tl-[150px]"
               priority
             />
-            <div className="absolute bottom-16 -left-8 -rotate-16 bg-blue-500 text-white px-4 py-2 rounded-full font-bold text-sm md:text-base shadow-lg">
+            <div className="absolute bottom-16 -left-8 -rotate-16 bg-sky text-white px-4 py-2 rounded-full font-bold text-sm md:text-base shadow-lg">
               #TEAM
             </div>
           </div>

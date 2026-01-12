@@ -37,7 +37,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
       {/* Desktop Layout - 4 column grid */}
       <div className="hidden md:grid md:grid-cols-4 md:gap-6 md:h-48 lg:h-64 xl:h-72">
         <motion.div
-          className="bg-primary-red-950 text-white pl-3 xl:pl-4.5 pb-3 font-bold shrink-0 relative size-full items-end justify-end"
+          className="bg-deep-red text-white pl-3 xl:pl-4.5 pb-3 font-bold shrink-0 relative size-full items-end justify-end"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={
             isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
@@ -50,7 +50,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
           </div>
 
           <div className="absolute top-0 right-12 xl:right-14 size-12 xl:size-14 bg-white" />
-          <div className="absolute top-0 right-0 size-12 xl:size-14 bg-primary-red-800" />
+          <div className="absolute top-0 right-0 size-12 xl:size-14 bg-well-red" />
           <div className="absolute top-12 right-0 xl:top-14 size-12 xl:size-14 bg-white" />
         </motion.div>
 
@@ -83,7 +83,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
             <div className="absolute inset-0 flex flex-col justify-end p-6">
               <div className="flex items-end space-x-3 mb-1.5">
                 {newsItem.featured && (
-                  <div className="bg-primary-red-800 text-white text-xs font-medium px-2 py-1 rounded w-fit">
+                  <div className="bg-well-red text-white text-xs font-medium px-2 py-1 rounded w-fit">
                     FEATURED
                   </div>
                 )}
@@ -109,7 +109,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
                 delay: 0.2 + index * 0.1,
                 ease: "easeOut",
               }}
-              className="px-4 py-2 bg-gray-200/80 rounded-lg hover:border-primary-red-800 hover:scale-105 transition-all duration-300 border-2 border-transparent"
+              className="px-4 py-2 bg-gray-200/80 rounded-lg hover:border-well-red hover:scale-105 transition-all duration-300 border-2 border-transparent"
             >
               <Link
                 href={newsItem.link || ""}
@@ -121,7 +121,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
                     {newsItem.title}
                   </p>
                   {newsItem.featured && (
-                    <div className="border-primary-red-800 border-2 text-primary-red-800 text-xs font-medium px-2 py-1 rounded-full shrink-0">
+                    <div className="border-well-red border-2 text-well-red text-xs font-medium px-2 py-1 rounded-full shrink-0">
                       FEATURED
                     </div>
                   )}
@@ -162,7 +162,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
               delay: 0.2 + index * 0.1,
               ease: "easeOut",
             }}
-            className="px-4 py-1.5 bg-gray-200/80 rounded-lg hover:border-primary-red-800 hover:scale-105 transition-all duration-300 border-2 border-transparent"
+            className="px-4 py-1.5 bg-gray-200/80 rounded-lg hover:border-well-red hover:scale-105 transition-all duration-300 border-2 border-transparent"
           >
             <Link
               href={newsItem.link || ""}
@@ -174,7 +174,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
                   {newsItem.title}
                 </p>
                 {newsItem.featured && (
-                  <div className="border-primary-red-800 border-2 text-primary-red-800 text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0">
+                  <div className="border-well-red border-2 text-well-red text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0">
                     FEATURED
                   </div>
                 )}

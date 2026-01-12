@@ -12,7 +12,7 @@ const CallToActionSection = () => {
   return (
     <motion.div
       ref={ref}
-      className="w-full bg-primary-red-800 overflow-hidden"
+      className="w-full bg-well-red overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -44,7 +44,7 @@ const CallToActionSection = () => {
               rel="noopener noreferrer"
             >
               <motion.div
-                className="border-3 border-white rounded-sm px-8 md:px-16 py-1.5 w-fit mb-8 mx-auto md:mx-0 cursor-pointer hover:bg-white hover:text-primary-red-800 text-sm md:text-lg text-white font-medium font-outfit transition-colors duration-300 ease-in-out"
+                className="border-3 border-white rounded-sm px-8 md:px-16 py-1.5 w-fit mb-8 mx-auto md:mx-0 cursor-pointer hover:bg-white hover:text-well-red text-sm md:text-lg text-white font-medium font-outfit transition-colors duration-300 ease-in-out"
                 whileHover={{
                   scale: 1.05,
                   boxShadow: "0 10px 25px rgba(255, 255, 255, 0.2)",
@@ -79,7 +79,7 @@ const CallToActionSection = () => {
           <Image
             src="/logos/hci-logo-white.png"
             alt="Temple University HCI Lab logo - Human-Computer Interaction Research Laboratory"
-            className="size-96 flex-shrink-0"
+            className="size-96 shrink-0"
             width={384}
             height={384}
             loading="eager"
@@ -101,7 +101,7 @@ const CallToActionSection = () => {
           <Image
             src="/logos/hci-logo-white.png"
             alt="Temple University HCI Lab logo - Human-Computer Interaction Research Laboratory"
-            className="size-48 flex-shrink-0"
+            className="size-48 shrink-0"
             width={192}
             height={192}
             loading="eager"

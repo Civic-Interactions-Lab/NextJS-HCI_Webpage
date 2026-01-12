@@ -25,11 +25,11 @@ const NewsCategoryLegend = ({ onFilterChange }: NewsCategoryLegendProps) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const categoryColors = {
-    Collaborations: "#EAB308", // yellow-500
-    "Grants / Awards": "#A855F7", // purple-500
-    "Conference Talk": "#0D9488", // teal-600
-    "Published Papers": "#0891B2", // cyan-600
-    Alumni: "#F97316", // orange-500
+    Collaborations: "#E29500",
+    "Grants / Awards": "#7A25C3",
+    "Conference Talk": "#028683",
+    "Published Papers": "#067AAB",
+    Alumni: "#E26200",
   };
 
   const categoryLabels = {

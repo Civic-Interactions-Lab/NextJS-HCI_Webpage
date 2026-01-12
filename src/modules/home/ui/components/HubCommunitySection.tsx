@@ -94,7 +94,7 @@ const HubCommunitySection = ({
 
           {/* Animated Tags */}
           <motion.div
-            className="absolute top-10 -left-2 px-3 md:px-6 py-1 md:py-2 bg-cyan-600 rounded-full"
+            className="absolute top-10 -left-2 px-3 md:px-6 py-1 md:py-2 bg-sky rounded-full"
             variants={tagVariants}
             custom={-16}
             initial="hidden"
@@ -106,7 +106,7 @@ const HubCommunitySection = ({
           </motion.div>
 
           <motion.div
-            className="absolute top-24 -left-6 px-3 md:px-6 py-1 md:py-2 bg-orange-300 rounded-full"
+            className="absolute top-24 -left-6 px-3 md:px-6 py-1 md:py-2 bg-gold rounded-full"
             variants={tagVariants}
             custom={8}
             initial="hidden"
@@ -118,7 +118,7 @@ const HubCommunitySection = ({
           </motion.div>
 
           <motion.div
-            className="absolute top-44 left-0 px-3 md:px-6 py-1 md:py-2 bg-pink-300 rounded-full"
+            className="absolute top-44 left-0 px-3 md:px-6 py-1 md:py-2 bg-well-red rounded-full"
             variants={tagVariants}
             custom={16}
             initial="hidden"

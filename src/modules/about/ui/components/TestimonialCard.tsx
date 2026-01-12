@@ -29,36 +29,36 @@ interface TestimonialCardProps {
 
 const testimonialStyles: TestimonialStyle[] = [
   {
-    backgroundColor: "bg-yellow-300",
-    borderColor: "border-blue-500",
-    badgeColor: "bg-blue-500",
+    backgroundColor: "bg-[#FFEB7B]",
+    borderColor: "border-sky",
+    badgeColor: "bg-sky",
     rotate: "rotate-2",
     translate: "-translate-y-2",
     avatarLocation: "-bottom-8 -left-8",
     isLeft: false,
   },
   {
-    backgroundColor: "bg-green-300",
-    borderColor: "border-green-800",
-    badgeColor: "bg-green-800",
+    backgroundColor: "bg-[#C5FCD0]",
+    borderColor: "border-grass",
+    badgeColor: "bg-grass",
     rotate: "-rotate-3",
     translate: "translate-y-3",
     avatarLocation: "-bottom-8 right-12",
     isLeft: false,
   },
   {
-    backgroundColor: "bg-pink-300",
-    borderColor: "border-orange-500",
-    badgeColor: "bg-orange-500",
+    backgroundColor: "bg-[#FF7EB9]",
+    borderColor: "border-gold",
+    badgeColor: "bg-gold",
     rotate: "rotate-1",
     translate: "-translate-y-4",
     avatarLocation: "-bottom-8 -right-6",
     isLeft: true,
   },
   {
-    backgroundColor: "bg-purple-300",
-    borderColor: "border-yellow-500",
-    badgeColor: "bg-yellow-500",
+    backgroundColor: "bg-[#B2E1FF]",
+    borderColor: "border-grass",
+    badgeColor: "bg-grass",
     rotate: "-rotate-1",
     translate: "-translate-y-1",
     avatarLocation: "-bottom-8 right-12",
@@ -103,7 +103,7 @@ const TestimonialCard = ({ testimonial, index }: TestimonialCardProps) => {
           damping: 15,
         },
       }}
-      className={`relative flex-shrink-0 w-64 md:w-88 h-fit p-3 md:p-6 pb-8 md:pb-12 rounded-none ${style.backgroundColor} ${style.rotate} ${style.translate} shadow-md shadow-gray-400 cursor-pointer`}
+      className={`relative shrink-0 w-64 md:w-88 h-fit p-3 md:p-6 pb-8 md:pb-12 rounded-none ${style.backgroundColor} ${style.rotate} ${style.translate} shadow-md shadow-gray-400 cursor-pointer`}
       style={{
         transformOrigin: "center top",
       }}

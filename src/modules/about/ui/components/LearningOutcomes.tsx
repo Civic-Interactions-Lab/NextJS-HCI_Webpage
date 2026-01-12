@@ -15,7 +15,7 @@ const learningOutcomes: LearningOutcome[] = [
     category: "LEADERSHIP",
     description:
       "think critically, collaborate with others, and communicate complex ideas simply.",
-    badgeColor: "bg-[#067AAB]",
+    badgeColor: "bg-sky",
     radius: "rounded-2xl",
   },
   {
@@ -23,7 +23,7 @@ const learningOutcomes: LearningOutcome[] = [
     category: "Design",
     description:
       "learn to talk large systemic problems with solutions that actually meet people's needs",
-    badgeColor: "bg-[#028683]",
+    badgeColor: "bg-grass",
     radius: "rounded-full",
   },
   {
@@ -31,7 +31,7 @@ const learningOutcomes: LearningOutcome[] = [
     category: "Development",
     description:
       "learn to apply AI, ML, Web Dev, and Software Engineering skills on real projects that get used by real people.",
-    badgeColor: "bg-[#E29500]",
+    badgeColor: "bg-gold",
     radius: "rounded",
   },
 ];

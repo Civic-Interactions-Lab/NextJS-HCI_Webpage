@@ -7,11 +7,11 @@ import { getImageSrc } from "@/lib/utils";
 import NewsCategoryLegend from "@/modules/about/ui/components/NewsCategoryLegend";
 
 const categories = [
-  { name: "Collaborations", color: "bg-yellow-500" },
-  { name: "Grants / Awards", color: "bg-purple-500" },
-  { name: "Conference Talk", color: "bg-teal-600" },
-  { name: "Published Papers", color: "bg-cyan-600" },
-  { name: "Alumni", color: "bg-orange-500" },
+  { name: "Collaborations", color: "bg-gold" },
+  { name: "Grants / Awards", color: "bg-violet" },
+  { name: "Conference Talk", color: "bg-grass" },
+  { name: "Published Papers", color: "bg-sky" },
+  { name: "Alumni", color: "bg-ember" },
 ];
 
 interface FilterState {
@@ -118,7 +118,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
               <div className="space-y-6 md:space-y-8">
                 {yearNews.map((news) => (
                   <div key={news._id} className="flex gap-4 lg:gap-6">
-                    <div className="shrink-0 w-0.5 md:w-1 bg-red-500 rounded-full"></div>
+                    <div className="shrink-0 w-0.5 md:w-1 bg-primary-red-900 rounded-full"></div>
 
                     <div className="flex-1 py-2 md:py-4">
                       <div className="flex flex-col md:flex-row gap-4 lg:gap-6">
