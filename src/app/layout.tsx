@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactNode } from "react";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { SanityLive } from "@/sanity/lib/live";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -38,6 +39,7 @@ export default function RootLayout({
         >
           <ConvexClientProvider>
             <main className="flex-1">{children}</main>
+            <SanityLive />
           </ConvexClientProvider>
         </body>
       </html>
