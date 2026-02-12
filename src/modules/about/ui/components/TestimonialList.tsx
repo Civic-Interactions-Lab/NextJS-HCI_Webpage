@@ -4,6 +4,8 @@ import TestimonialCard from "@/modules/about/ui/components/TestimonialCard";
 const TestimonialList = async () => {
   const testimonials = await getTestimonials();
 
+  console.log(testimonials);
+
   return (
     <div
       className="flex space-x-8 overflow-x-auto scrollbar-hide pt-6 pb-12 px-10 md:px-12"
