@@ -16,7 +16,7 @@ import {
 } from "@/sanity/lib/imageSettings/homeImages";
 import Loading from "@/components/Loading";
 
-export const revalidate = 10;
+export const revalidate = 5;
 
 const HomeView = async () => {
   const heroImage = await getHomeHeroImage();
