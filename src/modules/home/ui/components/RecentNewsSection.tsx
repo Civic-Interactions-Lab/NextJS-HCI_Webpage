@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { BorderHeading } from "@/components/AppTitle";
+import { BorderHeading, SectionHeading } from "@/components/AppTitle";
 import { News } from "../../../../../sanity.types";
 import { formatDate, getImageSrc } from "@/lib/utils";
 import { LinkButton } from "@/components/AppButton";
@@ -32,26 +32,26 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className="w-full mt-12 md:mt-16"
+      className="w-full"
     >
       {/* Desktop Layout - 4 column grid */}
       <div className="hidden md:grid md:grid-cols-4 md:gap-6 md:h-48 lg:h-64 xl:h-72">
         <motion.div
-          className="bg-deep-red text-white pl-3 xl:pl-4.5 pb-3 font-bold shrink-0 relative size-full items-end justify-end"
+          className="bg-deep-red text-white p-4 flex items-end"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={
             isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
           }
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <div className="flex flex-col h-full justify-end">
-            <p className="text-4xl xl:text-6xl! font-outfit!">recent</p>
-            <p className="text-4xl xl:text-6xl! font-outfit!">news</p>
+          <div>
+            <p className="text-4xl xl:text-5xl font-bold leading-tight font-outfit">
+              recent
+            </p>
+            <p className="text-4xl xl:text-5xl font-bold leading-tight font-outfit">
+              news
+            </p>
           </div>
-
-          <div className="absolute top-0 right-12 xl:right-14 size-12 xl:size-14 bg-white" />
-          <div className="absolute top-0 right-0 size-12 xl:size-14 bg-well-red" />
-          <div className="absolute top-12 right-0 xl:top-14 size-12 xl:size-14 bg-white" />
         </motion.div>
 
         {orderedNews.map((newsItem, index) => (
@@ -67,7 +67,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
               delay: 0.2 + index * 0.1,
               ease: "easeOut",
             }}
-            className="group relative overflow-hidden rounded-lg bg-gray-900 cursor-pointer size-full hidden lg:block"
+            className="group relative overflow-hidden bg-gray-900 cursor-pointer size-full hidden lg:block"
           >
             {newsItem.imageUrl && (
               <Image
@@ -98,56 +98,81 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
           </motion.a>
         ))}
 
-        <div className="col-span-3 space-y-2 w-full flex-1 flex-col ml-3 lg:hidden">
-          {orderedNews.map((newsItem, index) => (
-            <motion.div
-              key={newsItem._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.2 + index * 0.1,
-                ease: "easeOut",
-              }}
-              className="px-4 py-2 bg-gray-200/80 rounded-lg hover:border-well-red hover:scale-105 transition-all duration-300 border-2 border-transparent"
-            >
-              <Link
-                href={newsItem.link || ""}
-                target="_blank"
-                rel="noopener noreferrer"
+        <div className="col-span-3 space-y-8 w-full flex-1 flex-col lg:hidden">
+          {orderedNews.map((newsItem, index) => {
+            const imageSrc = newsItem.imageUrl
+              ? getImageSrc(newsItem.imageUrl)
+              : null;
+
+            return (
+              <motion.div
+                key={newsItem._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
+                transition={{
+                  duration: 0.5,
+                  delay: 0.2 + index * 0.1,
+                  ease: "easeOut",
+                }}
+                className="hover:scale-105 transition-all duration-300 border-2 border-transparent"
               >
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <p className="font-semibold text-gray-900 text-sm hover:text-primary-red transition-colors flex-1 line-clamp-2">
-                    {newsItem.title}
-                  </p>
-                  {newsItem.featured && (
-                    <div className="border-well-red border-2 text-well-red text-xs font-medium px-2 py-1 rounded-full shrink-0">
-                      FEATURED
+                <Link
+                  href={newsItem.link || ""}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="flex items-start gap-4">
+                    {/* News image or fallback */}
+                    {imageSrc ? (
+                      <Image
+                        src={imageSrc}
+                        alt={newsItem.title || "News"}
+                        width={64}
+                        height={64}
+                        className="size-12 md:size-16 object-cover shrink-0"
+                      />
+                    ) : (
+                      <div className="size-12 md:size-16 bg-gray-400 shrink-0" />
+                    )}
+
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <p className="font-semibold text-gray-900 text-sm hover:text-primary-red transition-colors flex-1 line-clamp-2">
+                          {newsItem.title}
+                        </p>
+                        {newsItem.featured && (
+                          <div className="border-well-red border-2 text-well-red text-xs font-medium px-2 py-1 rounded-full shrink-0">
+                            FEATURED
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-600">
+                        {formatDate(newsItem.date)}
+                      </p>
                     </div>
-                  )}
-                </div>
-                <p className="text-xs text-gray-600">
-                  {formatDate(newsItem.date)}
-                </p>
-              </Link>
-            </motion.div>
-          ))}
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden space-y-6">
+      <div className="md:hidden space-y-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="flex items-center justify-between"
         >
-          <BorderHeading title="Recent News" />
+          <SectionHeading title="Recent News" />
 
           <LinkButton
             href="/about?sub=news"
-            text="More"
+            text="Explore"
             ariaLabel="Read more about HCI Lab news"
           />
         </motion.div>
@@ -162,7 +187,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
               delay: 0.2 + index * 0.1,
               ease: "easeOut",
             }}
-            className="px-4 py-1.5 bg-gray-200/80 rounded-lg hover:border-well-red hover:scale-105 transition-all duration-300 border-2 border-transparent"
+            className="hover:scale-105 transition-all duration-300 border-2 border-transparent"
           >
             <Link
               href={newsItem.link || ""}
@@ -191,11 +216,11 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
-        className="hidden md:flex justify-end mt-12 lg:mt-6"
+        className="hidden md:flex justify-end mt-24 lg:mt-8"
       >
         <LinkButton
           href="/about?sub=news"
-          text="More"
+          text="Explore"
           ariaLabel="Read more about HCI Lab news"
         />
       </motion.div>

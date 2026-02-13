@@ -1,6 +1,8 @@
 import { defineField, defineType } from "sanity";
 import { orderRankField } from "@sanity/orderable-document-list";
 
+const MAX_FEATURED_RESEARCH = 3;
+
 export const researchType = defineType({
   name: "research",
   title: "Research",
@@ -165,8 +167,7 @@ export const researchType = defineType({
       name: "featured",
       title: "Featured",
       type: "boolean",
-      description:
-        "Mark as featured research (maximum 2 can be featured at a time)",
+      description: `Mark as featured research (maximum ${MAX_FEATURED_RESEARCH} can be featured at a time)`,
       initialValue: false,
       validation: (rule) => [
         rule.custom(async (featured, context) => {
@@ -195,8 +196,11 @@ export const researchType = defineType({
             },
           );
 
-          if (existingFeatured && existingFeatured.length >= 2) {
-            return `Maximum of 2 research items can be featured. Currently featured: ${existingFeatured.map((item: { title: string }) => item.title).join(", ")}`;
+          if (
+            existingFeatured &&
+            existingFeatured.length >= MAX_FEATURED_RESEARCH
+          ) {
+            return `Maximum of ${MAX_FEATURED_RESEARCH} research items can be featured. Currently featured: ${existingFeatured.map((item: { title: string }) => item.title).join(", ")}`;
           }
 
           return true;

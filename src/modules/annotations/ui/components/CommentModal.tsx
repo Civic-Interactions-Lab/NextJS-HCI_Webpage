@@ -133,7 +133,7 @@ const CommentModal = ({
         <Card
           ref={modalRef}
           data-comment-modal
-          className="w-full md:min-w-lg border-2 border-border overflow-hidden pb-0"
+          className="w-full md:max-w-lg border-2 border-border overflow-hidden pb-0"
         >
           {/* Header */}
           <CardHeader className="flex flex-row items-center justify-between space-y-0 ">

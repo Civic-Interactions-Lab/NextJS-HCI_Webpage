@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { BorderHeading } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
 import Image from "next/image";
 import { LinkButton } from "@/components/AppButton";
 import TapeTag from "@/components/TapeTag";
@@ -18,7 +18,7 @@ interface FeatureProjectsProps {
   research: FeaturedResearchQueryResult;
 }
 
-const FeatureProjects = ({
+const RecentPapers = ({
   featuredProjectsImage,
   research,
 }: FeatureProjectsProps) => {
@@ -46,7 +46,6 @@ const FeatureProjects = ({
     actions?: FeaturedResearchQueryResult[0]["actions"],
   ) => {
     if (!actions || actions.length === 0) return null;
-    // Return the first action, or prioritize specific types
     const priorityOrder = ["pdf", "demo", "code", "talk", "cite"];
     const sortedActions = actions.sort((a, b) => {
       const aIndex = priorityOrder.indexOf(a.label || "");
@@ -63,7 +62,7 @@ const FeatureProjects = ({
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-12 items-start mt-0 md:mt-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
         {/* Left side */}
         <div className="order-2 lg:order-1">
           <div className="relative">
@@ -90,13 +89,17 @@ const FeatureProjects = ({
         </div>
 
         {/* Right side */}
-        <div className="order-1 lg:order-2 pl-0 lg:pl-8 space-y-6">
-          {/* Header with red border */}
-          <BorderHeading title="Featured Research" /> {/* Updated title */}
+        <div className="order-1 lg:order-2 pl-0 lg:pl-8 space-y-8">
+          {/* Header */}
+          <SectionHeading title="RECENT PAPERS" />
+
           {/* Research cards */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {research.map((researchItem, index) => {
               const primaryAction = getPrimaryAction(researchItem.actions);
+              const imageSrc = researchItem.imageUrl?.asset
+                ? getImageSrc(researchItem.imageUrl.asset)
+                : null;
 
               return (
                 <motion.div
@@ -110,37 +113,47 @@ const FeatureProjects = ({
                     delay: index * 0.2,
                     ease: "easeOut",
                   }}
-                  className="border-2 border-sky rounded-bl-[36px] md:rounded-bl-[50px] px-3 md:px-6 py-2 md:py-4 bg-white hover:shadow-md transition-all duration-300 hover:scale-105"
+                  className="flex items-center gap-4"
                 >
-                  {/* Blue circle avatar */}
-                  <div className="flex items-start gap-4">
+                  {/* Research image or fallback circle */}
+                  {imageSrc ? (
+                    <Image
+                      src={imageSrc}
+                      alt={researchItem.title || "Research"}
+                      width={64}
+                      height={64}
+                      className="size-12 md:size-16 rounded-full object-cover shrink-0"
+                    />
+                  ) : (
                     <div className="size-12 md:size-16 bg-sky rounded-full shrink-0" />
-                    <div className="flex-1">
-                      {primaryAction?.url ? (
-                        <Link
-                          href={primaryAction.url}
-                          aria-label={researchItem.title}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight underline decoration-gray-300 hover:decoration-gray-600 transition-colors cursor-pointer line-clamp-2">
-                            {researchItem.title}
-                          </h4>
-                        </Link>
-                      ) : (
-                        <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight line-clamp-2">
+                  )}
+
+                  <div className="flex-1">
+                    {primaryAction?.url ? (
+                      <Link
+                        href={primaryAction.url}
+                        aria-label={researchItem.title}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <h4 className="text-sm md:text-base font-roboto text-gray-900 mb-2 leading-tight underline decoration-gray-300 hover:decoration-gray-600 transition-colors cursor-pointer line-clamp-2">
                           {researchItem.title}
                         </h4>
-                      )}
-                      <p className="text-gray-600 text-xs md:text-sm line-clamp-1">
-                        {formatAuthors(researchItem.authors)}
-                      </p>
-                    </div>
+                      </Link>
+                    ) : (
+                      <h4 className="text-sm md:text-lg font-roboto text-gray-900 mb-2 leading-tight line-clamp-2">
+                        {researchItem.title}
+                      </h4>
+                    )}
+                    <p className="text-gray-600 text-xs md:text-sm line-clamp-1">
+                      {formatAuthors(researchItem.authors)}
+                    </p>
                   </div>
                 </motion.div>
               );
             })}
           </div>
+
           {/* Explore button */}
           <LinkButton
             href="/research"
@@ -153,4 +166,4 @@ const FeatureProjects = ({
   );
 };
 
-export default FeatureProjects;
+export default RecentPapers;

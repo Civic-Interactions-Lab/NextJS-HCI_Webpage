@@ -13,6 +13,7 @@ import {
   SponsorsHeroQueryResult,
 } from "../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
+import Link from "next/link";
 
 interface HeroProps {
   imageMap?: {
@@ -93,8 +94,8 @@ const Hero = ({
 
   const heightClass =
     height === "large"
-      ? "h-[500px] md:h-[600px] lg:h-[700px]"
-      : "h-[400px] md:h-[450px] lg:h-[500px]";
+      ? "h-[400px] md:h-[450px] lg:h-[500px]"
+      : "h-[300px] md:h-[350px] lg:h-[400px]";
 
   const subSection = searchParams.get("sub");
   const formattedSubSection = subSection
@@ -129,7 +130,7 @@ const Hero = ({
         className={`absolute inset-0 z-10 ${isHomePage ? "bg-black/50" : "bg-black/40"}`}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col max-w-7xl mx-auto pt-16 md:pt-20 lg:pt-0">
+      <div className="relative z-10 w-full h-full flex flex-col max-w-7xl mx-auto pt-12 md:pt-14 lg:pt-0">
         {title && (
           <div
             className={`flex-1 flex w-full items-center justify-center px-6 md:px-8 lg:px-16 py-8 ${
@@ -154,7 +155,7 @@ const Hero = ({
               <h1
                 className={`text-white leading-tight ${
                   height === "large"
-                    ? "text-5xl! md:text-7xl! xl:text-[110px]! font-semibold"
+                    ? "text-4xl! md:text-6xl! xl:text-[110px]! font-semibold"
                     : "md:text-6xl! text-4xl! font-bold font-outfit"
                 }`}
               >
@@ -164,18 +165,20 @@ const Hero = ({
             {height === "large" && (
               <div className="flex flex-col items-center lg:items-start lg:ml-8 w-full lg:w-auto">
                 {subtitle && (
-                  <p className="text-base md:text-xl text-white max-w-xl font-medium mb-4 md:mb-6 leading-relaxed text-center lg:text-left">
+                  <p className="text-base md:text-[20px] text-white max-w-xl font-medium mb-4 md:mb-6 leading-relaxed text-center lg:text-left font-outfit">
                     {subtitle}
                   </p>
                 )}
                 {showCTA && (
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="text-sm md:text-base border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-6 md:px-8"
-                  >
-                    Learn more about us
-                  </Button>
+                  <Link href="/about">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="text-sm md:text-base border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-4 md:px-8 rounded-full h-8! md:h-10!"
+                    >
+                      Learn more about us
+                    </Button>
+                  </Link>
                 )}
               </div>
             )}
