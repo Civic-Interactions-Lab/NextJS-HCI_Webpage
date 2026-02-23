@@ -11,7 +11,6 @@ import {
   getHomeFeaturedProjectsImage,
   getHomeHeroImage,
   getHomeHubCommunityImage,
-  getHomeWhyHCIImages,
 } from "@/sanity/lib/imageSettings/homeImages";
 import Loading from "@/components/Loading";
 import QuickIntroduction from "@/modules/home/ui/components/QuickIntroduction";
@@ -21,7 +20,6 @@ const HomeView = async () => {
   const recentNews = await getRecentNews();
   const featuredResearch = await getFeaturedResearch();
 
-  const whyHCILabImages = await getHomeWhyHCIImages();
   const featuredProjectsImage = await getHomeFeaturedProjectsImage();
   const hubCommunityImage = await getHomeHubCommunityImage();
 
@@ -37,10 +35,8 @@ const HomeView = async () => {
           showCTA={true}
         />
 
-        <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-12 md:mt-12 pb-20 px-6 md:px-12 space-y-20">
+        <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-12 pb-20 px-6 md:px-12 space-y-20">
           <QuickIntroduction />
-
-          {/*<WhyHCILabSection images={whyHCILabImages} />*/}
 
           <RecentPapers
             featuredProjectsImage={featuredProjectsImage}

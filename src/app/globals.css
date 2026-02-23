@@ -259,3 +259,13 @@
     cursor: pointer;
   }
 }
+
+@layer components {
+  .body-text {
+    @apply text-sm md:text-base text-gray-700 leading-relaxed font-roboto;
+  }
+
+  .body-text-bold {
+    @apply text-sm md:text-base font-bold text-gray-900;
+  }
+}

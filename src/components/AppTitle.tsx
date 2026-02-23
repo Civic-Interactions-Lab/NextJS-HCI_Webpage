@@ -42,7 +42,7 @@ function SectionHeading({ title, className }: TitleProps) {
   return (
     <h2
       className={cn(
-        "text-well-red font-jetbrains-mono font-normal text-xl md:text-2xl xl:text-3xl tracking-tight",
+        "text-well-red font-jetbrains-mono font-normal text-xl md:text-2xl xl:text-3xl tracking-tight uppercase",
         className,
       )}
     >

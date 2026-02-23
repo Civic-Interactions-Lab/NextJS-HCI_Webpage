@@ -102,7 +102,7 @@ export type ImageSettings = {
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
-  sectionKey?: "home-hero" | "home-why-hci" | "home-featured-projects" | "home-hub-community" | "about-hero" | "about-studio-time" | "about-lab-values" | "events-owl-hacks" | "events-open-house" | "events-social" | "events-conference" | "contact-serc" | "research-hero" | "people-hero" | "courses-hero" | "sponsors-hero" | "join-hero";
+  sectionKey?: "home-hero" | "home-why-hci" | "home-featured-projects" | "home-hub-community" | "about-hero" | "about-studio-time" | "about-leadership" | "about-lab-values" | "events-owl-hacks" | "events-open-house" | "events-social" | "events-conference" | "contact-serc" | "research-hero" | "people-hero" | "courses-hero" | "sponsors-hero" | "join-hero";
   singleImage?: {
     asset?: {
       asset?: {
@@ -438,6 +438,23 @@ export type AboutHeroQueryResult = {
 // Variable: aboutStudioTimeQuery
 // Query: *[_type == "imageSettings" && sectionKey == "about-studio-time"][0].singleImage
 export type AboutStudioTimeQueryResult = {
+  asset?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  alt?: string;
+} | null;
+// Variable: aboutLeadershipQuery
+// Query: *[_type == "imageSettings" && sectionKey == "about-leadership"][0].singleImage
+export type AboutLeadershipQueryResult = {
   asset?: {
     asset?: {
       _ref: string;
@@ -1122,6 +1139,7 @@ declare module "@sanity/client" {
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-hero\"][0].singleImage\n  ": AboutHeroQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-studio-time\"][0].singleImage\n  ": AboutStudioTimeQueryResult;
+    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-leadership\"][0].singleImage\n  ": AboutLeadershipQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"about-lab-values\"][0].imageArray\n  ": AboutLabValuesQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"events-owl-hacks\"][0].imageArray\n  ": AboutEventOwlHacksQueryResult;
     "\n    *[_type == \"imageSettings\" && sectionKey == \"events-open-house\"][0].imageArray\n  ": AboutEventOpenHouseQueryResult;

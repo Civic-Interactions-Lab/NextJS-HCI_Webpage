@@ -1,5 +1,5 @@
 import React from "react";
-import { BorderHeading } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,10 +7,9 @@ import Link from "next/link";
 const GetInTouch = () => {
   return (
     <div className="flex flex-col space-y-6 md:space-y-12">
-      <BorderHeading title="Get In Touch With Us!" />
+      <SectionHeading title="Get In Touch With Us!" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start mr-0 md:mr-12">
-        {/* Sponsor Us Section */}
         <div className="flex flex-col items-center text-center space-y-6">
           <div className="flex justify-center size-24 md:size-32">
             <Image
@@ -25,11 +24,11 @@ const GetInTouch = () => {
             <LinkButton
               href="/sponsor"
               ariaLabel="Learn about sponsoring the HCI Lab"
-              text="SPONSOR US"
+              text="Be a Supporter"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 mt-6">
             <h3 className="text-xl md:text-2xl lg:text-2xl font-semibold text-gray-900 font-outfit">
               HCI Lab Email Address
             </h3>
@@ -60,7 +59,7 @@ const GetInTouch = () => {
             />
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 mt-6">
             <h3 className="text-xl md:text-2xl lg:text-2xl font-semibold text-gray-900 font-outfit">
               Are you an undergraduate interested in HCI?
             </h3>

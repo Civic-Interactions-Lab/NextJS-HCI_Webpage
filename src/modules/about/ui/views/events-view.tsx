@@ -19,7 +19,7 @@ const EventsView = async () => {
   const conferences = await getConferences();
 
   return (
-    <div className="overflow-hidden">
+    <div className="space-y-16">
       <OwlHacks images={owlHacksImages} />
 
       <HCIOpenHouse images={hciOpenHouseImages} />

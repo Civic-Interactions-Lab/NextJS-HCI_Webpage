@@ -7,11 +7,11 @@ const NewsView = async () => {
   const allNews = await getAllNews();
 
   return (
-    <>
+    <div className="space-y-16">
       <NewsTimeline allNews={allNews} />
 
       <UploadNews />
-    </>
+    </div>
   );
 };
 export default NewsView;

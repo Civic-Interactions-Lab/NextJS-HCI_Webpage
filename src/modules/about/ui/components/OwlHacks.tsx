@@ -1,4 +1,4 @@
-import { BorderHeading } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
 import { AboutEventOwlHacksQueryResult } from "../../../../../sanity.types";
@@ -13,12 +13,11 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
   const secondImage = images?.[1];
 
   return (
-    <div className="flex flex-col space-y-4 md:space-y-0 mt-0 md:mt-3">
-      <BorderHeading title="Owl Hacks" />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-12 items-center mb-6 md:mb-8">
+    <div className="flex flex-col space-y-4 md:space-y-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center mb-6 md:mb-8">
         <div className="flex flex-col gap-6 order-1 md:order-1">
-          <p className="text-sm md:text-base lg:text-lg text-gray-700 leading-relaxed">
+          <SectionHeading title="Owl Hacks" />
+          <p className="body-text">
             What started as a lab-led initiative has grown into one of
             Temple&apos;s signature student events. Our HCI Lab members continue
             to serve as the core organizing team, shaping its direction,
@@ -28,8 +27,8 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
           </p>
         </div>
 
-        <div className="order-2 md:order-2 mx-0 md:mx-8">
-          <div className="relative  h-64 md:h-72 rounded-bl-[200px] overflow-hidden">
+        <div className="order-2 md:order-2 mr-8">
+          <div className="relative  h-56 md:h-64 rounded-tr-[100px] overflow-hidden">
             <Image
               src={getImageSrc(firstImage?.asset)}
               alt={firstImage?.alt || ""}
@@ -42,17 +41,17 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center">
-        <div className="flex flex-col space-y-3 order-3 md:order-1">
+        <div className="flex flex-col space-y-6 order-3 md:order-1">
           <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-900 font-outfit">
             More than just a Hackathon
           </h3>
-          <p className="text-sm md:text-base lg:text-lg text-gray-700 leading-relaxed">
+          <p className="body-text">
             OwlHacks features panels with HCI Lab alumni now working in the tech
             and design industry, giving students a chance to learn from
             real-world experiences and explore diverse career paths in
             human-centered technology.
           </p>
-          <div className="flex">
+          <div className="flex mt-3">
             <LinkButton
               href="https://www.linkedin.com/company/templeowlhacks/"
               ariaLabel="Learn more about OwlHacks"
@@ -61,8 +60,8 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
           </div>
         </div>
 
-        <div className="relative order-4 md:order-2 mx-0 md:mx-8">
-          <div className="h-64 md:h-72 overflow-hidden w-full">
+        <div className="relative order-2 mr-8">
+          <div className="h-56 md:h-64 overflow-hidden w-full">
             <Image
               src={getImageSrc(secondImage?.asset)}
               alt={secondImage?.alt || ""}
@@ -70,9 +69,10 @@ const OwlHacks = ({ images }: OwlHacksProps) => {
               className="object-cover"
               priority
             />
-            <div className="absolute top-12 -right-8 rotate-12 bg-gold text-white px-4 py-2 rounded-full font-bold text-sm md:text-base">
-              #COMMUNITY
-            </div>
+          </div>
+          {/* Moved outside overflow-hidden div */}
+          <div className="absolute top-12 -right-8 rotate-12 bg-gold text-white px-4 py-2 rounded-full font-bold text-sm md:text-base font-jetbrains-mono">
+            #learn
           </div>
         </div>
       </div>

@@ -21,6 +21,15 @@ export async function getAboutStudioTimeImage() {
   return image.data;
 }
 
+export async function getAboutLeadershipImage() {
+  const aboutLeadershipQuery = defineQuery(`
+    *[_type == "imageSettings" && sectionKey == "about-leadership"][0].singleImage
+  `);
+
+  const image = await sanityFetch({ query: aboutLeadershipQuery });
+  return image.data;
+}
+
 export async function getAboutLabValuesImages() {
   const aboutLabValuesQuery = defineQuery(`
     *[_type == "imageSettings" && sectionKey == "about-lab-values"][0].imageArray
