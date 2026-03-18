@@ -4,13 +4,9 @@ import React, { useState, useMemo } from "react";
 import PersonCard from "../components/PersonCard";
 import { People } from "../../../../../sanity.types";
 import { LinkButton } from "@/components/AppButton";
-import RoleLegend from "@/modules/people/ui/components/RoleLegend";
-
-interface FilterState {
-  status: string[];
-  area: string[];
-  accomplishment: string[];
-}
+import RoleLegend, {
+  FilterState,
+} from "@/modules/people/ui/components/RoleLegend";
 
 interface PeopleViewProps {
   currentSub?: string;
@@ -27,8 +23,6 @@ const PeopleView = ({
 }: PeopleViewProps) => {
   const [filters, setFilters] = useState<FilterState>({
     status: [],
-    area: [],
-    accomplishment: [],
   });
 
   const activeSection = currentSub || "current";
@@ -53,10 +47,7 @@ const PeopleView = ({
     if (activeSection === "collaborators") return people;
 
     // If no filters are selected, show all people
-    const hasActiveFilters =
-      filters.status.length > 0 ||
-      filters.area.length > 0 ||
-      filters.accomplishment.length > 0;
+    const hasActiveFilters = filters.status.length > 0;
 
     if (!hasActiveFilters) return people;
 
@@ -69,20 +60,6 @@ const PeopleView = ({
           matchesFilter &&
           person.status &&
           filters.status.includes(person.status);
-      }
-
-      // Area filter
-      if (filters.area.length > 0) {
-        matchesFilter =
-          matchesFilter && person.areas && filters.area.includes(person.areas);
-      }
-
-      // Accomplishment filter
-      if (filters.accomplishment.length > 0) {
-        matchesFilter =
-          matchesFilter &&
-          person.accomplishments &&
-          filters.accomplishment.includes(person.accomplishments);
       }
 
       return matchesFilter;
@@ -132,9 +109,7 @@ const PeopleView = ({
 
       {/* Show count when filters are active and in a filterable section */}
       {(activeSection === "current" || activeSection === "alumni") &&
-        (filters.status.length > 0 ||
-          filters.area.length > 0 ||
-          filters.accomplishment.length > 0) && (
+        filters.status.length > 0 && (
           <div className="mb-4">
             <p className="text-sm text-gray-600 font-jetbrains-mono">
               Showing {filteredPeople.length} of {people.length}{" "}
@@ -156,9 +131,7 @@ const PeopleView = ({
       {/* Show message when no results match filters in filterable sections */}
       {(activeSection === "current" || activeSection === "alumni") &&
         filteredPeople.length === 0 &&
-        (filters.status.length > 0 ||
-          filters.area.length > 0 ||
-          filters.accomplishment.length > 0) && (
+        filters.status.length > 0 && (
           <div className="flex flex-col items-center justify-center py-12">
             <p className="text-muted-foreground text-center mb-4">
               No members match the selected filters.

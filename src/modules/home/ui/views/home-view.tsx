@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import Hero from "@/components/Hero";
-import WhyHCILabSection from "@/modules/home/ui/components/WhyHCILabSection";
 import RecentPapers from "@/modules/home/ui/components/RecentPapers";
 import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
