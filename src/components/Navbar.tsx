@@ -17,20 +17,26 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Logo from "@/components/Logo";
 import { navItems } from "@/constants/navItems";
+import { usePathname } from "next/navigation";
+
+const tabBarPaths = ["/about", "/people", "/sponsors"];
 
 const NavBar = () => {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const hasTabBar = tabBarPaths.includes(pathname);
+  const isHidden = hasTabBar && isScrolled;
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 50);
+      setIsScrolled(scrollTop > 200);
     };
 
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -38,7 +44,7 @@ const NavBar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
         isScrolled ? "backdrop-blur-md bg-black/40 shadow-lg" : "bg-transparent"
-      }`}
+      } ${isHidden ? "opacity-0 pointer-events-none" : "opacity-100"}`}
     >
       <div
         className={`flex items-center justify-between px-6 md:px-12 max-w-7xl mx-auto transition-all duration-300 ${
@@ -58,10 +64,10 @@ const NavBar = () => {
           <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
               <Button
-                className={`group md:hidden flex items-center justify-center !bg-transparent !border-2 transition-all duration-300 ${
+                className={`group md:hidden flex items-center justify-center bg-transparent! border-2! transition-all duration-300 ${
                   isScrolled
-                    ? "size-8 !border-white/70 hover:!bg-black/60"
-                    : "size-10 !border-white hover:!bg-white"
+                    ? "size-8 border-white/70! hover:bg-black/60!"
+                    : "size-10 border-white! hover:bg-white!"
                 }`}
                 variant="outline"
                 size="icon"
@@ -118,7 +124,7 @@ const NavBar = () => {
                         <Link
                           href={item.path}
                           onClick={() => setIsOpen(false)}
-                          className="!text-black !bg-transparent !text-base font-roboto transition-colors hover:!bg-black/10 px-3 py-1 rounded-md block w-full"
+                          className="text-black! bg-transparent! text-base! font-roboto transition-colors hover:bg-black/10! px-3 py-1 rounded-md block w-full"
                           role="menuitem"
                           aria-label={
                             item?.linkDescription ||
@@ -148,10 +154,10 @@ const NavBar = () => {
                 <NavigationMenuLink asChild>
                   <Link
                     href={item.path}
-                    className={`!text-white !bg-transparent mx-1 xl:mx-2 !font-medium font-roboto transition-all duration-300 rounded-md whitespace-nowrap block ${
+                    className={`text-white! bg-transparent! mx-1 xl:mx-2 font-medium! font-roboto transition-all duration-300 rounded-md whitespace-nowrap block ${
                       isScrolled
-                        ? "!text-base px-2 py-1 hover:!bg-black/60"
-                        : "!text-lg px-3 py-2 hover:!bg-black/20"
+                        ? "text-base! px-2 py-1 hover:bg-black/60!"
+                        : "text-lg! px-3 py-2 hover:bg-black/20!"
                     }`}
                     aria-label={
                       item?.linkDescription ||

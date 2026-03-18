@@ -2,7 +2,7 @@
 
 import { motion, useInView, Variants } from "framer-motion";
 import { useRef } from "react";
-import { BorderHeading } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
 import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
@@ -55,7 +55,7 @@ const HubCommunitySection = ({
   return (
     <motion.div
       ref={ref}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-12 items-center mt-12"
+      className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       transition={{
@@ -63,18 +63,18 @@ const HubCommunitySection = ({
       }}
     >
       <motion.div className="flex flex-col gap-6" variants={slideUpVariants}>
-        <BorderHeading title="A Hub for Communities" />
-        <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
+        <SectionHeading title="A HUB FOR COMMUNITIES" />
+        <p className="text-sm md:text-base xl:text-lg text-gray-700 leading-relaxed">
           The HCI Lab empowers students with the skills and confidence to
           design, lead, and innovate within their own communities. Through
           hands-on research, projects, and collaboration with organizations like
-          <b> ACM, TUDev, OwlByte, and OwlHacks</b> we create pathways for
-          students to turn ideas into real-world impact.
+          <b> ACM, TUDev, OwlByte,</b> and <b>OwlHacks</b> we create pathways
+          for students to turn ideas into real-world impact.
         </p>
         <LinkButton
           href="/about?sub=events"
-          text="Explore"
-          ariaLabel="Learn more about HCI Lab community"
+          text="Connect"
+          ariaLabel="Connect with HCI Lab community"
         />
       </motion.div>
 

@@ -8,7 +8,7 @@ const ContactUsView = async () => {
   const sercImage = await getAboutSercImage();
 
   return (
-    <>
+    <div className="space-y-16">
       <FindUs image={sercImage} />
 
       <GetInTouch />
@@ -19,7 +19,7 @@ const ContactUsView = async () => {
         address="1925 N 12th St, Philadelphia, PA 19122"
         className="pt-6"
       />
-    </>
+    </div>
   );
 };
 export default ContactUsView;

@@ -150,7 +150,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                           )}
 
                           {news.description && (
-                            <p className="text-sm md:text-base text-gray-600">
+                            <p className="text-xs md:text-sm text-gray-600">
                               {news.description}
                             </p>
                           )}

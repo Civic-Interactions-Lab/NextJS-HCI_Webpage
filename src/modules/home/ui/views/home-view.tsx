@@ -1,8 +1,6 @@
 import React, { Suspense } from "react";
 import Hero from "@/components/Hero";
-import HCITagsHero from "@/modules/home/ui/components/HCITagsHero";
-import WhyHCILabSection from "@/modules/home/ui/components/WhyHCILabSection";
-import FeatureProjects from "@/modules/home/ui/components/FeatureProjects";
+import RecentPapers from "@/modules/home/ui/components/RecentPapers";
 import HubCommunitySection from "@/modules/home/ui/components/HubCommunitySection";
 import RecentNewsSection from "@/modules/home/ui/components/RecentNewsSection";
 import { getRecentNews } from "@/sanity/lib/news/getNews";
@@ -12,18 +10,15 @@ import {
   getHomeFeaturedProjectsImage,
   getHomeHeroImage,
   getHomeHubCommunityImage,
-  getHomeWhyHCIImages,
 } from "@/sanity/lib/imageSettings/homeImages";
 import Loading from "@/components/Loading";
-
-export const revalidate = 5;
+import QuickIntroduction from "@/modules/home/ui/components/QuickIntroduction";
 
 const HomeView = async () => {
   const heroImage = await getHomeHeroImage();
   const recentNews = await getRecentNews();
   const featuredResearch = await getFeaturedResearch();
 
-  const whyHCILabImages = await getHomeWhyHCIImages();
   const featuredProjectsImage = await getHomeFeaturedProjectsImage();
   const hubCommunityImage = await getHomeHubCommunityImage();
 
@@ -39,12 +34,10 @@ const HomeView = async () => {
           showCTA={true}
         />
 
-        <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-8 pb-12 px-6 md:px-12 space-y-6">
-          <HCITagsHero />
+        <main className="bg-white max-w-7xl mx-auto w-full overflow-hidden mt-12 pb-20 px-6 md:px-12 space-y-20">
+          <QuickIntroduction />
 
-          <WhyHCILabSection images={whyHCILabImages} />
-
-          <FeatureProjects
+          <RecentPapers
             featuredProjectsImage={featuredProjectsImage}
             research={featuredResearch}
           />
@@ -56,7 +49,7 @@ const HomeView = async () => {
 
         <CallToActionSection />
 
-        <div className="h-10" />
+        <div className="h-16" />
       </Suspense>
     </>
   );

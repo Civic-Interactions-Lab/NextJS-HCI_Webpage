@@ -49,16 +49,16 @@ const BecomeASponsorView = () => {
       title: "Champion ($5,000)",
       subtitle: "Includes Partner perks",
       description:
-        "Sponsor spotlight post + exclusive recruiting session + option to name a student award at the annual ACM dinner that we host.",
+        "Sponsor spotlight post + option to name a student award at the annual ACM dinner that we host.",
     },
-    {
-      id: "visionary",
-      title: "Visionary ($10,000+)",
-      subtitle:
-        "Includes Champion perks + custom partnership (e.g., consulting project, sponsored fellowship, or event).",
-      description:
-        "At this level, we could consider consulting projects where they give us a problem and we have a few students work on that problem. It would provide financial support for those students. Prices would need to align with expectations.",
-    },
+    // {
+    //   id: "visionary",
+    //   title: "Visionary ($10,000+)",
+    //   subtitle:
+    //     "Includes Champion perks + custom partnership (e.g., consulting project, sponsored fellowship, or event).",
+    //   description:
+    //     "At this level, we could consider consulting projects where they give us a problem and we have a few students work on that problem. It would provide financial support for those students. Prices would need to align with expectations.",
+    // },
   ];
 
   const heroImages = [

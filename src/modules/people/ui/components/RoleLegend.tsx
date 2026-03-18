@@ -8,21 +8,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import {
-  accomplishmentColors,
-  accomplishmentLabels,
-  areaColors,
-  areaLabels,
   statusColors,
   statusLabels,
 } from "@/modules/people/constants/roleConfig";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
-interface FilterState {
+export type FilterState = {
   status: string[];
-  area: string[];
-  accomplishment: string[];
-}
+};
 
 interface RoleLegendProps {
   onFilterChange?: (filters: FilterState) => void;
@@ -31,8 +25,6 @@ interface RoleLegendProps {
 const RoleLegend = ({ onFilterChange }: RoleLegendProps) => {
   const [filters, setFilters] = useState<FilterState>({
     status: [],
-    area: [],
-    accomplishment: [],
   });
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -43,18 +35,18 @@ const RoleLegend = ({ onFilterChange }: RoleLegendProps) => {
       colors: statusColors,
       labels: statusLabels,
     },
-    {
-      key: "area" as keyof FilterState,
-      label: "Research Area",
-      colors: areaColors,
-      labels: areaLabels,
-    },
-    {
-      key: "accomplishment" as keyof FilterState,
-      label: "Accomplishments",
-      colors: accomplishmentColors,
-      labels: accomplishmentLabels,
-    },
+    // {
+    //   key: "area" as keyof FilterState,
+    //   label: "Research Area",
+    //   colors: areaColors,
+    //   labels: areaLabels,
+    // },
+    // {
+    //   key: "accomplishment" as keyof FilterState,
+    //   label: "Accomplishments",
+    //   colors: accomplishmentColors,
+    //   labels: accomplishmentLabels,
+    // },
   ];
 
   const handleFilterToggle = (category: keyof FilterState, value: string) => {
@@ -98,8 +90,6 @@ const RoleLegend = ({ onFilterChange }: RoleLegendProps) => {
   const handleClearAll = () => {
     const newFilters = {
       status: [],
-      area: [],
-      accomplishment: [],
     };
 
     setFilters(newFilters);

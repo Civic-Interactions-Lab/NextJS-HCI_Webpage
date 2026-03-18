@@ -25,9 +25,7 @@ const AboutPage = async ({ searchParams }: PageProps) => {
   };
 
   return (
-    <div className="flex-1 space-y-12 mt-0 md:mt-6 mb-16 relative">
-      {renderContent()}
-    </div>
+    <div className="flex-1 space-y-12 mb-16 relative">{renderContent()}</div>
   );
 };
 export default AboutPage;

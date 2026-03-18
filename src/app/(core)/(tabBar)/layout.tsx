@@ -18,15 +18,20 @@ export default async function TabBarLayout({
   };
 
   return (
-    <>
-      <Suspense fallback={<Loading />}>
-        <Hero imageMap={imageMap} />
+    <Suspense fallback={<Loading />}>
+      <Hero imageMap={imageMap} />
 
-        <div className="flex flex-col flex-1 max-w-7xl mx-auto mt-6 mb-12 px-8 md:px-12 space-y-6">
+      <div className="w-full h-4" />
+
+      <div className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md transition-all duration-300">
+        <div className="max-w-6xl mx-auto px-8 md:px-12 py-3">
           <TabBarClient />
-          <main className="flex-1">{children}</main>
         </div>
-      </Suspense>
-    </>
+      </div>
+
+      <div className="flex flex-col flex-1 max-w-6xl mx-auto mt-6 mb-8 px-8 md:px-12">
+        <main className="flex-1">{children}</main>
+      </div>
+    </Suspense>
   );
 }

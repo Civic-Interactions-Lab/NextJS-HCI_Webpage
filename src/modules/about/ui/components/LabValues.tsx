@@ -1,7 +1,7 @@
 "use client";
 
 import ImageCarousel from "@/components/ImageCarousel";
-import { BorderHeading } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
 import { AboutLabValuesQueryResult } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
 
@@ -22,8 +22,8 @@ const LabValues = ({ images }: LabValuesProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-center mt-0 md:mt-12">
       <div className="flex flex-col gap-6">
-        <BorderHeading title="Lab Values" />
-        <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
+        <SectionHeading title="Lab Values" />
+        <p className="text-body">
           Our lab is built on values that guide how we learn, create, and work
           together. We prioritize collaboration, curiosity, and
           inclusivity—ensuring every member feels supported and empowered to

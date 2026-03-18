@@ -2,15 +2,15 @@ import { cn } from "@/lib/utils";
 
 interface TitleProps {
   title: string;
-  classname?: string;
+  className?: string;
 }
 
-function Title({ title, classname }: TitleProps) {
+function Title({ title, className }: TitleProps) {
   return (
     <h2
       className={cn(
         "font-bold text-gray-900 text-2xl! md:text-3xl! xl:text-4xl! mb-4",
-        classname,
+        className,
       )}
     >
       {title}
@@ -38,4 +38,17 @@ function BorderTitle({ title }: TitleProps) {
   );
 }
 
-export { Title, BorderHeading, BorderTitle };
+function SectionHeading({ title, className }: TitleProps) {
+  return (
+    <h2
+      className={cn(
+        "text-well-red font-jetbrains-mono font-normal text-xl md:text-2xl xl:text-3xl tracking-tight uppercase",
+        className,
+      )}
+    >
+      {title}
+    </h2>
+  );
+}
+
+export { Title, BorderHeading, BorderTitle, SectionHeading };

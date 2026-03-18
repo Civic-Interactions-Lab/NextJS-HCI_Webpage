@@ -1,4 +1,4 @@
-import { BorderHeading } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
 import TapeTag from "@/components/TapeTag";
 import { LinkButton } from "@/components/AppButton";
 import Image from "next/image";
@@ -13,7 +13,7 @@ const StudioTime = ({ studioTimeImage }: StudioTimeProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-center">
       <div className="relative p-4 md:p-6 order-2 md:order-1">
-        <div className="-rotate-6">
+        <div className="-rotate-3">
           <Image
             src={getImageSrc(studioTimeImage?.asset)}
             alt={studioTimeImage?.alt || ""}
@@ -31,13 +31,17 @@ const StudioTime = ({ studioTimeImage }: StudioTimeProps) => {
       </div>
 
       <div className="flex flex-col gap-6 order-1 md:order-2 pl-0 md:pl-6">
-        <BorderHeading title="When You're at Studio Time.." />
-        <p className="text-sm md:text-lg xl:text-xl text-gray-700 leading-relaxed">
-          Our HCI studio time is a collaborative space where students bring
-          ideas to life through hands-on design, prototyping, and user testing.
-          It&apos;s a chance to explore interaction design, share feedback, and
-          develop real-world solutions that connect technology with
-          people&apos;s needs.
+        <SectionHeading title="Collaboration" />
+        <p className="body-text-bold">
+          Studio Time{" "}
+          <span className="body-text font-normal">
+            is a collaborative weekly activity where students bring ideas to
+            life through hands-on design, prototyping, and user testing.
+          </span>
+        </p>
+        <p className="body-text">
+          It is an opportunity to share feedback, build friendships, and learn
+          from others in a safe inclusive environment.
         </p>
         <LinkButton
           href="/about?sub=events"

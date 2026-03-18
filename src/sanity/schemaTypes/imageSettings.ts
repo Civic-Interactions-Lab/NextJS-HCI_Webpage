@@ -27,6 +27,10 @@ export const IMAGE_SECTIONS = {
     title: "About - Studio Time Section",
     defaultType: "single",
   },
+  "about-leadership": {
+    title: "About - Leadership Section",
+    defaultType: "single",
+  },
   "about-lab-values": {
     title: "About - Lab Values Section",
     defaultType: "array",

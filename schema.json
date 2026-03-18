@@ -569,6 +569,10 @@
             },
             {
               "type": "string",
+              "value": "about-leadership"
+            },
+            {
+              "type": "string",
               "value": "about-lab-values"
             },
             {

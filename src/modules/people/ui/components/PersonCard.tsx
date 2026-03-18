@@ -9,10 +9,6 @@ import { urlFor } from "@/sanity/lib/image";
 import {
   statusColors,
   statusLabels,
-  areaColors,
-  areaLabels,
-  accomplishmentColors,
-  accomplishmentLabels,
 } from "@/modules/people/constants/roleConfig";
 
 type TeamMember = NonNullable<People>;
@@ -58,24 +54,6 @@ function PersonCard({
       value: person.status,
       color: statusColors[person.status],
       label: statusLabels[person.status],
-    });
-  }
-
-  if (person.areas) {
-    indicators.push({
-      type: "area",
-      value: person.areas,
-      color: areaColors[person.areas],
-      label: areaLabels[person.areas],
-    });
-  }
-
-  if (person.accomplishments) {
-    indicators.push({
-      type: "accomplishment",
-      value: person.accomplishments,
-      color: accomplishmentColors[person.accomplishments],
-      label: accomplishmentLabels[person.accomplishments],
     });
   }
 

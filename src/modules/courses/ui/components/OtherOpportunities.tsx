@@ -1,19 +1,61 @@
 import React from "react";
-import { BorderTitle } from "@/components/AppTitle";
+import { SectionHeading } from "@/components/AppTitle";
+import Image from "next/image";
+import Link from "next/link";
+
+const organizations = [
+  {
+    name: "OwlHacks",
+    logo: "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_photos/002/962/488/datas/original.PNG",
+    href: "https://www.owlhacks.com",
+  },
+  {
+    name: "ACM",
+    logo: "https://www.owlhacks.com/endorsement_logo/ACM.svg",
+    href: "https://acm.temple.edu",
+  },
+  {
+    name: "TUDev",
+    logo: "https://cis.temple.edu/assets/img/thumbnail/student-org-tudev.jpg",
+    href: "https://tudev.org",
+  },
+  {
+    name: "Code for Philly",
+    logo: "https://spiritnews.org/wp-content/uploads/2016/05/code-for-philly-copy.jpg",
+    href: "https://codeforphilly.org",
+  },
+  {
+    name: "PhillyCHI",
+    logo: "https://images.squarespace-cdn.com/content/63b43c38ed9f2c0a9819b8d3/dce92198-d18a-4d74-812b-8185895f30fe/Logo+Horizotal+BW+1.png?format=1500w&content-type=image%2Fpng",
+    href: "https://phillychi.org",
+  },
+];
+
+const OrgBadge = ({
+  name,
+  logo,
+  href,
+}: {
+  name: string;
+  logo: string;
+  href: string;
+}) => (
+  <Link
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center p-2 hover:scale-105 transition-transform"
+  >
+    <div className="relative min-w-16 h-16">
+      <Image src={logo} alt={`${name} logo`} fill className="object-contain" />
+    </div>
+  </Link>
+);
 
 const OtherOpportunities = () => {
-  const organizations = [
-    "OwlHacks",
-    "ACM",
-    "ACM-W",
-    "TUDev",
-    "Code for Philly",
-    "PhillyCHI",
-  ];
-
   return (
-    <div className="flex flex-col space-y-4 px-6 py-6 bg-gray-100 rounded-xl">
-      <BorderTitle title="Other Opportunities" />
+    <div className="flex flex-col space-y-4 ">
+      <SectionHeading title="Other Opportunities" />
 
       <div className="flex flex-col">
         <p className="text-sm md:text-base lg:text-lg mb-6">
@@ -30,13 +72,8 @@ const OtherOpportunities = () => {
         </p>
 
         <div className="flex flex-wrap gap-3 justify-center">
-          {organizations.map((org, index) => (
-            <div
-              key={index}
-              className="rounded-full bg-gray-300 px-4 py-2 text-sm font-medium"
-            >
-              {org}
-            </div>
+          {organizations.map((org) => (
+            <OrgBadge key={org.name} {...org} />
           ))}
         </div>
       </div>
