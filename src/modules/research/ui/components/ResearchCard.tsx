@@ -3,12 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Research } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
+import { useState } from "react";
 
 interface ResearchCardProps {
   research: Research;
 }
 
 export function ResearchCard({ research }: ResearchCardProps) {
+  const [expanded, setExpanded] = useState(false);
+
   const renderIcon = (label: string) => {
     switch (label.toLowerCase()) {
       case "pdf":
@@ -45,9 +48,18 @@ export function ResearchCard({ research }: ResearchCardProps) {
           </h4>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+        <p
+          className="text-gray-600 text-sm mb-2 leading-relaxed line-clamp-6"
+          style={expanded ? { WebkitLineClamp: "unset", display: "block" } : {}}
+        >
           {research.description}
         </p>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-primary-red-900 text-sm mb-4 hover:underline"
+        >
+          {expanded ? "Show less" : "Read more"}
+        </button>
 
         <div className="flex flex-wrap gap-2">
           {research.actions?.map((action) =>

@@ -6,27 +6,27 @@ import Link from "next/link";
 const companies = [
   {
     name: "Google",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Google_Favicon_2025.svg/250px-Google_Favicon_2025.svg.png",
+    logo: "/logos/google.webp",
     href: "https://google.com",
   },
   {
     name: "Microsoft",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png",
+    logo: "/logos/microsoft.png",
     href: "https://microsoft.com",
   },
   {
     name: "SAP",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/220px-SAP_2011_logo.svg.png",
+    logo: "/logos/sap.png",
     href: "https://sap.com",
   },
   {
     name: "Comcast",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/NBC_Peacock_%282022%3B_outlined%29.svg",
+    logo: "/logos/comcast.png",
     href: "https://corporate.comcast.com/",
   },
   {
     name: "JP Morgan",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/J_P_Morgan_Logo_2008_1.svg/1280px-J_P_Morgan_Logo_2008_1.svg.png",
+    logo: "/logos/jpmorgan.png",
     href: "https://jpmorgan.com",
   },
 ];
@@ -34,32 +34,32 @@ const companies = [
 const universities = [
   {
     name: "UMich",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Michigan_Wolverines_logo.svg/1280px-Michigan_Wolverines_logo.svg.png",
+    logo: "/logos/umich.png",
     href: "https://umich.edu",
   },
   {
     name: "UCSD",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/University_of_California%2C_San_Diego_logo.svg/3840px-University_of_California%2C_San_Diego_logo.svg.png",
+    logo: "/logos/ucsd.png",
     href: "https://ucsd.edu",
   },
   {
     name: "MIT",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/MIT_logo_2003-2023.svg/960px-MIT_logo_2003-2023.svg.png?20250128192424",
+    logo: "/logos/mit.png",
     href: "https://mit.edu",
   },
   {
     name: "Georgia Tech",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Georgia_Tech_Yellow_Jackets_logo.svg/1280px-Georgia_Tech_Yellow_Jackets_logo.svg.png",
+    logo: "/logos/gtech.png",
     href: "https://gatech.edu",
   },
   {
     name: "Harvard",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Harvard_University_logo.svg/1280px-Harvard_University_logo.svg.png",
+    logo: "/logos/harvard.png",
     href: "https://harvard.edu",
   },
   {
     name: "UIUC",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Illinois_Fighting_Illini_logo.svg/1920px-Illinois_Fighting_Illini_logo.svg.png",
+    logo: "/logos/Illinoisu.png",
     href: "https://illinois.edu",
   },
 ];
