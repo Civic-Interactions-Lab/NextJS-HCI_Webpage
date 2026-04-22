@@ -70,6 +70,8 @@ When a push lands on the configured branch, the webhook container pulls the late
 
 If `HOST_REPO_DIR` is a git worktree, `HOST_GIT_COMMON_DIR` must point to the parent repository's `.git` directory. For a normal clone, `HOST_GIT_COMMON_DIR` is usually just `HOST_REPO_DIR/.git`. This mount must be writable because `git fetch` updates files like `FETCH_HEAD` there.
 
+For the smoothest Vercel-like setup, point `HOST_REPO_DIR` at a dedicated normal clone used only for deployment, not your active development worktree.
+
 The webhook is intentionally deployed as a separate compose project so a webhook-triggered site rebuild does not recycle the webhook service that received the request.
 
 ## Learn More

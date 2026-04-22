@@ -13,8 +13,8 @@ fi
 
 cd "$REPO"
 
-if [ ! -f docker-compose.yml ] && [ ! -f compose.yml ]; then
-  echo "ERROR: $REPO does not contain docker-compose.yml or compose.yml." >&2
+if [ ! -f docker-compose.yml ] && [ ! -f docker-compose.yaml ] && [ ! -f compose.yml ] && [ ! -f compose.yaml ]; then
+  echo "ERROR: $REPO does not contain a supported Docker Compose file." >&2
   exit 1
 fi
 
