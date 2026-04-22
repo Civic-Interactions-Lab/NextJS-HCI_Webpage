@@ -1,0 +1,26 @@
+name: hci-webhook
+
+services:
+  github-webhook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hci-github-webhook
+    restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    env_file:
+      - ../.env
+    environment:
+      PORT: 9000
+      APP_REPO_DIR: "${HOST_REPO_DIR:?HOST_REPO_DIR must point to this repo on the server}"
+      DEPLOY_SCRIPT: /app/deploy.sh
+      GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=accept-new"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOST_REPO_DIR:?HOST_REPO_DIR must point to this repo on the server}:${HOST_REPO_DIR:?HOST_REPO_DIR must point to this repo on the server}
+      - ${HOST_GIT_COMMON_DIR:?HOST_GIT_COMMON_DIR must point to the git common directory for this checkout}:${HOST_GIT_COMMON_DIR:?HOST_GIT_COMMON_DIR must point to the git common directory for this checkout}
+      - ${HOST_SSH_DIR:?HOST_SSH_DIR must point to the SSH directory used for git pulls}:/root/.ssh:ro
+    ports:
+      - "${WEBHOOK_HOST_BIND:-127.0.0.1}:${WEBHOOK_HOST_PORT:-9001}:9000"
