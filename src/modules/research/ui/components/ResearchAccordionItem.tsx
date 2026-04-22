@@ -116,7 +116,7 @@ export function GenAIEducationAccordion({
     answer:
       "Generative AI in education is the use of advanced AI tools that can create text, images, code, and other content to support teaching and learning.",
     video: {
-      url: "https://www.youtube.com/embed/rwF-X5STYks?si=cCxETc2Z79CAZW7P",
+      url: "https://www.youtube.com/embed/Pq-d6wipGRQ?si=wMHHvnP0XLIiwFAc",
       title: "AI-Powered Learning Revolution",
       description:
         "Discover how generative AI is transforming education through personalized learning experiences, automated content creation, and intelligent tutoring systems that adapt to each student's unique learning style and pace.",
@@ -171,7 +171,7 @@ export function AccessibilityTechnologyAccordion({
     answer:
       '"Accessibility technology empowers everyone to connect, create, and participate—no barriers, just possibilities."',
     video: {
-      url: "https://www.youtube.com/embed/DBxmADjQlI4?si=S6I6XPN3GIaQNeeT",
+      url: "https://www.youtube.com/embed/QuJmaYuhKH0?si=ZFBhZ6LFrTgnHrwN",
       title: "Breaking Barriers with Accessible Technology",
       description:
         "Explore our innovative approaches to creating inclusive digital experiences that empower users with disabilities through voice interfaces, haptic feedback, and adaptive technologies that make technology accessible to everyone.",

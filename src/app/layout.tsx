@@ -24,6 +24,12 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Temple University HCI Lab",
   description: "Human-Computer Interaction Research at Temple University",
+  icons: {
+    icon: [
+      { url: "/logos/hci-logo.png", media: "(prefers-color-scheme: light)" },
+      { url: "/logos/hci-logo.png", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
 };
 
 export default function RootLayout({
