@@ -1,0 +1,36 @@
+services:
+  hci-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deployment
+      args:
+        NEXT_PUBLIC_SANITY_API_VERSION: ${NEXT_PUBLIC_SANITY_API_VERSION:-2025-12-07}
+        NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET}
+        NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID}
+        NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN}
+        NEXT_PUBLIC_CONVEX_URL: ${NEXT_PUBLIC_CONVEX_URL}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    container_name: hci-web
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+    expose:
+      - "3000"
+
+  hci-proxy:
+    image: nginx:1.27-alpine
+    container_name: hci-proxy
+    restart: unless-stopped
+    depends_on:
+      - hci-web
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${APP_HOST_BIND:-127.0.0.1}:${APP_HOST_PORT:-80}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro

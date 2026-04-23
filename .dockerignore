@@ -1,0 +1,10 @@
+.git
+.gitignore
+.idea
+.next
+node_modules
+.env
+webhook/.env
+__MACOSX
+__pycache__/
+*.pyc
