@@ -22,10 +22,11 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Docker Deployment
 
-This repo includes two compose stacks:
+This repo includes three deployment pieces:
 
-1. the main site stack in `docker-compose.yml`
-2. the webhook stack in `webhook/docker-compose.yml`
+1. `docker-compose.yml` for local source builds
+2. `docker-compose.deploy.yml` for production-style image pulls
+3. `webhook/docker-compose.yml` for the webhook receiver
 
 ### Server setup
 
@@ -36,7 +37,7 @@ This repo includes two compose stacks:
 5. Build and start the main site stack:
 
 ```bash
-docker compose up -d --build
+docker compose -f docker-compose.deploy.yml up -d
 ```
 
 6. Build and start the webhook stack:
@@ -66,13 +67,32 @@ Configure a GitHub webhook for this repository with:
 - Secret: the same value as `WEBHOOK_SECRET`
 - Event: `Just the push event`
 
-When a push lands on the configured branch, the webhook container pulls the latest code in `HOST_REPO_DIR` and rebuilds only the site stack.
+When a push lands on the configured branch, the webhook container pulls the latest code in `HOST_REPO_DIR`, authenticates to GHCR if credentials are configured, pulls the prebuilt site image, and restarts the site stack.
 
 If `HOST_REPO_DIR` is a git worktree, `HOST_GIT_COMMON_DIR` must point to the parent repository's `.git` directory. For a normal clone, `HOST_GIT_COMMON_DIR` is usually just `HOST_REPO_DIR/.git`. This mount must be writable because `git fetch` updates files like `FETCH_HEAD` there.
 
 For the smoothest Vercel-like setup, point `HOST_REPO_DIR` at a dedicated normal clone used only for deployment, not your active development worktree.
 
 The webhook is intentionally deployed as a separate compose project so a webhook-triggered site rebuild does not recycle the webhook service that received the request.
+
+### GitHub Actions image publishing
+
+The workflow at `.github/workflows/publish-site-image.yml` builds the production image in GitHub Actions and pushes it to GHCR. Add these repository secrets before enabling it:
+
+- `NEXT_PUBLIC_SANITY_API_VERSION`
+- `NEXT_PUBLIC_SANITY_DATASET`
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`
+- `NEXT_PUBLIC_MAPBOX_TOKEN`
+- `NEXT_PUBLIC_CONVEX_URL`
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+
+On the server, set `HCI_WEB_IMAGE` in `.env` to the image you want to deploy, for example:
+
+```dotenv
+HCI_WEB_IMAGE=ghcr.io/civic-interactions-lab/nextjs-hci-webpage-site:latest
+```
+
+If you keep the package private, the server will also need `GHCR_USERNAME` and a token with `read:packages` scope in `GHCR_TOKEN`.
 
 ## Learn More
 
