@@ -138,6 +138,11 @@ def github_webhook():
         return jsonify({"error": "deployment already in progress"}), 409
 
     commit_sha = data.get("after", "unknown")
-    thread = threading.Thread(target=run_deploy, args=(commit_sha,), daemon=True)
-    thread.start()
+    try:
+        thread = threading.Thread(target=run_deploy, args=(commit_sha,), daemon=True)
+        thread.start()
+    except Exception:
+        deploy_lock.release()
+        log.exception("Failed to start deployment thread")
+        return jsonify({"error": "failed to start deployment"}), 500
     return jsonify({"message": "deployment started", "commit": commit_sha}), 202
