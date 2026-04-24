@@ -1,4 +1,13 @@
 https://localhost:8443 {
 	tls internal
+
+	handle /github-webhook {
+		reverse_proxy host.docker.internal:9001
+	}
+
+	handle /webhook-health {
+		reverse_proxy host.docker.internal:9001
+	}
+
 	reverse_proxy hci-proxy:80
 }
