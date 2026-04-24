@@ -1,0 +1,17 @@
+services:
+  caddy-local-https:
+    image: caddy:2.10-alpine
+    container_name: caddy-local-https
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./Caddyfile.local:/etc/caddy/Caddyfile:ro
+      - caddy_local_data:/data
+      - caddy_local_config:/config
+    networks:
+      - default
+
+volumes:
+  caddy_local_data:
+  caddy_local_config:

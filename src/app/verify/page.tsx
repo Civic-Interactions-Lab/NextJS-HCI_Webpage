@@ -4,8 +4,6 @@ import { useState, FormEvent, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-const STORAGE_KEY = "hci_site_verified_at";
-
 function VerifyForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -28,8 +26,6 @@ function VerifyForm() {
       });
 
       if (res.ok) {
-        // Save the verified timestamp — AuthGuard uses this (expires after 24h)
-        localStorage.setItem(STORAGE_KEY, Date.now().toString());
         router.push(redirectTo);
       } else {
         const data = await res.json();

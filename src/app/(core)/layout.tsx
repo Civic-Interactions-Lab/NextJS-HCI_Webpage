@@ -1,9 +1,8 @@
 import React, { Suspense } from "react";
 import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AnnotationOverlay from "@/modules/annotations/ui/components/AnnotationOverlay";
+import AnnotationOverlayWrapper from "@/modules/annotations/ui/components/AnnotationOverlayWrapper";
 import Loading from "@/components/Loading";
-import AuthGuard from "@/components/AuthGuard";
 
 export default async function CoreLayout({
   children,
@@ -12,15 +11,13 @@ export default async function CoreLayout({
 }) {
   return (
     <Suspense fallback={<Loading />}>
-      <AuthGuard>
-        <AnnotationOverlay>
-          <div className="min-h-screen flex flex-col">
-            <NavBar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </AnnotationOverlay>
-      </AuthGuard>
+      <AnnotationOverlayWrapper>
+        <div className="min-h-screen flex flex-col">
+          <NavBar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+      </AnnotationOverlayWrapper>
     </Suspense>
   );
 }

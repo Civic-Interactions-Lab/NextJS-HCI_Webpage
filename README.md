@@ -94,6 +94,22 @@ HCI_WEB_IMAGE=ghcr.io/civic-interactions-lab/nextjs-hci-webpage-site:latest
 
 If you keep the package private, the server will also need `GHCR_USERNAME` and a token with `read:packages` scope in `GHCR_TOKEN`.
 
+## Local HTTPS Testing
+
+To test secure-cookie and HTTPS-only behavior locally, this repo includes a small Caddy reverse proxy:
+
+```bash
+docker compose -f docker-compose.https.yml up -d
+```
+
+That proxies your existing local site from `http://localhost:8881` to:
+
+```text
+https://localhost:8443
+```
+
+The included `Caddyfile.local` uses Caddy's internal local CA. On first visit, your browser may show a certificate warning because this CA is not yet trusted on your machine. If that happens, continue through the warning for quick testing or import/trust the generated local Caddy root certificate from the Caddy data volume for a cleaner experience.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

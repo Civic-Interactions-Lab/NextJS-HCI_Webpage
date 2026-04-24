@@ -52,9 +52,10 @@ export const useAnnotations = (path: string) => {
   const [positionUpdateTrigger, setPositionUpdateTrigger] = useState(0);
 
   // Convex queries and mutations
-  const annotationsData = useQuery(api.annotations.getAnnotationsForPage, {
-    path,
-  });
+  const annotationsData = useQuery(
+    api.annotations.getAnnotationsForPage,
+    path ? { path } : "skip",
+  );
   const createAnnotationMutation = useMutation(
     api.annotations.createAnnotation,
   );

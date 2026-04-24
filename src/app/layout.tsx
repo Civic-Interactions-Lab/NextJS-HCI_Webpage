@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, JetBrains_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
-import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
-import { SanityLive } from "@/sanity/lib/live";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -43,10 +41,7 @@ export default function RootLayout({
         <body
           className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} min-h-screen flex flex-col antialiased`}
         >
-          <ConvexClientProvider>
-            <main className="flex-1">{children}</main>
-            <SanityLive />
-          </ConvexClientProvider>
+          <main className="flex-1">{children}</main>
         </body>
       </html>
     </ClerkProvider>

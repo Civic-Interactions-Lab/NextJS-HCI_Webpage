@@ -6,12 +6,23 @@ import { useRouter, usePathname } from "next/navigation";
 const STORAGE_KEY = "hci_site_verified_at";
 const EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-export default function AuthGuard({ children }: { children: React.ReactNode }) {
+export default function AuthGuard({
+  children,
+  enabled,
+}: {
+  children: React.ReactNode;
+  enabled: boolean;
+}) {
   const router = useRouter();
   const pathname = usePathname();
-  const [verified, setVerified] = useState(false);
+  const [verified, setVerified] = useState(!enabled);
 
   useEffect(() => {
+    if (!enabled) {
+      setVerified(true);
+      return;
+    }
+
     const raw = localStorage.getItem(STORAGE_KEY);
 
     if (raw) {
@@ -25,7 +36,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     // Not verified or expired — redirect to verify page
     router.replace(`/verify?from=${encodeURIComponent(pathname)}`);
-  }, [router, pathname]);
+  }, [enabled, router, pathname]);
 
   if (!verified) return null;
 
