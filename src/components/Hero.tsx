@@ -118,6 +118,8 @@ const Hero = ({
           alt={alt || "Hero background"}
           fill
           className="object-cover"
+          fetchPriority="high"
+          quality={60}
           style={{
             objectPosition: "center 36%",
           }}

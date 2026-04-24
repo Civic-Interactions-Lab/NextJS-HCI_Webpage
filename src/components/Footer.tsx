@@ -45,9 +45,7 @@ const Footer = () => {
                 href={link.path}
                 className="!text-white font-outfit text-lg font-medium hover:!text-red-500 transition-colors"
                 title={link.linkDescription || `Navigate to ${link.label} page`}
-                aria-label={
-                  link.linkDescription || `Navigate to ${link.label} page`
-                }
+                aria-label={`${link.label} - ${link.linkDescription || `Navigate to ${link.label} page`}`}
               >
                 {link.label}
               </Link>

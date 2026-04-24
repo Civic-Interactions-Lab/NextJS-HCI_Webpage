@@ -4,6 +4,9 @@ import "./globals.css";
 import { ReactNode } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://hci.temple.edu";
+
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -20,8 +23,53 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Temple University HCI Lab",
-  description: "Human-Computer Interaction Research at Temple University",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Temple University HCI Lab",
+    template: "%s | Temple University HCI Lab",
+  },
+  description:
+    "Temple University's Human-Computer Interaction Lab explores AI, accessibility, learning, visualization, and human-centered computing research.",
+  applicationName: "Temple University HCI Lab",
+  keywords: [
+    "Temple University",
+    "Temple HCI Lab",
+    "Human-Computer Interaction",
+    "HCI research",
+    "AI research",
+    "Accessibility",
+    "Visualization",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Temple University HCI Lab",
+    title: "Temple University HCI Lab",
+    description:
+      "Human-centered computing research at Temple University across AI, accessibility, learning, and visualization.",
+    images: [
+      {
+        url: "/logos/hci-logo.png",
+        width: 512,
+        height: 512,
+        alt: "Temple University HCI Lab logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Temple University HCI Lab",
+    description:
+      "Human-centered computing research at Temple University across AI, accessibility, learning, and visualization.",
+    images: ["/logos/hci-logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       { url: "/logos/hci-logo.png", media: "(prefers-color-scheme: light)" },

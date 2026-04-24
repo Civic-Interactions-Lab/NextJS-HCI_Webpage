@@ -1,7 +1,3 @@
-"use client";
-
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { SectionHeading } from "@/components/AppTitle";
 import Image from "next/image";
 import { LinkButton } from "@/components/AppButton";
@@ -22,9 +18,6 @@ const RecentPapers = ({
   featuredProjectsImage,
   research,
 }: FeatureProjectsProps) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "50px" });
-
   const formatAuthors = (
     authors?: FeaturedResearchQueryResult[0]["authors"],
   ) => {
@@ -56,12 +49,7 @@ const RecentPapers = ({
   };
 
   return (
-    <motion.section
-      ref={ref}
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.8 }}
-    >
+    <section>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
         {/* Left side */}
         <div className="order-2 lg:order-1">
@@ -74,9 +62,7 @@ const RecentPapers = ({
                 width={500}
                 height={300}
                 className="w-full h-64 md:h-80 object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
+                sizes="(max-width: 1024px) 100vw, 500px"
               />
 
               <TapeTag position="bottom-right" rotation={-24} color="black">
@@ -95,24 +81,15 @@ const RecentPapers = ({
 
           {/* Research cards */}
           <div className="space-y-8">
-            {research.map((researchItem, index) => {
+            {research.map((researchItem) => {
               const primaryAction = getPrimaryAction(researchItem.actions);
               const imageSrc = researchItem.imageUrl?.asset
                 ? getImageSrc(researchItem.imageUrl.asset)
                 : null;
 
               return (
-                <motion.div
+                <div
                   key={researchItem._id}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={
-                    isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }
-                  }
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.2,
-                    ease: "easeOut",
-                  }}
                   className="flex items-center gap-4"
                 >
                   {/* Research image or fallback circle */}
@@ -123,6 +100,7 @@ const RecentPapers = ({
                       width={64}
                       height={64}
                       className="size-12 md:size-16 rounded-full object-cover shrink-0"
+                      sizes="64px"
                     />
                   ) : (
                     <div className="size-12 md:size-16 bg-sky rounded-full shrink-0" />
@@ -149,7 +127,7 @@ const RecentPapers = ({
                       {formatAuthors(researchItem.authors)}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -162,7 +140,7 @@ const RecentPapers = ({
           />
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

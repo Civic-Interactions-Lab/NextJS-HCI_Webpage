@@ -1,19 +1,18 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import AnnotationOverlay from "./AnnotationOverlay";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
 
 interface AnnotationOverlayWrapperProps {
   children: React.ReactNode;
+  enabled?: boolean;
 }
 
 export default function AnnotationOverlayWrapper({
   children,
+  enabled = false,
 }: AnnotationOverlayWrapperProps) {
-  const { isSignedIn } = useUser();
-
-  if (!isSignedIn) {
+  if (!enabled) {
     return <>{children}</>;
   }
 
