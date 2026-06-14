@@ -3,6 +3,7 @@ import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnnotationOverlayWrapper from "@/modules/annotations/ui/components/AnnotationOverlayWrapper";
 import Loading from "@/components/Loading";
+import HciNavbar from "@/components/hci-navbar";
 
 export default async function CoreLayout({
   children,
@@ -13,7 +14,7 @@ export default async function CoreLayout({
     <Suspense fallback={<Loading />}>
       <AnnotationOverlayWrapper>
         <div className="min-h-screen flex flex-col">
-          <NavBar />
+          <HciNavbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>

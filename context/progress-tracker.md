@@ -34,6 +34,12 @@ Update this file whenever the current phase, active feature, or implementation s
 
 - **Feature 01 (Base Style System)** — Oxanium (weight 500) added to `next/font/google` and applied as `--font-oxanium` CSS variable. Typography utility classes added to `globals.css` in a clearly separated redesign section: `.heading-1`–`.heading-6` (Oxanium, 60→28px), `.label-1`–`.label-5` (Oxanium, 45→16px), `.text-p1`–`.text-p3` (Outfit Light, 18→14px). Existing styles untouched. Build clean.
 
+---
+
+- **Feature 02 (HCI Navbar)** — `src/components/hci-navbar.tsx` created. Nav data defined inline with typed `NavItem`/`NavSubItem` shape. Sub-routes: About (`/about/events`, `/about/news`, `/about/contact`), People (`/people/alumni`, `/people/collaborators`), Sponsors (`/sponsors/become`). Desktop: Thunder bg, dropdown panel with featured image card + remaining links for items with children, active route highlighted in Well Read. Mobile: full-screen Thunder overlay with single-open accordion. Typography uses `.label-5`/`.label-4`/`.text-p3` classes. Existing `Navbar.tsx` untouched. Build clean.
+
+  - **Feature 02.1 (Navbar refinements, beyond spec)** — Scroll-driven background: navbar starts fully transparent with a `h-32` dark gradient overlay (`from-black/80`) for text legibility, transitions to solid Thunder using a smoothstep curve over 200px of scroll (no hard cutoff). Full viewport width — no `max-w` constraint. Dropdown alignment: About anchors `left-0`, all other dropdowns anchor `right-0` to stay on screen. Left column redesigned to feature the parent route (not first child) with its own image, label, and description. Right column contains all children, `justify-start`. Descriptions added to all parent routes and all child items; displayed below labels in both desktop dropdown and mobile accordion. Desktop dropdown widened to `min-w-[560px]`, left column widened to `w-64`.
+
 ## In Progress
 
 - None.
