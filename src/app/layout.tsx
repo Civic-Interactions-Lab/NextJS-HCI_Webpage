@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, JetBrains_Mono, Outfit } from "next/font/google";
+import { Roboto, JetBrains_Mono, Outfit, Oxanium } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -8,6 +8,12 @@ import { SanityLive } from "@/sanity/lib/live";
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
+});
+
+const oxanium = Oxanium({
+  variable: "--font-oxanium",
+  subsets: ["latin"],
+  weight: ["500"],
 });
 
 const roboto = Roboto({
@@ -40,7 +46,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} min-h-screen flex flex-col antialiased`}
+          className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} ${oxanium.variable} min-h-screen flex flex-col antialiased`}
         >
           <main className="flex-1">{children}</main>
           <SanityLive />
