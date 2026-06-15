@@ -40,6 +40,10 @@ Update this file whenever the current phase, active feature, or implementation s
 
   - **Feature 02.1 (Navbar refinements, beyond spec)** — Scroll-driven background: navbar starts fully transparent with a `h-32` dark gradient overlay (`from-black/80`) for text legibility, transitions to solid Thunder using a smoothstep curve over 200px of scroll (no hard cutoff). Full viewport width — no `max-w` constraint. Dropdown alignment: About anchors `left-0`, all other dropdowns anchor `right-0` to stay on screen. Left column redesigned to feature the parent route (not first child) with its own image, label, and description. Right column contains all children, `justify-start`. Descriptions added to all parent routes and all child items; displayed below labels in both desktop dropdown and mobile accordion. Desktop dropdown widened to `min-w-[560px]`, left column widened to `w-64`.
 
+---
+
+- **Feature 03 (Hero Cover)** — `Hero.tsx` renamed to `hero.tsx` and rewritten. Static `COVER_MAP` inside the component maps all 12 routes/sub-routes to `/images/cover/6-studio.JPG` (placeholder). Title derived from `usePathname()` path segments — no `?sub=` query params. Single-segment paths render an `<h1>` in `.heading-6`; two-segment paths render a breadcrumb (`Parent / Child`) with the parent in `.text-p2 text-white/60` and the child in `.heading-6 text-white`. Small hero height reduced to `h-[80px] md:h-[100px]`. Backward-compatible: when `height="large"`, `image`, or `title` props are provided (home page usage), falls through to the original large-hero layout. `(tabBar)/layout.tsx` and `(landing)/layout.tsx` both simplified — all Sanity image fetching removed, `<Hero />` rendered with no props. Build clean.
+
 ## In Progress
 
 - None.

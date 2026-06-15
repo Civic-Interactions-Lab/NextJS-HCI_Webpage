@@ -1,9 +1,6 @@
 import { ReactNode, Suspense } from "react";
 import TabBarClient from "@/components/TabBarClient";
-import Hero from "@/components/Hero";
-import { getAboutHeroImage } from "@/sanity/lib/imageSettings/aboutImages";
-import { getPeopleHeroImage } from "@/sanity/lib/imageSettings/peopleImages";
-import { getSponsorsHeroImage } from "@/sanity/lib/imageSettings/sponsorsImages";
+import Hero from "@/components/hero";
 import Loading from "@/components/Loading";
 
 export default async function TabBarLayout({
@@ -11,15 +8,9 @@ export default async function TabBarLayout({
 }: {
   children: ReactNode;
 }) {
-  const imageMap = {
-    about: await getAboutHeroImage(),
-    people: await getPeopleHeroImage(),
-    sponsors: await getSponsorsHeroImage(),
-  };
-
   return (
     <Suspense fallback={<Loading />}>
-      <Hero imageMap={imageMap} />
+      <Hero />
 
       <div className="w-full h-4" />
 

@@ -251,21 +251,30 @@ export default function HciNavbar() {
               <div key={item.href} className="border-b border-white/10">
                 {item.children ? (
                   <>
-                    <button
-                      onClick={() =>
-                        setOpenAccordion(
-                          openAccordion === item.href ? null : item.href,
-                        )
-                      }
-                      className="flex items-center justify-between w-full py-4 label-4 text-white"
-                    >
-                      {item.label}
-                      <ChevronDown
-                        className={`w-4 h-4 transition-transform duration-200 ${
-                          openAccordion === item.href ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
+                    <div className="flex items-center justify-between py-4">
+                      <Link
+                        href={item.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={`label-4 transition-colors ${isActive(item.href) ? "text-well-red" : "text-white"}`}
+                      >
+                        {item.label}
+                      </Link>
+                      <button
+                        onClick={() =>
+                          setOpenAccordion(
+                            openAccordion === item.href ? null : item.href,
+                          )
+                        }
+                        className="p-1 text-white/60 hover:text-white transition-colors"
+                        aria-label={`Toggle ${item.label} submenu`}
+                      >
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            openAccordion === item.href ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
                     {openAccordion === item.href && (
                       <div className="pb-3 pl-4 flex flex-col gap-1">
                         {item.children.map((child) => (
