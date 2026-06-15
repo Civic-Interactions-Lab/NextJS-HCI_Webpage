@@ -1,9 +1,10 @@
 import React, { Suspense } from "react";
-import NavBar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnnotationOverlayWrapper from "@/modules/annotations/ui/components/AnnotationOverlayWrapper";
 import Loading from "@/components/Loading";
 import HciNavbar from "@/components/hci-navbar";
+import Hero from "@/components/hero";
+import HomeCta from "@/components/home-cta";
 
 export default async function CoreLayout({
   children,
@@ -15,7 +16,9 @@ export default async function CoreLayout({
       <AnnotationOverlayWrapper>
         <div className="min-h-screen flex flex-col">
           <HciNavbar />
-          <main className="flex-1">{children}</main>
+          <Hero />
+          <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 pt-12 pb-20">{children}</main>
+          <HomeCta />
           <Footer />
         </div>
       </AnnotationOverlayWrapper>

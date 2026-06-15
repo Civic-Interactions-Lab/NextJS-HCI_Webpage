@@ -44,6 +44,12 @@ Update this file whenever the current phase, active feature, or implementation s
 
 - **Feature 03 (Hero Cover)** — `Hero.tsx` renamed to `hero.tsx` and rewritten. Static `COVER_MAP` inside the component maps all 12 routes/sub-routes to `/images/cover/6-studio.JPG` (placeholder). Title derived from `usePathname()` path segments — no `?sub=` query params. Single-segment paths render an `<h1>` in `.heading-6`; two-segment paths render a breadcrumb (`Parent / Child`) with the parent in `.text-p2 text-white/60` and the child in `.heading-6 text-white`. Small hero height reduced to `h-[80px] md:h-[100px]`. Backward-compatible: when `height="large"`, `image`, or `title` props are provided (home page usage), falls through to the original large-hero layout. `(tabBar)/layout.tsx` and `(landing)/layout.tsx` both simplified — all Sanity image fetching removed, `<Hero />` rendered with no props. Build clean.
 
+---
+
+- **Feature 04 (Layout Cleanup & Missing Routes)** — Removed `(tabBar)/layout.tsx` and `(landing)/layout.tsx`; both route groups now inherit directly from `(core)/layout.tsx`. Moved `<Hero />` into the core layout so it renders once for all routes. Hero home content (title, subtitle, CTA) hardcoded inside `hero.tsx` for the `pathname === "/"` case; `home-view.tsx` no longer renders Hero or accepts those props. Created six placeholder "Coming Soon" pages for all child routes defined in `hci-navbar.tsx`: `/about/events`, `/about/news`, `/about/contact`, `/people/alumni`, `/people/collaborators`, `/sponsors/become`. Build clean; all 15 routes render correctly.
+
+  - **Feature 04.1 (Layout fixes)** — Lifted `max-w-7xl mx-auto w-full px-6 md:px-12 pt-12 pb-20` from home-view into the core layout `<main>` so all routes share the same content constraints. Removed duplicate `mt-12 pb-20` from home-view's inner wrapper. Extracted `<CallToActionSection />` out of home-view and into the core layout as a `<HomeCta />` client wrapper that renders only on `pathname === "/"`, positioned above the footer.
+
 ## In Progress
 
 - None.

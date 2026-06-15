@@ -28,13 +28,7 @@ function capitalize(segment: string) {
     .join(" ");
 }
 
-interface HeroProps {
-  title?: string;
-  subtitle?: string;
-  showCTA?: boolean;
-}
-
-const Hero = ({ title, subtitle, showCTA = false }: HeroProps) => {
+const Hero = () => {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -59,21 +53,21 @@ const Hero = ({ title, subtitle, showCTA = false }: HeroProps) => {
         </div>
         <div className="absolute inset-0 z-10 bg-black/50" />
         <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-6 md:px-12 gap-6 pt-16">
-          <h1 className="font-oxanium font-medium text-[64px] md:text-[90px] lg:text-[110px] leading-tight text-white text-center">{title}</h1>
-          {subtitle && (
-            <p className="text-p1 text-white/80 max-w-2xl text-center">{subtitle}</p>
-          )}
-          {showCTA && (
-            <Link href="/about">
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-8 rounded-full"
-              >
-                Learn more about us
-              </Button>
-            </Link>
-          )}
+          <h1 className="font-oxanium font-medium text-[64px] md:text-[90px] lg:text-[110px] leading-tight text-white text-center">
+            Temple HCI Lab
+          </h1>
+          <p className="text-p1 text-white/80 max-w-2xl text-center">
+            Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate learning and empower non-experts to participate in work that has been previously reserved for trained professionals.
+          </p>
+          <Link href="/about">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-8 rounded-full"
+            >
+              Learn more about us
+            </Button>
+          </Link>
         </div>
       </div>
     );
