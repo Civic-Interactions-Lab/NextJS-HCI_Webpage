@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReactNode } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SanityLive } from "@/sanity/lib/live";
+import ScrollRestorationManager from "@/components/ScrollRestorationManager";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -48,6 +49,7 @@ export default function RootLayout({
         <body
           className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} ${oxanium.variable} min-h-screen flex flex-col antialiased`}
         >
+          <ScrollRestorationManager />
           <main className="flex-1">{children}</main>
           <SanityLive />
         </body>

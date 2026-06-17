@@ -50,6 +50,10 @@ Update this file whenever the current phase, active feature, or implementation s
 
   - **Feature 04.1 (Layout fixes)** — Lifted `max-w-7xl mx-auto w-full px-6 md:px-12 pt-12 pb-20` from home-view into the core layout `<main>` so all routes share the same content constraints. Removed duplicate `mt-12 pb-20` from home-view's inner wrapper. Extracted `<CallToActionSection />` out of home-view and into the core layout as a `<HomeCta />` client wrapper that renders only on `pathname === "/"`, positioned above the footer.
 
+---
+
+- **Feature 05 (Home View Redesign)** — Rewrote all four home view components in place using the HCI Lab brand system. `QuickIntroduction`: Oxanium `.heading-4` titles with Well Red left accent bars, bordered rounded research area cards with staggered fade-up animation. `RecentPapers`: two-column layout retained, research items in bordered cards with `.label-4` titles, featured image with Alabaster caption strip. `HubCommunitySection`: Alabaster full-bleed background via `-mx-6 md:-mx-12`, removed off-brand floating tags, clean two-column layout with `.text-p1` body. `RecentNewsSection`: unified card grid (1→2→3 col) for both mobile and desktop, image cards with hover scale, `.label-4` titles, Well Red date/featured tags — eliminating the separate mobile/desktop duplicate layouts. All sections use `whileInView` fade-up animations with `staggerChildren: 0.1` on card lists. No raw Tailwind font utilities; no horizontal overflow on mobile. Build clean.
+
 ## In Progress
 
 - None.

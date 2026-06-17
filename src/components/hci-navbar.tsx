@@ -131,7 +131,15 @@ export default function HciNavbar() {
           style={{ opacity: gradientOpacity }}
         />
         <div className="flex items-center justify-between px-6 md:px-12 h-16">
-          <Logo size={40} />
+          <div className="flex items-center gap-3">
+            <Logo size={40} />
+            <span
+              className="font-oxanium font-medium text-white text-sm pointer-events-none"
+              style={{ opacity: Math.min(Math.max((scrollY - 280) / 160, 0), 1) }}
+            >
+              Temple HCI Lab
+            </span>
+          </div>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
