@@ -3,29 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
+
 import { Button } from "@/components/ui/button";
 import { SectionTitle } from "@/components/section-title";
 
+// ─── Data ────────────────────────────────────────────────────────────────────
+
 const RESEARCH_AREAS = [
-  {
-    id: "assistive-tech",
-    title: "Assistive Tech",
-    description:
-      "AAC tools to foster self-direction and expressive communication.",
-  },
-  {
-    id: "computing-education",
-    title: "Computing Education",
-    description:
-      "Studying AI harms and building scaffolding for responsible use.",
-  },
-  {
-    id: "future-of-work",
-    title: "Future of Work",
-    description: "Tools to build better workplaces and reimagine how we work.",
-  },
+  { id: "assistive-tech", title: "Assistive Tech", description: "AAC tools to foster self-direction and expressive communication." },
+  { id: "computing-education", title: "Computing Education", description: "Studying AI harms and building scaffolding for responsible use." },
+  { id: "future-of-work", title: "Future of Work", description: "Tools to build better workplaces and reimagine how we work." },
 ] as const;
 
 const TITLE_WORDS = [
@@ -34,419 +25,297 @@ const TITLE_WORDS = [
   { text: "Lab", className: "text-white" },
 ] as const;
 
-const TITLE_CHARS = TITLE_WORDS.flatMap((word, wordIndex) => {
-  const chars = word.text
-    .split("")
-    .map((char) => ({ char, className: word.className }));
-  return wordIndex < TITLE_WORDS.length - 1
-    ? [...chars, { char: " ", className: word.className }]
-    : chars;
-});
+const TITLE_CHARS = TITLE_WORDS.flatMap(({ text, className }, wi) => [
+  ...text.split("").map((char) => ({ char, className })),
+  ...(wi < TITLE_WORDS.length - 1 ? [{ char: " ", className }] : []),
+]);
+
+// ─── Animation constants ──────────────────────────────────────────────────────
 
 const CHAR_STAGGER = 8;
 const CHAR_RANGE = 260;
+const TOP_GAP = 80;
+const BOTTOM_GAP = 80;
+const EASE_POWER = 4;
+const CARD_DELAYS = [0, 0.45, 0.78];
+const CARD_EASE_POWERS = [1, EASE_POWER, EASE_POWER];
 
-const easeInCubic = (p: number) => p * p * p;
+// ─── Card math helpers ────────────────────────────────────────────────────────
 
-const AnimatedChar = ({
-  scrollY,
-  char,
-  index,
-  className,
-}: {
-  scrollY: MotionValue<number>;
-  char: string;
-  index: number;
-  className: string;
-}) => {
-  const start = index * CHAR_STAGGER;
+type CardsBox = { top: number; height: number };
 
-  const progress = useTransform(scrollY, (v) =>
-    Math.min(Math.max((v - start) / CHAR_RANGE, 0), 1),
-  );
-
-  const y = useTransform(progress, (p) => -340 * easeInCubic(p));
-  const x = useTransform(progress, (p) => Math.sin(p * Math.PI) * 22);
-  const scale = useTransform(progress, (p) => 1 - 0.65 * easeInCubic(p));
-  const opacity = useTransform(progress, (p) => 1 - easeInCubic(p) * 1.1);
-
-  return (
-    <motion.span
-      style={{ y, x, scale, opacity, display: "inline-block" }}
-      className={className}
-    >
-      {char === " " ? " " : char}
-    </motion.span>
-  );
+const getSlideDistance = (box: CardsBox): number => {
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  return Math.max(Math.min(((vh - box.top) / 2) * 4, vh - box.top - 20), 1);
 };
 
-const HEADING_TEXT = "Check out our research focus";
+const getCardTop = (box: CardsBox, delayFrac: number, easePower: number, v: number): number => {
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
+  const sd = getSlideDistance(box);
+  const dv = Math.max(v - sd * delayFrac, 0);
+  const progress = Math.pow(Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1), easePower);
+  return v <= sd ? box.top + (vh - sd + TOP_GAP - box.top) * progress : vh - v + TOP_GAP;
+};
+
+const getCardBg = (box: CardsBox, delayFrac: number, easePower: number, v: number): string => {
+  const sd = getSlideDistance(box);
+  const dv = Math.max(v - sd * delayFrac, 0);
+  const progress = Math.pow(Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1), easePower);
+  return `rgba(${Math.round(170 * progress)}, ${Math.round(44 * progress)}, ${Math.round(69 * progress)}, ${0.45 + 0.55 * progress})`;
+};
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+const ResearchCardContent = ({ area }: { area: (typeof RESEARCH_AREAS)[number] }) => (
+  <>
+    <div className="flex items-center justify-between gap-2">
+      <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</h3>
+      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white/50 transition-all group-hover:translate-x-1 group-hover:text-white shrink-0" />
+    </div>
+    <p className="text-sm md:text-p1 text-white/70 leading-snug">{area.description}</p>
+    <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1 mt-1">
+      See more <ArrowRight className="w-3 h-3" />
+    </span>
+  </>
+);
+
+const GhostGrid = () => (
+  <div className="grid grid-cols-3 gap-2 md:gap-4">
+    {RESEARCH_AREAS.map((area) => (
+      <Link key={area.id} href="/research" className="group flex flex-col gap-1 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-2.5 md:p-5">
+        <ResearchCardContent area={area} />
+      </Link>
+    ))}
+  </div>
+);
+
+const AnimatedGrid = () => (
+  <div className="grid grid-cols-3 gap-2 md:gap-4">
+    {RESEARCH_AREAS.map((area, index) => (
+      <div key={area.id} data-gsap-card={index} style={{ opacity: 0 }} className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors">
+        <Link href="/research" className="flex flex-col gap-1 md:gap-3 p-2.5 md:p-5">
+          <ResearchCardContent area={area} />
+        </Link>
+      </div>
+    ))}
+  </div>
+);
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 const HomeHero = () => {
   const [mounted, setMounted] = useState(false);
-  const [cardsBox, setCardsBox] = useState<{
-    top: number;
-    height: number;
-  } | null>(null);
+  const [cardsBox, setCardsBox] = useState<CardsBox | null>(null);
+
+  const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const charsRef = useRef<HTMLHeadingElement>(null);
+  const introBoxRef = useRef<HTMLDivElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+  const rollingLogoRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
+  // Hero shrinks as user scrolls
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const update = () => { el.style.height = `${Math.max(window.innerHeight - window.scrollY, 0)}px`; };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+  }, []);
+
+  // Title scales down on scroll
+  useEffect(() => {
+    if (!titleRef.current) return;
+    gsap.set(titleRef.current, { transformOrigin: "bottom left" });
+    const ctx = gsap.context(() => {
+      gsap.to(titleRef.current, { scale: 0.55, ease: "none", scrollTrigger: { trigger: document.body, start: "top top", end: "+=320", scrub: true } });
+    });
+    return () => ctx.revert();
+  }, []);
+
+  // Title chars cascade out on scroll
+  useEffect(() => {
+    if (!charsRef.current) return;
+    const chars = charsRef.current.querySelectorAll<HTMLSpanElement>(".title-char");
+    if (!chars.length) return;
+    const ctx = gsap.context(() => {
+      gsap.timeline({
+        scrollTrigger: { trigger: document.body, start: "top top", end: `+=${CHAR_RANGE + (chars.length - 1) * CHAR_STAGGER}`, scrub: true },
+      }).to(chars, { duration: CHAR_RANGE, y: -340, scale: 0.35, opacity: 0, ease: "power3.in", stagger: CHAR_STAGGER });
+    });
+    return () => ctx.revert();
+  }, []);
+
+  // Intro box: entrance then scroll-out
+  useEffect(() => {
+    if (!introBoxRef.current) return;
+    const el = introBoxRef.current;
+    gsap.fromTo(el, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out", delay: 0.2 });
+    const st = ScrollTrigger.create({
+      trigger: document.documentElement, start: "top top", end: "+=300", scrub: true,
+      onUpdate: (self) => gsap.set(el, { x: self.progress * 220, opacity: 1 - self.progress }),
+    });
+    return () => st.kill();
+  }, []);
+
+  // Cards: entrance + scroll-driven position & color
+  useEffect(() => {
+    if (!mounted || !cardsBox) return;
+    let scrollCleanup: (() => void) | null = null;
+    const timer = setTimeout(() => {
+      const cards = Array.from(document.querySelectorAll<HTMLDivElement>("[data-gsap-card]"));
+      if (cards.length !== 3) return;
+      const top = (i: number, v: number) => getCardTop(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
+      const bg = (i: number, v: number) => getCardBg(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
+      const sv = window.scrollY;
+      cards.forEach((card, i) => {
+        gsap.set(card, { backgroundColor: bg(i, sv) });
+        gsap.fromTo(card, { opacity: 0, y: top(i, sv) + 50 }, { opacity: 1, y: top(i, sv), duration: 0.9, ease: "power3.out", delay: 0.3 + i * 0.12, overwrite: true });
+      });
+      const handleScroll = () => {
+        const v = window.scrollY;
+        cards.forEach((card, i) => gsap.set(card, { y: top(i, v), backgroundColor: bg(i, v) }));
+      };
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      scrollCleanup = () => window.removeEventListener("scroll", handleScroll);
+    }, 50);
+    return () => { clearTimeout(timer); scrollCleanup?.(); };
+  }, [mounted, cardsBox]);
+
+  // Rolling logo reveals the title text
+  useEffect(() => {
+    const container = titleContainerRef.current;
+    const logoWrapper = rollingLogoRef.current;
+    if (!container || !logoWrapper) return;
+    const rect = container.getBoundingClientRect();
+    const logoSize = logoWrapper.offsetWidth;
+    const startX = -(rect.left + logoSize);
+    const endX = rect.width + logoSize;
+    const totalRotation = ((endX - startX) / ((logoSize / 2) * 0.55)) * (180 / Math.PI);
+    gsap.set(container, { visibility: "visible", clipPath: "inset(0 100% 0 0)" });
+    gsap.set(logoWrapper, { x: startX, y: Math.max(0, (rect.height - logoSize) / 2), scale: 0.2, rotation: 0, opacity: 1 });
+    const tl = gsap.timeline({ delay: 0.2 });
+    tl.to(logoWrapper, {
+      x: endX, scale: 1, rotation: totalRotation, duration: 1.5, ease: "power2.inOut",
+      onUpdate() {
+        const x = gsap.getProperty(logoWrapper, "x") as number;
+        const s = gsap.getProperty(logoWrapper, "scaleX") as number;
+        container.style.clipPath = `inset(0 ${Math.max(0, rect.width - x - (logoSize * s) / 2)}px 0 0)`;
+      },
+      onComplete: () => { container.style.clipPath = "none"; },
+    }, 0);
+    tl.to(logoWrapper, { opacity: 0, duration: 0.25 }, "-=0.3");
+    return () => { tl.kill(); if (container) gsap.set(container, { clearProps: "clipPath,visibility" }); };
+  }, []);
+
+  // Heading: y position tracks hero + fade out on scroll
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!mounted || !cardsBox || !el) return;
+    gsap.to(el, { opacity: 1, duration: 0.4, delay: 0.5, ease: "power2.out" });
+    const update = () => {
+      const v = window.scrollY;
+      const hb = Math.max(window.innerHeight - v, 0);
+      const ct = getCardTop(cardsBox, CARD_DELAYS[0], CARD_EASE_POWERS[0], v);
+      gsap.set(el, { y: Math.min(hb - 60, ct - 72), ...(v > 0 && { opacity: Math.max(0, 1 - v / 60) }) });
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [mounted, cardsBox]); 
+
+  // Cards placeholder measurement
   useLayoutEffect(() => {
     if (!cardsRef.current) return;
     const measure = () => {
       if (!cardsRef.current) return;
-      const rect = cardsRef.current.getBoundingClientRect();
-      setCardsBox({ top: rect.top, height: rect.height });
+      const r = cardsRef.current.getBoundingClientRect();
+      setCardsBox({ top: r.top, height: r.height });
     };
     measure();
-
-    const raf1 = requestAnimationFrame(() => requestAnimationFrame(measure));
-    if (typeof document !== "undefined" && "fonts" in document) {
-      document.fonts.ready.then(measure);
-    }
-
+    const raf = requestAnimationFrame(() => requestAnimationFrame(measure));
+    if (typeof document !== "undefined" && "fonts" in document) document.fonts.ready.then(measure);
     const observer = new ResizeObserver(measure);
     observer.observe(cardsRef.current);
     if (titleRef.current) observer.observe(titleRef.current);
     window.addEventListener("resize", measure);
-    return () => {
-      cancelAnimationFrame(raf1);
-      observer.disconnect();
-      window.removeEventListener("resize", measure);
-    };
+    return () => { cancelAnimationFrame(raf); observer.disconnect(); window.removeEventListener("resize", measure); };
   }, []);
 
-  const { scrollY } = useScroll();
-
-  const heroHeight = useTransform(scrollY, (v) => {
-    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-    return Math.max(vh - v, 0);
-  });
-
-  const titleScale = useTransform(scrollY, [0, 320], [1, 0.55]);
-
-  const introX = useTransform(scrollY, [0, 300], [0, 220]);
-  const introOpacity = useTransform(scrollY, [0, 280], [1, 0]);
-
-  const TOP_GAP = 80;
-  const BOTTOM_GAP = 80;
-
-  const getSlideDistance = () => {
-    if (!cardsBox) return 1;
-    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-    const room = vh - cardsBox.top;
-    const SLOWDOWN = 4;
-    return Math.max(Math.min((room / 2) * SLOWDOWN, room - 20), 1);
-  };
-
-  const EASE_POWER = 4;
-
-  const DELAY_FRACTION_1 = 0;
-  const DELAY_FRACTION_2 = 0.45;
-  const DELAY_FRACTION_3 = 0.78;
-
-  const LEAD_LINEAR_WEIGHT = 1;
-
-  const getCardTop1 = (v: number) => {
-    if (!cardsBox) return 0;
-    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-    const topStart = cardsBox.top;
-    const slideDistance = getSlideDistance();
-    const topEnd = vh - slideDistance + TOP_GAP;
-    const delay = slideDistance * DELAY_FRACTION_1;
-
-    if (v <= slideDistance) {
-      const dv = Math.max(v - delay, 0);
-      const denom = Math.max(slideDistance - delay, 1);
-      const linear = Math.min(dv / denom, 1);
-      const eased = Math.pow(linear, EASE_POWER);
-      const progress =
-        LEAD_LINEAR_WEIGHT * linear + (1 - LEAD_LINEAR_WEIGHT) * eased;
-      return topStart + (topEnd - topStart) * progress;
-    }
-    return vh - v + TOP_GAP;
-  };
-
-  const getCardTop2 = (v: number) => {
-    if (!cardsBox) return 0;
-    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-    const topStart = cardsBox.top;
-    const slideDistance = getSlideDistance();
-    const topEnd = vh - slideDistance + TOP_GAP;
-    const delay = slideDistance * DELAY_FRACTION_2;
-
-    if (v <= slideDistance) {
-      const dv = Math.max(v - delay, 0);
-      const denom = Math.max(slideDistance - delay, 1);
-      const progress = Math.pow(Math.min(dv / denom, 1), EASE_POWER);
-      return topStart + (topEnd - topStart) * progress;
-    }
-    return vh - v + TOP_GAP;
-  };
-
-  const getCardTop3 = (v: number) => {
-    if (!cardsBox) return 0;
-    const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-    const topStart = cardsBox.top;
-    const slideDistance = getSlideDistance();
-    const topEnd = vh - slideDistance + TOP_GAP;
-    const delay = slideDistance * DELAY_FRACTION_3;
-
-    if (v <= slideDistance) {
-      const dv = Math.max(v - delay, 0);
-      const denom = Math.max(slideDistance - delay, 1);
-      const progress = Math.pow(Math.min(dv / denom, 1), EASE_POWER);
-      return topStart + (topEnd - topStart) * progress;
-    }
-    return vh - v + TOP_GAP;
-  };
-
-  const cardTop1 = useTransform(scrollY, getCardTop1);
-  const cardTop2 = useTransform(scrollY, getCardTop2);
-  const cardTop3 = useTransform(scrollY, getCardTop3);
-  const cardTops = [cardTop1, cardTop2, cardTop3];
-
-  const headingY = useTransform([heroHeight, cardTop1], ([hb, ct]: number[]) =>
-    Math.min(hb - 60, ct - 72),
-  );
-
-  const headingOpacity = useTransform(scrollY, (v) => {
-    const sd = getSlideDistance();
-    const fadeOutStart = sd * 0.2;
-    const fadeOutEnd = sd * 0.45;
-    if (v <= fadeOutStart) return 1;
-    if (v <= fadeOutEnd)
-      return 1 - (v - fadeOutStart) / (fadeOutEnd - fadeOutStart);
-    return 0;
-  });
-
-  const getCardBg1 = (v: number) => {
-    const slideDistance = getSlideDistance();
-    const delay = slideDistance * DELAY_FRACTION_1;
-    const dv = Math.max(v - delay, 0);
-    const denom = Math.max(slideDistance - delay, 1);
-    const linear = Math.min(dv / denom, 1);
-    const eased = Math.pow(linear, EASE_POWER);
-    const progress =
-      LEAD_LINEAR_WEIGHT * linear + (1 - LEAD_LINEAR_WEIGHT) * eased;
-    const r = Math.round(170 * progress);
-    const g = Math.round(44 * progress);
-    const b = Math.round(69 * progress);
-    const a = 0.45 + (1 - 0.45) * progress;
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  };
-
-  const getCardBg2 = (v: number) => {
-    const slideDistance = getSlideDistance();
-    const delay = slideDistance * DELAY_FRACTION_2;
-    const dv = Math.max(v - delay, 0);
-    const denom = Math.max(slideDistance - delay, 1);
-    const progress = Math.pow(Math.min(dv / denom, 1), EASE_POWER);
-    const r = Math.round(170 * progress);
-    const g = Math.round(44 * progress);
-    const b = Math.round(69 * progress);
-    const a = 0.45 + (1 - 0.45) * progress;
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  };
-
-  const getCardBg3 = (v: number) => {
-    const slideDistance = getSlideDistance();
-    const delay = slideDistance * DELAY_FRACTION_3;
-    const dv = Math.max(v - delay, 0);
-    const denom = Math.max(slideDistance - delay, 1);
-    const progress = Math.pow(Math.min(dv / denom, 1), EASE_POWER);
-    const r = Math.round(170 * progress);
-    const g = Math.round(44 * progress);
-    const b = Math.round(69 * progress);
-    const a = 0.45 + (1 - 0.45) * progress;
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  };
-
-  const cardBg1 = useTransform(scrollY, getCardBg1);
-  const cardBg2 = useTransform(scrollY, getCardBg2);
-  const cardBg3 = useTransform(scrollY, getCardBg3);
-  const cardBgs = [cardBg1, cardBg2, cardBg3];
-
-  const cardsGrid = (
-    <div className="grid grid-cols-3 gap-2 md:gap-4">
-      {RESEARCH_AREAS.map((area) => (
-        <Link
-          key={area.id}
-          href="/research"
-          className="group flex flex-col gap-1 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-2.5 md:p-5 hover:border-well-red/40 hover:bg-black/60 transition-all"
-        >
-          <div className="flex items-center justify-between gap-2">
-            <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug group-hover:text-well-red transition-colors">
-              {area.title}
-            </h3>
-            <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white/50 transition-all group-hover:translate-x-1 group-hover:text-well-red shrink-0" />
-          </div>
-          <p className="text-sm md:text-p1 text-white/55 leading-snug">
-            {area.description}
-          </p>
-          <span className="font-oxanium text-xs md:text-sm font-medium text-well-red inline-flex items-center gap-1 mt-1">
-            See more <ArrowRight className="w-3 h-3" />
-          </span>
-        </Link>
-      ))}
-    </div>
-  );
-
-  const cardsGridVisible = (
-    <div className="grid grid-cols-3 gap-2 md:gap-4">
-      {RESEARCH_AREAS.map((area, index) => (
-        <motion.div
-          key={area.id}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.5,
-            ease: "easeOut",
-            delay: 0.2 + index * 0.15,
-          }}
-        >
-          <motion.div
-            style={{ backgroundColor: cardBgs[index], y: cardTops[index] }}
-            className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
-          >
-            <Link
-              href="/research"
-              className="flex flex-col gap-1 md:gap-3 p-2.5 md:p-5"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">
-                  {area.title}
-                </h3>
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white/50 transition-all group-hover:translate-x-1 group-hover:text-white shrink-0" />
-              </div>
-              <p className="text-sm md:text-p1 text-white/70 leading-snug">
-                {area.description}
-              </p>
-              <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1 mt-1">
-                See more <ArrowRight className="w-3 h-3" />
-              </span>
-            </Link>
-          </motion.div>
-        </motion.div>
-      ))}
-    </div>
-  );
+  // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
     <>
-      <motion.div
-        style={mounted ? { height: heroHeight } : undefined}
-        className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10"
-      >
+      <div ref={heroRef} className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10">
         <div className="absolute inset-0">
-          <Image
-            src="/images/cover/NC_05301.jpg"
-            alt="Temple HCI Lab"
-            fill
-            className="object-cover"
-            style={{ objectPosition: "center 36%" }}
-            priority
-            sizes="100vw"
-          />
+          <Image src="/images/cover/NC_05301.jpg" alt="Temple HCI Lab" fill className="object-cover" style={{ objectPosition: "center 36%" }} priority sizes="100vw" />
         </div>
         <div className="absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black/95" />
 
         <div className="absolute top-28 md:top-32 left-0 w-full px-6 md:px-12 z-10">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:justify-between gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 32 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.div
-                ref={titleRef}
-                style={{ scale: titleScale }}
-                className="origin-bottom-left"
-              >
-                <h1 className="font-oxanium font-semibold leading-none tracking-tight">
+
+            {/* Title with rolling logo entrance */}
+            <div ref={titleRef} className="origin-bottom-left relative">
+              <div ref={rollingLogoRef} className="absolute pointer-events-none z-10 opacity-0" style={{ top: 0, left: 0 }}>
+                <Image src="/logos/hci-logo.png" alt="" width={88} height={88} className="rounded-md" />
+              </div>
+              <div ref={titleContainerRef} className="invisible">
+                <h1 ref={charsRef} className="font-oxanium font-semibold leading-none tracking-tight">
                   {TITLE_CHARS.map((c, index) => (
-                    <AnimatedChar
-                      key={index}
-                      scrollY={scrollY}
-                      char={c.char}
-                      index={index}
-                      className={`text-[40px] font-outfit! md:text-[64px] lg:text-[88px] leading-[0.88] ${c.className}`}
-                    />
+                    <span key={index} className={`title-char inline-block text-[40px] font-outfit! md:text-[64px] lg:text-[88px] leading-[0.88] ${c.className}`}>
+                      {c.char === " " ? " " : c.char}
+                    </span>
                   ))}
                 </h1>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 120 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
-              className="shrink-0"
-            >
-              <motion.div
-                style={{ x: introX, opacity: introOpacity }}
-                className="max-w-xs md:max-w-lg flex flex-col gap-4 bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5"
-              >
-                <p className="text-p3 text-white/90 leading-relaxed">
-                  Our research lab takes a human-centered approach to using AI,
-                  NLP, and Visualization to facilitate learning and empower
-                  non-experts to participate in work that has been previously
-                  reserved for trained professionals.
-                </p>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="default"
-                  className="self-start border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-6 rounded-full"
-                >
-                  <Link href="/about">Learn more about us</Link>
-                </Button>
-              </motion.div>
-            </motion.div>
+            {/* Intro box */}
+            <div ref={introBoxRef} className="shrink-0 max-w-xs md:max-w-lg flex flex-col gap-4 bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5">
+              <p className="text-p3 text-white/90 leading-relaxed">
+                Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate
+                learning and empower non-experts to participate in work that has been previously reserved for trained professionals.
+              </p>
+              <Button asChild variant="outline" size="default" className="self-start border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-6 rounded-full">
+                <Link href="/about">Learn more about us</Link>
+              </Button>
+            </div>
+
           </div>
         </div>
 
-        <div className="relative z-10 h-full flex flex-col justify-end">
-          <div className="max-w-7xl w-full mx-auto px-6 md:px-12 pb-16 md:pb-28 flex flex-col gap-4 md:gap-6">
+        {/* Ghost grid — invisible, used only to measure card positions */}
+        <div className="relative z-10 h-full flex flex-col justify-end pointer-events-none">
+          <div className="max-w-7xl w-full mx-auto px-6 md:px-12 pb-16 md:pb-28">
             <div ref={cardsRef} className="invisible pointer-events-none">
-              {cardsGrid}
+              <GhostGrid />
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
+      {/* Animated overlay: heading label + research cards */}
       {mounted && cardsBox && (
-        <motion.div
-          style={{ top: 0, left: 0, width: "100vw" }}
-          className="fixed z-20"
-        >
+        <div className="fixed top-0 left-0 w-screen z-20 pointer-events-none">
           <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, ease: "easeOut", delay: 0.5 }}
-              style={{ y: headingY }}
-              className="absolute top-0 left-6 md:left-12"
-            >
-              <motion.div style={{ opacity: headingOpacity }}>
-                <SectionTitle light>{HEADING_TEXT}</SectionTitle>
-              </motion.div>
-            </motion.div>
-            {cardsGridVisible}
+            <div ref={headingRef} className="absolute top-0 left-6 md:left-12 opacity-0">
+              <SectionTitle light>Check out our research focus</SectionTitle>
+            </div>
+            <div className="pointer-events-auto"><AnimatedGrid /></div>
           </div>
-        </motion.div>
+        </div>
       )}
 
       <div style={{ height: "100vh" }} className="shrink-0" />
-      <div
-        style={{
-          height: cardsBox ? TOP_GAP + cardsBox.height + BOTTOM_GAP : 0,
-        }}
-        className="shrink-0"
-      />
+      <div style={{ height: cardsBox ? TOP_GAP + cardsBox.height + BOTTOM_GAP : 0 }} className="shrink-0" />
     </>
   );
 };

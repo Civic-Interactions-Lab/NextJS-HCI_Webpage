@@ -18,7 +18,7 @@ Update this file whenever the current phase, active feature, or implementation s
 | ----------- | ------------------------------- | -------- |
 | Framework   | Next.js + TypeScript            | 16 / 5   |
 | UI          | Tailwind CSS + shadcn/ui        | v4       |
-| Animation   | Framer Motion                   | 12       |
+| Animation   | GSAP + ScrollTrigger            | 3        |
 | CMS         | Sanity                          | v4       |
 | Maps        | Mapbox + react-map-gl           | 3 / 8    |
 | Deployment  | Docker + nginx + GitHub Actions | —        |
@@ -53,6 +53,8 @@ Update this file whenever the current phase, active feature, or implementation s
 ---
 
 - **Feature 05 (Home View Redesign)** — Rewrote all four home view components in place using the HCI Lab brand system. `QuickIntroduction`: Oxanium `.heading-4` titles with Well Red left accent bars, bordered rounded research area cards with staggered fade-up animation. `RecentPapers`: two-column layout retained, research items in bordered cards with `.label-4` titles, featured image with Alabaster caption strip. `HubCommunitySection`: Alabaster full-bleed background via `-mx-6 md:-mx-12`, removed off-brand floating tags, clean two-column layout with `.text-p1` body. `RecentNewsSection`: unified card grid (1→2→3 col) for both mobile and desktop, image cards with hover scale, `.label-4` titles, Well Red date/featured tags — eliminating the separate mobile/desktop duplicate layouts. All sections use `whileInView` fade-up animations with `staggerChildren: 0.1` on card lists. No raw Tailwind font utilities; no horizontal overflow on mobile. Build clean.
+
+  - **Feature 05.1 (Home Hero Animation — Migrate to GSAP)** — Rewrote `home-hero.tsx` scroll-driven hero with scroll-triggered animations and dropped Framer Motion entirely. Rolling HCI logo entrance animates left→right with growing scale, leaving a clip-path trace that reveals the "Temple HCI Lab" title text. Title chars cascade out on scroll via GSAP stagger timeline. Hero container height shrinks on scroll via a direct scroll listener. Title scales from 1→0.55 over 320px via GSAP ScrollTrigger scrub. Intro box fades/slides in on load then drifts off on scroll. Research cards animate in with staggered entrance and scroll-driven background color + position. "Check out our research focus" heading tracks hero height and fades out instantly at scroll start. All `motion.div`, `useScroll`, and `useTransform` removed; `framer-motion` import dropped. Pure GSAP + ScrollTrigger throughout.
 
 ## In Progress
 
