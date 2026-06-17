@@ -1,24 +1,33 @@
 import React, { Suspense } from "react";
+import { ScrollRestoration } from "@/components/scroll-restoration";
 import HomeHero from "@/modules/home/ui/components/home-hero";
 import HomeIntro from "@/modules/home/ui/components/home-intro";
 import RecentPapers from "@/modules/home/ui/components/recent-papers";
 import HubCommunitySection from "@/modules/home/ui/components/hub-community-section";
 import RecentNewsSection from "@/modules/home/ui/components/recent-news-section";
+import TestimonialsSection from "@/modules/home/ui/components/home-testimonials-section";
 import { getRecentNews } from "@/sanity/lib/news/getNews";
 import { getFeaturedResearch } from "@/sanity/lib/research/getResearch";
+import { getTestimonials } from "@/sanity/lib/testimonials/getTestimonials";
 import {
   getHomeFeaturedProjectsImage,
   getHomeHubCommunityImage,
 } from "@/sanity/lib/imageSettings/homeImages";
 
 const HomeContent = async () => {
-  const [recentNews, featuredResearch, featuredProjectsImage, hubCommunityImage] =
-    await Promise.all([
-      getRecentNews(),
-      getFeaturedResearch(),
-      getHomeFeaturedProjectsImage(),
-      getHomeHubCommunityImage(),
-    ]);
+  const [
+    recentNews,
+    featuredResearch,
+    featuredProjectsImage,
+    hubCommunityImage,
+    testimonials,
+  ] = await Promise.all([
+    getRecentNews(),
+    getFeaturedResearch(),
+    getHomeFeaturedProjectsImage(),
+    getHomeHubCommunityImage(),
+    getTestimonials(),
+  ]);
 
   return (
     <main className="bg-white overflow-hidden">
@@ -29,6 +38,7 @@ const HomeContent = async () => {
           research={featuredResearch}
         />
         <HubCommunitySection hubCommunityImage={hubCommunityImage} />
+        <TestimonialsSection testimonials={testimonials} />
         <RecentNewsSection recentNews={recentNews} />
       </div>
     </main>
@@ -50,6 +60,7 @@ const HomeContentSkeleton = () => (
 const HomeView = () => {
   return (
     <>
+      <ScrollRestoration />
       <HomeHero />
       <Suspense fallback={<HomeContentSkeleton />}>
         <HomeContent />

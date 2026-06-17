@@ -153,11 +153,18 @@ const HomeHero = () => {
     return () => ctx.revert();
   }, []);
 
-  // Intro box: entrance then scroll-out
+  // Intro box: clip-path reveal from right, then scroll-out
   useEffect(() => {
     if (!introBoxRef.current) return;
     const el = introBoxRef.current;
-    gsap.fromTo(el, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out", delay: 0.2 });
+    gsap.set(el, { visibility: "visible", clipPath: "inset(0 0 0 100%)", opacity: 1, x: 0 });
+
+    if (window.scrollY < 20) {
+      gsap.to(el, { clipPath: "inset(0 0 0 0%)", duration: 0.9, ease: "power3.inOut", delay: 0.2 });
+    } else {
+      gsap.set(el, { clipPath: "inset(0 0 0 0%)" });
+    }
+
     const st = ScrollTrigger.create({
       trigger: document.documentElement, start: "top top", end: "+=300", scrub: true,
       onUpdate: (self) => gsap.set(el, { x: self.progress * 220, opacity: 1 - self.progress }),
@@ -175,13 +182,31 @@ const HomeHero = () => {
       const top = (i: number, v: number) => getCardTop(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
       const bg = (i: number, v: number) => getCardBg(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
       const sv = window.scrollY;
+      const heroH = window.innerHeight;
+      const setPointer = (card: HTMLDivElement, scrollY: number) => {
+        // Disable pointer events once hero is scrolled out of view
+        card.style.pointerEvents = scrollY < heroH ? "auto" : "none";
+      };
       cards.forEach((card, i) => {
         gsap.set(card, { backgroundColor: bg(i, sv) });
-        gsap.fromTo(card, { opacity: 0, y: top(i, sv) + 50 }, { opacity: 1, y: top(i, sv), duration: 0.9, ease: "power3.out", delay: 0.3 + i * 0.12, overwrite: true });
+        if (sv < 20) {
+          // Normal entrance animation when at (or very near) the top
+          gsap.fromTo(card, { opacity: 0, y: top(i, sv) + 50 }, {
+            opacity: 1, y: top(i, sv), duration: 0.9, ease: "power3.out", delay: 0.3 + i * 0.12, overwrite: true,
+            onComplete: () => setPointer(card, window.scrollY),
+          });
+        } else {
+          // Page loaded mid-scroll: place cards immediately at the correct position
+          gsap.set(card, { opacity: 1, y: top(i, sv) });
+          setPointer(card, sv);
+        }
       });
       const handleScroll = () => {
         const v = window.scrollY;
-        cards.forEach((card, i) => gsap.set(card, { y: top(i, v), backgroundColor: bg(i, v) }));
+        cards.forEach((card, i) => {
+          gsap.set(card, { y: top(i, v), backgroundColor: bg(i, v) });
+          setPointer(card, v);
+        });
       };
       window.addEventListener("scroll", handleScroll, { passive: true });
       scrollCleanup = () => window.removeEventListener("scroll", handleScroll);
@@ -229,14 +254,19 @@ const HomeHero = () => {
     update();
     window.addEventListener("scroll", update, { passive: true });
     return () => window.removeEventListener("scroll", update);
-  }, [mounted, cardsBox]); 
+  }, [mounted, cardsBox]);
 
   // Cards placeholder measurement
   useLayoutEffect(() => {
     if (!cardsRef.current) return;
     const measure = () => {
-      if (!cardsRef.current) return;
+      if (!cardsRef.current || !heroRef.current) return;
+      // Hero height shrinks when scrollY > 0, collapsing the ghost grid to top:0.
+      // Temporarily restore full height so getBoundingClientRect is always accurate.
+      const saved = heroRef.current.style.height;
+      heroRef.current.style.height = `${window.innerHeight}px`;
       const r = cardsRef.current.getBoundingClientRect();
+      heroRef.current.style.height = saved;
       setCardsBox({ top: r.top, height: r.height });
     };
     measure();
@@ -253,7 +283,7 @@ const HomeHero = () => {
 
   return (
     <>
-      <div ref={heroRef} className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10">
+      <div ref={heroRef} className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10 pointer-events-none">
         <div className="absolute inset-0">
           <Image src="/images/cover/NC_05301.jpg" alt="Temple HCI Lab" fill className="object-cover" style={{ objectPosition: "center 36%" }} priority sizes="100vw" />
         </div>
@@ -279,7 +309,7 @@ const HomeHero = () => {
             </div>
 
             {/* Intro box */}
-            <div ref={introBoxRef} className="shrink-0 max-w-xs md:max-w-lg flex flex-col gap-4 bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5">
+            <div ref={introBoxRef} className="shrink-0 max-w-xs md:max-w-lg flex flex-col gap-4 bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5 pointer-events-auto invisible">
               <p className="text-p3 text-white/90 leading-relaxed">
                 Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate
                 learning and empower non-experts to participate in work that has been previously reserved for trained professionals.
@@ -309,7 +339,7 @@ const HomeHero = () => {
             <div ref={headingRef} className="absolute top-0 left-6 md:left-12 opacity-0">
               <SectionTitle light>Check out our research focus</SectionTitle>
             </div>
-            <div className="pointer-events-auto"><AnimatedGrid /></div>
+            <AnimatedGrid />
           </div>
         </div>
       )}
