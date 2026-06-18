@@ -62,6 +62,10 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ---
 
+- **Feature 06 (About View Redesign)** — `about-view.tsx` rewritten as a client component; all Sanity image fetching removed; `TestimonialList` removed. `/about/page.tsx` simplified to render `<AboutView />` only — sub-route switching (`?sub=`) removed. All five sections redesigned with brand system and GSAP ScrollTrigger animations (no Framer Motion): `community-research.tsx` (stat cards in Alabaster, vertical video in constrained portrait container with `#ourstudio` badge), `studio-time.tsx` (rotated placeholder image + Learn More link), `leadership.tsx` (left-border stats in Well Red), `learning-outcomes.tsx` (Alabaster full-bleed strip, asymmetric rounded outcome cards), `lab-values.tsx` (static 5-image carousel). All components renamed to kebab-case; old PascalCase files deleted.
+
+---
+
 ## In Progress
 
 - None.
