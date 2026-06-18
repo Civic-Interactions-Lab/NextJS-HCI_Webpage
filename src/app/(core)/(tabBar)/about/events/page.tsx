@@ -1,8 +1,9 @@
+import EventsView from "@/modules/about/ui/views/events-view";
+
 export default function EventsPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[40vh] gap-4">
-      <p className="label-3 text-thunder">Coming Soon</p>
-      <p className="text-p2 text-thunder/60">This page is under construction.</p>
+    <div className="space-y-12 mb-16">
+      <EventsView />
     </div>
   );
 }

@@ -1,0 +1,188 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
+import { SectionTitle } from "@/components/section-title";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const EVENTS = [
+  {
+    title: "HCI Open House",
+    date: "Mar 15",
+    year: "2025",
+    location: "SERC 301",
+    tag: "Social",
+    description:
+      "An open invitation to see the lab in action — meet researchers, explore projects, and find out how to join.",
+  },
+  {
+    title: "OwlHacks",
+    date: "Apr 5–6",
+    year: "2025",
+    location: "Gittis Center",
+    tag: "Hackathon",
+    description:
+      "Temple's flagship hackathon — 24 hours of human-centered design challenges led by HCI Lab members.",
+  },
+  {
+    title: "CHI 2025",
+    date: "Apr 26",
+    year: "2025",
+    location: "Yokohama, Japan",
+    tag: "Conference",
+    description:
+      "Lab members present peer-reviewed research at the world's top HCI conference.",
+  },
+  {
+    title: "Studio Showcase",
+    date: "May 10",
+    year: "2025",
+    location: "SERC Atrium",
+    tag: "Showcase",
+    description:
+      "Students present their semester projects in a gallery-style showcase open to all.",
+  },
+];
+
+const TAG_BG: Record<string, string> = {
+  Social: "bg-well-red text-white",
+  Hackathon: "bg-gold text-thunder",
+  Conference: "bg-sky text-white",
+  Showcase: "bg-grass text-white",
+};
+
+const EventsUpcoming = () => {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".featured-card", {
+        opacity: 0,
+        y: 60,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".featured-card",
+          start: "top 85%",
+          once: true,
+        },
+      });
+      gsap.from(".side-card", {
+        opacity: 0,
+        y: 50,
+        stagger: 0.12,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: { trigger: ".side-card", start: "top 85%", once: true },
+      });
+    }, rootRef);
+    return () => ctx.revert();
+  }, []);
+
+  const [featured, ...rest] = EVENTS;
+
+  return (
+    <section ref={rootRef} className="flex flex-col gap-10">
+      <SectionTitle>Upcoming Events</SectionTitle>
+
+      {/* Featured card */}
+      <div className="featured-card group relative rounded-3xl overflow-hidden bg-alabaster border border-thunder/8 flex flex-col md:flex-row gap-0 shadow-sm hover:shadow-lg transition-shadow">
+        {/* Image */}
+        <div className="relative w-full md:w-1/2 h-64 md:h-auto shrink-0">
+          <Image
+            src="/images/cover/6-studio.JPG"
+            alt={featured.title}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent to-alabaster/20 md:bg-linear-to-r" />
+        </div>
+
+        {/* Content */}
+        <div className="flex flex-col justify-between gap-6 p-8 md:p-10 flex-1">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-start justify-between">
+              <span
+                className={`font-outfit text-xs font-medium px-3 py-1 rounded-full ${TAG_BG[featured.tag] ?? "bg-thunder text-white"}`}
+              >
+                {featured.tag}
+              </span>
+              <span className="font-outfit font-bold text-5xl text-thunder/10 leading-none select-none">
+                01
+              </span>
+            </div>
+            <h3 className="font-outfit font-medium text-2xl md:text-3xl text-thunder leading-tight">
+              {featured.title}
+            </h3>
+            <p className="text-p1 text-thunder/65 leading-relaxed">
+              {featured.description}
+            </p>
+          </div>
+          <div className="flex items-end justify-between">
+            <div className="flex flex-col gap-0.5">
+              <p className="font-outfit font-semibold text-xl text-well-red">
+                {featured.date}
+              </p>
+              <p className="font-outfit text-sm text-thunder/50">
+                {featured.location}
+              </p>
+            </div>
+            <p className="font-outfit text-xs text-thunder/30">
+              {featured.year}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Remaining cards — alternating vertical offset on desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {rest.map(({ title, date, year, location, tag, description }, i) => (
+          <div
+            key={title}
+            className="side-card flex flex-col gap-5 rounded-2xl overflow-hidden bg-alabaster border border-thunder/8 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="relative w-full h-40 shrink-0">
+              <Image
+                src="/images/cover/6-studio.JPG"
+                alt={title}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="flex flex-col gap-3 px-5 pb-6">
+              <div className="flex items-center justify-between">
+                <span
+                  className={`font-outfit text-xs font-medium px-2.5 py-0.5 rounded-full ${TAG_BG[tag] ?? "bg-thunder text-white"}`}
+                >
+                  {tag}
+                </span>
+                <span className="font-outfit font-bold text-xs text-thunder/20">
+                  0{i + 2}
+                </span>
+              </div>
+              <p className="font-outfit font-medium text-lg text-thunder leading-snug">
+                {title}
+              </p>
+              <p className="text-p3 text-thunder/65 leading-relaxed">
+                {description}
+              </p>
+              <div className="flex items-center justify-between pt-1">
+                <p className="font-outfit font-semibold text-sm text-well-red">
+                  {date}
+                </p>
+                <p className="font-outfit text-sm text-thunder/40">
+                  {location}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default EventsUpcoming;

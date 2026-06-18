@@ -32,7 +32,7 @@ const AboutView = () => {
   }, []);
 
   return (
-    <div className="space-y-20 overflow-x-hidden">
+    <div className="space-y-20">
       {/* Intro + Community Research alongside vertical video */}
       <div
         ref={introRef}

@@ -62,7 +62,11 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ---
 
-- **Feature 06 (About View Redesign)** — `about-view.tsx` rewritten as a client component; all Sanity image fetching removed; `TestimonialList` removed. `/about/page.tsx` simplified to render `<AboutView />` only — sub-route switching (`?sub=`) removed. All five sections redesigned with brand system and GSAP ScrollTrigger animations (no Framer Motion): `community-research.tsx` (stat cards in Alabaster, vertical video in constrained portrait container with `#ourstudio` badge), `studio-time.tsx` (rotated placeholder image + Learn More link), `leadership.tsx` (left-border stats in Well Red), `learning-outcomes.tsx` (Alabaster full-bleed strip, asymmetric rounded outcome cards), `lab-values.tsx` (static 5-image carousel). All components renamed to kebab-case; old PascalCase files deleted.
+- **Feature 06 (About View Redesign)** — `about-view.tsx` rewritten as a client component; all Sanity image fetching removed; `TestimonialList` removed. `/about/page.tsx` simplified to render `<AboutView />` only — sub-route switching (`?sub=`) removed. All five sections redesigned with brand system and GSAP ScrollTrigger animations (no Framer Motion): `community-research.tsx` (stat cards in Alabaster, vertical video in constrained portrait container), `studio-time.tsx` (placeholder image + SectionLink to /about/events), `leadership.tsx` (left-border stats in Well Red), `learning-outcomes.tsx` (Alabaster full-bleed strip, asymmetric rounded outcome cards), `lab-values.tsx` (static 5-image carousel). All components renamed to kebab-case; old PascalCase files deleted. Mobile fixes: `overflow-x-hidden`, `w-full` video wrapper for centering, `md:rotate-*` on images.
+
+---
+
+- **Feature 07 (Events View Redesign)** — `events-view.tsx` rewritten as a client component; all Sanity image fetching removed. `/about/events/page.tsx` updated to render `<EventsView />` — "Coming Soon" placeholder replaced. Four sections built with brand system and GSAP ScrollTrigger animations: `events-intro.tsx` (Well Red left-border accent block), `events-upcoming.tsx` (2-col card grid with placeholder data, tag badges in Well Red/gold/sky), `events-map.tsx` (Mapbox `react-map-gl` centered on SERC building at zoom 15 with Well Red marker, address below), `events-gallery.tsx` (2→3 col image grid with hover scale/caption). No Framer Motion; no Sanity fetches; no horizontal overflow.
 
 ---
 
