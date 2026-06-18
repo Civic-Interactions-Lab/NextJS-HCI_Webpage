@@ -4,7 +4,6 @@ import AnnotationOverlayWrapper from "@/modules/annotations/ui/components/Annota
 import Loading from "@/components/Loading";
 import HciNavbar from "@/components/hci-navbar";
 import Hero from "@/components/hero";
-import HomeCta from "@/components/home-cta";
 
 export default async function CoreLayout({
   children,
@@ -18,7 +17,6 @@ export default async function CoreLayout({
           <HciNavbar />
           <Hero />
           <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 pt-12 pb-20">{children}</main>
-          <HomeCta />
           <Footer />
         </div>
       </AnnotationOverlayWrapper>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
+import { SectionLink } from "@/components/section-link";
 import { getImageSrc } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -126,7 +127,10 @@ const TestimonialsSection = ({ testimonials }: Props) => {
   return (
     <section className="w-full space-y-8">
       <div className="flex items-end justify-between">
-        <SectionTitle>What People Say</SectionTitle>
+        <div className="flex flex-col gap-2">
+          <SectionTitle>What People Say</SectionTitle>
+          <SectionLink href="/people">Meet the people</SectionLink>
+        </div>
 
         {n > 1 && (
           <div className="flex gap-2 shrink-0 pb-1">

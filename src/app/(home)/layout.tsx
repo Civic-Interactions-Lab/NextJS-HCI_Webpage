@@ -1,6 +1,6 @@
 import React from "react";
 import HciNavbar from "@/components/hci-navbar";
-import HomeCta from "@/components/home-cta";
+import CallToActionSection from "@/components/call-to-action-section";
 import Footer from "@/components/Footer";
 import AnnotationOverlayWrapper from "@/modules/annotations/ui/components/AnnotationOverlayWrapper";
 
@@ -14,7 +14,7 @@ export default function HomeLayout({
       <div className="min-h-screen flex flex-col">
         <HciNavbar />
         {children}
-        <HomeCta />
+        <CallToActionSection />
         <Footer />
       </div>
     </AnnotationOverlayWrapper>

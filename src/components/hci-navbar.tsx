@@ -106,9 +106,10 @@ export default function HciNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const t = Math.min(scrollY / 200, 1);
+  const t = Math.min(Math.max(scrollY / 80, 0), 1);
   const bgOpacity = t * t * (3 - 2 * t);
   const gradientOpacity = 1 - bgOpacity;
+  const isLight = bgOpacity > 0.5;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -123,18 +124,21 @@ export default function HciNavbar() {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{ backgroundColor: `rgba(41, 39, 39, ${bgOpacity})` }}
+        className="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300"
+        style={{
+          backgroundColor: `rgba(255, 255, 255, ${bgOpacity * 0.85})`,
+          boxShadow: bgOpacity > 0.1 ? `0 1px 8px rgba(0,0,0,${bgOpacity * 0.08})` : "none",
+        }}
       >
         <div
           className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-none -z-10"
           style={{ opacity: gradientOpacity }}
         />
-        <div className="flex items-center justify-between px-6 md:px-12 h-16">
+        <div className="flex items-center justify-between px-6 md:px-12 h-[68px]">
           <div className="flex items-center gap-3">
             <Logo size={40} />
             <span
-              className="font-oxanium font-medium text-white text-sm pointer-events-none"
+              className={`font-outfit font-medium text-lg pointer-events-none transition-colors duration-300 ${isLight ? "text-thunder" : "text-white"}`}
               style={{ opacity: Math.min(Math.max((scrollY - 280) / 160, 0), 1) }}
             >
               Temple HCI Lab
@@ -152,10 +156,12 @@ export default function HciNavbar() {
                         openDropdown === item.href ? null : item.href,
                       )
                     }
-                    className={`flex items-center gap-1 px-3 py-2 rounded-md transition-colors hover:bg-white/10 label-5 ${
+                    className={`flex items-center gap-1 px-3 py-2 rounded-md transition-colors font-outfit font-medium text-lg ${
+                      isLight ? "hover:bg-thunder/8" : "hover:bg-white/10"
+                    } ${
                       isActive(item.href)
                         ? "text-well-red"
-                        : "text-white/90 hover:text-white"
+                        : isLight ? "text-thunder/70 hover:text-thunder" : "text-white/90 hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -168,10 +174,12 @@ export default function HciNavbar() {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`block px-3 py-2 rounded-md transition-colors hover:bg-white/10 label-5 ${
+                    className={`block px-3 py-2 rounded-md transition-colors font-outfit font-medium text-lg ${
+                      isLight ? "hover:bg-thunder/8" : "hover:bg-white/10"
+                    } ${
                       isActive(item.href)
                         ? "text-well-red"
-                        : "text-white/90 hover:text-white"
+                        : isLight ? "text-thunder/70 hover:text-thunder" : "text-white/90 hover:text-white"
                     }`}
                   >
                     {item.label}
@@ -231,7 +239,7 @@ export default function HciNavbar() {
 
           {/* Mobile Hamburger */}
           <button
-            className="md:hidden text-white p-2 rounded-md hover:bg-white/10 transition-colors"
+            className={`md:hidden p-2 rounded-md transition-colors ${isLight ? "text-thunder hover:bg-thunder/8" : "text-white hover:bg-white/10"}`}
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
           >

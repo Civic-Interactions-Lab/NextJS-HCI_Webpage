@@ -3,7 +3,7 @@ import { getFAQs } from "@/sanity/lib/faq/getFAQs";
 import { Faq } from "../../../../../sanity.types";
 import { Accordion } from "@/components/ui/accordion";
 import AnimatedAccordionItem from "@/components/AnimatedAccordionItem";
-import CallToActionSection from "@/components/CallToActionSection";
+import CallToActionSection from "@/components/call-to-action-section";
 
 const JoinView = async () => {
   const faqs = await getFAQs();

@@ -8,7 +8,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
-import { Button } from "@/components/ui/button";
 import { SectionTitle } from "@/components/section-title";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -68,13 +67,10 @@ const getCardBg = (box: CardsBox, delayFrac: number, easePower: number, v: numbe
 
 const ResearchCardContent = ({ area }: { area: (typeof RESEARCH_AREAS)[number] }) => (
   <>
-    <div className="flex items-center justify-between gap-2">
-      <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</h3>
-      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white/50 transition-all group-hover:translate-x-1 group-hover:text-white shrink-0" />
-    </div>
+    <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</h3>
     <p className="text-sm md:text-p1 text-white/70 leading-snug">{area.description}</p>
     <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1 mt-1">
-      See more <ArrowRight className="w-3 h-3" />
+      See more <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
     </span>
   </>
 );
@@ -314,9 +310,9 @@ const HomeHero = () => {
                 Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate
                 learning and empower non-experts to participate in work that has been previously reserved for trained professionals.
               </p>
-              <Button asChild variant="outline" size="default" className="self-start border-2 border-white! bg-transparent! text-white hover:bg-white! hover:text-black px-6 rounded-full">
-                <Link href="/about">Learn more about us</Link>
-              </Button>
+              <Link href="/about" className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors">
+                Learn more about us <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
 
           </div>
