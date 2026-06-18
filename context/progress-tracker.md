@@ -76,6 +76,8 @@ Update this file whenever the current phase, active feature, or implementation s
 
   - **Feature 08.1 (Testimonials Smooth Height Transition)** — Side cards (abs !== 0) now cap quote text at ~6 lines via `maxHeight: 176px` on the `[data-quote]` element; center card expands to unconstrained `2000px`. Both card `maxHeight` and quote `maxHeight` animate in GSAP `onUpdate` using `this.ratio` so the text height grows/shrinks in sync with card movement — no abrupt snap. Transition duration bumped to 0.75s for a smoother feel. Code cleanup: `QUOTE_SIDE_H`/`QUOTE_FULL_H` hoisted to module-level constants, `lerp` helper extracted, duplicate nav buttons collapsed to a single mapped array.
 
+- **Feature 09 (Research View Redesign)** — `CommonResearchAreas.tsx`, `ResearchAccordionItem.tsx`, `ResearchAtHCI.tsx`, `ResearchCard.tsx` deleted. New files: `research-intro.tsx` (bold Outfit heading "AI. Accessibility. Social Computing." with Well Red label and mission copy), `research-category.tsx` (reusable section component rendered 3× — alternating Alabaster/white full-bleed strips, faint watermark index number, right-border tagline, YouTube embed, paper grid), `research-card.tsx` (brand-styled card — Outfit title, `line-clamp-4` description, pill action buttons in Alabaster/Well Red). `research-view.tsx` rewritten as server component fetching all 3 categories via existing Sanity queries. All three category accent colors: Gen AI = Well Red, Accessibility = Sky, Social Computing = Grass. GSAP ScrollTrigger animations with `immediateRender: false` and `once: true` throughout. No Framer Motion, no shadcn Accordion, no raw gray Tailwind colors.
+
 ## In Progress
 
 - None.
