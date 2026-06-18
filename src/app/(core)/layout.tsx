@@ -16,7 +16,9 @@ export default async function CoreLayout({
         <div className="min-h-screen flex flex-col">
           <HciNavbar />
           <Hero />
-          <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 pt-12 pb-20">{children}</main>
+          <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 py-20">
+            {children}
+          </main>
           <Footer />
         </div>
       </AnnotationOverlayWrapper>

@@ -34,7 +34,7 @@ const StudioTime = () => {
     <section ref={rootRef} className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
       {/* Image */}
       <div ref={imgRef} className="order-2 md:order-1">
-        <div className="-rotate-2 rounded-2xl overflow-hidden shadow-lg">
+        <div className="md:-rotate-2 rounded-2xl overflow-hidden shadow-lg">
           <Image
             src="/images/cover/6-studio.JPG"
             alt="Studio Time — students collaborating in the HCI Lab"
