@@ -1,27 +1,28 @@
-import React from "react";
-import { LinkButton } from "@/components/AppButton";
-import { SectionHeading } from "@/components/AppTitle";
+import { ArrowRight } from "lucide-react";
 
 const UploadNews = () => {
   return (
-    <div className="flex flex-col items-center space-y-6 md:space-y-8">
-      <SectionHeading title="WANT TO UPLOAD TO HCI NEWS?" />
-
-      <div className="max-w-3xl mx-auto px-4">
-        <p className="body-text text-center leading-relaxed">
+    <div className="-mx-6 md:-mx-12 bg-alabaster px-6 md:px-12 py-14">
+      <div className="flex flex-col items-center gap-5 text-center max-w-2xl mx-auto">
+        <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
+          Share your story
+        </p>
+        <h2 className="font-outfit font-medium text-3xl md:text-4xl text-thunder leading-tight">
+          Want to upload to HCI News?
+        </h2>
+        <p className="text-p1 text-thunder/70 leading-relaxed">
           Have news to share? Whether it&apos;s a project update, publication,
           event highlight, or personal accomplishment, we&apos;d love to feature
-          it. Please submit your update through the form below so we can add it
-          to the HCI Lab website and celebrate your work with the community.
+          it. Submit your update and we&apos;ll celebrate your work with the
+          community.
         </p>
-      </div>
-
-      <div className="flex justify-center">
-        <LinkButton
+        <a
           href="/"
-          ariaLabel="Fill out the news upload form"
-          text="FILL OUT THIS FORM"
-        />
+          className="group inline-flex items-center gap-2 font-outfit font-medium text-sm text-white bg-well-red hover:bg-well-red/90 px-6 py-3 rounded-full transition-colors mt-2"
+        >
+          Fill out this form
+          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </a>
       </div>
     </div>
   );

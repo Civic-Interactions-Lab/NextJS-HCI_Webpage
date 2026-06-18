@@ -72,6 +72,10 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ---
 
+- **Feature 08 (News View Redesign)** — `NewsTimeline.tsx` → `news-timeline.tsx` and `NewsCategoryLegend.tsx` → `news-category-legend.tsx` renamed via two-step git mv. `news-timeline.tsx` rewritten with: bold Outfit intro heading ("What's happening in the lab."), branded category filter pills (Alabaster inactive / colored active, no shadcn dependencies), playful year section headers with large watermark number (`text-9xl text-thunder/5`) behind foreground label + Well Red rule, news item cards with colored left border per category, Outfit font throughout, GSAP ScrollTrigger fade-up for year headers and cards. `news-view.tsx` updated to import from kebab-case paths. `/about/news/page.tsx` updated to render `NewsView` — "Coming Soon" removed. All Sanity fetching and filter/grouping logic preserved.
+
+  - **Feature 08.1 (Testimonials Smooth Height Transition)** — Side cards (abs !== 0) now cap quote text at ~6 lines via `maxHeight: 176px` on the `[data-quote]` element; center card expands to unconstrained `2000px`. Both card `maxHeight` and quote `maxHeight` animate in GSAP `onUpdate` using `this.ratio` so the text height grows/shrinks in sync with card movement — no abrupt snap. Transition duration bumped to 0.75s for a smoother feel. Code cleanup: `QUOTE_SIDE_H`/`QUOTE_FULL_H` hoisted to module-level constants, `lerp` helper extracted, duplicate nav buttons collapsed to a single mapped array.
+
 ## In Progress
 
 - None.

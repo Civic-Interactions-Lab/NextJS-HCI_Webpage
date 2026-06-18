@@ -16,8 +16,12 @@ interface Props { testimonials: Testimonial[] }
 const QUOTE_COLORS  = ["text-well-red", "text-gold", "text-sky", "text-grass"];
 const SIDE_SCALE    = 0.82;
 const SIDE_OPACITY  = 0.45;
-const SIDE_MAX_H    = 440; // px — caps side-card height so they're always visually smaller
+const SIDE_MAX_H    = 440;
+const QUOTE_SIDE_H  = 176; // ~6 lines at text-p1 leading-relaxed
+const QUOTE_FULL_H  = 600;
 const GAP = 28;
+
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const circSlot = (i: number, active: number, n: number): number => {
   const raw = ((i - active) % n + n) % n;
@@ -54,32 +58,33 @@ const TestimonialsSection = ({ testimonials }: Props) => {
       const opacity = abs === 0 ? 1 : abs === 1 ? SIDE_OPACITY : 0;
       const zIndex  = abs === 0 ? 10 : abs === 1 ? 5 : 0;
 
+      const quoteEl   = card.querySelector<HTMLElement>("[data-quote]");
+      const quoteEndH = abs === 0 ? QUOTE_FULL_H : QUOTE_SIDE_H;
+
       if (!animate) {
-        card.style.maxHeight = abs === 0 ? `${card.scrollHeight}px` : `${SIDE_MAX_H}px`;
+        card.style.maxHeight = abs === 0 ? "2000px" : `${SIDE_MAX_H}px`;
+        if (quoteEl) quoteEl.style.maxHeight = `${quoteEndH}px`;
         gsap.set(card, { x: targetX, scale, opacity, zIndex });
         return;
       }
 
-      // Capture start and end maxHeight before the tween begins
-      const startH = parseFloat(card.style.maxHeight) || SIDE_MAX_H;
-      const endH   = abs === 0 ? card.scrollHeight : SIDE_MAX_H;
+      const startH      = parseFloat(card.style.maxHeight) || SIDE_MAX_H;
+      const endH        = abs === 0 ? 2000 : SIDE_MAX_H;
+      const quoteStartH = parseFloat(quoteEl?.style.maxHeight ?? "") || QUOTE_SIDE_H;
 
       gsap.to(card, {
-        x: targetX,
-        scale,
-        opacity,
-        zIndex,
-        duration: 0.52,
+        x: targetX, scale, opacity, zIndex,
+        duration: 0.75,
         ease: "power3.inOut",
         overwrite: "auto",
         onUpdate() {
-          // this.ratio is the eased progress (0→1), same curve as x/scale/opacity
-          card.style.maxHeight = `${startH + (endH - startH) * this.ratio}px`;
+          card.style.maxHeight = `${lerp(startH, endH, this.ratio)}px`;
+          if (quoteEl) quoteEl.style.maxHeight = `${lerp(quoteStartH, quoteEndH, this.ratio)}px`;
         },
       });
     });
 
-    if (animate) setTimeout(() => { animating.current = false; }, 560);
+    if (animate) setTimeout(() => { animating.current = false; }, 780);
   }, [n]);
 
   const goTo = useCallback((newActive: number) => {
@@ -134,18 +139,15 @@ const TestimonialsSection = ({ testimonials }: Props) => {
 
         {n > 1 && (
           <div className="flex gap-2 shrink-0 pb-1">
-            <button
-              onClick={() => goTo(active - 1)}
-              className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => goTo(active + 1)}
-              className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+            {([[-1, ChevronLeft], [1, ChevronRight]] as const).map(([dir, Icon]) => (
+              <button
+                key={dir}
+                onClick={() => goTo(active + dir)}
+                className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
+              >
+                <Icon className="w-5 h-5" />
+              </button>
+            ))}
           </div>
         )}
       </div>
@@ -181,7 +183,7 @@ const TestimonialsSection = ({ testimonials }: Props) => {
               style={{ willChange: "transform, opacity" }}
             >
               <Quote className={`w-6 h-6 shrink-0 ${QUOTE_COLORS[i % QUOTE_COLORS.length]}`} fill="currentColor" strokeWidth={0} />
-              <p className="text-p1 text-thunder/80 leading-relaxed">
+              <p data-quote className="text-p1 text-thunder/80 leading-relaxed overflow-hidden">
                 {t.quote}
               </p>
               <div className="flex items-center gap-3 pt-4 border-t border-thunder/10 mt-auto">

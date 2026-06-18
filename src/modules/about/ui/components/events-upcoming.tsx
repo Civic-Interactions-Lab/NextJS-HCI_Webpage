@@ -13,7 +13,7 @@ const EVENTS = [
     title: "HCI Open House",
     date: "Mar 15",
     year: "2025",
-    location: "SERC 301",
+    location: "SERC 306",
     tag: "Social",
     description:
       "An open invitation to see the lab in action — meet researchers, explore projects, and find out how to join.",
@@ -22,7 +22,7 @@ const EVENTS = [
     title: "OwlHacks",
     date: "Apr 5–6",
     year: "2025",
-    location: "Gittis Center",
+    location: "SERC 306",
     tag: "Hackathon",
     description:
       "Temple's flagship hackathon — 24 hours of human-centered design challenges led by HCI Lab members.",
@@ -31,7 +31,7 @@ const EVENTS = [
     title: "CHI 2025",
     date: "Apr 26",
     year: "2025",
-    location: "Yokohama, Japan",
+    location: "SERC 306",
     tag: "Conference",
     description:
       "Lab members present peer-reviewed research at the world's top HCI conference.",
@@ -40,7 +40,7 @@ const EVENTS = [
     title: "Studio Showcase",
     date: "May 10",
     year: "2025",
-    location: "SERC Atrium",
+    location: "SERC 306",
     tag: "Showcase",
     description:
       "Students present their semester projects in a gallery-style showcase open to all.",
@@ -104,14 +104,11 @@ const EventsUpcoming = () => {
         {/* Content */}
         <div className="flex flex-col justify-between gap-6 p-8 md:p-10 flex-1">
           <div className="flex flex-col gap-4">
-            <div className="flex items-start justify-between">
+            <div className="flex items-start">
               <span
                 className={`font-outfit text-xs font-medium px-3 py-1 rounded-full ${TAG_BG[featured.tag] ?? "bg-thunder text-white"}`}
               >
                 {featured.tag}
-              </span>
-              <span className="font-outfit font-bold text-5xl text-thunder/10 leading-none select-none">
-                01
               </span>
             </div>
             <h3 className="font-outfit font-medium text-2xl md:text-3xl text-thunder leading-tight">
@@ -153,14 +150,11 @@ const EventsUpcoming = () => {
               />
             </div>
             <div className="flex flex-col gap-3 px-5 pb-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center">
                 <span
                   className={`font-outfit text-xs font-medium px-2.5 py-0.5 rounded-full ${TAG_BG[tag] ?? "bg-thunder text-white"}`}
                 >
                   {tag}
-                </span>
-                <span className="font-outfit font-bold text-xs text-thunder/20">
-                  0{i + 2}
                 </span>
               </div>
               <p className="font-outfit font-medium text-lg text-thunder leading-snug">
