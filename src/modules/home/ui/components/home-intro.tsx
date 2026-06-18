@@ -39,7 +39,7 @@ const HomeIntro = () => {
         </Link>{" "}
         within the Department of Computer and Information Sciences, led by{" "}
         <Link
-          href="https://smacneil.net"
+          href="https://stevemacn.github.io/"
           className="underline underline-offset-2 hover:text-well-red transition-colors"
         >
           Dr. Stephen MacNeil.
