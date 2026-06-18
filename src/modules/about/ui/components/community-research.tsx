@@ -65,16 +65,16 @@ const CommunityResearch = () => {
         </p>
       </div>
 
-      <div ref={statsRef} className="flex flex-col gap-4">
+      <div ref={statsRef} className="grid grid-cols-2 gap-4">
         {STATS.map(({ number, desc }) => (
           <div
             key={number}
-            className="stat-item flex gap-4 items-start py-4 bg-alabaster rounded-2xl"
+            className="stat-item flex flex-col gap-2 p-5 bg-alabaster rounded-2xl"
           >
-            <span className="label-2 text-well-red shrink-0 leading-none w-16 text-right">
+            <span className="font-outfit font-bold text-5xl text-well-red leading-none">
               {number}
             </span>
-            <p className="text-p2 text-thunder/70 leading-snug pt-1">{desc}</p>
+            <p className="text-p2 text-thunder/70 leading-snug">{desc}</p>
           </div>
         ))}
       </div>

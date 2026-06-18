@@ -66,7 +66,9 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ---
 
-- **Feature 07 (Events View Redesign)** — `events-view.tsx` rewritten as a client component; all Sanity image fetching removed. `/about/events/page.tsx` updated to render `<EventsView />` — "Coming Soon" placeholder replaced. Four sections built with brand system and GSAP ScrollTrigger animations: `events-intro.tsx` (Well Red left-border accent block), `events-upcoming.tsx` (2-col card grid with placeholder data, tag badges in Well Red/gold/sky), `events-map.tsx` (Mapbox `react-map-gl` centered on SERC building at zoom 15 with Well Red marker, address below), `events-gallery.tsx` (2→3 col image grid with hover scale/caption). No Framer Motion; no Sanity fetches; no horizontal overflow.
+- **Feature 07 (Events View Redesign)** — `events-view.tsx` rewritten as a client component; all Sanity image fetching removed. `/about/events/page.tsx` updated to render `<EventsView />` — "Coming Soon" placeholder replaced. Three sections built with brand system and GSAP ScrollTrigger animations: `events-intro.tsx` (bold Outfit heading "Hackathons. Open Houses. Showcases." with Well Red accent), `events-upcoming.tsx` (featured card + 3-card grid with numbered Outfit cards, colored tag badges in Well Red/gold/sky/grass), `events-gallery.tsx` (polaroid-style cards with alternating rotations on Alabaster strip). Map removed. All text uses Outfit font throughout. No Framer Motion; no Sanity fetches; no horizontal overflow.
+
+  - **Feature 07.1 (About View Playful Style Pass)** — Applied same Outfit-font playful style from events view to all about components. `about-view.tsx` intro rewritten as bold Outfit heading ("Research. Community. Human-Centered Computing.") with Well Red label and body copy. `community-research.tsx` stat cards redesigned as 2-col grid with large Outfit bold numbers (`text-5xl`). `leadership.tsx` stat numbers switched to `font-outfit font-bold text-3xl`. `studio-time.tsx` link switched to `font-outfit`. `learning-outcomes.tsx` category badges switched to `font-outfit font-bold uppercase`.
 
 ---
 

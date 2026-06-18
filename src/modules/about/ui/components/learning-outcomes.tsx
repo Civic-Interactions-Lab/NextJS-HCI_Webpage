@@ -56,7 +56,7 @@ const LearningOutcomes = () => {
               key={outcome.id}
               className={`outcome-card flex flex-col gap-3 p-6 bg-white border border-thunder/8 shadow-sm ${outcome.radius}`}
             >
-              <span className={`label-5 text-white px-4 py-1.5 w-fit ${outcome.badgeColor} ${outcome.radius}`}>
+              <span className={`font-outfit text-xs font-bold uppercase tracking-wide text-white px-4 py-1.5 w-fit ${outcome.badgeColor} ${outcome.radius}`}>
                 {outcome.category}
               </span>
               <p className="text-p1 text-thunder/75 leading-relaxed">{outcome.description}</p>

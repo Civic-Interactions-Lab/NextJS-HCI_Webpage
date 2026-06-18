@@ -40,17 +40,19 @@ const AboutView = () => {
       >
         {/* Left col: intro text + community research */}
         <div className="flex-1 flex flex-col gap-12">
-          <div className="border-l-4 border-well-red pl-6 py-2">
-            <p className="text-p1 text-thunder/80 leading-relaxed">
-              <span className="label-4 text-well-red uppercase">
-                THE Temple HCI Lab
-              </span>{" "}
-              is the largest undergraduate research lab at Temple University.
-              Located in the College of Science and Technology (CST) within the
-              Department of Computer and Information Sciences, the lab brings
-              together students from computer science, psychology, education,
-              and design to study technology, learning, and human-centered
-              computing.
+          <div className="flex flex-col gap-4">
+            <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
+              The Temple HCI Lab
+            </p>
+            <h2 className="font-outfit font-medium text-4xl md:text-5xl text-thunder leading-tight">
+              Research. Community.{" "}
+              <span className="text-well-red">Human-Centered</span> Computing.
+            </h2>
+            <p className="text-p1 text-thunder/75 leading-relaxed">
+              The largest undergraduate research lab at Temple University —
+              bringing together students from computer science, psychology,
+              education, and design to study technology, learning, and
+              human-centered computing.
             </p>
           </div>
 

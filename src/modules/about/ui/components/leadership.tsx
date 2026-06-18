@@ -50,7 +50,7 @@ const Leadership = () => {
         <div className="flex flex-col gap-3 pt-1">
           {STATS.map(({ number, desc }) => (
             <div key={number} className="leadership-stat flex gap-4 items-center border-l-4 border-well-red pl-4 py-1">
-              <span className="label-2 text-well-red shrink-0 leading-none">{number}</span>
+              <span className="font-outfit font-bold text-3xl text-well-red shrink-0 leading-none">{number}</span>
               <p className="text-p2 text-thunder/70">{desc}</p>
             </div>
           ))}

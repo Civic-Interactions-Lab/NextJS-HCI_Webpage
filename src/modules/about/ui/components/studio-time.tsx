@@ -59,7 +59,7 @@ const StudioTime = () => {
         </p>
         <Link
           href="/about/events"
-          className="group inline-flex items-center gap-1.5 label-5 text-well-red hover:text-well-red/70 transition-colors w-fit mt-2"
+          className="group inline-flex items-center gap-1.5 font-outfit text-sm font-medium text-well-red hover:text-well-red/70 transition-colors w-fit mt-2"
         >
           Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Link>
