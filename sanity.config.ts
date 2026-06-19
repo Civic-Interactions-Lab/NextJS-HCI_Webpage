@@ -183,9 +183,9 @@ export default defineConfig({
                     }),
                     orderableDocumentListDeskItem({
                       type: "research",
-                      title: "Social Computing",
-                      filter: 'category == "Social Computing"',
-                      id: "social-research",
+                      title: "Future of Work",
+                      filter: 'category == "Future of Work"',
+                      id: "future-of-work-research",
                       S,
                       context,
                     }),

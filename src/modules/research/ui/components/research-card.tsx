@@ -13,7 +13,7 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 };
 
 const ResearchCard = ({ research }: { research: Research }) => (
-  <div className="research-card bg-white rounded-2xl shadow-sm border border-thunder/8 overflow-hidden hover:shadow-md transition-shadow">
+  <div className="research-card bg-white rounded-2xl shadow-sm border border-thunder/15 overflow-hidden hover:shadow-lg hover:border-thunder/25 transition-all duration-200">
     <div className="relative h-44 w-full">
       <Image
         src={getImageSrc(research.imageUrl)}

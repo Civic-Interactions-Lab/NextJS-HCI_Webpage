@@ -32,7 +32,7 @@ export const researchType = defineType({
             title: "Accessibility Technology",
             value: "Accessibility Technology",
           },
-          { title: "Social Computing", value: "Social Computing" },
+          { title: "Future of Work", value: "Future of Work" },
         ],
       },
       validation: (rule) => rule.required(),

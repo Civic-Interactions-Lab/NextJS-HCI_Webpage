@@ -27,7 +27,7 @@ const TabBarClient = () => {
         { label: "Overview",              path: "/research",                          isMain: true },
         { label: "Gen AI & Education",    path: "/research/gen-ai-education" },
         { label: "Accessibility",         path: "/research/accessibility-technology" },
-        { label: "Future of Work",         path: "/research/social-computing" },
+        { label: "Future of Work",         path: "/research/future-of-work" },
       ];
     }
     switch (pathname) {

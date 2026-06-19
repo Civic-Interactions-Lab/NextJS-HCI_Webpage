@@ -63,7 +63,7 @@ const NAV_ITEMS: NavItem[] = [
       },
       {
         label: "Future of Work",
-        href: "/research/social-computing",
+        href: "/research/future-of-work",
         description: "How people collaborate and thrive through technology.",
       },
     ],

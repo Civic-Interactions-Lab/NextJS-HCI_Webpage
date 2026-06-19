@@ -23,7 +23,7 @@ const RESEARCH_AREAS = [
   {
     id: "future-of-work",
     title: "Future of Work",
-    href: "/research/social-computing",
+    href: "/research/future-of-work",
     Icon: WandSparkles,
     description: "We develop tools to build better workplaces, and to reimagine work.",
   },

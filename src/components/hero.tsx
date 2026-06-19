@@ -19,12 +19,8 @@ const COVER_MAP: Record<string, string> = {
   "/join": "/images/cover/6-studio.JPG",
 };
 
-const LABEL_OVERRIDES: Record<string, string> = {
-  "social-computing": "Future of Work",
-};
-
 function capitalize(segment: string) {
-  return LABEL_OVERRIDES[segment] ?? segment
+  return segment
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");

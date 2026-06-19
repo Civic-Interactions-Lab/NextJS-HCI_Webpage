@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Research } from "../../../../../sanity.types";
@@ -51,18 +52,6 @@ const ResearchTopicView = ({
         ease: "power2.inOut",
         scrollTrigger: {
           trigger: ".topic-header-line",
-          start: "top bottom",
-          once: true,
-        },
-      });
-      gsap.from(".research-card", {
-        opacity: 0,
-        y: 30,
-        stagger: 0.08,
-        duration: 0.7,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: ".research-card",
           start: "top bottom",
           once: true,
         },
@@ -123,15 +112,33 @@ const ResearchTopicView = ({
 
       {/* Papers grid */}
       {research.length > 0 ? (
-        <div className="py-14">
+        <div className="pt-12">
           <p className="font-outfit text-sm font-medium text-thunder/40 uppercase tracking-widest mb-6">
             Our papers in {label}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+          >
             {research.map((r) => (
-              <ResearchCard key={r._id} research={r} />
+              <motion.div
+                key={r._id}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, ease: "easeOut" },
+                  },
+                }}
+              >
+                <ResearchCard research={r} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       ) : (
         <div className="py-14">
