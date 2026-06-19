@@ -22,6 +22,14 @@ const TabBarClient = () => {
   }, []);
 
   const getTabBarItems = () => {
+    if (pathname === "/research" || pathname.startsWith("/research/")) {
+      return [
+        { label: "Overview",              path: "/research",                          isMain: true },
+        { label: "Gen AI & Education",    path: "/research/gen-ai-education" },
+        { label: "Accessibility",         path: "/research/accessibility-technology" },
+        { label: "Future of Work",         path: "/research/social-computing" },
+      ];
+    }
     switch (pathname) {
       case "/about":
         return [
@@ -52,16 +60,15 @@ const TabBarClient = () => {
   const tabItems = getTabBarItems();
 
   const isActive = (item: { path: string; isMain?: boolean }) => {
+    const hasSubParam = item.path.includes("?sub=");
     if (item.isMain) {
+      if (!hasSubParam) return pathname === item.path && !currentSub;
       return pathname === item.path.split("?")[0] && !currentSub;
     }
-
-    const itemSub = new URLSearchParams(item.path.split("?")[1] || "").get(
-      "sub",
-    );
+    if (!hasSubParam) return pathname === item.path;
+    const itemSub = new URLSearchParams(item.path.split("?")[1] || "").get("sub");
     const cleanItemSub = itemSub?.replace(/\?$/, "");
     const cleanCurrentSub = currentSub?.replace(/\?$/, "");
-
     return cleanCurrentSub === cleanItemSub;
   };
 

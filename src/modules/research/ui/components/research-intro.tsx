@@ -35,7 +35,7 @@ const ResearchIntro = () => {
       <h2 className="research-intro-line font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
         AI.{" "}
         <span className="text-well-red">Accessibility.</span>{" "}
-        Social Computing.
+        Future of Work.
       </h2>
       <p className="research-intro-line text-p1 text-thunder/70 leading-relaxed max-w-2xl">
         At the Temple HCI Lab, our work in Human-Computer Interaction goes

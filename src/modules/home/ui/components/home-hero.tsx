@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BrainCircuit, PersonStanding, WandSparkles } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,9 +13,9 @@ import { SectionTitle } from "@/components/section-title";
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const RESEARCH_AREAS = [
-  { id: "assistive-tech", title: "Assistive Tech", description: "AAC tools to foster self-direction and expressive communication." },
-  { id: "computing-education", title: "Computing Education", description: "Studying AI harms and building scaffolding for responsible use." },
-  { id: "future-of-work", title: "Future of Work", description: "Tools to build better workplaces and reimagine how we work." },
+  { id: "computing-education", title: "Gen AI & Education",      href: "/research/gen-ai-education",       Icon: BrainCircuit,    description: "Studying AI harms and building scaffolding for responsible use." },
+  { id: "assistive-tech",      title: "Accessibility Technology", href: "/research/accessibility-technology", Icon: PersonStanding, description: "AAC tools to foster self-direction and expressive communication." },
+  { id: "future-of-work",      title: "Future of Work",           href: "/research/social-computing",       Icon: WandSparkles,    description: "Tools to build better workplaces and reimagine how we work." },
 ] as const;
 
 const TITLE_WORDS = [
@@ -69,16 +69,19 @@ const ResearchCardContent = ({ area }: { area: (typeof RESEARCH_AREAS)[number] }
   <>
     <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</h3>
     <p className="text-sm md:text-p1 text-white/70 leading-snug">{area.description}</p>
-    <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1 mt-1">
-      See more <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
-    </span>
+    <div className="flex items-end justify-between gap-2 mt-1">
+      <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1">
+        See more <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+      </span>
+      <area.Icon className="w-10 h-10 text-white/60 shrink-0" />
+    </div>
   </>
 );
 
 const GhostGrid = () => (
   <div className="grid grid-cols-3 gap-2 md:gap-4">
     {RESEARCH_AREAS.map((area) => (
-      <Link key={area.id} href="/research" className="group flex flex-col gap-1 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-2.5 md:p-5">
+      <Link key={area.id} href={area.href} className="group flex flex-col gap-1 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-2.5 md:p-5">
         <ResearchCardContent area={area} />
       </Link>
     ))}
@@ -89,7 +92,7 @@ const AnimatedGrid = () => (
   <div className="grid grid-cols-3 gap-2 md:gap-4">
     {RESEARCH_AREAS.map((area, index) => (
       <div key={area.id} data-gsap-card={index} style={{ opacity: 0 }} className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors">
-        <Link href="/research" className="flex flex-col gap-1 md:gap-3 p-2.5 md:p-5">
+        <Link href={area.href} className="flex flex-col gap-1 md:gap-3 p-2.5 md:p-5">
           <ResearchCardContent area={area} />
         </Link>
       </div>

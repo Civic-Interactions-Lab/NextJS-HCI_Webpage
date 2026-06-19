@@ -1,7 +1,5 @@
-import React from "react";
 import ResearchView from "@/modules/research/ui/views/research-view";
 
-const ResearchPage = () => {
+export default function ResearchPage() {
   return <ResearchView />;
-};
-export default ResearchPage;
+}

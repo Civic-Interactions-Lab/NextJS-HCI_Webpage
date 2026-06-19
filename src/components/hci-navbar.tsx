@@ -45,7 +45,29 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  { label: "Research", href: "/research" },
+  {
+    label: "Research",
+    href: "/research",
+    description: "Human-centered research across AI, accessibility, and social systems.",
+    children: [
+      {
+        label: "Gen AI & Education",
+        href: "/research/gen-ai-education",
+        image: "/images/cover/6-studio.JPG",
+        description: "Generative AI tools that support teaching and learning.",
+      },
+      {
+        label: "Accessibility Technology",
+        href: "/research/accessibility-technology",
+        description: "Inclusive design and assistive tech for everyone.",
+      },
+      {
+        label: "Future of Work",
+        href: "/research/social-computing",
+        description: "How people collaborate and thrive through technology.",
+      },
+    ],
+  },
   {
     label: "People",
     href: "/people",

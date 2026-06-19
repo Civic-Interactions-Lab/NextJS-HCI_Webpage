@@ -2,27 +2,30 @@
 
 import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BrainCircuit, PersonStanding, WandSparkles } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
 
 const RESEARCH_AREAS = [
   {
-    id: "assistive-tech",
-    title: "Assistive Tech",
-    description:
-      "AAC tools to foster self direction and expressive communication.",
+    id: "computing-education",
+    title: "Gen AI & Education",
+    href: "/research/gen-ai-education",
+    Icon: BrainCircuit,
+    description: "We study the harms of AI and develop scaffolding to promote responsible use.",
   },
   {
-    id: "computing-education",
-    title: "Computing Education",
-    description:
-      "We study the harms of AI and develop scaffolding to promote responsible use.",
+    id: "assistive-tech",
+    title: "Accessibility Technology",
+    href: "/research/accessibility-technology",
+    Icon: PersonStanding,
+    description: "AAC tools to foster self direction and expressive communication.",
   },
   {
     id: "future-of-work",
     title: "Future of Work",
-    description:
-      "We develop tools to build better workplaces, and to reimagine work.",
+    href: "/research/social-computing",
+    Icon: WandSparkles,
+    description: "We develop tools to build better workplaces, and to reimagine work.",
   },
 ] as const;
 
@@ -95,15 +98,17 @@ const QuickIntroduction = () => {
               variants={fadeUp}
               className="group bg-well-red rounded-2xl p-6 flex flex-col gap-4 hover:bg-deep-red transition-colors duration-300"
             >
-              <div className="w-8 h-1 bg-white/40 group-hover:bg-white transition-colors duration-300" />
               <h3 className="label-3 text-white">{area.title}</h3>
               <p className="text-p2 text-white/80 grow">{area.description}</p>
-              <Link
-                href="/research"
-                className="inline-flex items-center gap-2 label-5 text-white/70 group-hover:text-white group-hover:gap-3 transition-all min-h-11"
-              >
-                Learn more <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex items-end justify-between gap-2">
+                <Link
+                  href={area.href}
+                  className="inline-flex items-center gap-2 label-5 text-white/70 group-hover:text-white group-hover:gap-3 transition-all min-h-11"
+                >
+                  Learn more <ArrowRight className="w-4 h-4" />
+                </Link>
+                <area.Icon className="w-7 h-7 text-white/60 shrink-0" />
+              </div>
             </motion.div>
           ))}
         </motion.div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const COVER_MAP: Record<string, string> = {
@@ -18,8 +19,12 @@ const COVER_MAP: Record<string, string> = {
   "/join": "/images/cover/6-studio.JPG",
 };
 
+const LABEL_OVERRIDES: Record<string, string> = {
+  "social-computing": "Future of Work",
+};
+
 function capitalize(segment: string) {
-  return segment
+  return LABEL_OVERRIDES[segment] ?? segment
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
@@ -54,7 +59,12 @@ const Hero = () => {
       <div className="relative z-10 w-full h-full flex flex-col items-start justify-center px-6 md:px-12 pt-16 max-w-7xl mx-auto">
         {child ? (
           <div className="flex flex-col gap-2">
-            <span className="text-p1 text-white/60">{parent}</span>
+            <Link
+              href={`/${segments[0]}`}
+              className="text-p1 text-white/60 hover:text-white transition-colors w-fit"
+            >
+              {parent}
+            </Link>
             <h1 className="font-oxanium font-medium text-[36px] md:text-[48px] lg:text-[60px] leading-tight text-white">
               {child}
             </h1>
