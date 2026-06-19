@@ -30,9 +30,16 @@ interface ResearchTopicViewProps {
   research: Research[];
 }
 
-const ResearchTopicView = ({ label, tagline, description, accent, research }: ResearchTopicViewProps) => {
+const ResearchTopicView = ({
+  label,
+  tagline,
+  description,
+  accent,
+  research,
+}: ResearchTopicViewProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const otherCategories = CATEGORIES.filter((c) => c.label !== label);
+  const cat = CATEGORIES.find((c) => c.label === label);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -42,7 +49,11 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
         stagger: 0.1,
         duration: 0.8,
         ease: "power2.inOut",
-        scrollTrigger: { trigger: ".topic-header-line", start: "top bottom", once: true },
+        scrollTrigger: {
+          trigger: ".topic-header-line",
+          start: "top bottom",
+          once: true,
+        },
       });
       gsap.from(".research-card", {
         opacity: 0,
@@ -50,7 +61,22 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
         stagger: 0.08,
         duration: 0.7,
         ease: "power2.inOut",
-        scrollTrigger: { trigger: ".research-card", start: "top bottom", once: true },
+        scrollTrigger: {
+          trigger: ".research-card",
+          start: "top bottom",
+          once: true,
+        },
+      });
+      gsap.from(".featured-video", {
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        ease: "power2.inOut",
+        scrollTrigger: {
+          trigger: ".featured-video",
+          start: "top bottom",
+          once: true,
+        },
       });
       gsap.from(".other-card", {
         opacity: 0,
@@ -58,14 +84,18 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
         stagger: 0.12,
         duration: 0.7,
         ease: "power2.inOut",
-        scrollTrigger: { trigger: ".other-card", start: "top bottom", once: true },
+        scrollTrigger: {
+          trigger: ".other-card",
+          start: "top bottom",
+          once: true,
+        },
       });
     }, ref);
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={ref} className="mb-16">
+    <div ref={ref} className="space-y-20">
       {/* Two-column hero — matches research overview layout */}
       <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 overflow-hidden">
         {/* Left: label + title + body */}
@@ -75,7 +105,9 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
           </p>
           <h1 className="topic-header-line font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
             {label.split(" ").slice(0, -1).join(" ")}{" "}
-            <span className="text-well-red">{label.split(" ").slice(-1)[0]}</span>
+            <span className="text-well-red">
+              {label.split(" ").slice(-1)[0]}
+            </span>
           </h1>
           <p className="topic-header-line text-p1 text-thunder/60 leading-relaxed italic">
             &ldquo;{tagline}&rdquo;
@@ -86,9 +118,7 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
         </div>
 
         {/* Right: topic-specific animated logo */}
-        <div className="w-full lg:w-[360px] shrink-0">
-          {LOGO_MAP[label]}
-        </div>
+        <div className="w-full lg:w-[360px] shrink-0">{LOGO_MAP[label]}</div>
       </div>
 
       {/* Papers grid */}
@@ -105,7 +135,9 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
         </div>
       ) : (
         <div className="py-14">
-          <p className="text-p1 text-thunder/50">No papers yet for this category.</p>
+          <p className="text-p1 text-thunder/50">
+            No papers yet for this category.
+          </p>
         </div>
       )}
 
@@ -122,11 +154,39 @@ const ResearchTopicView = ({ label, tagline, description, accent, research }: Re
               {cat.tagline}
             </p>
             <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
-              Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              Learn More{" "}
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </span>
           </Link>
         ))}
       </div>
+
+      {/* Featured video */}
+      {cat?.videoUrl && (
+        <div className="featured-video flex flex-col lg:flex-row gap-8 py-14 border-t border-thunder/8">
+          <div className="w-full lg:w-1/2 shrink-0">
+            <iframe
+              src={cat.videoUrl}
+              title={cat.videoTitle}
+              className="w-full aspect-video rounded-2xl"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            />
+          </div>
+          <div className="flex flex-col justify-center gap-3">
+            <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
+              Featured
+            </p>
+            <p className="font-outfit font-medium text-xl text-thunder leading-snug">
+              {cat.videoTitle}
+            </p>
+            <p className="text-p1 text-thunder/65 leading-relaxed">
+              {cat.videoDescription}
+            </p>
+          </div>
+        </div>
+      )}
 
       <ResearchJoinBanner />
     </div>

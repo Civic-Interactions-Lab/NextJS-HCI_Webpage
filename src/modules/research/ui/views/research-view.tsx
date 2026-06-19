@@ -45,7 +45,7 @@ const ResearchView = () => {
   }, []);
 
   return (
-    <div className="mb-16 space-y-20">
+    <div className="space-y-20">
       <ResearchHero />
 
       {/* Category sections */}
@@ -91,7 +91,8 @@ const ResearchView = () => {
           </p>
           <p className="text-p1 text-thunder/65 leading-relaxed">
             A look inside the Temple HCI Lab — our people, our projects, and the
-            questions driving our research at the intersection of humans and technology.
+            questions driving our research at the intersection of humans and
+            technology.
           </p>
         </div>
       </div>
