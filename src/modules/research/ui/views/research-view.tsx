@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ResearchHero from "@/modules/research/ui/components/research-hero";
 import ResearchJoinBanner from "@/modules/research/ui/components/research-join-banner";
+import { SectionTitle } from "@/components/section-title";
 import { CATEGORIES } from "@/modules/research/ui/research-data";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,13 +19,14 @@ const ResearchView = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(cardsRef.current, {
+      gsap.from(".other-card", {
         opacity: 0,
-        y: 40,
+        y: 30,
+        stagger: 0.12,
         duration: 0.7,
         ease: "power2.inOut",
         scrollTrigger: {
-          trigger: cardsRef.current,
+          trigger: ".other-card",
           start: "top bottom",
           once: true,
         },
@@ -54,11 +56,9 @@ const ResearchView = () => {
           <Link
             key={cat.label}
             href={cat.href}
-            className={`group flex flex-col gap-3 py-8 border-b border-thunder/8 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
+            className={`other-card group flex flex-col gap-3 py-8 border-b border-thunder/8 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
           >
-            <h3 className="font-outfit font-medium text-3xl md:text-4xl text-thunder group-hover:text-well-red transition-colors leading-tight">
-              {cat.label}
-            </h3>
+            <SectionTitle>{cat.label}</SectionTitle>
             <p className="text-p1 text-thunder/60 leading-relaxed max-w-xl">
               {cat.tagline}
             </p>

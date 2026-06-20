@@ -2,13 +2,21 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { People } from "../../../../../sanity.types";
+import { SectionTitle } from "@/components/section-title";
 import PersonCard from "@/modules/people/ui/components/person-card";
 import PeopleFilter from "@/modules/people/ui/components/people-filter";
 import PeopleJoinBanner from "@/modules/people/ui/components/people-join-banner";
+
+const PEOPLE_LINKS = [
+  { label: "Alumni", href: "/people/alumni", tagline: "Former lab members who have gone on to careers in industry, academia, and beyond." },
+  { label: "Collaborators", href: "/people/collaborators", tagline: "Researchers and practitioners from other institutions who work alongside our lab." },
+];
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,6 +42,18 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.from(".people-nav-card", {
+        opacity: 0,
+        y: 30,
+        stagger: 0.12,
+        duration: 0.7,
+        ease: "power2.inOut",
+        scrollTrigger: {
+          trigger: ".people-nav-card",
+          start: "top bottom",
+          once: true,
+        },
+      });
       gsap.from(".people-header-line", {
         opacity: 0,
         y: 40,
@@ -111,6 +131,26 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
             No members match the selected filters.
           </p>
         )}
+      </div>
+
+      {/* Quick nav to other people sections */}
+      <div className="border-t border-thunder/8">
+        {PEOPLE_LINKS.map((link, i) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className={`people-nav-card group flex flex-col gap-3 py-8 border-b border-thunder/8 ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
+          >
+            <SectionTitle>{link.label}</SectionTitle>
+            <p className="text-p1 text-thunder/60 leading-relaxed max-w-xl">
+              {link.tagline}
+            </p>
+            <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
+              View {link.label}{" "}
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </span>
+          </Link>
+        ))}
       </div>
 
       {/* Join banner */}
