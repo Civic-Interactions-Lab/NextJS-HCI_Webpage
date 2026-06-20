@@ -1,9 +1,9 @@
 import { defineQuery } from "groq";
 import { sanityFetch } from "@/sanity/lib/live";
 
-export async function getCoursesHeroImage() {
+export async function getPathwaysHeroImage() {
   const coursesHeroQuery = defineQuery(`
-    *[_type == "imageSettings" && sectionKey == "courses-hero"][0].singleImage
+    *[_type == "imageSettings" && sectionKey == "pathways-hero"][0].singleImage
   `);
 
   const image = await sanityFetch({ query: coursesHeroQuery });

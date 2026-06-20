@@ -258,9 +258,9 @@ export default defineConfig({
                     }),
                     orderableDocumentListDeskItem({
                       type: "imageSettings",
-                      title: "Courses Page",
-                      filter: 'sectionKey match "courses-*"',
-                      id: "courses-image-settings",
+                      title: "Pathways Page",
+                      filter: 'sectionKey match "pathways-*"',
+                      id: "pathways-image-settings",
                       S,
                       context,
                     }),

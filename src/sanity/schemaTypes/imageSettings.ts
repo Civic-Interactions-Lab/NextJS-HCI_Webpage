@@ -62,8 +62,8 @@ export const IMAGE_SECTIONS = {
   // People page sections
   "people-hero": { title: "People - Hero Section", defaultType: "single" },
 
-  // Courses page sections
-  "courses-hero": { title: "Courses - Hero Section", defaultType: "single" },
+  // Pathways page sections
+  "pathways-hero": { title: "Pathways - Hero Section", defaultType: "single" },
 
   // Sponsors page sections
   "sponsors-hero": { title: "Sponsors - Hero Section", defaultType: "single" },

@@ -86,7 +86,7 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  { label: "Courses", href: "/courses" },
+  { label: "Pathways", href: "/pathways" },
   {
     label: "Sponsors",
     href: "/sponsors",

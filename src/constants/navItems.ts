@@ -15,9 +15,9 @@ export const navItems = [
     linkDescription: "Meet our faculty, students, and research team",
   },
   {
-    label: "Courses",
-    path: "/courses",
-    linkDescription: "View HCI courses and academic programs",
+    label: "Pathways",
+    path: "/pathways",
+    linkDescription: "View HCI courses and pathways into research and careers",
   },
   {
     label: "Sponsors",

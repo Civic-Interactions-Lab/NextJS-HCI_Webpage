@@ -13,7 +13,7 @@ const COVER_MAP: Record<string, string> = {
   "/people": "/images/cover/6-studio.JPG",
   "/people/alumni": "/images/cover/6-studio.JPG",
   "/people/collaborators": "/images/cover/6-studio.JPG",
-  "/courses": "/images/cover/6-studio.JPG",
+  "/pathways": "/images/cover/6-studio.JPG",
   "/sponsors": "/images/cover/6-studio.JPG",
   "/sponsors/become": "/images/cover/6-studio.JPG",
   "/join": "/images/cover/6-studio.JPG",
