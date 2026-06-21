@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import ViewIntroHeader from "@/components/view-intro-header";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,7 +11,7 @@ import { People } from "../../../../../sanity.types";
 import { SectionTitle } from "@/components/section-title";
 import PersonCard from "@/modules/people/ui/components/person-card";
 import PeopleFilter from "@/modules/people/ui/components/people-filter";
-import PeopleJoinBanner from "@/modules/people/ui/components/people-join-banner";
+import CtaBanner from "@/components/cta-banner";
 
 const PEOPLE_LINKS = [
   { label: "Alumni", href: "/people/alumni", tagline: "Former lab members who have gone on to careers in industry, academia, and beyond." },
@@ -54,18 +54,6 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
           once: true,
         },
       });
-      gsap.from(".people-header-line", {
-        opacity: 0,
-        y: 40,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: ".people-header-line",
-          start: "top bottom",
-          once: true,
-        },
-      });
     }, ref);
     return () => ctx.revert();
   }, []);
@@ -73,36 +61,14 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
   return (
     <div ref={ref} className="space-y-20">
       {/* Intro header */}
-      <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12">
-        <div className="flex flex-col gap-4 flex-1">
-          <p className="people-header-line font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
-            Temple HCI Lab
-          </p>
-          <h1 className="people-header-line font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
-            Meet our current{" "}
-            <span className="text-well-red">lab members.</span>
-          </h1>
-          <p className="people-header-line text-p1 text-thunder/60 leading-relaxed">
-            PhD candidates, master&apos;s students, undergraduate researchers,
-            and participants in the Research Scholars Program — who bring
-            creativity, curiosity, and collaboration to every project. Together,
-            we explore ideas, share knowledge, and support one another&apos;s
-            growth as we advance our lab&apos;s research and impact.
-          </p>
-        </div>
-
-        {/* Right — studio image */}
-        <div className="w-full lg:w-[420px] shrink-0 h-[320px] lg:h-[440px] rounded-2xl overflow-hidden">
-          <Image
-            src="/images/cover/3-studio.jpg"
-            alt="HCI Lab studio"
-            fill={false}
-            width={420}
-            height={440}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </div>
+      <ViewIntroHeader
+        label="Temple HCI Lab"
+        titlePrefix="Meet our current"
+        titleAccent="lab members."
+        body="PhD candidates, master's students, undergraduate researchers, and participants in the Research Scholars Program — who bring creativity, curiosity, and collaboration to every project. Together, we explore ideas, share knowledge, and support one another's growth as we advance our lab's research and impact."
+        imageSrc="/images/cover/3-studio.jpg"
+        imageAlt="HCI Lab studio"
+      />
 
       {/* Filter + Grid */}
       <div>
@@ -154,7 +120,13 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
       </div>
 
       {/* Join banner */}
-      <PeopleJoinBanner />
+      <CtaBanner
+        label="Join the Lab"
+        title="Interested in becoming a member?"
+        body="We're always looking for curious, driven students to join our research community. PhD, masters, undergrad — all welcome."
+        ctaLabel="Apply Now"
+        ctaHref="/join"
+      />
     </div>
   );
 };

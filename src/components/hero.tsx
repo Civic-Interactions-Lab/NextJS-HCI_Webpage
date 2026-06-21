@@ -19,8 +19,12 @@ const COVER_MAP: Record<string, string> = {
   "/join": "/images/cover/6-studio.JPG",
 };
 
+const LABEL_OVERRIDES: Record<string, string> = {
+  "become": "Become a Sponsor",
+};
+
 function capitalize(segment: string) {
-  return segment
+  return LABEL_OVERRIDES[segment] ?? segment
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
@@ -57,7 +61,7 @@ const Hero = () => {
           <div className="flex flex-col gap-2">
             <Link
               href={`/${segments[0]}`}
-              className="text-p1 text-white/60 hover:text-white transition-colors w-fit"
+              className="font-outfit text-xl md:text-2xl text-white/60 hover:text-white transition-colors w-fit"
             >
               {parent}
             </Link>

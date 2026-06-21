@@ -1,200 +1,117 @@
 "use client";
 
-import ImageCarousel from "@/components/ImageCarousel";
-import { motion, Variants } from "framer-motion";
-import Image from "next/image";
-import { useState } from "react";
-import TierLegend from "@/modules/sponsors/ui/components/TierLegend";
+import { motion } from "framer-motion";
+import { SectionTitle } from "@/components/section-title";
+import CtaBanner from "@/components/cta-banner";
+import ViewIntroHeader from "@/components/view-intro-header";
 
-interface FilterState {
-  tiers: string[];
-}
+const TIERS = [
+  {
+    id: "supporter",
+    title: "Supporter",
+    price: "$1,000",
+    description:
+      "Sponsors a student's research stipend or conference trip. Your name is listed on our website and annual report.",
+    perks: ["Name listed on website", "Name in annual report"],
+  },
+  {
+    id: "partner",
+    title: "Partner",
+    price: "$2,000",
+    includes: "Includes Supporter perks",
+    description:
+      "Logo on lab merch, access to students' emails (with their consent), and an invitation to meet students.",
+    perks: ["Logo on lab merch", "Student email access (with consent)", "Invitation to meet students"],
+  },
+  {
+    id: "champion",
+    title: "Champion",
+    price: "$5,000",
+    includes: "Includes Partner perks",
+    description:
+      "A sponsor spotlight post and the option to name a student award at the annual ACM dinner we host.",
+    perks: ["Sponsor spotlight post", "Named student award at ACM dinner"],
+  },
+];
 
-const BecomeASponsorView = () => {
-  const [filters, setFilters] = useState<FilterState>({
-    tiers: [],
-  });
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+};
 
-  const slideUpVariants: Variants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
+const BecomeASponsorView = () => (
+  <div className="space-y-20">
+    {/* Intro header */}
+    <ViewIntroHeader
+      label="Become a Sponsor"
+      titlePrefix="Sponsors don't just fund research —"
+      titleAccent="they shape innovators."
+      body="Your sponsorship gives undergraduate students the resources to tackle real-world challenges, design technology that serves people, and grow as the next generation of HCI and UX leaders. Unlike traditional recruiting, you see students' ideas, skills, and research in action."
+      imageSrc="/images/cover/NC_09802.jpg"
+      imageAlt="HCI Lab students"
 
-  const sponsorshipTiers = [
-    {
-      id: "supporter",
-      title: "Supporter ($1,000)",
-      description:
-        "Sponsors a student's research stipend or conference trip. Name listed on website + annual report.",
-    },
-    {
-      id: "partner",
-      title: "Partner ($2,000)",
-      subtitle: "Includes Supporter perks",
-      description:
-        "Logo on lab merch + access to students' emails (w/ their consent) + invitation to meet students.",
-    },
-    {
-      id: "champion",
-      title: "Champion ($5,000)",
-      subtitle: "Includes Partner perks",
-      description:
-        "Sponsor spotlight post + option to name a student award at the annual ACM dinner that we host.",
-    },
-    // {
-    //   id: "visionary",
-    //   title: "Visionary ($10,000+)",
-    //   subtitle:
-    //     "Includes Champion perks + custom partnership (e.g., consulting project, sponsored fellowship, or event).",
-    //   description:
-    //     "At this level, we could consider consulting projects where they give us a problem and we have a few students work on that problem. It would provide financial support for those students. Prices would need to align with expectations.",
-    // },
-  ];
+      ctaLabel="Get in touch"
+      ctaHref="mailto:stevemacn@temple.edu"
+    />
 
-  const heroImages = [
-    {
-      src: "/images/cover/3-studio.jpg",
-      alt: "HCI Lab students working on research projects",
-    },
-    {
-      src: "/images/cover/NC_09802.jpg",
-      alt: "HCI Lab students working on research projects",
-    },
-    {
-      src: "/images/cover/NC_05301.jpg",
-      alt: "HCI Lab students working on research projects",
-    },
-  ];
+    {/* Sponsorship tiers */}
+    <div className="flex flex-col gap-4">
+      <p className="font-outfit text-sm font-medium text-thunder/40 uppercase tracking-widest">
+        Sponsorship Tiers
+      </p>
 
-  const handleFilterChange = (newFilters: FilterState) => {
-    setFilters(newFilters);
-  };
-
-  // Filter sponsorship tiers based on selected filters
-  const filteredTiers =
-    filters.tiers.length > 0
-      ? sponsorshipTiers.filter((tier) => filters.tiers.includes(tier.id))
-      : sponsorshipTiers;
-
-  return (
-    <section>
-      {/* Main Heading */}
-      <div className="mb-8">
-        <h1 className="font-outfit font-bold text-3xl md:text-4xl lg:text-5xl leading-tight mb-8">
-          At the HCI Lab, sponsors don&apos;t just support research — they help
-          shape future innovators.
-        </h1>
-
-        {/* Hero Section */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start mb-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{
-            staggerChildren: 0.2,
-          }}
-        >
-          <motion.div
-            className="flex flex-col gap-4"
-            variants={slideUpVariants}
-          >
-            <p className="text-base text-gray-700 leading-relaxed">
-              Your sponsorship provides the resources and opportunities that
-              allow undergraduate students to take on real world challenges,
-              design technology that serves people, and grow as future leaders
-              in human-computer interaction. Unlike traditional recruiting
-              settings, sponsors get to see students&apos; ideas, skills, and
-              research in action — a true preview of the next generation of UX
-              and HCI talent.
-            </p>
-            <p className="text-lg text-gray-900 font-semibold">
-              Discover how you can contribute and make an impact!
-            </p>
-          </motion.div>
-
-          <motion.div className="relative" variants={slideUpVariants}>
-            <ImageCarousel
-              images={heroImages}
-              height="h-64 md:h-72"
-              roundedClassName="rounded-bl-[100px]"
-              title="Sponsor Impact Section"
-              priority={true}
-            />
-          </motion.div>
-        </motion.div>
-
-        {/* Tier Legend */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={slideUpVariants}
-        >
-          <TierLegend onFilterChange={handleFilterChange} />
-        </motion.div>
-      </div>
-
-      {/* Sponsorship Tiers */}
       <motion.div
-        className="space-y-8"
+        className="flex flex-col gap-8"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
-        transition={{
-          staggerChildren: 0.2,
-        }}
+        variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
       >
-        {filteredTiers.map((tier) => (
-          <motion.div
-            key={tier.id}
-            className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8"
-            variants={slideUpVariants}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12 items-start">
-              <div className="relative">
-                <div className="w-full h-48 relative rounded-lg overflow-hidden bg-gray-200">
-                  <Image
-                    src="/images/cover/NC_09802.jpg"
-                    alt="HCI Lab sponsorship opportunity"
-                    fill
-                    className="object-cover"
-                    loading="lazy"
-                  />
-                </div>
+        {TIERS.map((tier, i) => (
+          <motion.div key={tier.id} variants={fadeUp} className="flex flex-col gap-3">
+            {/* Title outside the card */}
+            <SectionTitle>{tier.title}</SectionTitle>
+
+            {/* Card body */}
+            <div className={`rounded-2xl border border-thunder/10 p-6 md:p-8 flex flex-col gap-4 ${i % 2 === 1 ? "bg-alabaster" : "bg-white shadow-sm"}`}>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                <span className="font-outfit font-medium text-2xl text-well-red">
+                  {tier.price}
+                </span>
+                {tier.includes && (
+                  <p className="font-outfit text-xs font-medium text-thunder/40 uppercase tracking-widest">
+                    {tier.includes}
+                  </p>
+                )}
               </div>
 
-              <div className="md:col-span-2 space-y-3">
-                <div>
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 font-outfit">
-                    {tier.title}
-                  </h3>
-                  {tier.subtitle && (
-                    <p className="text-sm md:text-base text-gray-600 font-medium mb-3">
-                      {tier.subtitle}
-                    </p>
-                  )}
-                </div>
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed font-outfit">
-                  {tier.description}
-                </p>
-              </div>
+              <p className="text-p1 text-thunder/65 leading-relaxed max-w-2xl">
+                {tier.description}
+              </p>
+
+              <ul className="flex flex-col gap-1.5">
+                {tier.perks.map((perk) => (
+                  <li key={perk} className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-well-red shrink-0" />
+                    <span className="font-outfit text-sm text-thunder/70">{perk}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </motion.div>
         ))}
       </motion.div>
-    </section>
-  );
-};
+    </div>
+
+    {/* CTA strip */}
+    <CtaBanner
+      label="Ready to Partner?"
+      title="Let's talk about how we can work together."
+      body="Reach out to Dr. Steve MacNeil to learn more about sponsorship opportunities and how your organization can make an impact."
+      ctaLabel="Contact Us"
+      ctaHref="mailto:stevemacn@temple.edu"
+    />
+  </div>
+);
 
 export default BecomeASponsorView;

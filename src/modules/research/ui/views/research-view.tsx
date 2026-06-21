@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ResearchHero from "@/modules/research/ui/components/research-hero";
-import ResearchJoinBanner from "@/modules/research/ui/components/research-join-banner";
+import CtaBanner from "@/components/cta-banner";
 import { SectionTitle } from "@/components/section-title";
 import { CATEGORIES } from "@/modules/research/ui/research-data";
 
@@ -97,7 +97,13 @@ const ResearchView = () => {
         </div>
       </div>
 
-      <ResearchJoinBanner />
+      <CtaBanner
+        label="Get Involved"
+        title="Interested in joining our research?"
+        body="The Temple HCI Lab welcomes undergraduate and graduate students who are passionate about human-centered design, AI, accessibility, and social computing. Apply to join and help shape the future of HCI research."
+        ctaLabel="Apply to join"
+        ctaHref="/join"
+      />
     </div>
   );
 };

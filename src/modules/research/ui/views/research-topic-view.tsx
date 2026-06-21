@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Research } from "../../../../../sanity.types";
 import ResearchCard from "@/modules/research/ui/components/research-card";
-import ResearchJoinBanner from "@/modules/research/ui/components/research-join-banner";
+import CtaBanner from "@/components/cta-banner";
 import TopicLogoGenAI from "@/modules/research/ui/components/topic-logo-gen-ai";
 import TopicLogoAccessibility from "@/modules/research/ui/components/topic-logo-accessibility";
 import TopicLogoSocial from "@/modules/research/ui/components/topic-logo-social";
@@ -195,7 +195,13 @@ const ResearchTopicView = ({
         </div>
       )}
 
-      <ResearchJoinBanner />
+      <CtaBanner
+        label="Get Involved"
+        title="Interested in joining our research?"
+        body="The Temple HCI Lab welcomes undergraduate and graduate students who are passionate about human-centered design, AI, accessibility, and social computing. Apply to join and help shape the future of HCI research."
+        ctaLabel="Apply to join"
+        ctaHref="/join"
+      />
     </div>
   );
 };
