@@ -67,7 +67,7 @@ const getCardBg = (box: CardsBox, delayFrac: number, easePower: number, v: numbe
 
 const ResearchCardContent = ({ area }: { area: (typeof RESEARCH_AREAS)[number] }) => (
   <>
-    <h3 className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</h3>
+    <p className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</p>
     <p className="text-sm md:text-p1 text-white/70 leading-snug">{area.description}</p>
     <div className="flex items-end justify-between gap-2 mt-1">
       <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1">

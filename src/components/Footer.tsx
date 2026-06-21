@@ -43,11 +43,7 @@ const Footer = () => {
               <Link
                 key={link.label}
                 href={link.path}
-                className="!text-white font-outfit text-lg font-medium hover:!text-red-500 transition-colors"
-                title={link.linkDescription || `Navigate to ${link.label} page`}
-                aria-label={
-                  link.linkDescription || `Navigate to ${link.label} page`
-                }
+                className="!text-white font-outfit text-lg font-medium hover:!text-red-500 transition-colors py-2 inline-block"
               >
                 {link.label}
               </Link>

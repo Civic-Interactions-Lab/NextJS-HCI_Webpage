@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Roboto, JetBrains_Mono, Outfit, Oxanium } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
-import { ClerkProvider } from "@clerk/nextjs";
 import { SanityLive } from "@/sanity/lib/live";
 
 const outfit = Outfit({
@@ -43,15 +42,13 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} ${oxanium.variable} min-h-screen flex flex-col antialiased`}
-        >
-          <main className="flex-1">{children}</main>
-          <SanityLive />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} ${oxanium.variable} min-h-screen flex flex-col antialiased`}
+      >
+        <main className="flex-1">{children}</main>
+        <SanityLive />
+      </body>
+    </html>
   );
 }

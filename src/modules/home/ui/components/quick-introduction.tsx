@@ -98,7 +98,7 @@ const QuickIntroduction = () => {
               variants={fadeUp}
               className="group bg-well-red rounded-2xl p-6 flex flex-col gap-4 hover:bg-deep-red transition-colors duration-300"
             >
-              <h3 className="label-3 text-white">{area.title}</h3>
+              <p className="label-3 text-white">{area.title}</p>
               <p className="text-p2 text-white/80 grow">{area.description}</p>
               <div className="flex items-end justify-between gap-2">
                 <Link

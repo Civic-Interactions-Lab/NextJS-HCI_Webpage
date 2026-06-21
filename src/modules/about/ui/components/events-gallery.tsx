@@ -76,7 +76,7 @@ const EventsGallery = () => {
               className={`polaroid flex flex-col gap-2 bg-white shadow-md hover:shadow-xl p-3 md:p-4 rounded-sm ${rotate} hover:rotate-0 hover:scale-105 transition-all duration-300 cursor-default`}
             >
               <div className="relative aspect-4/3 w-full overflow-hidden">
-                <Image src={src} alt={caption} fill className="object-cover" />
+                <Image src={src} alt={caption} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" />
               </div>
               <p className="text-p3 text-thunder/60 text-center pt-1 pb-0.5 font-outfit italic">
                 {caption}

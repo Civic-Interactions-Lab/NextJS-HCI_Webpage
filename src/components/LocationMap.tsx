@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -32,6 +33,20 @@ const LocationMap = ({
     ? `${coordinates.lat},${coordinates.lng}`
     : address || "";
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   if (!location) {
     return (
       <div
@@ -61,22 +76,26 @@ const LocationMap = ({
           <p className="text-sm text-gray-600 mt-1">{location}</p>
         </div>
       )}
-      <div className="relative">
+      <div className="relative" ref={containerRef}>
         <div
           className="w-full rounded-2xl overflow-hidden shadow-lg border border-gray-300"
           style={{ height }}
         >
-          <iframe
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            loading="lazy"
-            allowFullScreen
-            referrerPolicy="no-referrer-when-downgrade"
-            src={mapUrl}
-            title={title}
-            className="w-full h-full"
-          />
+          {inView ? (
+            <iframe
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src={mapUrl}
+              title={title}
+              className="w-full h-full"
+            />
+          ) : (
+            <div className="w-full h-full bg-thunder/5 animate-pulse rounded-2xl" />
+          )}
         </div>
 
         {/* Overlay to open map in new tab */}

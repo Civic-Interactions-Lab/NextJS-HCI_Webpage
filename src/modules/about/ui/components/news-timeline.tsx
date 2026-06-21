@@ -194,6 +194,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                                 src={getImageSrc(news.imageUrl)}
                                 alt={news.title ?? ""}
                                 fill
+                                sizes="(max-width: 768px) 100vw, 192px"
                                 className="object-cover"
                               />
                             </div>

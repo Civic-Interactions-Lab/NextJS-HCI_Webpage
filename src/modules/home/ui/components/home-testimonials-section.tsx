@@ -139,10 +139,11 @@ const TestimonialsSection = ({ testimonials }: Props) => {
 
         {n > 1 && (
           <div className="flex gap-2 shrink-0 pb-1">
-            {([[-1, ChevronLeft], [1, ChevronRight]] as const).map(([dir, Icon]) => (
+            {([[-1, ChevronLeft, "Previous testimonial"], [1, ChevronRight, "Next testimonial"]] as const).map(([dir, Icon, label]) => (
               <button
                 key={dir}
                 onClick={() => goTo(active + dir)}
+                aria-label={label}
                 className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
               >
                 <Icon className="w-5 h-5" />
