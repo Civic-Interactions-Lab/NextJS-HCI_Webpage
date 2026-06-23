@@ -12,6 +12,7 @@ import { SectionTitle } from "@/components/section-title";
 import PersonCard from "@/modules/people/ui/components/person-card";
 import PeopleFilter from "@/modules/people/ui/components/people-filter";
 import CtaBanner from "@/components/cta-banner";
+import QuoteBoard from "@/modules/people/ui/components/quote-board";
 
 const PEOPLE_LINKS = [
   { label: "Alumni", href: "/people/alumni", tagline: "Former lab members who have gone on to careers in industry, academia, and beyond." },
@@ -98,6 +99,9 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
           </p>
         )}
       </div>
+
+      {/* Memory wall quotes cloud */}
+      <QuoteBoard />
 
       {/* Quick nav to other people sections */}
       <div className="border-t border-thunder/8">
