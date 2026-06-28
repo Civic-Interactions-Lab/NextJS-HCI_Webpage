@@ -42,7 +42,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} ${oxanium.variable} min-h-screen flex flex-col antialiased`}
       >

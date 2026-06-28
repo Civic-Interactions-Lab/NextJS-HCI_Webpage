@@ -11,7 +11,7 @@ export default async function CoreLayout({
 }) {
   return (
     <Suspense fallback={<Loading />}>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col overflow-x-hidden">
         <HciNavbar />
         <Hero />
         <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 py-20">

@@ -32,6 +32,7 @@ const stagger: Variants = {
 const HubCommunitySection = ({ hubCommunityImage }: HubCommunitySectionProps) => {
   return (
     <motion.section
+      id="hub"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}

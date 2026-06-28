@@ -17,6 +17,7 @@ const stagger: Variants = {
 const HomeIntro = () => {
   return (
     <motion.section
+      id="intro"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}

@@ -33,6 +33,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
 
   return (
     <motion.section
+      id="news"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}

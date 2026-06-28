@@ -16,7 +16,6 @@ import {
   CircleDollarSignIcon,
   CircleQuestionMark,
   Globe,
-  ImagesIcon,
   MicroscopeIcon,
   NewspaperIcon,
   User,
@@ -207,81 +206,6 @@ export default defineConfig({
               context,
               icon: UserRoundCheck,
             }),
-
-            S.listItem()
-              .title("Image Settings")
-              .icon(ImagesIcon)
-              .child(
-                S.list()
-                  .title("Image Settings")
-                  .items([
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "All Image Settings",
-                      id: "all-image-settings",
-                      S,
-                      context,
-                    }),
-                    S.divider(),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "Home Page",
-                      filter: 'sectionKey match "home-*"',
-                      id: "home-image-settings",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "About Page",
-                      filter:
-                        'sectionKey match "about-*" || sectionKey match "events-*" || sectionKey == "contact-serc"',
-                      id: "about-image-settings",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "Research Page",
-                      filter: 'sectionKey match "research-*"',
-                      id: "research-image-settings",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "People Page",
-                      filter: 'sectionKey match "people-*"',
-                      id: "people-image-settings",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "Pathways Page",
-                      filter: 'sectionKey match "pathways-*"',
-                      id: "pathways-image-settings",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "Sponsors Page",
-                      filter: 'sectionKey match "sponsors-*"',
-                      id: "sponsors-image-settings",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "imageSettings",
-                      title: "Join Page",
-                      filter: 'sectionKey match "join-*"',
-                      id: "join-image-settings",
-                      S,
-                      context,
-                    }),
-                  ]),
-              ),
 
             orderableDocumentListDeskItem({
               type: "conference",

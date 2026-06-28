@@ -43,7 +43,7 @@ const Hero = () => {
   const child = segments[1] ? capitalize(segments[1]) : null;
 
   return (
-    <div className="relative w-screen mx-auto bg-cover h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden">
+    <div className="relative w-full bg-cover h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden">
       <div className="absolute inset-0">
         <Image
           src={coverImage}

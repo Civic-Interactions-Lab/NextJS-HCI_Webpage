@@ -16,7 +16,7 @@ const getInitials = (name: string) =>
 const PersonCard = ({ person }: { person: People }) => {
   if (!person.name) return null;
 
-  const imgSrc = person.img ? urlFor(person.img).width(400).height(400).url() : null;
+  const imgSrc = person.img ? urlFor(person.img).width(800).height(800).url() : null;
   const statusColor = person.status ? statusColors[person.status] : null;
   const statusLabel = person.status ? statusLabels[person.status] : null;
 
@@ -30,6 +30,7 @@ const PersonCard = ({ person }: { person: People }) => {
             alt={person.name}
             fill
             className="object-cover"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             loading="lazy"
           />
         ) : (

@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BrainCircuit, PersonStanding, WandSparkles } from "lucide-react";
+import {
+  ArrowRight,
+  BrainCircuit,
+  ChevronLeft,
+  ChevronRight,
+  PersonStanding,
+  WandSparkles,
+} from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,27 +19,41 @@ import { SectionTitle } from "@/components/section-title";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
+const SLIDES = [
+  { image: "/images/cover/group.jpg", position: "center 36%" },
+  { image: "/images/cover/NC_09802.jpg", position: "center 30%" },
+  { image: "/images/cover/NC_05301.jpg", position: "center 40%" },
+  { image: "/images/cover/HCI_OpenHouse-38.jpg", position: "center 30%" },
+];
+
 const RESEARCH_AREAS = [
-  { id: "computing-education", title: "Gen AI & Education",      href: "/research/gen-ai-education",       Icon: BrainCircuit,    description: "Studying AI harms and building scaffolding for responsible use." },
-  { id: "assistive-tech",      title: "Accessibility Technology", href: "/research/accessibility-technology", Icon: PersonStanding, description: "AAC tools to foster self-direction and expressive communication." },
-  { id: "future-of-work",      title: "Future of Work",           href: "/research/future-of-work",         Icon: WandSparkles,    description: "Tools to build better workplaces and reimagine how we work." },
+  {
+    id: "computing-education",
+    title: "Gen AI & Education",
+    href: "/research/gen-ai-education",
+    Icon: BrainCircuit,
+    description:
+      "Studying AI harms and building scaffolding for responsible use.",
+  },
+  {
+    id: "assistive-tech",
+    title: "Accessibility Technology",
+    href: "/research/accessibility-technology",
+    Icon: PersonStanding,
+    description:
+      "AAC tools to foster self-direction and expressive communication.",
+  },
+  {
+    id: "future-of-work",
+    title: "Future of Work",
+    href: "/research/future-of-work",
+    Icon: WandSparkles,
+    description: "Tools to build better workplaces and reimagine how we work.",
+  },
 ] as const;
-
-const TITLE_WORDS = [
-  { text: "Temple", className: "text-white" },
-  { text: "HCI", className: "text-well-red" },
-  { text: "Lab", className: "text-white" },
-] as const;
-
-const TITLE_CHARS = TITLE_WORDS.flatMap(({ text, className }, wi) => [
-  ...text.split("").map((char) => ({ char, className })),
-  ...(wi < TITLE_WORDS.length - 1 ? [{ char: " ", className }] : []),
-]);
 
 // ─── Animation constants ──────────────────────────────────────────────────────
 
-const CHAR_STAGGER = 8;
-const CHAR_RANGE = 260;
 const TOP_GAP = 80;
 const BOTTOM_GAP = 80;
 const EASE_POWER = 4;
@@ -48,32 +69,59 @@ const getSlideDistance = (box: CardsBox): number => {
   return Math.max(Math.min(((vh - box.top) / 2) * 4, vh - box.top - 20), 1);
 };
 
-const getCardTop = (box: CardsBox, delayFrac: number, easePower: number, v: number): number => {
+const getCardTop = (
+  box: CardsBox,
+  delayFrac: number,
+  easePower: number,
+  v: number,
+): number => {
   const vh = typeof window !== "undefined" ? window.innerHeight : 800;
   const sd = getSlideDistance(box);
   const dv = Math.max(v - sd * delayFrac, 0);
-  const progress = Math.pow(Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1), easePower);
-  return v <= sd ? box.top + (vh - sd + TOP_GAP - box.top) * progress : vh - v + TOP_GAP;
+  const progress = Math.pow(
+    Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1),
+    easePower,
+  );
+  return v <= sd
+    ? box.top + (vh - sd + TOP_GAP - box.top) * progress
+    : vh - v + TOP_GAP;
 };
 
-const getCardBg = (box: CardsBox, delayFrac: number, easePower: number, v: number): string => {
+const getCardBg = (
+  box: CardsBox,
+  delayFrac: number,
+  easePower: number,
+  v: number,
+): string => {
   const sd = getSlideDistance(box);
   const dv = Math.max(v - sd * delayFrac, 0);
-  const progress = Math.pow(Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1), easePower);
+  const progress = Math.pow(
+    Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1),
+    easePower,
+  );
   return `rgba(${Math.round(170 * progress)}, ${Math.round(44 * progress)}, ${Math.round(69 * progress)}, ${0.45 + 0.55 * progress})`;
 };
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const ResearchCardContent = ({ area }: { area: (typeof RESEARCH_AREAS)[number] }) => (
+const ResearchCardContent = ({
+  area,
+}: {
+  area: (typeof RESEARCH_AREAS)[number];
+}) => (
   <>
-    <p className="font-oxanium font-semibold text-white text-base md:text-xl leading-snug">{area.title}</p>
-    <p className="text-sm md:text-p1 text-white/70 leading-snug">{area.description}</p>
-    <div className="flex items-end justify-between gap-2 mt-1">
-      <span className="font-oxanium text-xs md:text-sm font-medium text-white/80 inline-flex items-center gap-1">
-        See more <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+    <p className="font-oxanium font-semibold text-white text-sm md:text-2xl leading-snug">
+      {area.title}
+    </p>
+    <p className="text-[10px] md:text-base text-white/70 leading-snug">
+      {area.description}
+    </p>
+    <div className="flex items-end justify-between gap-1 md:gap-2 mt-auto">
+      <span className="font-oxanium text-[9px] md:text-sm font-medium text-white/80 inline-flex items-center gap-0.5 whitespace-nowrap">
+        See more{" "}
+        <ArrowRight className="w-2 h-2 md:w-3 md:h-3 transition-transform group-hover:translate-x-1" />
       </span>
-      <area.Icon className="w-10 h-10 text-white/60 shrink-0" />
+      <area.Icon className="w-4 h-4 md:w-12 md:h-12 text-white/60 shrink-0" />
     </div>
   </>
 );
@@ -81,7 +129,11 @@ const ResearchCardContent = ({ area }: { area: (typeof RESEARCH_AREAS)[number] }
 const GhostGrid = () => (
   <div className="grid grid-cols-3 gap-2 md:gap-4">
     {RESEARCH_AREAS.map((area) => (
-      <Link key={area.id} href={area.href} className="group flex flex-col gap-1 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-2.5 md:p-5">
+      <Link
+        key={area.id}
+        href={area.href}
+        className="group flex flex-col gap-2 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-3 md:p-7"
+      >
         <ResearchCardContent area={area} />
       </Link>
     ))}
@@ -91,8 +143,16 @@ const GhostGrid = () => (
 const AnimatedGrid = () => (
   <div className="grid grid-cols-3 gap-2 md:gap-4">
     {RESEARCH_AREAS.map((area, index) => (
-      <div key={area.id} data-gsap-card={index} style={{ opacity: 0 }} className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors">
-        <Link href={area.href} className="flex flex-col gap-1 md:gap-3 p-2.5 md:p-5">
+      <div
+        key={area.id}
+        data-gsap-card={index}
+        style={{ opacity: 0 }}
+        className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
+      >
+        <Link
+          href={area.href}
+          className="flex flex-col gap-2 md:gap-3 p-3 md:p-7"
+        >
           <ResearchCardContent area={area} />
         </Link>
       </div>
@@ -105,15 +165,36 @@ const AnimatedGrid = () => (
 const HomeHero = () => {
   const [mounted, setMounted] = useState(false);
   const [cardsBox, setCardsBox] = useState<CardsBox | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const autoSlideRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const goToSlide = (i: number) => {
+    if (autoSlideRef.current) clearInterval(autoSlideRef.current);
+    setActiveSlide(i);
+    autoSlideRef.current = setInterval(
+      () => setActiveSlide((s) => (s + 1) % SLIDES.length),
+      5000,
+    );
+  };
+
+  useEffect(() => {
+    autoSlideRef.current = setInterval(
+      () => setActiveSlide((s) => (s + 1) % SLIDES.length),
+      5000,
+    );
+    return () => {
+      if (autoSlideRef.current) clearInterval(autoSlideRef.current);
+    };
+  }, []);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
-  const charsRef = useRef<HTMLHeadingElement>(null);
-  const introBoxRef = useRef<HTMLDivElement>(null);
   const titleContainerRef = useRef<HTMLDivElement>(null);
   const rollingLogoRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
+  const bgStripRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
@@ -122,53 +203,35 @@ const HomeHero = () => {
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
-    const update = () => { el.style.height = `${Math.max(window.innerHeight - window.scrollY, 0)}px`; };
+    const update = () => {
+      el.style.height = `${Math.max(window.innerHeight - window.scrollY, 0)}px`;
+    };
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
-    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
-  // Title scales down on scroll
+  // Title simple fade-out on scroll
   useEffect(() => {
     if (!titleRef.current) return;
-    gsap.set(titleRef.current, { transformOrigin: "bottom left" });
     const ctx = gsap.context(() => {
-      gsap.to(titleRef.current, { scale: 0.55, ease: "none", scrollTrigger: { trigger: document.body, start: "top top", end: "+=320", scrub: true } });
+      gsap.to(titleRef.current, {
+        opacity: 0,
+        y: -24,
+        ease: "power1.in",
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "+=280",
+          scrub: true,
+        },
+      });
     });
     return () => ctx.revert();
-  }, []);
-
-  // Title chars cascade out on scroll
-  useEffect(() => {
-    if (!charsRef.current) return;
-    const chars = charsRef.current.querySelectorAll<HTMLSpanElement>(".title-char");
-    if (!chars.length) return;
-    const ctx = gsap.context(() => {
-      gsap.timeline({
-        scrollTrigger: { trigger: document.body, start: "top top", end: `+=${CHAR_RANGE + (chars.length - 1) * CHAR_STAGGER}`, scrub: true },
-      }).to(chars, { duration: CHAR_RANGE, y: -340, scale: 0.35, opacity: 0, ease: "power3.in", stagger: CHAR_STAGGER });
-    });
-    return () => ctx.revert();
-  }, []);
-
-  // Intro box: clip-path reveal from right, then scroll-out
-  useEffect(() => {
-    if (!introBoxRef.current) return;
-    const el = introBoxRef.current;
-    gsap.set(el, { visibility: "visible", clipPath: "inset(0 0 0 100%)", opacity: 1, x: 0 });
-
-    if (window.scrollY < 20) {
-      gsap.to(el, { clipPath: "inset(0 0 0 0%)", duration: 0.9, ease: "power3.inOut", delay: 0.2 });
-    } else {
-      gsap.set(el, { clipPath: "inset(0 0 0 0%)" });
-    }
-
-    const st = ScrollTrigger.create({
-      trigger: document.documentElement, start: "top top", end: "+=300", scrub: true,
-      onUpdate: (self) => gsap.set(el, { x: self.progress * 220, opacity: 1 - self.progress }),
-    });
-    return () => st.kill();
   }, []);
 
   // Cards: entrance + scroll-driven position & color
@@ -176,26 +239,36 @@ const HomeHero = () => {
     if (!mounted || !cardsBox) return;
     let scrollCleanup: (() => void) | null = null;
     const timer = setTimeout(() => {
-      const cards = Array.from(document.querySelectorAll<HTMLDivElement>("[data-gsap-card]"));
+      const cards = Array.from(
+        document.querySelectorAll<HTMLDivElement>("[data-gsap-card]"),
+      );
       if (cards.length !== 3) return;
-      const top = (i: number, v: number) => getCardTop(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
-      const bg = (i: number, v: number) => getCardBg(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
+      const top = (i: number, v: number) =>
+        getCardTop(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
+      const bg = (i: number, v: number) =>
+        getCardBg(cardsBox, CARD_DELAYS[i], CARD_EASE_POWERS[i], v);
       const sv = window.scrollY;
       const heroH = window.innerHeight;
       const setPointer = (card: HTMLDivElement, scrollY: number) => {
-        // Disable pointer events once hero is scrolled out of view
         card.style.pointerEvents = scrollY < heroH ? "auto" : "none";
       };
       cards.forEach((card, i) => {
         gsap.set(card, { backgroundColor: bg(i, sv) });
         if (sv < 20) {
-          // Normal entrance animation when at (or very near) the top
-          gsap.fromTo(card, { opacity: 0, y: top(i, sv) + 50 }, {
-            opacity: 1, y: top(i, sv), duration: 0.9, ease: "power3.out", delay: 0.3 + i * 0.12, overwrite: true,
-            onComplete: () => setPointer(card, window.scrollY),
-          });
+          gsap.fromTo(
+            card,
+            { opacity: 0, y: top(i, sv) + 50 },
+            {
+              opacity: 1,
+              y: top(i, sv),
+              duration: 0.9,
+              ease: "power3.out",
+              delay: 0.3 + i * 0.12,
+              overwrite: true,
+              onComplete: () => setPointer(card, window.scrollY),
+            },
+          );
         } else {
-          // Page loaded mid-scroll: place cards immediately at the correct position
           gsap.set(card, { opacity: 1, y: top(i, sv) });
           setPointer(card, sv);
         }
@@ -204,52 +277,122 @@ const HomeHero = () => {
         const v = window.scrollY;
         cards.forEach((card, i) => {
           gsap.killTweensOf(card);
-          gsap.set(card, { opacity: 1, y: top(i, v), backgroundColor: bg(i, v) });
+          gsap.set(card, {
+            opacity: 1,
+            y: top(i, v),
+            backgroundColor: bg(i, v),
+          });
           setPointer(card, v);
         });
       };
       window.addEventListener("scroll", handleScroll, { passive: true });
       scrollCleanup = () => window.removeEventListener("scroll", handleScroll);
     }, 50);
-    return () => { clearTimeout(timer); scrollCleanup?.(); };
+    return () => {
+      clearTimeout(timer);
+      scrollCleanup?.();
+    };
   }, [mounted, cardsBox]);
 
-  // Rolling logo reveals the title text
+  // Rolling logo reveals the title text (desktop) / simple fade-up (mobile)
   useEffect(() => {
     const container = titleContainerRef.current;
     const logoWrapper = rollingLogoRef.current;
     if (!container || !logoWrapper) return;
+
+    if (window.innerWidth < 768) {
+      gsap.set(container, {
+        visibility: "visible",
+        clipPath: "none",
+        opacity: 0,
+        y: 24,
+      });
+      gsap.to(container, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        delay: 0.2,
+      });
+      return;
+    }
+
     const rect = container.getBoundingClientRect();
     const logoSize = logoWrapper.offsetWidth;
     const startX = -(rect.left + logoSize);
     const endX = rect.width + logoSize;
-    const totalRotation = ((endX - startX) / ((logoSize / 2) * 0.55)) * (180 / Math.PI);
-    gsap.set(container, { visibility: "visible", clipPath: "inset(0 100% 0 0)" });
-    gsap.set(logoWrapper, { x: startX, y: Math.max(0, (rect.height - logoSize) / 2), scale: 0.2, rotation: 0, opacity: 1 });
+    const totalRotation =
+      ((endX - startX) / ((logoSize / 2) * 0.55)) * (180 / Math.PI);
+    gsap.set(container, {
+      visibility: "visible",
+      clipPath: "inset(0 100% 0 0)",
+    });
+    gsap.set(logoWrapper, {
+      x: startX,
+      y: Math.max(0, (rect.height - logoSize) / 2),
+      scale: 0.2,
+      rotation: 0,
+      opacity: 1,
+    });
     const tl = gsap.timeline({ delay: 0.2 });
-    tl.to(logoWrapper, {
-      x: endX, scale: 1, rotation: totalRotation, duration: 1.5, ease: "power2.inOut",
-      onUpdate() {
-        const x = gsap.getProperty(logoWrapper, "x") as number;
-        const s = gsap.getProperty(logoWrapper, "scaleX") as number;
-        container.style.clipPath = `inset(0 ${Math.max(0, rect.width - x - (logoSize * s) / 2)}px 0 0)`;
+    tl.to(
+      logoWrapper,
+      {
+        x: endX,
+        scale: 1,
+        rotation: totalRotation,
+        duration: 1.5,
+        ease: "power2.inOut",
+        onUpdate() {
+          const x = gsap.getProperty(logoWrapper, "x") as number;
+          const s = gsap.getProperty(logoWrapper, "scaleX") as number;
+          container.style.clipPath = `inset(0 ${Math.max(0, rect.width - x - (logoSize * s) / 2)}px 0 0)`;
+        },
+        onComplete: () => {
+          container.style.clipPath = "none";
+        },
       },
-      onComplete: () => { container.style.clipPath = "none"; },
-    }, 0);
+      0,
+    );
     tl.to(logoWrapper, { opacity: 0, duration: 0.25 }, "-=0.3");
-    return () => { tl.kill(); if (container) gsap.set(container, { clearProps: "clipPath,visibility" }); };
+    return () => {
+      tl.kill();
+      if (container) gsap.set(container, { clearProps: "clipPath,visibility" });
+    };
   }, []);
 
   // Heading: y position tracks hero + fade out on scroll
   useEffect(() => {
     const el = headingRef.current;
+    const strip = bgStripRef.current;
+    const dots = dotsRef.current;
     if (!mounted || !cardsBox || !el) return;
     gsap.to(el, { opacity: 1, duration: 0.4, delay: 0.5, ease: "power2.out" });
+    if (strip)
+      gsap.to(strip, {
+        opacity: 1,
+        duration: 0.4,
+        delay: 0.5,
+        ease: "power2.out",
+      });
+    if (dots)
+      gsap.to(dots, {
+        opacity: 1,
+        duration: 0.4,
+        delay: 0.7,
+        ease: "power2.out",
+      });
     const update = () => {
       const v = window.scrollY;
       const hb = Math.max(window.innerHeight - v, 0);
       const ct = getCardTop(cardsBox, CARD_DELAYS[0], CARD_EASE_POWERS[0], v);
-      gsap.set(el, { y: Math.min(hb - 60, ct - 72), ...(v > 0 && { opacity: Math.max(0, 1 - v / 60) }) });
+      const headingOffset = window.innerWidth < 768 ? 40 : 72;
+      const headingY = Math.min(hb - 60, ct - headingOffset);
+      const fadeOpacity = v > 0 ? Math.max(0, 1 - v / 60) : 1;
+      gsap.set(el, { y: headingY, opacity: fadeOpacity });
+      if (strip)
+        gsap.set(strip, { y: headingY - 16, opacity: v > 0 ? fadeOpacity : 1 });
+      if (dots) gsap.set(dots, { opacity: v > 0 ? fadeOpacity : 1 });
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -261,8 +404,6 @@ const HomeHero = () => {
     if (!cardsRef.current) return;
     const measure = () => {
       if (!cardsRef.current || !heroRef.current) return;
-      // Hero height shrinks when scrollY > 0, collapsing the ghost grid to top:0.
-      // Temporarily restore full height so getBoundingClientRect is always accurate.
       const saved = heroRef.current.style.height;
       heroRef.current.style.height = `${window.innerHeight}px`;
       const r = cardsRef.current.getBoundingClientRect();
@@ -271,60 +412,217 @@ const HomeHero = () => {
     };
     measure();
     const raf = requestAnimationFrame(() => requestAnimationFrame(measure));
-    if (typeof document !== "undefined" && "fonts" in document) document.fonts.ready.then(measure);
+    if (typeof document !== "undefined" && "fonts" in document)
+      document.fonts.ready.then(measure);
     const observer = new ResizeObserver(measure);
     observer.observe(cardsRef.current);
     if (titleRef.current) observer.observe(titleRef.current);
     window.addEventListener("resize", measure);
-    return () => { cancelAnimationFrame(raf); observer.disconnect(); window.removeEventListener("resize", measure); };
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
     <>
-      <div ref={heroRef} className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10 pointer-events-none">
-        <div className="absolute inset-0">
-          <Image src="/images/cover/NC_05301.jpg" alt="Temple HCI Lab" fill className="object-cover" style={{ objectPosition: "center 36%" }} priority sizes="100vw" />
+      <div
+        ref={heroRef}
+        className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10 pointer-events-none"
+      >
+        {/* Crossfading background images — full screen on desktop, top half on mobile */}
+        <div className="absolute top-0 left-0 right-0 h-1/2 md:inset-0 md:h-auto md:bottom-0">
+          {SLIDES.map((slide, i) => (
+            <div
+              key={i}
+              className="absolute inset-0 transition-opacity duration-700 ease-in-out"
+              style={{ opacity: activeSlide === i ? 1 : 0 }}
+            >
+              <Image
+                src={slide.image}
+                alt="Temple HCI Lab"
+                fill
+                className="object-cover"
+                style={{ objectPosition: slide.position }}
+                priority={i === 0}
+                sizes="100vw"
+              />
+            </div>
+          ))}
         </div>
-        <div className="absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black/95" />
+        {/* Mobile: gradient from transparent at top to solid black at 50%, stays black below */}
+        <div
+          className="md:hidden absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.1) 15%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,1) 50%, rgba(0,0,0,1) 100%)",
+          }}
+        />
+        {/* Desktop: original subtle gradient */}
+        <div className="hidden md:block absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black/95" />
 
-        <div className="absolute top-28 md:top-32 left-0 w-full px-6 md:px-12 z-10">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:justify-between gap-6">
-
+        {/* Slide 0: Title */}
+        <div
+          className="absolute top-1/2 md:top-0 bottom-[30%] md:bottom-0 left-0 right-0 flex items-center justify-center px-6 md:px-12 z-10 transition-all duration-500"
+          style={{
+            opacity: activeSlide === 0 ? 1 : 0,
+            transform:
+              activeSlide === 0 ? "translateX(0)" : "translateX(-28px)",
+            pointerEvents: activeSlide === 0 ? "auto" : "none",
+          }}
+        >
+          <div className="flex flex-col items-center gap-4">
             {/* Title with rolling logo entrance */}
-            <div ref={titleRef} className="origin-bottom-left relative">
-              <div ref={rollingLogoRef} className="absolute pointer-events-none z-10 opacity-0" style={{ top: 0, left: 0 }}>
-                <Image src="/logos/hci-logo.png" alt="" width={88} height={88} className="rounded-md" />
+            <div ref={titleRef} className="origin-bottom-center relative">
+              <div
+                ref={rollingLogoRef}
+                className="absolute pointer-events-none z-10 opacity-0"
+                style={{ top: 0, left: 0 }}
+              >
+                <Image
+                  src="/logos/hci-logo.png"
+                  alt=""
+                  width={88}
+                  height={88}
+                  className="rounded-md"
+                />
               </div>
-              <div ref={titleContainerRef} className="invisible">
-                <h1 ref={charsRef} className="font-oxanium font-semibold leading-none tracking-tight">
-                  {TITLE_CHARS.map((c, index) => (
-                    <span key={index} className={`title-char inline-block text-[40px] font-outfit! md:text-[64px] lg:text-[88px] leading-[0.88] ${c.className}`}>
-                      {c.char === " " ? " " : c.char}
-                    </span>
-                  ))}
+              <div ref={titleContainerRef} className="invisible text-center">
+                <h1 className="font-oxanium font-semibold leading-[0.88] tracking-tight text-[68px] md:text-[80px] lg:text-[112px]">
+                  <span className="font-outfit! text-white">Temple </span>
+                  <span className="font-outfit! text-well-red">HCI</span>
+                  <span className="font-outfit! text-white"> Lab</span>
                 </h1>
               </div>
             </div>
-
-            {/* Intro box */}
-            <div ref={introBoxRef} className="shrink-0 max-w-xs md:max-w-lg flex flex-col gap-4 bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5 pointer-events-auto invisible">
-              <p className="text-p3 text-white/90 leading-relaxed">
-                Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate
-                learning and empower non-experts to participate in work that has been previously reserved for trained professionals.
-              </p>
-              <Link href="/about" className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors">
-                Learn more about us <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-
           </div>
+        </div>
+
+        {/* Slide 1: About text box */}
+        <div
+          className="absolute top-1/2 md:top-32 bottom-[30%] md:bottom-auto left-0 right-0 w-full px-5 md:px-12 z-10 transition-all duration-500 flex items-center md:block"
+          style={{
+            opacity: activeSlide === 1 ? 1 : 0,
+            transform: activeSlide === 1 ? "translateX(0)" : "translateX(28px)",
+            pointerEvents: activeSlide === 1 ? "auto" : "none",
+          }}
+        >
+          <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
+            <div className="w-full md:max-w-md flex flex-col gap-3 md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl md:p-5">
+              <p className="text-sm text-white/90 leading-relaxed">
+                Our research lab takes a human-centered approach to using AI,
+                NLP, and Visualization to facilitate learning and empower
+                non-experts to participate in work that has been previously
+                reserved for trained professionals.
+              </p>
+              <button
+                onClick={() => {
+                  const target = document.getElementById("intro");
+                  if (!target) return;
+                  const top =
+                    target.getBoundingClientRect().top + window.scrollY - 80;
+                  window.scrollTo({ top, behavior: "smooth" });
+                }}
+                className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors pointer-events-auto"
+              >
+                Learn more about us{" "}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide 2: Hub for Communities text box */}
+        <div
+          className="absolute top-1/2 md:top-32 bottom-[30%] md:bottom-auto left-0 right-0 w-full px-5 md:px-12 z-10 transition-all duration-500 flex items-center md:block"
+          style={{
+            opacity: activeSlide === 2 ? 1 : 0,
+            transform: activeSlide === 2 ? "translateX(0)" : "translateX(28px)",
+            pointerEvents: activeSlide === 2 ? "auto" : "none",
+          }}
+        >
+          <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
+            <div className="w-full md:max-w-md flex flex-col gap-3 md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl md:p-5">
+              <p className="text-sm text-white/90 leading-relaxed">
+                We love helping students build the skills and confidence to
+                design, lead, and innovate within their own communities —
+                collaborating with organizations like ACM, TUDev, OwlByte, and
+                OwlHacks to turn ideas into real-world impact.
+              </p>
+              <button
+                onClick={() => {
+                  const target = document.getElementById("hub");
+                  if (!target) return;
+                  const top =
+                    target.getBoundingClientRect().top + window.scrollY - 80;
+                  window.scrollTo({ top, behavior: "smooth" });
+                }}
+                className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors pointer-events-auto"
+              >
+                A Hub for Communities{" "}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide 3: Recent News text box */}
+        <div
+          className="absolute top-1/2 md:top-32 bottom-[30%] md:bottom-auto left-0 right-0 w-full px-5 md:px-12 z-10 transition-all duration-500 flex items-center md:block"
+          style={{
+            opacity: activeSlide === 3 ? 1 : 0,
+            transform: activeSlide === 3 ? "translateX(0)" : "translateX(28px)",
+            pointerEvents: activeSlide === 3 ? "auto" : "none",
+          }}
+        >
+          <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
+            <div className="w-full md:max-w-md flex flex-col gap-3 md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl md:p-5">
+              <p className="text-sm text-white/90 leading-relaxed">
+                Stay up to date with the latest publications, awards, and
+                highlights from the Temple HCI Lab — from conference talks to
+                student achievements.
+              </p>
+              <button
+                onClick={() => {
+                  const target = document.getElementById("news");
+                  if (!target) return;
+                  const top =
+                    target.getBoundingClientRect().top + window.scrollY - 80;
+                  window.scrollTo({ top, behavior: "smooth" });
+                }}
+                className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors pointer-events-auto"
+              >
+                Recent News{" "}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Slide navigation chevrons */}
+        <div className="flex absolute inset-x-0 top-[25%] md:top-1/2 -translate-y-1/2 justify-between px-3 z-20 pointer-events-none">
+          <button
+            onClick={() =>
+              goToSlide((activeSlide - 1 + SLIDES.length) % SLIDES.length)
+            }
+            className="pointer-events-auto w-10 h-10 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm border border-white/15 text-white transition-all hover:bg-black/60 hover:border-white/40"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => goToSlide((activeSlide + 1) % SLIDES.length)}
+            className="pointer-events-auto w-10 h-10 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm border border-white/15 text-white transition-all hover:bg-black/60 hover:border-white/40"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Ghost grid — invisible, used only to measure card positions */}
         <div className="relative z-10 h-full flex flex-col justify-end pointer-events-none">
-          <div className="max-w-7xl w-full mx-auto px-6 md:px-12 pb-16 md:pb-28">
+          <div className="max-w-7xl w-full mx-auto px-6 md:px-12 pb-24 md:pb-28">
             <div ref={cardsRef} className="invisible pointer-events-none">
               <GhostGrid />
             </div>
@@ -335,17 +633,50 @@ const HomeHero = () => {
       {/* Animated overlay: heading label + research cards */}
       {mounted && cardsBox && (
         <div className="fixed top-0 left-0 w-screen z-20 pointer-events-none">
+          {/* Full-width bg strip behind heading + cards */}
+          <div
+            ref={bgStripRef}
+            className="absolute left-0 w-full bg-linear-to-t from-black/70 via-black/30 to-transparent opacity-0"
+            style={{ height: cardsBox.height + 104 }}
+          />
           <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative">
-            <div ref={headingRef} className="absolute top-0 left-6 md:left-12 opacity-0">
+            <div
+              ref={headingRef}
+              className="absolute top-0 left-6 md:left-12 opacity-0 hidden md:block"
+            >
               <SectionTitle light>Check out our research focus</SectionTitle>
             </div>
             <AnimatedGrid />
+          </div>
+
+          {/* Page indicator dots — below research cards, fades on scroll */}
+          <div
+            ref={dotsRef}
+            className="flex absolute left-1/2 -translate-x-1/2 gap-2 opacity-0"
+            style={{ top: cardsBox.top + cardsBox.height + 48 }}
+          >
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goToSlide(i)}
+                className={`pointer-events-auto rounded-full transition-all duration-300 ${
+                  activeSlide === i
+                    ? "w-5 h-1.5 bg-white"
+                    : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
+                }`}
+              />
+            ))}
           </div>
         </div>
       )}
 
       <div style={{ height: "100vh" }} className="shrink-0" />
-      <div style={{ height: cardsBox ? TOP_GAP + cardsBox.height + BOTTOM_GAP : 0 }} className="shrink-0" />
+      <div
+        style={{
+          height: cardsBox ? TOP_GAP + cardsBox.height + BOTTOM_GAP : 0,
+        }}
+        className="shrink-0"
+      />
     </>
   );
 };
