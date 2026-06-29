@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionTitle } from "@/components/section-title";
-import ImageCarousel from "@/components/ImageCarousel";
+import ImageCarousel from "@/components/image-carousel";
 
 gsap.registerPlugin(ScrollTrigger);
 

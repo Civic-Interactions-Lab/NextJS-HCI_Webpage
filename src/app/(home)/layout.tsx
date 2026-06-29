@@ -1,7 +1,7 @@
 import React from "react";
 import HciNavbar from "@/components/hci-navbar";
-import CallToActionSection from "@/components/call-to-action-section";
-import Footer from "@/components/Footer";
+import CallToActionSection from "@/modules/home/ui/components/call-to-action-section";
+import Footer from "@/components/footer";
 
 export default function HomeLayout({
   children,

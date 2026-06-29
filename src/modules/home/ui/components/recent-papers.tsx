@@ -5,15 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
-import { AccentBlob } from "@/components/accent-blob";
-import {
-  HomeFeaturedProjectsQueryResult,
-  FeaturedResearchQueryResult,
-} from "../../../../../sanity.types";
+import { FeaturedResearchQueryResult } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
 
 interface FeatureProjectsProps {
-  featuredProjectsImage: HomeFeaturedProjectsQueryResult;
   research: FeaturedResearchQueryResult;
 }
 
@@ -27,10 +22,7 @@ const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
-const RecentPapers = ({
-  featuredProjectsImage,
-  research,
-}: FeatureProjectsProps) => {
+const RecentPapers = ({ research }: FeatureProjectsProps) => {
   const formatAuthors = (
     authors?: FeaturedResearchQueryResult[0]["authors"],
   ) => {
@@ -65,25 +57,14 @@ const RecentPapers = ({
     >
       {/* Left — featured image */}
       <motion.div variants={fadeUp} className="order-2 lg:order-1 relative">
-        <AccentBlob className="absolute -top-8 -left-8 w-28 h-28 text-gold/30 -z-10" />
         <div className="overflow-hidden rounded-2xl">
           <Image
-            src={getImageSrc(featuredProjectsImage?.asset)}
-            alt={featuredProjectsImage?.alt || ""}
+            src="/images/cover/6-studio.JPG"
+            alt="HCI Lab featured research"
             width={500}
             height={300}
             className="w-full h-64 md:h-80 object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
           />
-          {featuredProjectsImage?.alt && (
-            <div className="bg-alabaster px-4 py-3">
-              <p className="text-p3 text-thunder/75 line-clamp-2">
-                {featuredProjectsImage.alt}
-              </p>
-            </div>
-          )}
         </div>
       </motion.div>
 

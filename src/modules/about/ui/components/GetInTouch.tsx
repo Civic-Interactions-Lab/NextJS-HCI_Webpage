@@ -1,77 +1,66 @@
-import React from "react";
-import { SectionHeading } from "@/components/AppTitle";
-import { LinkButton } from "@/components/AppButton";
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { ArrowRight, Mail, Users } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SectionTitle } from "@/components/section-title";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const GetInTouch = () => {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".contact-card", {
+        opacity: 0, y: 32, stagger: 0.15, duration: 0.6, ease: "power2.out",
+        scrollTrigger: { trigger: rootRef.current, start: "top 85%", once: true },
+      });
+    }, rootRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="flex flex-col space-y-6 md:space-y-12">
-      <SectionHeading title="Get In Touch With Us!" />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start mr-0 md:mr-12">
-        <div className="flex flex-col items-center text-center space-y-6">
-          <div className="flex justify-center size-24 md:size-32">
-            <Image
-              src="/icons/handshake.png"
-              alt="sponsor us"
-              width={120}
-              height={120}
-            />
+    <section ref={rootRef} className="flex flex-col gap-10">
+      <SectionTitle>Get In Touch</SectionTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="contact-card flex flex-col gap-4 p-8 bg-alabaster rounded-2xl border border-thunder/8">
+          <Mail className="w-8 h-8 text-well-red" />
+          <div className="flex flex-col gap-1">
+            <p className="font-outfit font-semibold text-lg text-thunder">Email Us</p>
+            <p className="text-p1 text-thunder/70">
+              Reach out with questions about the lab, research, or collaborations.
+            </p>
           </div>
-
-          <div className="flex">
-            <LinkButton
-              href="/sponsor"
-              ariaLabel="Learn about sponsoring the HCI Lab"
-              text="Be a Supporter"
-            />
-          </div>
-
-          <div className="space-y-2 mt-6">
-            <h3 className="text-xl md:text-2xl lg:text-2xl font-semibold text-gray-900 font-outfit">
-              HCI Lab Email Address
-            </h3>
-            <Link href="mailto:hcilab@temple.edu">
-              <p className="text-sm md:text-base lg:text-lg text-gray-700 underline hover:text-gray-400 transition-colors inline-block">
-                hcilab@temple.edu
-              </p>
-            </Link>
-          </div>
+          <Link
+            href="mailto:hcilab@temple.edu"
+            className="group inline-flex items-center gap-1.5 font-outfit text-sm font-medium text-well-red hover:text-well-red/70 transition-colors w-fit"
+          >
+            hcilab@temple.edu{" "}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
-        {/* Join The Lab Section */}
-        <div className="flex flex-col items-center text-center space-y-6">
-          <div className="flex justify-center size-24 md:size-32">
-            <Image
-              src="/icons/people.png"
-              alt="sponsor us"
-              width={120}
-              height={120}
-            />
+        <div className="contact-card flex flex-col gap-4 p-8 bg-alabaster rounded-2xl border border-thunder/8">
+          <Users className="w-8 h-8 text-well-red" />
+          <div className="flex flex-col gap-1">
+            <p className="font-outfit font-semibold text-lg text-thunder">Join the Lab</p>
+            <p className="text-p1 text-thunder/70">
+              Undergraduates interested in HCI research — we&apos;d love to hear from you.
+            </p>
           </div>
-
-          <div className="flex">
-            <LinkButton
-              href="/join"
-              ariaLabel="Learn about joining the HCI Lab"
-              text="JOIN THE LAB"
-            />
-          </div>
-
-          <div className="space-y-3 mt-6">
-            <h3 className="text-xl md:text-2xl lg:text-2xl font-semibold text-gray-900 font-outfit">
-              Are you an undergraduate interested in HCI?
-            </h3>
-            <Link href="/join">
-              <p className="text-sm md:text-base lg:text-lg text-gray-700 underline hover:text-gray-400 transition-colors inline-block">
-                Check out some commonly asked questions
-              </p>
-            </Link>
-          </div>
+          <Link
+            href="/join"
+            className="group inline-flex items-center gap-1.5 font-outfit text-sm font-medium text-well-red hover:text-well-red/70 transition-colors w-fit"
+          >
+            Learn more{" "}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

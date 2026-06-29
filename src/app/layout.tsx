@@ -43,6 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "history.scrollRestoration='manual'" }} />
+      </head>
       <body
         className={`${roboto.variable} ${outfit.variable} ${jetBrainsMono.variable} ${oxanium.variable} min-h-screen flex flex-col antialiased`}
       >

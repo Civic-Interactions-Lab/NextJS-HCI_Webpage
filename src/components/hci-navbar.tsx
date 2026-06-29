@@ -5,103 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
-import Logo from "@/components/Logo";
-
-type NavSubItem = {
-  label: string;
-  href: string;
-  image?: string;
-  description?: string;
-};
-
-type NavItem = {
-  label: string;
-  href: string;
-  description?: string;
-  children?: NavSubItem[];
-};
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    label: "About",
-    href: "/about",
-    description: "Learn about our mission, values, and the people behind the lab.",
-    children: [
-      {
-        label: "Events",
-        href: "/about/events",
-        image: "/images/cover/6-studio.JPG",
-        description: "Workshops, open houses, and community gatherings.",
-      },
-      {
-        label: "News",
-        href: "/about/news",
-        description: "Latest updates and announcements from the lab.",
-      },
-      {
-        label: "Contact",
-        href: "/about/contact",
-        description: "Get in touch with our team.",
-      },
-    ],
-  },
-  {
-    label: "Research",
-    href: "/research",
-    description: "Human-centered research across AI, accessibility, and social systems.",
-    children: [
-      {
-        label: "Gen AI & Education",
-        href: "/research/gen-ai-education",
-        image: "/images/cover/6-studio.JPG",
-        description: "Generative AI tools that support teaching and learning.",
-      },
-      {
-        label: "Accessibility Technology",
-        href: "/research/accessibility-technology",
-        description: "Inclusive design and assistive tech for everyone.",
-      },
-      {
-        label: "Future of Work",
-        href: "/research/future-of-work",
-        description: "How people collaborate and thrive through technology.",
-      },
-    ],
-  },
-  {
-    label: "People",
-    href: "/people",
-    description: "Meet the current members driving HCI research at Temple.",
-    children: [
-      {
-        label: "Alumni",
-        href: "/people/alumni",
-        image: "/images/cover/6-studio.JPG",
-        description: "Former members who have shaped the lab.",
-      },
-      {
-        label: "Collaborators",
-        href: "/people/collaborators",
-        description: "External partners and research collaborators.",
-      },
-    ],
-  },
-  { label: "Pathways", href: "/pathways" },
-  {
-    label: "Sponsors",
-    href: "/sponsors",
-    description: "Organizations that support our research and mission.",
-    children: [
-      {
-        label: "Become a Sponsor",
-        href: "/sponsors/become",
-        image: "/images/cover/6-studio.JPG",
-        description: "Partner with the HCI Lab and support the next generation.",
-      },
-    ],
-  },
-  { label: "Join", href: "/join" },
-];
+import Logo from "@/components/logo";
+import { NAV_ITEMS, type NavItem } from "@/constants/nav";
 
 export default function HciNavbar() {
   const pathname = usePathname();
@@ -160,7 +65,7 @@ export default function HciNavbar() {
           <div className="flex items-center gap-3">
             <Logo size={40} />
             <span
-              className={`font-outfit font-medium text-lg pointer-events-none transition-colors duration-300 ${isLight ? "text-thunder" : "text-white"}`}
+              className={`font-outfit font-medium text-lg transition-colors duration-300 ${isLight ? "text-thunder" : "text-white"}`}
               style={{ opacity: Math.min(Math.max((scrollY - 280) / 160, 0), 1) }}
             >
               Temple HCI Lab
@@ -168,7 +73,7 @@ export default function HciNavbar() {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => (
               <div key={item.href} className="relative">
                 {item.children ? (
@@ -261,7 +166,7 @@ export default function HciNavbar() {
 
           {/* Mobile Hamburger */}
           <button
-            className={`md:hidden p-2 rounded-md transition-colors ${isLight ? "text-thunder hover:bg-thunder/8" : "text-white hover:bg-white/10"}`}
+            className={`lg:hidden p-2 rounded-md transition-colors ${isLight ? "text-thunder hover:bg-thunder/8" : "text-white hover:bg-white/10"}`}
             onClick={() => setMobileOpen(true)}
             aria-label="Open navigation menu"
           >
@@ -272,9 +177,9 @@ export default function HciNavbar() {
 
       {/* Mobile Full-Screen Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 bg-thunder overflow-y-auto md:hidden">
+        <div className="fixed inset-0 z-50 bg-thunder overflow-y-auto lg:hidden">
           <div className="flex items-center justify-between px-6 h-16 border-b border-white/10">
-            <Logo size={40} />
+            <Link href="/" onClick={() => setMobileOpen(false)}><Logo size={40} /></Link>
             <button
               className="text-white p-2 rounded-md hover:bg-white/10 transition-colors"
               onClick={() => setMobileOpen(false)}

@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import { ScrollRestoration } from "@/components/scroll-restoration";
 import HomeHero from "@/modules/home/ui/components/home-hero";
 import HomeIntro from "@/modules/home/ui/components/home-intro";
 import RecentPapers from "@/modules/home/ui/components/recent-papers";
@@ -9,35 +8,19 @@ import TestimonialsSection from "@/modules/home/ui/components/home-testimonials-
 import { getRecentNews } from "@/sanity/lib/news/getNews";
 import { getFeaturedResearch } from "@/sanity/lib/research/getResearch";
 import { getTestimonials } from "@/sanity/lib/testimonials/getTestimonials";
-import {
-  getHomeFeaturedProjectsImage,
-  getHomeHubCommunityImage,
-} from "@/sanity/lib/imageSettings/homeImages";
-
 const HomeContent = async () => {
-  const [
-    recentNews,
-    featuredResearch,
-    featuredProjectsImage,
-    hubCommunityImage,
-    testimonials,
-  ] = await Promise.all([
+  const [recentNews, featuredResearch, testimonials] = await Promise.all([
     getRecentNews(),
     getFeaturedResearch(),
-    getHomeFeaturedProjectsImage(),
-    getHomeHubCommunityImage(),
     getTestimonials(),
   ]);
 
   return (
-    <main className="bg-white overflow-hidden">
+    <main className="bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12 pb-20 space-y-20">
         <HomeIntro />
-        <RecentPapers
-          featuredProjectsImage={featuredProjectsImage}
-          research={featuredResearch}
-        />
-        <HubCommunitySection hubCommunityImage={hubCommunityImage} />
+        <RecentPapers research={featuredResearch} />
+        <HubCommunitySection />
         <TestimonialsSection testimonials={testimonials} />
         <RecentNewsSection recentNews={recentNews} />
       </div>
@@ -60,7 +43,6 @@ const HomeContentSkeleton = () => (
 const HomeView = () => {
   return (
     <>
-      <ScrollRestoration />
       <HomeHero />
       <Suspense fallback={<HomeContentSkeleton />}>
         <HomeContent />

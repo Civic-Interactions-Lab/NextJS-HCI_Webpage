@@ -1,7 +1,8 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+
 import Image from "next/image";
-import LogoClickHandler from "@/components/LogoClickHandler";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface LogoProps {
   size?: number;
@@ -9,29 +10,31 @@ interface LogoProps {
 }
 
 const Logo = ({ size = 48, className = "" }: LogoProps) => {
+  const pathname = usePathname();
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <LogoClickHandler className={className}>
-      <Link
-        href="/"
-        className="flex items-center"
-        itemScope
-        aria-label="Temple University HCI Lab - Navigate to homepage"
-        title="Temple University Human-Computer Interaction Research Lab"
-      >
-        <div className="flex-shrink-0">
-          <Image
-            src="/logos/hci-logo.png"
-            alt="Temple University HCI Lab logo - Human-Computer Interaction Research Laboratory"
-            className="rounded"
-            width={size}
-            height={size}
-            priority
-            itemProp="logo"
-            role="img"
-          />
-        </div>
-      </Link>
-    </LogoClickHandler>
+    <Link
+      href="/"
+      className={`flex items-center shrink-0 ${className}`}
+      onClick={handleClick}
+      aria-label="Temple University HCI Lab - Navigate to homepage"
+    >
+      <Image
+        src="/logos/hci-logo.png"
+        alt="Temple HCI Lab"
+        className="rounded"
+        width={size}
+        height={size}
+        priority
+      />
+    </Link>
   );
 };
 

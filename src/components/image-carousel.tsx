@@ -89,9 +89,9 @@ const ImageCarousel = ({
 
       <div className={`overflow-hidden ${roundedClassName}`}>
         <Carousel setApi={setApi} className="w-full" aria-label={title}>
-          <CarouselContent>
+          <CarouselContent className="ml-0">
             {images.slice(0, 5).map((image, index) => (
-              <CarouselItem key={index}>
+              <CarouselItem key={index} className="pl-0">
                 <Card className="border-0 py-0 shadow-none">
                   <CardContent className="p-0">
                     <div className={`relative ${height}`}>
