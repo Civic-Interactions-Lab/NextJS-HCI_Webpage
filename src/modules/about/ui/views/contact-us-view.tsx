@@ -1,6 +1,6 @@
 import React from "react";
-import FindUs from "@/modules/about/ui/components/FindUs";
-import GetInTouch from "@/modules/about/ui/components/GetInTouch";
+import FindUs from "@/modules/about/ui/components/find-us";
+import GetInTouch from "@/modules/about/ui/components/get-in-touch";
 import { SectionTitle } from "@/components/section-title";
 import ContactLocationMap from "@/modules/about/ui/components/contact-location-map";
 

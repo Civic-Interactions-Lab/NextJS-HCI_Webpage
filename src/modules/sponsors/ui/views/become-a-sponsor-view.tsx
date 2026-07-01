@@ -4,40 +4,7 @@ import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
 import CtaBanner from "@/components/cta-banner";
 import ViewIntroHeader from "@/components/view-intro-header";
-
-const TIERS = [
-  {
-    id: "supporter",
-    title: "Supporter",
-    price: "$1,000",
-    description:
-      "Sponsors a student's research stipend or conference trip. Your name is listed on our website and annual report.",
-    perks: ["Name listed on website", "Name in annual report"],
-  },
-  {
-    id: "partner",
-    title: "Partner",
-    price: "$2,000",
-    includes: "Includes Supporter perks",
-    description:
-      "Logo on lab merch, access to students' emails (with their consent), and an invitation to meet students.",
-    perks: ["Logo on lab merch", "Student email access (with consent)", "Invitation to meet students"],
-  },
-  {
-    id: "champion",
-    title: "Champion",
-    price: "$5,000",
-    includes: "Includes Partner perks",
-    description:
-      "A sponsor spotlight post and the option to name a student award at the annual ACM dinner we host.",
-    perks: ["Sponsor spotlight post", "Named student award at ACM dinner"],
-  },
-];
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
-};
+import { PRICING_TIERS, fadeUp, stagger, gridViewport } from "@/modules/sponsors/constants";
 
 const BecomeASponsorView = () => (
   <div className="space-y-20">
@@ -48,27 +15,27 @@ const BecomeASponsorView = () => (
       titleAccent="they shape innovators."
       body="Your sponsorship gives undergraduate students the resources to tackle real-world challenges, design technology that serves people, and grow as the next generation of HCI and UX leaders. Unlike traditional recruiting, you see students' ideas, skills, and research in action."
       imageSrc="/images/cover/NC_09802.jpg"
-      imageAlt="HCI Lab students"
-
+      imageAlt="Students presenting research at the Temple HCI Lab"
       ctaLabel="Get in touch"
       ctaHref="mailto:stevemacn@temple.edu"
     />
 
     {/* Sponsorship tiers */}
-    <div className="flex flex-col gap-4">
+    <section aria-label="Temple HCI Lab sponsorship tiers" className="flex flex-col gap-4">
       <p className="font-outfit text-sm font-medium text-thunder/40 uppercase tracking-widest">
         Sponsorship Tiers
       </p>
 
-      <motion.div
+      <motion.ul
+        role="list"
         className="flex flex-col gap-8"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+        viewport={gridViewport}
+        variants={stagger}
       >
-        {TIERS.map((tier, i) => (
-          <motion.div key={tier.id} variants={fadeUp} className="flex flex-col gap-3">
+        {PRICING_TIERS.map((tier, i) => (
+          <motion.li key={tier.id} variants={fadeUp} className="list-none flex flex-col gap-3">
             {/* Title outside the card */}
             <SectionTitle>{tier.title}</SectionTitle>
 
@@ -92,16 +59,16 @@ const BecomeASponsorView = () => (
               <ul className="flex flex-col gap-1.5">
                 {tier.perks.map((perk) => (
                   <li key={perk} className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-well-red shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-well-red shrink-0" aria-hidden="true" />
                     <span className="font-outfit text-sm text-thunder/70">{perk}</span>
                   </li>
                 ))}
               </ul>
             </div>
-          </motion.div>
+          </motion.li>
         ))}
-      </motion.div>
-    </div>
+      </motion.ul>
+    </section>
 
     {/* CTA strip */}
     <CtaBanner

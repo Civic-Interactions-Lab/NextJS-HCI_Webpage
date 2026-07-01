@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Sponsors } from "../../../../../sanity.types";
 import { SectionTitle } from "@/components/section-title";
 import { getImageSrc } from "@/lib/utils";
@@ -20,7 +21,7 @@ const formatAmount = (amount?: number, currency?: string): string => {
 
 const SponsorCard = ({ sponsor }: { sponsor: Sponsors }) => {
   const card = (
-    <div className="flex flex-col gap-3">
+    <article className="flex flex-col gap-3">
       {/* Name outside the card */}
       <SectionTitle>{sponsor.name}</SectionTitle>
 
@@ -31,7 +32,7 @@ const SponsorCard = ({ sponsor }: { sponsor: Sponsors }) => {
           <div className="shrink-0 w-20 h-14 relative rounded-xl overflow-hidden bg-alabaster flex items-center justify-center p-2">
             <Image
               src={getImageSrc(sponsor.logo)}
-              alt={sponsor.altText || sponsor.name || "Sponsor"}
+              alt={sponsor.altText || `${sponsor.name} logo — Temple HCI Lab sponsor`}
               fill
               className="object-contain"
               loading="lazy"
@@ -49,7 +50,7 @@ const SponsorCard = ({ sponsor }: { sponsor: Sponsors }) => {
           <div className="flex flex-col gap-3 pt-3 border-t border-thunder/8">
             {sponsor.grants.map((grant, i) => (
               <div key={grant._key || i} className="flex gap-3 items-start">
-                <div className="w-1.5 h-1.5 rounded-full bg-well-red mt-2 shrink-0" />
+                <div className="w-1.5 h-1.5 rounded-full bg-well-red mt-2 shrink-0" aria-hidden="true" />
                 <div className="flex flex-col gap-0.5">
                   {grant.title && (
                     <p className="font-outfit font-medium text-sm text-thunder leading-snug">
@@ -72,14 +73,20 @@ const SponsorCard = ({ sponsor }: { sponsor: Sponsors }) => {
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 
   if (sponsor.url) {
     return (
-      <a href={sponsor.url} target="_blank" rel="noopener noreferrer" className="block">
+      <Link
+        href={sponsor.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Visit ${sponsor.name}'s website — Temple HCI Lab sponsor`}
+        className="block"
+      >
         {card}
-      </a>
+      </Link>
     );
   }
 

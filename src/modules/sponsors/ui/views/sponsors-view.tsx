@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { SponsorsQueryResult } from "../../../../../sanity.types";
 import { SectionTitle } from "@/components/section-title";
 import SponsorCard from "@/modules/sponsors/ui/components/sponsor-card";
 import SponsorFilter from "@/modules/sponsors/ui/components/sponsor-filter";
 import ViewIntroHeader from "@/components/view-intro-header";
-
-gsap.registerPlugin(ScrollTrigger);
+import { fadeUp, stagger, gridViewport } from "@/modules/sponsors/constants";
+import { useNavCardReveal } from "@/modules/sponsors/hooks/use-nav-card-reveal";
 
 interface SponsorsViewProps {
   sponsors: SponsorsQueryResult;
@@ -31,23 +29,7 @@ const SponsorsView = ({ sponsors }: SponsorsViewProps) => {
     );
   }, [sponsors, activeTiers]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".people-nav-card", {
-        opacity: 0,
-        y: 30,
-        stagger: 0.12,
-        duration: 0.7,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: ".people-nav-card",
-          start: "top bottom",
-          once: true,
-        },
-      });
-    }, ref);
-    return () => ctx.revert();
-  }, []);
+  useNavCardReveal(ref);
 
   return (
     <div ref={ref} className="space-y-20">
@@ -58,40 +40,39 @@ const SponsorsView = ({ sponsors }: SponsorsViewProps) => {
         titleAccent="work possible."
         body="Thank you to our sponsors for your generous support. Your contributions help the HCI Lab continue to grow, innovate, and empower students to make a real impact through research and design."
         imageSrc="/images/cover/NC_09802.jpg"
-        imageAlt="HCI Lab sponsors"
-
+        imageAlt="Temple HCI Lab research materials on display"
       />
 
       {/* Filter */}
       <SponsorFilter total={filtered.length} onFilterChange={setActiveTiers} />
 
       {/* Sponsor grid */}
-      <div className="flex flex-col gap-12">
-        {filtered.map((sponsor, i) => (
-          <motion.div
-            key={sponsor._id}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.45,
-              ease: "easeOut" as const,
-              delay: i * 0.07,
-            }}
-          >
+      <motion.ul
+        role="list"
+        aria-label="Temple HCI Lab sponsors"
+        className="flex flex-col gap-12"
+        initial="hidden"
+        whileInView="visible"
+        viewport={gridViewport}
+        variants={stagger}
+      >
+        {filtered.map((sponsor) => (
+          <motion.li key={sponsor._id} variants={fadeUp} className="list-none">
             <SponsorCard sponsor={sponsor} />
-          </motion.div>
+          </motion.li>
         ))}
         {filtered.length === 0 && (
           <p className="text-p1 text-thunder/50 py-12">
             No sponsors match the selected tier.
           </p>
         )}
-      </div>
+      </motion.ul>
 
       {/* Become a Sponsor nav card */}
-      <div className="border-t border-thunder/8">
+      <nav aria-label="Sponsorship opportunities" className="border-t border-thunder/8">
         <Link
           href="/sponsors/become"
+          aria-label="Learn how to become a Temple HCI Lab sponsor"
           className="people-nav-card group flex flex-col gap-3 py-8 border-b border-thunder/8"
         >
           <SectionTitle>Become a Sponsor</SectionTitle>
@@ -101,10 +82,10 @@ const SponsorsView = ({ sponsors }: SponsorsViewProps) => {
           </p>
           <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
             Learn More{" "}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
           </span>
         </Link>
-      </div>
+      </nav>
     </div>
   );
 };

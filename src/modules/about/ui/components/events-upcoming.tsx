@@ -1,88 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const EVENTS = [
-  {
-    title: "HCI Open House",
-    date: "Mar 15",
-    year: "2025",
-    location: "SERC 306",
-    tag: "Social",
-    description:
-      "An open invitation to see the lab in action — meet researchers, explore projects, and find out how to join.",
-  },
-  {
-    title: "OwlHacks",
-    date: "Apr 5–6",
-    year: "2025",
-    location: "SERC 306",
-    tag: "Hackathon",
-    description:
-      "Temple's flagship hackathon — 24 hours of human-centered design challenges led by HCI Lab members.",
-  },
-  {
-    title: "CHI 2025",
-    date: "Apr 26",
-    year: "2025",
-    location: "SERC 306",
-    tag: "Conference",
-    description:
-      "Lab members present peer-reviewed research at the world's top HCI conference.",
-  },
-  {
-    title: "Studio Showcase",
-    date: "May 10",
-    year: "2025",
-    location: "SERC 306",
-    tag: "Showcase",
-    description:
-      "Students present their semester projects in a gallery-style showcase open to all.",
-  },
-];
-
-const TAG_BG: Record<string, string> = {
-  Social: "bg-well-red text-white",
-  Hackathon: "bg-gold text-thunder",
-  Conference: "bg-sky text-white",
-  Showcase: "bg-grass text-white",
-};
+import { UPCOMING_EVENTS, EVENT_TAG_BG } from "@/modules/about/constants";
+import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
 
 const EventsUpcoming = () => {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".featured-card", {
-        opacity: 0,
-        y: 60,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".featured-card",
-          start: "top 85%",
-          once: true,
-        },
-      });
-      gsap.from(".side-card", {
-        opacity: 0,
-        y: 50,
-        stagger: 0.12,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: { trigger: ".side-card", start: "top 85%", once: true },
-      });
-    }, rootRef);
-    return () => ctx.revert();
-  }, []);
+  useStaggerReveal(rootRef, ".featured-card", { y: 60, duration: 0.7, ease: "power3.out", trigger: ".featured-card" });
+  useStaggerReveal(rootRef, ".side-card", { y: 50, stagger: 0.12, duration: 0.6, trigger: ".side-card" });
 
-  const [featured, ...rest] = EVENTS;
+  const [featured, ...rest] = UPCOMING_EVENTS;
 
   return (
     <section ref={rootRef} className="flex flex-col gap-10">
@@ -106,7 +36,7 @@ const EventsUpcoming = () => {
           <div className="flex flex-col gap-4">
             <div className="flex items-start">
               <span
-                className={`font-outfit text-xs font-medium px-3 py-1 rounded-full ${TAG_BG[featured.tag] ?? "bg-thunder text-white"}`}
+                className={`font-outfit text-xs font-medium px-3 py-1 rounded-full ${EVENT_TAG_BG[featured.tag] ?? "bg-thunder text-white"}`}
               >
                 {featured.tag}
               </span>
@@ -152,7 +82,7 @@ const EventsUpcoming = () => {
             <div className="flex flex-col gap-3 px-5 pb-6">
               <div className="flex items-center">
                 <span
-                  className={`font-outfit text-xs font-medium px-2.5 py-0.5 rounded-full ${TAG_BG[tag] ?? "bg-thunder text-white"}`}
+                  className={`font-outfit text-xs font-medium px-2.5 py-0.5 rounded-full ${EVENT_TAG_BG[tag] ?? "bg-thunder text-white"}`}
                 >
                   {tag}
                 </span>

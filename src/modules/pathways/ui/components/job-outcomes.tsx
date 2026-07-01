@@ -4,18 +4,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
-import { COMPANIES, UNIVERSITIES } from "@/modules/pathways/data/pathways-data";
+import {
+  COMPANIES,
+  UNIVERSITIES,
+  JOB_TITLES,
+  sectionFadeUp,
+} from "@/modules/pathways/constants";
 
-const JOB_TITLES = [
-  "Software Engineer",
-  "UX/UI Designer",
-  "UX Researcher",
-  "UX Specialist",
-  "Information Architect",
-  "Design Researcher",
-];
-
-const LogoBadge = ({ name, logo, href }: { name: string; logo: string; href: string }) => (
+const LogoBadge = ({
+  name,
+  logo,
+  href,
+}: {
+  name: string;
+  logo: string;
+  href: string;
+}) => (
   <Link
     href={href}
     target="_blank"
@@ -29,13 +33,7 @@ const LogoBadge = ({ name, logo, href }: { name: string; logo: string; href: str
 );
 
 const JobOutcomes = () => (
-  <motion.div
-    className="flex flex-col gap-6"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.15 }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
-  >
+  <motion.div className="flex flex-col gap-6" {...sectionFadeUp}>
     <div className="flex flex-col gap-1 max-w-2xl">
       <SectionTitle>Job Outcomes</SectionTitle>
     </div>

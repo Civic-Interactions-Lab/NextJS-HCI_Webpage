@@ -1,17 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { SectionTitle } from "@/components/section-title";
 import CourseCard from "./course-card";
-import { COURSES } from "@/modules/pathways/data/pathways-data";
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
-};
+import { COURSES, fadeUp, stagger, courseGridViewport } from "@/modules/pathways/constants";
 
 const CourseList = () => (
-  <div className="flex flex-col gap-8">
+  <section
+    aria-label="Undergraduate courses offered by the Temple HCI Lab pathway"
+    className="flex flex-col gap-8"
+  >
     {/* Intro text */}
     <div className="flex flex-col gap-4 max-w-2xl">
       <SectionTitle>Start with a Course</SectionTitle>
@@ -40,28 +39,29 @@ const CourseList = () => (
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+        viewport={courseGridViewport}
+        variants={stagger}
       >
         {COURSES.map((course) => (
-          <motion.div key={course.code} variants={cardVariants}>
+          <motion.div key={course.code} variants={fadeUp}>
             <CourseCard course={course} />
           </motion.div>
         ))}
       </motion.div>
 
       <div className="mt-6 text-center">
-        <a
+        <Link
           href="https://stevemacn.github.io/courses"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="View the full Temple HCI Lab undergraduate course catalog"
           className="font-outfit text-sm font-medium text-well-red hover:underline"
         >
           View full course catalog →
-        </a>
+        </Link>
       </div>
     </div>
-  </div>
+  </section>
 );
 
 export default CourseList;

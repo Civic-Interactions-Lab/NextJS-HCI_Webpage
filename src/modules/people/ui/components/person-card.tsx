@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import { statusColors, statusLabels } from "@/modules/people/constants/roleConfig";
+import { statusColors, statusLabels } from "@/modules/people/constants";
 
 const getInitials = (name: string) =>
   name
@@ -71,9 +72,15 @@ const PersonCard = ({ person }: { person: People }) => {
 
   if (person.url) {
     return (
-      <a href={person.url} target="_blank" rel="noopener noreferrer" className="block h-full cursor-pointer">
+      <Link
+        href={person.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`View ${person.name}'s profile — Temple HCI Lab`}
+        className="block h-full cursor-pointer"
+      >
         {inner}
-      </a>
+      </Link>
     );
   }
 

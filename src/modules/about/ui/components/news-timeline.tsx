@@ -1,30 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 import { News } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
 import NewsCategoryLegend from "@/modules/about/ui/components/news-category-legend";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Collaborations: "bg-gold",
-  "Grants / Awards": "bg-violet",
-  "Conference Talk": "bg-grass",
-  "Published Papers": "bg-sky",
-  Alumni: "bg-ember",
-};
-
-const CATEGORY_BORDER: Record<string, string> = {
-  Collaborations: "border-l-gold",
-  "Grants / Awards": "border-l-violet",
-  "Conference Talk": "border-l-grass",
-  "Published Papers": "border-l-sky",
-  Alumni: "border-l-ember",
-};
+import { CATEGORY_COLORS, CATEGORY_BORDER } from "@/modules/about/constants";
+import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
 
 interface FilterState {
   categories: string[];
@@ -80,46 +63,28 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
     }
   };
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".year-header", {
-        immediateRender: false,
-        opacity: 0,
-        y: 40,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: rootRef.current,
-          start: "top bottom",
-          once: true,
-        },
-      });
-      gsap.from(".news-card", {
-        immediateRender: false,
-        opacity: 0,
-        y: 40,
-        stagger: 0.08,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: rootRef.current,
-          start: "top bottom",
-          once: true,
-        },
-      });
-    }, rootRef);
-    return () => ctx.revert();
-  }, [filteredNews]);
+  useStaggerReveal(
+    rootRef,
+    ".year-header",
+    { immediateRender: false, y: 40, stagger: 0.1, duration: 0.6, start: "top bottom" },
+    [filteredNews],
+  );
+  useStaggerReveal(
+    rootRef,
+    ".news-card",
+    { immediateRender: false, y: 40, stagger: 0.08, duration: 0.6, start: "top bottom" },
+    [filteredNews],
+  );
 
   return (
     <div ref={rootRef} className="flex gap-6 lg:gap-12">
       {/* Sticky year nav */}
-      <aside className="hidden md:flex flex-col gap-3 w-14 lg:w-16 shrink-0 sticky top-24 self-start pt-2">
+      <aside aria-label="Jump to news by year" className="hidden md:flex flex-col gap-3 w-14 lg:w-16 shrink-0 sticky top-24 self-start pt-2">
         {years.map((year) => (
           <button
             key={year}
             onClick={() => scrollToYear(year)}
+            aria-label={`Jump to ${year} Temple HCI Lab news`}
             className="font-outfit font-bold text-base lg:text-lg text-thunder/25 hover:text-well-red transition-colors text-left leading-none"
           >
             {year}
@@ -134,9 +99,9 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
           <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
             Lab News
           </p>
-          <h1 className="font-outfit font-medium text-4xl md:text-5xl text-thunder leading-tight">
+          <h2 className="font-outfit font-medium text-4xl md:text-5xl text-thunder leading-tight">
             What&apos;s happening in the lab.
-          </h1>
+          </h2>
           <p className="text-p1 text-thunder/70 leading-relaxed max-w-2xl">
             Publications, awards, collaborations, and milestones from the Temple
             HCI Lab community.
@@ -183,7 +148,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                       : null;
 
                     return (
-                      <div
+                      <article
                         key={news._id}
                         className={`news-card bg-white rounded-2xl shadow-sm hover:shadow-md border border-thunder/8 border-l-4 ${borderColor} p-5 md:p-6 transition-shadow`}
                       >
@@ -192,7 +157,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                             <div className="relative w-full md:w-48 shrink-0 rounded-xl overflow-hidden aspect-video">
                               <Image
                                 src={getImageSrc(news.imageUrl)}
-                                alt={news.title ?? ""}
+                                alt={news.title ?? "Temple HCI Lab news"}
                                 fill
                                 sizes="(max-width: 768px) 100vw, 192px"
                                 className="object-cover"
@@ -201,14 +166,15 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                           )}
                           <div className="flex flex-col gap-2 flex-1">
                             {news.link ? (
-                              <a
+                              <Link
                                 href={news.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                aria-label={`Read more: ${news.title} — Temple HCI Lab news`}
                                 className="font-outfit font-medium text-lg text-thunder hover:text-well-red underline transition-colors"
                               >
                                 {news.title}
-                              </a>
+                              </Link>
                             ) : (
                               <p className="font-outfit font-medium text-lg text-thunder">
                                 {news.title}
@@ -235,7 +201,7 @@ const NewsTimeline = ({ allNews }: NewsTimelineProps) => {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </article>
                     );
                   })}
                 </div>

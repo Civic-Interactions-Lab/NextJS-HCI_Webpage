@@ -64,12 +64,13 @@ export default function HciNavbar() {
         <div className="flex items-center justify-between px-6 md:px-12 h-[68px]">
           <div className="flex items-center gap-3">
             <Logo size={40} />
-            <span
+            <Link
+              href="/"
               className={`font-outfit font-medium text-lg transition-colors duration-300 ${isLight ? "text-thunder" : "text-white"}`}
               style={{ opacity: Math.min(Math.max((scrollY - 280) / 160, 0), 1) }}
             >
               Temple HCI Lab
-            </span>
+            </Link>
           </div>
 
           {/* Desktop Nav */}
@@ -179,7 +180,7 @@ export default function HciNavbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-thunder overflow-y-auto lg:hidden">
           <div className="flex items-center justify-between px-6 h-16 border-b border-white/10">
-            <Link href="/" onClick={() => setMobileOpen(false)}><Logo size={40} /></Link>
+            <div onClick={() => setMobileOpen(false)}><Logo size={40} /></div>
             <button
               className="text-white p-2 rounded-md hover:bg-white/10 transition-colors"
               onClick={() => setMobileOpen(false)}

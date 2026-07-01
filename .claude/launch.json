@@ -3,7 +3,8 @@
   "configurations": [
     {
       "name": "Next.js Dev Server",
-      "runtimeExecutable": "pnpm",
+      "runtimeExecutable": "/Users/datnguyen/.nvm/versions/node/v20.18.3/bin/pnpm",
+      "env": { "PATH": "/Users/datnguyen/.nvm/versions/node/v20.18.3/bin:/usr/local/bin:/usr/bin:/bin" },
       "runtimeArgs": ["dev"],
       "port": 3000,
       "autoPort": true

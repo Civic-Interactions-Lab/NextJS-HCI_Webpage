@@ -60,17 +60,22 @@ const AboutView = () => {
         </div>
 
         {/* Right col: vertical video */}
-        <div className="flex justify-center w-full md:w-auto shrink-0">
+        <figure className="flex justify-center w-full md:w-auto shrink-0 m-0">
           <div className="relative aspect-9/16 w-[220px] md:w-[300px] rounded-2xl overflow-hidden shadow-xl">
             <video
               src="/videos/hci.mov"
+              aria-label="Overview video of the Temple University Human-Computer Interaction Lab"
+              title="Temple University HCI Lab overview"
               className="w-full h-full object-cover"
               controls
               playsInline
               preload="metadata"
             />
           </div>
-        </div>
+          <figcaption className="sr-only">
+            Overview video of the Temple University Human-Computer Interaction Lab
+          </figcaption>
+        </figure>
       </div>
 
       <StudioTime />

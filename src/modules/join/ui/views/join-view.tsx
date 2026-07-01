@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import { FaqsQueryResult } from "../../../../../sanity.types";
 import ViewIntroHeader from "@/components/view-intro-header";
 import { SectionTitle } from "@/components/section-title";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
-};
+import { fadeUp, stagger, faqViewport } from "@/modules/join/constants";
+import CtaBanner from "@/components/cta-banner";
 
 interface JoinViewProps {
   faqs: FaqsQueryResult;
@@ -22,11 +19,11 @@ const JoinView = ({ faqs }: JoinViewProps) => (
       titleAccent="joining us?"
       body="We welcome undergraduate and graduate students who are curious, driven, and passionate about human-centered design, AI, accessibility, and social computing. Here's everything you need to know before applying."
       imageSrc="/images/cover/6-studio.JPG"
-      imageAlt="HCI Lab studio"
+      imageAlt="Students collaborating in the Temple HCI Lab studio"
     />
 
     {/* FAQ */}
-    <div>
+    <section aria-label="Frequently asked questions about joining the Temple HCI Lab">
       <p className="font-outfit text-sm font-medium text-thunder/40 uppercase tracking-widest mb-6">
         Frequently Asked Questions
       </p>
@@ -35,8 +32,8 @@ const JoinView = ({ faqs }: JoinViewProps) => (
         className="border-t border-thunder/8"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+        viewport={faqViewport}
+        variants={stagger}
       >
         {faqs.map((faq) => (
           <motion.div
@@ -54,7 +51,15 @@ const JoinView = ({ faqs }: JoinViewProps) => (
           </motion.div>
         ))}
       </motion.dl>
-    </div>
+    </section>
+
+    <CtaBanner
+      label="Ready to Apply?"
+      title="Join the Temple HCI Lab."
+      body="We welcome undergraduate and graduate students passionate about human-centered design, AI, accessibility, and social computing."
+      ctaLabel="Apply Now"
+      ctaHref="https://docs.google.com/forms/d/e/1FAIpQLScuzv5spPPiuG0sSvb7KFvMucBhJtgParffTVDwC7dWefcCMQ/viewform"
+    />
   </div>
 );
 

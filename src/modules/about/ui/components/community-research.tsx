@@ -1,57 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { SectionTitle } from "@/components/section-title";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const STATS = [
-  {
-    number: "77",
-    desc: "undergraduate students have been an author on peer-reviewed work.",
-  },
-  {
-    number: "~45",
-    desc: "active researchers working collaboratively on challenging projects.",
-  },
-];
+import { COMMUNITY_RESEARCH_STATS } from "@/modules/about/constants";
+import { useFadeReveal, useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
 
 const CommunityResearch = () => {
   const rootRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(textRef.current, {
-        opacity: 0,
-        y: 40,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: textRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
-      gsap.from(".stat-item", {
-        opacity: 0,
-        y: 24,
-        stagger: 0.15,
-        duration: 0.5,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: statsRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      });
-    }, rootRef);
-
-    return () => ctx.revert();
-  }, []);
+  useFadeReveal(rootRef, textRef, { y: 40, duration: 0.6, trigger: textRef });
+  useStaggerReveal(rootRef, ".stat-item", { y: 24, duration: 0.5, trigger: statsRef });
 
   return (
     <section ref={rootRef} className="flex flex-col gap-6">
@@ -66,7 +26,7 @@ const CommunityResearch = () => {
       </div>
 
       <div ref={statsRef} className="grid grid-cols-2 gap-4">
-        {STATS.map(({ number, desc }) => (
+        {COMMUNITY_RESEARCH_STATS.map(({ number, desc }) => (
           <div
             key={number}
             className="stat-item flex flex-col gap-2 p-5 bg-alabaster rounded-2xl"

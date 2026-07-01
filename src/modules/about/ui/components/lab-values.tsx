@@ -1,37 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import { SectionTitle } from "@/components/section-title";
 import ImageCarousel from "@/components/image-carousel";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const PLACEHOLDER_IMAGES = Array.from({ length: 5 }, (_, i) => ({
-  src: "/images/cover/6-studio.JPG",
-  alt: `Lab values — HCI Lab community ${i + 1}`,
-}));
+import { LAB_VALUES_IMAGES } from "@/modules/about/constants";
+import { useSideReveal } from "@/modules/about/hooks/use-scroll-reveal";
 
 const LabValues = () => {
   const rootRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(textRef.current, {
-        opacity: 0, x: -40, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: rootRef.current, start: "top 85%", once: true },
-      });
-      gsap.from(carouselRef.current, {
-        opacity: 0, x: 40, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: rootRef.current, start: "top 85%", once: true },
-      });
-    }, rootRef);
-
-    return () => ctx.revert();
-  }, []);
+  useSideReveal(rootRef, textRef, carouselRef);
 
   return (
     <section ref={rootRef} className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -50,7 +30,7 @@ const LabValues = () => {
 
       <div ref={carouselRef}>
         <ImageCarousel
-          images={PLACEHOLDER_IMAGES}
+          images={LAB_VALUES_IMAGES}
           height="h-64 md:h-80"
           roundedClassName="rounded-tl-[80px]"
           showPagination

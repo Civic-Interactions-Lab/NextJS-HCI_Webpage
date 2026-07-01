@@ -1,7 +1,7 @@
 "use client";
 
+import Link from "next/link";
 import { People } from "../../../../../sanity.types";
-
 
 const getInitials = (name: string) =>
   name
@@ -36,9 +36,15 @@ const CollaboratorCard = ({ person }: { person: People }) => {
 
   if (person.url) {
     return (
-      <a href={person.url} target="_blank" rel="noopener noreferrer" className="group block">
+      <Link
+        href={person.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Visit ${person.name}'s profile — Temple HCI Lab collaborator`}
+        className="group block"
+      >
         {inner}
-      </a>
+      </Link>
     );
   }
 

@@ -40,30 +40,22 @@ const ViewIntroHeader = ({
         <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
           {label}
         </p>
-        <h1 className="font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
+        <h2 className="font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
           {titlePrefix} <span className="text-well-red">{titleAccent}</span>
-        </h1>
+        </h2>
         <p className="text-p1 text-thunder/65 leading-relaxed">{body}</p>
 
-        {ctaLabel &&
-          ctaHref &&
-          (isExternal ? (
-            <a
-              href={ctaHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-outfit text-sm font-semibold uppercase tracking-widest text-well-red hover:opacity-70 transition-opacity w-fit mt-2"
-            >
-              {ctaLabel} <ArrowRight className="w-4 h-4" />
-            </a>
-          ) : (
-            <Link
-              href={ctaHref}
-              className="inline-flex items-center gap-2 font-outfit text-sm font-semibold uppercase tracking-widest text-well-red hover:opacity-70 transition-opacity w-fit mt-2"
-            >
-              {ctaLabel} <ArrowRight className="w-4 h-4" />
-            </Link>
-          ))}
+        {ctaLabel && ctaHref && (
+          <Link
+            href={ctaHref}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+            aria-label={`${ctaLabel} — ${label}`}
+            className="inline-flex items-center gap-2 font-outfit text-sm font-semibold uppercase tracking-widest text-well-red hover:opacity-70 transition-opacity w-fit mt-2"
+          >
+            {ctaLabel} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
+        )}
       </motion.div>
 
       <motion.div

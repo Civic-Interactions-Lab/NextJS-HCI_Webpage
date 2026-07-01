@@ -1,61 +1,35 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ResearchHero from "@/modules/research/ui/components/research-hero";
 import CtaBanner from "@/components/cta-banner";
 import { SectionTitle } from "@/components/section-title";
-import { CATEGORIES } from "@/modules/research/ui/research-data";
-
-gsap.registerPlugin(ScrollTrigger);
-
-export { CATEGORIES };
+import { CATEGORIES } from "@/modules/research/constants";
+import { useStaggerFade } from "@/modules/research/hooks/use-stagger-fade";
 
 const ResearchView = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".other-card", {
-        opacity: 0,
-        y: 30,
-        stagger: 0.12,
-        duration: 0.7,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: ".other-card",
-          start: "top bottom",
-          once: true,
-        },
-      });
-      gsap.from(".featured-video", {
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        ease: "power2.inOut",
-        scrollTrigger: {
-          trigger: ".featured-video",
-          start: "top bottom",
-          once: true,
-        },
-      });
-    }, cardsRef);
-    return () => ctx.revert();
-  }, []);
+  useStaggerFade(cardsRef, ".other-card");
+  useStaggerFade(cardsRef, ".featured-video", { y: 40, duration: 0.8, stagger: 0 });
 
   return (
     <div className="space-y-20">
       <ResearchHero />
 
       {/* Category sections */}
-      <div ref={cardsRef} className="border-t border-thunder/8">
+      <nav
+        ref={cardsRef}
+        aria-label="Temple HCI Lab research topics"
+        className="border-t border-thunder/8"
+      >
         {CATEGORIES.map((cat, i) => (
           <Link
             key={cat.label}
             href={cat.href}
+            aria-label={`Learn more about ${cat.label} research at the Temple HCI Lab`}
             className={`other-card group flex flex-col gap-3 py-8 border-b border-thunder/8 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
           >
             <SectionTitle>{cat.label}</SectionTitle>
@@ -64,14 +38,14 @@ const ResearchView = () => {
             </p>
             <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
               Learn More{" "}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </span>
           </Link>
         ))}
-      </div>
+      </nav>
 
       {/* Teaser video */}
-      <div className="featured-video flex flex-col lg:flex-row gap-8 pb-14">
+      <figure className="featured-video flex flex-col lg:flex-row gap-8 pb-14 m-0">
         <div className="w-full lg:w-1/2 shrink-0">
           <iframe
             src="https://www.youtube.com/embed/-s1_uc-BPqs"
@@ -82,7 +56,7 @@ const ResearchView = () => {
             loading="lazy"
           />
         </div>
-        <div className="flex flex-col justify-center gap-3">
+        <figcaption className="flex flex-col justify-center gap-3">
           <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
             Featured
           </p>
@@ -94,8 +68,8 @@ const ResearchView = () => {
             questions driving our research at the intersection of humans and
             technology.
           </p>
-        </div>
-      </div>
+        </figcaption>
+      </figure>
 
       <CtaBanner
         label="Get Involved"

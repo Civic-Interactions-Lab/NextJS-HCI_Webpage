@@ -1,26 +1,17 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
 import { FeaturedResearchQueryResult } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
+import { fadeUp, stagger, sectionViewport } from "@/modules/home/constants";
 
 interface FeatureProjectsProps {
   research: FeaturedResearchQueryResult;
 }
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
 
 const RecentPapers = ({ research }: FeatureProjectsProps) => {
   const formatAuthors = (
@@ -51,7 +42,7 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={sectionViewport}
       variants={stagger}
       className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start"
     >

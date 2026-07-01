@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { statusLabels } from "@/modules/people/constants/roleConfig";
+import { statusLabels } from "@/modules/people/constants";
 
 const STATUS_OPTIONS = Object.entries(statusLabels).map(([value, label]) => ({
   value,
@@ -30,11 +30,13 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mb-6">
+    <div className="flex flex-col gap-2 mb-6" role="group" aria-label="Filter Temple HCI Lab members by role">
       <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1 scrollbar-none">
         {/* All chip */}
         <button
           onClick={clearAll}
+          aria-pressed={active.length === 0}
+          aria-label="Show all Temple HCI Lab members"
           className={`whitespace-nowrap font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors duration-150 shrink-0 ${
             active.length === 0
               ? "bg-thunder text-white border-thunder"
@@ -50,6 +52,8 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
             <button
               key={value}
               onClick={() => toggle(value)}
+              aria-pressed={isActive}
+              aria-label={`Filter by ${label}`}
               className={`whitespace-nowrap font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors duration-150 shrink-0 ${
                 isActive
                   ? "bg-well-red text-white border-well-red"

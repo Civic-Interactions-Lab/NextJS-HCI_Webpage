@@ -100,6 +100,7 @@ const ResearchHeroLogo = () => {
   return (
     <div
       ref={containerRef}
+      aria-hidden="true"
       className="relative w-full h-72 md:h-96 flex items-center justify-center select-none overflow-hidden"
       style={{ perspective: "800px" }}
     >

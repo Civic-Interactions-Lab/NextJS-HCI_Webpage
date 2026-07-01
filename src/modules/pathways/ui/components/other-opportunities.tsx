@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
-import { ORGANIZATIONS } from "@/modules/pathways/data/pathways-data";
+import { ORGANIZATIONS, sectionFadeUp } from "@/modules/pathways/constants";
 
 const OrgBadge = ({ name, logo, href }: { name: string; logo: string; href: string }) => (
   <Link
@@ -22,10 +22,7 @@ const OrgBadge = ({ name, logo, href }: { name: string; logo: string; href: stri
 const OtherOpportunities = () => (
   <motion.div
     className="-mx-6 md:-mx-12 px-6 md:px-12 py-14 bg-alabaster flex flex-col gap-6"
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.15 }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
+    {...sectionFadeUp}
   >
     <div className="flex flex-col gap-1 max-w-2xl">
       <SectionTitle>Other Opportunities</SectionTitle>

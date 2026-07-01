@@ -1,34 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SectionTitle } from "@/components/section-title";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useSideReveal } from "@/modules/about/hooks/use-scroll-reveal";
 
 const StudioTime = () => {
   const rootRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(imgRef.current, {
-        opacity: 0, x: -40, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: rootRef.current, start: "top 85%", once: true },
-      });
-      gsap.from(textRef.current, {
-        opacity: 0, x: 40, duration: 0.7, ease: "power2.out",
-        scrollTrigger: { trigger: rootRef.current, start: "top 85%", once: true },
-      });
-    }, rootRef);
-
-    return () => ctx.revert();
-  }, []);
+  useSideReveal(rootRef, imgRef, textRef);
 
   return (
     <section ref={rootRef} className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -59,9 +43,10 @@ const StudioTime = () => {
         </p>
         <Link
           href="/about/events"
+          aria-label="Learn more about Studio Time and other Temple HCI Lab events"
           className="group inline-flex items-center gap-1.5 font-outfit text-sm font-medium text-well-red hover:text-well-red/70 transition-colors w-fit mt-2"
         >
-          Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          Learn More <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
         </Link>
       </div>
     </section>

@@ -2,14 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BrainCircuit,
-  ChevronLeft,
-  ChevronRight,
-  PersonStanding,
-  WandSparkles,
-} from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { SLIDES, RESEARCH_AREAS } from "@/modules/home/constants";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,78 +11,11 @@ import { SectionTitle } from "@/components/section-title";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-
-const SLIDES: {
-  image: string;
-  position: string;
-  content?: { text: string; cta: string; href: string };
-}[] = [
-  { image: "/images/cover/group.jpg", position: "center 36%" },
-  {
-    image: "/images/cover/NC_09802.jpg",
-    position: "center 30%",
-    content: {
-      text: "Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate learning and empower non-experts to participate in work that has been previously reserved for trained professionals.",
-      cta: "Learn more about us",
-      href: "#intro",
-    },
-  },
-  {
-    image: "/images/cover/NC_05301.jpg",
-    position: "center 40%",
-    content: {
-      text: "We love helping students build the skills and confidence to design, lead, and innovate within their own communities — collaborating with organizations like ACM, TUDev, OwlByte, and OwlHacks to turn ideas into real-world impact.",
-      cta: "A Hub for Communities",
-      href: "#hub",
-    },
-  },
-  {
-    image: "/images/cover/HCI_OpenHouse-38.jpg",
-    position: "center 30%",
-    content: {
-      text: "Stay up to date with the latest publications, awards, and highlights from the Temple HCI Lab — from conference talks to student achievements.",
-      cta: "Recent News",
-      href: "#news",
-    },
-  },
-];
-
-const RESEARCH_AREAS = [
-  {
-    id: "computing-education",
-    title: "Gen AI & Education",
-    href: "/research/gen-ai-education",
-    Icon: BrainCircuit,
-    description:
-      "Studying AI harms and building scaffolding for responsible use.",
-  },
-  {
-    id: "assistive-tech",
-    title: "Accessibility Technology",
-    href: "/research/accessibility-technology",
-    Icon: PersonStanding,
-    description:
-      "AAC tools to foster self-direction and expressive communication.",
-  },
-  {
-    id: "future-of-work",
-    title: "Future of Work",
-    href: "/research/future-of-work",
-    Icon: WandSparkles,
-    description: "Tools to build better workplaces and reimagine how we work.",
-  },
-] as const;
-
-// ─── Animation constants ──────────────────────────────────────────────────────
-
 const TOP_GAP = 80;
 const BOTTOM_GAP = 80;
 const EASE_POWER = 4;
 const CARD_DELAYS = [0, 0.45, 0.78];
 const CARD_EASE_POWERS = [1, EASE_POWER, EASE_POWER];
-
-// ─── Card math helpers ────────────────────────────────────────────────────────
 
 type CardsBox = { top: number; height: number };
 
@@ -104,7 +31,10 @@ const getProgress = (
 ): number => {
   const sd = getSlideDistance(box, vh);
   const dv = Math.max(v - sd * delayFrac, 0);
-  return Math.pow(Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1), easePower);
+  return Math.pow(
+    Math.min(dv / Math.max(sd - sd * delayFrac, 1), 1),
+    easePower,
+  );
 };
 
 const getCardTop = (
@@ -116,7 +46,9 @@ const getCardTop = (
 ): number => {
   const sd = getSlideDistance(box, vh);
   const progress = getProgress(box, delayFrac, easePower, v, vh);
-  return v <= sd ? box.top + (vh - sd + TOP_GAP - box.top) * progress : vh - v + TOP_GAP;
+  return v <= sd
+    ? box.top + (vh - sd + TOP_GAP - box.top) * progress
+    : vh - v + TOP_GAP;
 };
 
 const getCardBg = (
@@ -129,8 +61,6 @@ const getCardBg = (
   const progress = getProgress(box, delayFrac, easePower, v, vh);
   return `rgba(${Math.round(170 * progress)}, ${Math.round(44 * progress)}, ${Math.round(69 * progress)}, ${0.45 + 0.55 * progress})`;
 };
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 const ResearchCardContent = ({
   area,
@@ -164,7 +94,10 @@ const ResearchGrid = ({ animated }: { animated?: boolean }) => (
           style={{ opacity: 0 }}
           className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
         >
-          <Link href={area.href} className="flex flex-col gap-2 md:gap-3 p-3 md:p-7">
+          <Link
+            href={area.href}
+            className="flex flex-col gap-2 md:gap-3 p-3 md:p-7"
+          >
             <ResearchCardContent area={area} />
           </Link>
         </div>
@@ -180,8 +113,6 @@ const ResearchGrid = ({ animated }: { animated?: boolean }) => (
     )}
   </div>
 );
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 const HomeHero = () => {
   const [cardsBox, setCardsBox] = useState<CardsBox | null>(null);
@@ -203,7 +134,9 @@ const HomeHero = () => {
 
   useEffect(() => {
     restartAutoSlide();
-    return () => { if (autoSlideRef.current) clearInterval(autoSlideRef.current); };
+    return () => {
+      if (autoSlideRef.current) clearInterval(autoSlideRef.current);
+    };
   }, []);
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -384,16 +317,32 @@ const HomeHero = () => {
     const strip = bgStripRef.current;
     const dots = dotsRef.current;
     if (!cardsBox || !el) return;
-    ([
-      [el, 0.5], [strip, 0.5], [dots, 0.7],
-    ] as [Element | null, number][]).forEach(([target, delay]) => {
-      if (target) gsap.to(target, { opacity: 1, duration: 0.4, delay, ease: "power2.out" });
+    (
+      [
+        [el, 0.5],
+        [strip, 0.5],
+        [dots, 0.7],
+      ] as [Element | null, number][]
+    ).forEach(([target, delay]) => {
+      if (target)
+        gsap.to(target, {
+          opacity: 1,
+          duration: 0.4,
+          delay,
+          ease: "power2.out",
+        });
     });
     const update = () => {
       const v = window.scrollY;
       const vh = window.innerHeight;
       const hb = Math.max(vh - v, 0);
-      const ct = getCardTop(cardsBox, CARD_DELAYS[0], CARD_EASE_POWERS[0], v, vh);
+      const ct = getCardTop(
+        cardsBox,
+        CARD_DELAYS[0],
+        CARD_EASE_POWERS[0],
+        v,
+        vh,
+      );
       const headingOffset = window.innerWidth < 768 ? 40 : 72;
       const headingY = Math.min(hb - 60, ct - headingOffset);
       const fadeOpacity = v > 0 ? Math.max(0, 1 - v / 60) : 1;
@@ -433,10 +382,11 @@ const HomeHero = () => {
     };
   }, []);
 
-  // ─── Render ─────────────────────────────────────────────────────────────────
-
   return (
-    <>
+    <section
+      aria-label="Temple HCI Lab hero carousel"
+      aria-roledescription="carousel"
+    >
       <div
         ref={heroRef}
         className="fixed top-0 left-0 w-screen h-screen overflow-hidden z-10 pointer-events-none"
@@ -451,7 +401,7 @@ const HomeHero = () => {
             >
               <Image
                 src={slide.image}
-                alt="Temple HCI Lab"
+                alt={slide.alt}
                 fill
                 className="object-cover"
                 style={{ objectPosition: slide.position }}
@@ -492,7 +442,8 @@ const HomeHero = () => {
               >
                 <Image
                   src="/logos/hci-logo.png"
-                  alt=""
+                  alt="Temnple HCI Lab Logo"
+                  aria-hidden="true"
                   width={88}
                   height={88}
                   className="rounded-md"
@@ -537,10 +488,14 @@ const HomeHero = () => {
                   </p>
                   <a
                     href={slide.content.href}
+                    aria-label={slide.content.cta}
                     className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors"
                   >
                     {slide.content.cta}{" "}
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                      aria-hidden="true"
+                    />
                   </a>
                 </div>
               </div>
@@ -554,15 +509,17 @@ const HomeHero = () => {
             onClick={() =>
               goToSlide((activeSlide - 1 + SLIDES.length) % SLIDES.length)
             }
+            aria-label="Previous slide"
             className="pointer-events-auto w-10 h-10 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm border border-white/15 text-white transition-all hover:bg-black/60 hover:border-white/40"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5" aria-hidden="true" />
           </button>
           <button
             onClick={() => goToSlide((activeSlide + 1) % SLIDES.length)}
+            aria-label="Next slide"
             className="pointer-events-auto w-10 h-10 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm border border-white/15 text-white transition-all hover:bg-black/60 hover:border-white/40"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
 
@@ -601,10 +558,12 @@ const HomeHero = () => {
             className="flex absolute left-1/2 -translate-x-1/2 gap-2 opacity-0"
             style={{ top: cardsBox.top + cardsBox.height + 48 }}
           >
-            {SLIDES.map((_, i) => (
+            {SLIDES.map((slide, i) => (
               <button
                 key={i}
                 onClick={() => goToSlide(i)}
+                aria-label={`Go to slide ${i + 1}${slide.content ? `: ${slide.content.cta}` : ""}`}
+                aria-current={activeSlide === i ? "true" : undefined}
                 className={`pointer-events-auto rounded-full transition-all duration-300 ${
                   activeSlide === i
                     ? "w-5 h-1.5 bg-white"
@@ -623,7 +582,7 @@ const HomeHero = () => {
         }}
         className="shrink-0"
       />
-    </>
+    </section>
   );
 };
 

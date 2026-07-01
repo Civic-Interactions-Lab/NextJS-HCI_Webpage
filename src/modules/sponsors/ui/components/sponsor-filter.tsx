@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-const TIERS = [
-  { key: "supporter", label: "Supporter" },
-  { key: "partner", label: "Partner" },
-  { key: "champion", label: "Champion" },
-  { key: "visionary", label: "Visionary" },
-];
+import { FILTER_TIERS } from "@/modules/sponsors/constants";
 
 interface SponsorFilterProps {
   total: number;
@@ -31,9 +25,15 @@ const SponsorFilter = ({ total, onFilterChange }: SponsorFilterProps) => {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-6">
+    <div
+      className="flex flex-wrap items-center gap-2 mb-6"
+      role="group"
+      aria-label="Filter Temple HCI Lab sponsors by tier"
+    >
       <button
         onClick={clearAll}
+        aria-pressed={active.length === 0}
+        aria-label="Show all Temple HCI Lab sponsors"
         className={`font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors duration-150 border ${
           active.length === 0
             ? "bg-well-red text-white border-well-red"
@@ -42,10 +42,12 @@ const SponsorFilter = ({ total, onFilterChange }: SponsorFilterProps) => {
       >
         All
       </button>
-      {TIERS.map(({ key, label }) => (
+      {FILTER_TIERS.map(({ key, label }) => (
         <button
           key={key}
           onClick={() => toggle(key)}
+          aria-pressed={active.includes(key)}
+          aria-label={`Filter by ${label} tier`}
           className={`font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors duration-150 border ${
             active.includes(key)
               ? "bg-well-red text-white border-well-red"

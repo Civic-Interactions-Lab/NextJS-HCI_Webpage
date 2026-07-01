@@ -28,7 +28,11 @@ const EventsIntro = () => {
   }, []);
 
   return (
-    <div ref={ref} className="flex flex-col gap-4">
+    <section
+      ref={ref}
+      aria-label="Temple HCI Lab events overview"
+      className="flex flex-col gap-4"
+    >
       <p className="intro-line font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
         What we do together
       </p>
@@ -42,7 +46,7 @@ const EventsIntro = () => {
         overnight hackathons and open houses to conference travel and
         end-of-semester showcases. There&apos;s always something going on.
       </p>
-    </div>
+    </section>
   );
 };
 

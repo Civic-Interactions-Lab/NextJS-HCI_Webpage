@@ -1,9 +1,11 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
+import { fadeUp, stagger, sectionViewport } from "@/modules/home/constants";
+
 const PARTNERS = [
   { name: "ACM", color: "bg-sky/15 text-sky" },
   { name: "TUDev", color: "bg-grass/15 text-grass" },
@@ -11,29 +13,13 @@ const PARTNERS = [
   { name: "OwlHacks", color: "bg-well-red/15 text-well-red" },
 ] as const;
 
-
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" as const },
-  },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
 const HubCommunitySection = () => {
   return (
     <motion.section
       id="hub"
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={sectionViewport}
       variants={stagger}
       className="py-4"
     >
