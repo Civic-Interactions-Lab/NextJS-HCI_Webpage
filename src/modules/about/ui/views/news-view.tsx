@@ -1,6 +1,5 @@
-import React from "react";
-import NewsTimeline from "@/modules/about/ui/components/NewsTimeline";
-import UploadNews from "@/modules/about/ui/components/UploadNews";
+import NewsTimeline from "@/modules/about/ui/components/news-timeline";
+import CtaBanner from "@/components/cta-banner";
 import { getAllNews } from "@/sanity/lib/news/getNews";
 
 const NewsView = async () => {
@@ -9,9 +8,15 @@ const NewsView = async () => {
   return (
     <div className="space-y-16">
       <NewsTimeline allNews={allNews} />
-
-      <UploadNews />
+      <CtaBanner
+        label="Share your story"
+        title="Want to upload to HCI News?"
+        body="Have news to share? Whether it's a project update, publication, event highlight, or personal accomplishment, we'd love to feature it. Submit your update and we'll celebrate your work with the community."
+        ctaLabel="Fill out this form"
+        ctaHref="/"
+      />
     </div>
   );
 };
+
 export default NewsView;

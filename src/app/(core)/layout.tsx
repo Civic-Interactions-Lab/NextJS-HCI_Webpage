@@ -1,23 +1,21 @@
-import React, { Suspense } from "react";
-import NavBar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import AnnotationOverlayWrapper from "@/modules/annotations/ui/components/AnnotationOverlayWrapper";
-import Loading from "@/components/Loading";
+import React from "react";
+import Footer from "@/components/footer";
+import HciNavbar from "@/components/hci-navbar";
+import Hero from "@/components/hero";
 
-export default async function CoreLayout({
+export default function CoreLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<Loading />}>
-      <AnnotationOverlayWrapper>
-        <div className="min-h-screen flex flex-col">
-          <NavBar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-      </AnnotationOverlayWrapper>
-    </Suspense>
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
+      <HciNavbar />
+      <Hero />
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 md:px-12 py-20">
+        {children}
+      </main>
+      <Footer />
+    </div>
   );
 }

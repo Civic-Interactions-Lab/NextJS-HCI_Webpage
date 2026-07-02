@@ -28,11 +28,11 @@ export async function getAccessibilityTechnologyResearch() {
   return research.data;
 }
 
-export async function getSocialComputingResearch() {
-  const socialComputingQuery = defineQuery(`
-    *[_type == "research" && category == "Social Computing"] | order(orderRank)
+export async function getFutureOfWorkResearch() {
+  const futureOfWorkQuery = defineQuery(`
+    *[_type == "research" && category == "Future of Work"] | order(orderRank)
   `);
 
-  const research = await sanityFetch({ query: socialComputingQuery });
+  const research = await sanityFetch({ query: futureOfWorkQuery });
   return research.data;
 }

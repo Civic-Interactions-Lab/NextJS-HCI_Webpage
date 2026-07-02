@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Dev Server",
+      "runtimeExecutable": "/Users/datnguyen/.nvm/versions/node/v20.18.3/bin/pnpm",
+      "env": { "PATH": "/Users/datnguyen/.nvm/versions/node/v20.18.3/bin:/usr/local/bin:/usr/bin:/bin" },
+      "runtimeArgs": ["dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "Convex Dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["convex", "dev"],
+      "port": 3210
+    },
+    {
+      "name": "Flask Webhook",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["webhook/app.py"],
+      "port": 9000
+    }
+  ]
+}

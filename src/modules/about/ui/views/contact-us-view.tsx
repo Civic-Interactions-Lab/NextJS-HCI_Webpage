@@ -1,25 +1,20 @@
 import React from "react";
-import FindUs from "@/modules/about/ui/components/FindUs";
-import GetInTouch from "@/modules/about/ui/components/GetInTouch";
-import LocationMap from "@/components/LocationMap";
-import { getAboutSercImage } from "@/sanity/lib/imageSettings/aboutImages";
+import FindUs from "@/modules/about/ui/components/find-us";
+import GetInTouch from "@/modules/about/ui/components/get-in-touch";
+import { SectionTitle } from "@/components/section-title";
+import ContactLocationMap from "@/modules/about/ui/components/contact-location-map";
 
 const ContactUsView = async () => {
-  const sercImage = await getAboutSercImage();
-
   return (
-    <div className="space-y-16">
-      <FindUs image={sercImage} />
-
+    <div className="space-y-20">
+      <FindUs />
       <GetInTouch />
-
-      <LocationMap
-        title="Human-Computer Interaction (HCI) Lab"
-        placeName="Science Education and Research Center (SERC)"
-        address="1925 N 12th St, Philadelphia, PA 19122"
-        className="pt-6"
-      />
+      <section className="flex flex-col gap-8">
+        <SectionTitle>Our Location</SectionTitle>
+        <ContactLocationMap />
+      </section>
     </div>
   );
 };
+
 export default ContactUsView;

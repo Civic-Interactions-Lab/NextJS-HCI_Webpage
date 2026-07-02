@@ -12,6 +12,8 @@
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol;
+
 // Source: schema.json
 export type Sponsors = {
   _id: string;
@@ -102,7 +104,25 @@ export type ImageSettings = {
   _updatedAt: string;
   _rev: string;
   orderRank?: string;
-  sectionKey?: "home-hero" | "home-why-hci" | "home-featured-projects" | "home-hub-community" | "about-hero" | "about-studio-time" | "about-leadership" | "about-lab-values" | "events-owl-hacks" | "events-open-house" | "events-social" | "events-conference" | "contact-serc" | "research-hero" | "people-hero" | "courses-hero" | "sponsors-hero" | "join-hero";
+  sectionKey?:
+    | "home-hero"
+    | "home-why-hci"
+    | "home-featured-projects"
+    | "home-hub-community"
+    | "about-hero"
+    | "about-studio-time"
+    | "about-leadership"
+    | "about-lab-values"
+    | "events-owl-hacks"
+    | "events-open-house"
+    | "events-social"
+    | "events-conference"
+    | "contact-serc"
+    | "research-hero"
+    | "people-hero"
+    | "courses-hero"
+    | "sponsors-hero"
+    | "join-hero";
   singleImage?: {
     asset?: {
       asset?: {
@@ -175,7 +195,10 @@ export type Research = {
   orderRank?: string;
   title?: string;
   description?: string;
-  category?: "Gen AI & Education" | "Accessibility Technology" | "Social Computing";
+  category?:
+    | "Gen AI & Education"
+    | "Accessibility Technology"
+    | "Future of Work";
   authors?: Array<{
     authorType?: "person" | "name";
     person?: {
@@ -230,7 +253,12 @@ export type News = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  category?: "Collaborations" | "Grants / Awards" | "Conference Talk" | "Published Papers" | "Alumni";
+  category?:
+    | "Collaborations"
+    | "Grants / Awards"
+    | "Conference Talk"
+    | "Published Papers"
+    | "Alumni";
   featured?: boolean;
 };
 
@@ -255,7 +283,12 @@ export type People = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  status?: "assistant_professor" | "phd_student" | "master_student" | "undergraduate" | "highschool";
+  status?:
+    | "assistant_professor"
+    | "phd_student"
+    | "master_student"
+    | "undergraduate"
+    | "highschool";
   areas?: "research_lead" | "undergraduate_researcher" | "operations_team";
   accomplishments?: "published" | "first_author";
   association?: "active" | "alumni" | "collaborator";
@@ -367,9 +400,28 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Conference | ImageSettings | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
-export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./src/sanity/lib/conference/getConference.ts
+export type AllSanitySchemaTypes =
+  | Sponsors
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Conference
+  | ImageSettings
+  | Testimonials
+  | Faq
+  | Research
+  | News
+  | People
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint
+  | Slug;
+
+// Source: src/sanity/lib/conference/getConference.ts
 // Variable: conferencesQuery
 // Query: *[_type == "conference"]
 export type ConferencesQueryResult = Array<{
@@ -402,7 +454,7 @@ export type ConferencesQueryResult = Array<{
   abbreviation?: string;
 }>;
 
-// Source: ./src/sanity/lib/faq/getFAQs.ts
+// Source: src/sanity/lib/faq/getFAQs.ts
 // Variable: faqsQuery
 // Query: *[_type == "faq"] | order(orderRank)
 export type FaqsQueryResult = Array<{
@@ -417,7 +469,7 @@ export type FaqsQueryResult = Array<{
   defaultOpen?: boolean;
 }>;
 
-// Source: ./src/sanity/lib/imageSettings/aboutImages.ts
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "about-hero"][0].singleImage
 export type AboutHeroQueryResult = {
@@ -435,6 +487,8 @@ export type AboutHeroQueryResult = {
   };
   alt?: string;
 } | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutStudioTimeQuery
 // Query: *[_type == "imageSettings" && sectionKey == "about-studio-time"][0].singleImage
 export type AboutStudioTimeQueryResult = {
@@ -452,6 +506,8 @@ export type AboutStudioTimeQueryResult = {
   };
   alt?: string;
 } | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutLeadershipQuery
 // Query: *[_type == "imageSettings" && sectionKey == "about-leadership"][0].singleImage
 export type AboutLeadershipQueryResult = {
@@ -469,6 +525,8 @@ export type AboutLeadershipQueryResult = {
   };
   alt?: string;
 } | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutLabValuesQuery
 // Query: *[_type == "imageSettings" && sectionKey == "about-lab-values"][0].imageArray
 export type AboutLabValuesQueryResult = Array<{
@@ -487,6 +545,8 @@ export type AboutLabValuesQueryResult = Array<{
   alt?: string;
   _key: string;
 }> | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutEventOwlHacksQuery
 // Query: *[_type == "imageSettings" && sectionKey == "events-owl-hacks"][0].imageArray
 export type AboutEventOwlHacksQueryResult = Array<{
@@ -505,6 +565,8 @@ export type AboutEventOwlHacksQueryResult = Array<{
   alt?: string;
   _key: string;
 }> | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutEventOpenHouseQuery
 // Query: *[_type == "imageSettings" && sectionKey == "events-open-house"][0].imageArray
 export type AboutEventOpenHouseQueryResult = Array<{
@@ -523,6 +585,8 @@ export type AboutEventOpenHouseQueryResult = Array<{
   alt?: string;
   _key: string;
 }> | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutEventSocialQuery
 // Query: *[_type == "imageSettings" && sectionKey == "events-social"][0].imageArray
 export type AboutEventSocialQueryResult = Array<{
@@ -541,6 +605,8 @@ export type AboutEventSocialQueryResult = Array<{
   alt?: string;
   _key: string;
 }> | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutConferenceTravelQuery
 // Query: *[_type == "imageSettings" && sectionKey == "events-conference"][0].singleImage
 export type AboutConferenceTravelQueryResult = {
@@ -558,6 +624,8 @@ export type AboutConferenceTravelQueryResult = {
   };
   alt?: string;
 } | null;
+
+// Source: src/sanity/lib/imageSettings/aboutImages.ts
 // Variable: aboutSercQuery
 // Query: *[_type == "imageSettings" && sectionKey == "contact-serc"][0].singleImage
 export type AboutSercQueryResult = {
@@ -576,7 +644,7 @@ export type AboutSercQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/imageSettings/coursesImages.ts
+// Source: src/sanity/lib/imageSettings/coursesImages.ts
 // Variable: coursesHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "courses-hero"][0].singleImage
 export type CoursesHeroQueryResult = {
@@ -595,7 +663,7 @@ export type CoursesHeroQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/imageSettings/homeImages.ts
+// Source: src/sanity/lib/imageSettings/homeImages.ts
 // Variable: homeHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "home-hero"][0].singleImage
 export type HomeHeroQueryResult = {
@@ -613,6 +681,8 @@ export type HomeHeroQueryResult = {
   };
   alt?: string;
 } | null;
+
+// Source: src/sanity/lib/imageSettings/homeImages.ts
 // Variable: homeWhyHCIQuery
 // Query: *[_type == "imageSettings" && sectionKey == "home-why-hci"][0].imageArray
 export type HomeWhyHCIQueryResult = Array<{
@@ -631,6 +701,8 @@ export type HomeWhyHCIQueryResult = Array<{
   alt?: string;
   _key: string;
 }> | null;
+
+// Source: src/sanity/lib/imageSettings/homeImages.ts
 // Variable: homeFeaturedProjectsQuery
 // Query: *[_type == "imageSettings" && sectionKey == "home-featured-projects"][0].singleImage
 export type HomeFeaturedProjectsQueryResult = {
@@ -648,6 +720,8 @@ export type HomeFeaturedProjectsQueryResult = {
   };
   alt?: string;
 } | null;
+
+// Source: src/sanity/lib/imageSettings/homeImages.ts
 // Variable: homeHubCommunityQuery
 // Query: *[_type == "imageSettings" && sectionKey == "home-hub-community"][0].singleImage
 export type HomeHubCommunityQueryResult = {
@@ -666,7 +740,7 @@ export type HomeHubCommunityQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/imageSettings/joinImages.ts
+// Source: src/sanity/lib/imageSettings/joinImages.ts
 // Variable: joinHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "join-hero"][0].singleImage
 export type JoinHeroQueryResult = {
@@ -685,7 +759,7 @@ export type JoinHeroQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/imageSettings/peopleImages.ts
+// Source: src/sanity/lib/imageSettings/peopleImages.ts
 // Variable: peopleHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "people-hero"][0].singleImage
 export type PeopleHeroQueryResult = {
@@ -704,7 +778,7 @@ export type PeopleHeroQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/imageSettings/researchImages.ts
+// Source: src/sanity/lib/imageSettings/researchImages.ts
 // Variable: researchHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "research-hero"][0].singleImage
 export type ResearchHeroQueryResult = {
@@ -723,7 +797,7 @@ export type ResearchHeroQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/imageSettings/sponsorsImages.ts
+// Source: src/sanity/lib/imageSettings/sponsorsImages.ts
 // Variable: sponsorsHeroQuery
 // Query: *[_type == "imageSettings" && sectionKey == "sponsors-hero"][0].singleImage
 export type SponsorsHeroQueryResult = {
@@ -742,7 +816,7 @@ export type SponsorsHeroQueryResult = {
   alt?: string;
 } | null;
 
-// Source: ./src/sanity/lib/news/getNews.ts
+// Source: src/sanity/lib/news/getNews.ts
 // Variable: recentNewsQuery
 // Query: *[_type == "news"] | order(date desc)[0...3]
 export type RecentNewsQueryResult = Array<{
@@ -768,9 +842,16 @@ export type RecentNewsQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  category?: "Alumni" | "Collaborations" | "Conference Talk" | "Grants / Awards" | "Published Papers";
+  category?:
+    | "Alumni"
+    | "Collaborations"
+    | "Conference Talk"
+    | "Grants / Awards"
+    | "Published Papers";
   featured?: boolean;
 }>;
+
+// Source: src/sanity/lib/news/getNews.ts
 // Variable: allNewsQuery
 // Query: *[_type == "news"] | order(date desc)
 export type AllNewsQueryResult = Array<{
@@ -796,11 +877,16 @@ export type AllNewsQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  category?: "Alumni" | "Collaborations" | "Conference Talk" | "Grants / Awards" | "Published Papers";
+  category?:
+    | "Alumni"
+    | "Collaborations"
+    | "Conference Talk"
+    | "Grants / Awards"
+    | "Published Papers";
   featured?: boolean;
 }>;
 
-// Source: ./src/sanity/lib/people/getPeople.ts
+// Source: src/sanity/lib/people/getPeople.ts
 // Variable: currentPeopleQuery
 // Query: *[_type == "people" && association == "active"] | order(orderRank)
 export type CurrentPeopleQueryResult = Array<{
@@ -824,15 +910,22 @@ export type CurrentPeopleQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  status?: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate";
+  status?:
+    | "assistant_professor"
+    | "highschool"
+    | "master_student"
+    | "phd_student"
+    | "undergraduate";
   areas?: "operations_team" | "research_lead" | "undergraduate_researcher";
   accomplishments?: "first_author" | "published";
-  association?: "active" | "alumni" | "collaborator";
+  association: "active";
   start?: number;
   end?: number;
   affiliation?: string;
   now?: string;
 }>;
+
+// Source: src/sanity/lib/people/getPeople.ts
 // Variable: alumniPeopleQuery
 // Query: *[_type == "people" && association == "alumni"] | order(orderRank)
 export type AlumniPeopleQueryResult = Array<{
@@ -856,15 +949,22 @@ export type AlumniPeopleQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  status?: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate";
+  status?:
+    | "assistant_professor"
+    | "highschool"
+    | "master_student"
+    | "phd_student"
+    | "undergraduate";
   areas?: "operations_team" | "research_lead" | "undergraduate_researcher";
   accomplishments?: "first_author" | "published";
-  association?: "active" | "alumni" | "collaborator";
+  association: "alumni";
   start?: number;
   end?: number;
   affiliation?: string;
   now?: string;
 }>;
+
+// Source: src/sanity/lib/people/getPeople.ts
 // Variable: collaboratorsPeopleQuery
 // Query: *[_type == "people" && association == "collaborator"] | order(orderRank)
 export type CollaboratorsPeopleQueryResult = Array<{
@@ -888,17 +988,22 @@ export type CollaboratorsPeopleQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  status?: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate";
+  status?:
+    | "assistant_professor"
+    | "highschool"
+    | "master_student"
+    | "phd_student"
+    | "undergraduate";
   areas?: "operations_team" | "research_lead" | "undergraduate_researcher";
   accomplishments?: "first_author" | "published";
-  association?: "active" | "alumni" | "collaborator";
+  association: "collaborator";
   start?: number;
   end?: number;
   affiliation?: string;
   now?: string;
 }>;
 
-// Source: ./src/sanity/lib/research/getResearch.ts
+// Source: src/sanity/lib/research/getResearch.ts
 // Variable: featuredResearchQuery
 // Query: *[_type == "research" && featured == true] | order(orderRank)
 export type FeaturedResearchQueryResult = Array<{
@@ -910,7 +1015,10 @@ export type FeaturedResearchQueryResult = Array<{
   orderRank?: string;
   title?: string;
   description?: string;
-  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  category?:
+    | "Accessibility Technology"
+    | "Future of Work"
+    | "Gen AI & Education";
   authors?: Array<{
     authorType?: "name" | "person";
     person?: {
@@ -939,8 +1047,10 @@ export type FeaturedResearchQueryResult = Array<{
     url?: string;
     _key: string;
   }>;
-  featured?: boolean;
+  featured: true;
 }>;
+
+// Source: src/sanity/lib/research/getResearch.ts
 // Variable: genAIEducationQuery
 // Query: *[_type == "research" && category == "Gen AI & Education"] | order(orderRank)
 export type GenAIEducationQueryResult = Array<{
@@ -952,91 +1062,7 @@ export type GenAIEducationQueryResult = Array<{
   orderRank?: string;
   title?: string;
   description?: string;
-  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
-  authors?: Array<{
-    authorType?: "name" | "person";
-    person?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "people";
-    };
-    name?: string;
-    _key: string;
-  }>;
-  imageUrl?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  actions?: Array<{
-    label?: "cite" | "code" | "demo" | "pdf" | "talk";
-    url?: string;
-    _key: string;
-  }>;
-  featured?: boolean;
-}>;
-// Variable: accessibilityTechQuery
-// Query: *[_type == "research" && category == "Accessibility Technology"] | order(orderRank)
-export type AccessibilityTechQueryResult = Array<{
-  _id: string;
-  _type: "research";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  orderRank?: string;
-  title?: string;
-  description?: string;
-  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
-  authors?: Array<{
-    authorType?: "name" | "person";
-    person?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "people";
-    };
-    name?: string;
-    _key: string;
-  }>;
-  imageUrl?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  actions?: Array<{
-    label?: "cite" | "code" | "demo" | "pdf" | "talk";
-    url?: string;
-    _key: string;
-  }>;
-  featured?: boolean;
-}>;
-// Variable: socialComputingQuery
-// Query: *[_type == "research" && category == "Social Computing"] | order(orderRank)
-export type SocialComputingQueryResult = Array<{
-  _id: string;
-  _type: "research";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  orderRank?: string;
-  title?: string;
-  description?: string;
-  category?: "Accessibility Technology" | "Gen AI & Education" | "Social Computing";
+  category: "Gen AI & Education";
   authors?: Array<{
     authorType?: "name" | "person";
     person?: {
@@ -1068,7 +1094,95 @@ export type SocialComputingQueryResult = Array<{
   featured?: boolean;
 }>;
 
-// Source: ./src/sanity/lib/sponsors/getSponsors.ts
+// Source: src/sanity/lib/research/getResearch.ts
+// Variable: accessibilityTechQuery
+// Query: *[_type == "research" && category == "Accessibility Technology"] | order(orderRank)
+export type AccessibilityTechQueryResult = Array<{
+  _id: string;
+  _type: "research";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  category: "Accessibility Technology";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
+}>;
+
+// Source: src/sanity/lib/research/getResearch.ts
+// Variable: futureOfWorkQuery
+// Query: *[_type == "research" && category == "Future of Work"] | order(orderRank)
+export type FutureOfWorkQueryResult = Array<{
+  _id: string;
+  _type: "research";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  category: "Future of Work";
+  authors?: Array<{
+    authorType?: "name" | "person";
+    person?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "people";
+    };
+    name?: string;
+    _key: string;
+  }>;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  actions?: Array<{
+    label?: "cite" | "code" | "demo" | "pdf" | "talk";
+    url?: string;
+    _key: string;
+  }>;
+  featured?: boolean;
+}>;
+
+// Source: src/sanity/lib/sponsors/getSponsors.ts
 // Variable: sponsorsQuery
 // Query: *[_type == "sponsors"] | order(orderRank)
 export type SponsorsQueryResult = Array<{
@@ -1107,7 +1221,7 @@ export type SponsorsQueryResult = Array<{
   }>;
 }>;
 
-// Source: ./src/sanity/lib/testimonials/getTestimonials.ts
+// Source: src/sanity/lib/testimonials/getTestimonials.ts
 // Variable: testimonialsQuery
 // Query: *[_type == "testimonials" && isActive == true] | order(orderRank) {      _id,      quote,      role,      person-> {        name,        img      }    }
 export type TestimonialsQueryResult = Array<{
@@ -1135,36 +1249,36 @@ export type TestimonialsQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n    *[_type == \"conference\"]\n  ": ConferencesQueryResult;
-    "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-hero\"][0].singleImage\n  ": AboutHeroQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-studio-time\"][0].singleImage\n  ": AboutStudioTimeQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-leadership\"][0].singleImage\n  ": AboutLeadershipQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"about-lab-values\"][0].imageArray\n  ": AboutLabValuesQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-owl-hacks\"][0].imageArray\n  ": AboutEventOwlHacksQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-open-house\"][0].imageArray\n  ": AboutEventOpenHouseQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-social\"][0].imageArray\n  ": AboutEventSocialQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"events-conference\"][0].singleImage\n  ": AboutConferenceTravelQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"contact-serc\"][0].singleImage\n  ": AboutSercQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"courses-hero\"][0].singleImage\n  ": CoursesHeroQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-hero\"][0].singleImage\n  ": HomeHeroQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-why-hci\"][0].imageArray\n  ": HomeWhyHCIQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-featured-projects\"][0].singleImage\n  ": HomeFeaturedProjectsQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"home-hub-community\"][0].singleImage\n  ": HomeHubCommunityQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"join-hero\"][0].singleImage\n  ": JoinHeroQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"people-hero\"][0].singleImage\n  ": PeopleHeroQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"research-hero\"][0].singleImage\n  ": ResearchHeroQueryResult;
-    "\n    *[_type == \"imageSettings\" && sectionKey == \"sponsors-hero\"][0].singleImage\n  ": SponsorsHeroQueryResult;
-    "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
-    "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
-    "\n    *[_type == \"people\" && association == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;
-    "\n    *[_type == \"people\" && association == \"alumni\"] | order(orderRank)\n  ": AlumniPeopleQueryResult;
-    "\n    *[_type == \"people\" && association == \"collaborator\"] | order(orderRank)\n  ": CollaboratorsPeopleQueryResult;
-    "\n    *[_type == \"research\" && featured == true] | order(orderRank)\n  ": FeaturedResearchQueryResult;
-    "\n    *[_type == \"research\" && category == \"Gen AI & Education\"] | order(orderRank)\n  ": GenAIEducationQueryResult;
-    "\n    *[_type == \"research\" && category == \"Accessibility Technology\"] | order(orderRank)\n  ": AccessibilityTechQueryResult;
-    "\n    *[_type == \"research\" && category == \"Social Computing\"] | order(orderRank)\n  ": SocialComputingQueryResult;
-    "\n    *[_type == \"sponsors\"] | order(orderRank)\n  ": SponsorsQueryResult;
-    "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ": TestimonialsQueryResult;
+    '\n    *[_type == "conference"]\n  ': ConferencesQueryResult;
+    '\n    *[_type == "faq"] | order(orderRank)\n  ': FaqsQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "about-hero"][0].singleImage\n  ': AboutHeroQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "about-studio-time"][0].singleImage\n  ': AboutStudioTimeQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "about-leadership"][0].singleImage\n  ': AboutLeadershipQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "about-lab-values"][0].imageArray\n  ': AboutLabValuesQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "events-owl-hacks"][0].imageArray\n  ': AboutEventOwlHacksQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "events-open-house"][0].imageArray\n  ': AboutEventOpenHouseQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "events-social"][0].imageArray\n  ': AboutEventSocialQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "events-conference"][0].singleImage\n  ': AboutConferenceTravelQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "contact-serc"][0].singleImage\n  ': AboutSercQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "courses-hero"][0].singleImage\n  ': CoursesHeroQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "home-hero"][0].singleImage\n  ': HomeHeroQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "home-why-hci"][0].imageArray\n  ': HomeWhyHCIQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "home-featured-projects"][0].singleImage\n  ': HomeFeaturedProjectsQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "home-hub-community"][0].singleImage\n  ': HomeHubCommunityQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "join-hero"][0].singleImage\n  ': JoinHeroQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "people-hero"][0].singleImage\n  ': PeopleHeroQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "research-hero"][0].singleImage\n  ': ResearchHeroQueryResult;
+    '\n    *[_type == "imageSettings" && sectionKey == "sponsors-hero"][0].singleImage\n  ': SponsorsHeroQueryResult;
+    '\n    *[_type == "news"] | order(date desc)[0...3]\n  ': RecentNewsQueryResult;
+    '\n    *[_type == "news"] | order(date desc)\n  ': AllNewsQueryResult;
+    '\n    *[_type == "people" && association == "active"] | order(orderRank)\n  ': CurrentPeopleQueryResult;
+    '\n    *[_type == "people" && association == "alumni"] | order(orderRank)\n  ': AlumniPeopleQueryResult;
+    '\n    *[_type == "people" && association == "collaborator"] | order(orderRank)\n  ': CollaboratorsPeopleQueryResult;
+    '\n    *[_type == "research" && featured == true] | order(orderRank)\n  ': FeaturedResearchQueryResult;
+    '\n    *[_type == "research" && category == "Gen AI & Education"] | order(orderRank)\n  ': GenAIEducationQueryResult;
+    '\n    *[_type == "research" && category == "Accessibility Technology"] | order(orderRank)\n  ': AccessibilityTechQueryResult;
+    '\n    *[_type == "research" && category == "Future of Work"] | order(orderRank)\n  ': FutureOfWorkQueryResult;
+    '\n    *[_type == "sponsors"] | order(orderRank)\n  ': SponsorsQueryResult;
+    '\n    *[_type == "testimonials" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ': TestimonialsQueryResult;
   }
 }
