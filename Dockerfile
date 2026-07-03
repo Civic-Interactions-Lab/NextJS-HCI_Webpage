@@ -27,7 +27,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/package.json ./package.json
 COPY --from=deps /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=deps /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
-COPY next.config.ts tsconfig.json next-env.d.ts postcss.config.mjs eslint.config.mjs components.json ./
+COPY next.config.ts tsconfig.json postcss.config.mjs eslint.config.mjs components.json ./
 COPY middleware.ts request-middleware.ts sanity.cli.ts sanity.config.ts sanity.types.ts schema.json ./
 COPY public ./public
 COPY src ./src
