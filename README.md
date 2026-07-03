@@ -32,21 +32,22 @@ This repo includes three deployment pieces:
 
 1. Create `.env` on the server from `.env.example`.
 2. Set `HOST_REPO_DIR` to the absolute path of this repo on `cis-linux1.temple.edu`.
-3. Set `HOST_GIT_COMMON_DIR` to the checkout's git metadata directory.
-4. Set `WEBHOOK_SECRET` to a strong random value.
-5. Build and start the main site stack:
+3. Set `WEBHOOK_SECRET` to a strong random value.
+4. Set `REPO_FULL_NAME` to the GitHub repository name, for example `Civic-Interactions-Lab/NextJS-HCI_Webpage`.
+5. Optionally set `PUBLISH_WORKFLOW_NAME` if your publish workflow uses a name other than `Publish Site Image`.
+6. Build and start the main site stack:
 
 ```bash
 docker compose -f docker-compose.deploy.yml up -d
 ```
 
-6. Build and start the webhook stack:
+7. Build and start the webhook stack:
 
 ```bash
 docker compose --env-file .env -f webhook/docker-compose.yml up -d --build
 ```
 
-7. Confirm both services are reachable through the local bindings:
+8. Confirm both services are reachable through the local bindings:
 
 ```bash
 curl http://127.0.0.1
@@ -65,11 +66,9 @@ Configure a GitHub webhook for this repository with:
 - Payload URL: `https://hci.temple.edu/github-webhook`
 - Content type: `application/json`
 - Secret: the same value as `WEBHOOK_SECRET`
-- Event: `Just the push event`
+- Event: `Let me select individual events` and enable `Workflow runs`
 
-When a push lands on the configured branch, the webhook container pulls the latest code in `HOST_REPO_DIR`, authenticates to GHCR if credentials are configured, pulls the prebuilt site image, and restarts the site stack.
-
-If `HOST_REPO_DIR` is a git worktree, `HOST_GIT_COMMON_DIR` must point to the parent repository's `.git` directory. For a normal clone, `HOST_GIT_COMMON_DIR` is usually just `HOST_REPO_DIR/.git`. This mount must be writable because `git fetch` updates files like `FETCH_HEAD` there.
+When the `Publish Site Image` workflow completes successfully on the configured branch, the webhook container pulls the latest code in `HOST_REPO_DIR`, authenticates to GHCR if credentials are configured, pulls the prebuilt site image, and force-recreates the `hci-web` container.
 
 For the smoothest Vercel-like setup, point `HOST_REPO_DIR` at a dedicated normal clone used only for deployment, not your active development worktree.
 
@@ -93,6 +92,8 @@ HCI_WEB_IMAGE=ghcr.io/civic-interactions-lab/nextjs-hci-webpage-site:latest
 ```
 
 If you keep the package private, the server will also need `GHCR_USERNAME` and a token with `read:packages` scope in `GHCR_TOKEN`.
+
+The webhook intentionally ignores raw `push` events for deployment. That avoids racing the image publish workflow and trying to redeploy before GHCR has the new image available.
 
 ## Local HTTPS Testing
 

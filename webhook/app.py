@@ -15,6 +15,7 @@ REPO_FULL_NAME = os.environ.get("REPO_FULL_NAME", "owner/repo")
 REPO_BRANCH = os.environ.get("REPO_BRANCH", "main")
 APP_REPO_DIR = os.environ.get("APP_REPO_DIR", "")
 DEPLOY_SCRIPT = os.environ.get("DEPLOY_SCRIPT", "/app/deploy.sh")
+PUBLISH_WORKFLOW_NAME = os.environ.get("PUBLISH_WORKFLOW_NAME", "Publish Site Image")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("github-webhook")
@@ -53,12 +54,20 @@ def parse_github_payload(payload_body: bytes) -> dict:
     return json.loads(payload_body)
 
 
-def run_deploy(commit_sha: str) -> None:
+def log_ignored_event(event: str, reason: str) -> None:
+    log.info("Ignoring GitHub event '%s': %s", event, reason)
+
+
+def run_deploy(commit_sha: str, workflow_run_id: str | None = None) -> None:
     try:
         deploy_state["status"] = "deploying"
         deploy_state["last_commit"] = commit_sha
         deploy_state["last_error"] = None
-        log.info("Starting deployment for commit %s", commit_sha[:8])
+        log.info(
+            "Starting deployment for commit %s from workflow run %s",
+            commit_sha[:8],
+            workflow_run_id or "unknown",
+        )
 
         result = subprocess.run(
             ["/bin/bash", DEPLOY_SCRIPT],
@@ -66,6 +75,8 @@ def run_deploy(commit_sha: str) -> None:
                 **os.environ,
                 "APP_REPO_DIR": APP_REPO_DIR,
                 "REPO_BRANCH": REPO_BRANCH,
+                "DEPLOY_COMMIT_SHA": commit_sha,
+                "DEPLOY_WORKFLOW_RUN_ID": workflow_run_id or "",
             },
             capture_output=True,
             text=True,
@@ -98,7 +109,7 @@ def run_deploy(commit_sha: str) -> None:
 
 @app.get("/health")
 def health():
-    configured = bool(WEBHOOK_SECRET and APP_REPO_DIR)
+    configured = bool(WEBHOOK_SECRET and APP_REPO_DIR and REPO_FULL_NAME)
     return jsonify({"ok": configured, "configured": configured, **deploy_state}), 200
 
 
@@ -121,28 +132,58 @@ def github_webhook():
         return jsonify({"error": "malformed payload"}), 400
 
     event = request.headers.get("X-GitHub-Event", "")
+    log.info("Received GitHub event '%s'", event or "unknown")
+
     if event == "ping":
         return jsonify({"message": "pong"}), 200
-    if event != "push":
+    if event != "workflow_run":
+        log_ignored_event(event or "unknown", "only workflow_run triggers deploys")
         return jsonify({"message": "ignored", "event": event}), 200
 
     repo = data.get("repository", {}).get("full_name", "")
-    ref = data.get("ref", "")
     if repo != REPO_FULL_NAME:
+        log_ignored_event(event, "repo mismatch")
         return jsonify({"message": "ignored", "reason": "repo mismatch"}), 200
-    if ref != f"refs/heads/{REPO_BRANCH}":
+
+    workflow_run = data.get("workflow_run") or {}
+    workflow_name = workflow_run.get("name", "")
+    workflow_conclusion = workflow_run.get("conclusion", "")
+    workflow_branch = workflow_run.get("head_branch", "")
+    workflow_run_id = str(workflow_run.get("id", "unknown"))
+
+    if workflow_name != PUBLISH_WORKFLOW_NAME:
+        log_ignored_event(event, "workflow name mismatch")
+        return jsonify({"message": "ignored", "reason": "workflow mismatch"}), 200
+    if workflow_conclusion != "success":
+        log_ignored_event(event, f"workflow conclusion was {workflow_conclusion or 'unset'}")
+        return jsonify({"message": "ignored", "reason": "workflow not successful"}), 200
+    if workflow_branch != REPO_BRANCH:
+        log_ignored_event(event, "branch mismatch")
         return jsonify({"message": "ignored", "reason": "branch mismatch"}), 200
 
     acquired = deploy_lock.acquire(blocking=False)
     if not acquired:
         return jsonify({"error": "deployment already in progress"}), 409
 
-    commit_sha = data.get("after", "unknown")
+    commit_sha = workflow_run.get("head_sha", "unknown")
     try:
-        thread = threading.Thread(target=run_deploy, args=(commit_sha,), daemon=True)
+        thread = threading.Thread(
+            target=run_deploy,
+            args=(commit_sha, workflow_run_id),
+            daemon=True,
+        )
         thread.start()
     except Exception:
         deploy_lock.release()
         log.exception("Failed to start deployment thread")
         return jsonify({"error": "failed to start deployment"}), 500
-    return jsonify({"message": "deployment started", "commit": commit_sha}), 202
+    return (
+        jsonify(
+            {
+                "message": "deployment started",
+                "commit": commit_sha,
+                "workflow_run_id": workflow_run_id,
+            }
+        ),
+        202,
+    )
