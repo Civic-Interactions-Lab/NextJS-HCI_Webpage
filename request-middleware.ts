@@ -1,4 +1,3 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 const SITE_COOKIE = "hci_site_verified";
@@ -22,7 +21,7 @@ function isApiRoute(pathname: string) {
   return pathname.startsWith("/api/") || pathname.startsWith("/trpc");
 }
 
-const requestMiddleware = clerkMiddleware(async (_auth, request: NextRequest) => {
+async function requestMiddleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const response = NextResponse.next();
 
@@ -60,6 +59,6 @@ const requestMiddleware = clerkMiddleware(async (_auth, request: NextRequest) =>
   }
 
   return response;
-});
+}
 
 export default requestMiddleware;
