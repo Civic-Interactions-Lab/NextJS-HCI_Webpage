@@ -126,7 +126,7 @@ export default function HciNavbar() {
                       >
                         <div className="relative h-28 overflow-hidden">
                           <Image
-                            src={item.children[0].image ?? "/images/cover/6-studio.JPG"}
+                            src={item.children[0].image ?? "/images/cover/HCI_OpenHouse-5.jpg"}
                             alt={item.label}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"

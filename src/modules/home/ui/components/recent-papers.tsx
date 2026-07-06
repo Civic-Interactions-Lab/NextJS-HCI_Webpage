@@ -50,7 +50,7 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
       <motion.div variants={fadeUp} className="order-2 lg:order-1 relative">
         <div className="overflow-hidden rounded-2xl">
           <Image
-            src="/images/cover/6-studio.JPG"
+            src="/images/cover/HCI_OpenHouse-5.jpg"
             alt="HCI Lab featured research"
             width={500}
             height={300}

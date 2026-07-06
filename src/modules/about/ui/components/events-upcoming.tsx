@@ -23,7 +23,7 @@ const EventsUpcoming = () => {
         {/* Image */}
         <div className="relative w-full md:w-1/2 h-64 md:h-auto shrink-0">
           <Image
-            src="/images/cover/6-studio.JPG"
+            src="/images/cover/HCI_OpenHouse-5.jpg"
             alt={featured.title}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -74,7 +74,7 @@ const EventsUpcoming = () => {
           >
             <div className="relative w-full h-40 shrink-0">
               <Image
-                src="/images/cover/6-studio.JPG"
+                src="/images/cover/HCI_OpenHouse-5.jpg"
                 alt={title}
                 fill
                 sizes="(max-width: 640px) 100vw, 33vw"

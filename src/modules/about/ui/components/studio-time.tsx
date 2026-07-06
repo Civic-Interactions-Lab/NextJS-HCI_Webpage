@@ -20,7 +20,7 @@ const StudioTime = () => {
       <div ref={imgRef} className="order-2 md:order-1">
         <div className="md:-rotate-2 rounded-2xl overflow-hidden shadow-lg">
           <Image
-            src="/images/cover/6-studio.JPG"
+            src="/images/cover/HCI_OpenHouse-5.jpg"
             alt="Studio Time — students collaborating in the HCI Lab"
             width={600}
             height={400}

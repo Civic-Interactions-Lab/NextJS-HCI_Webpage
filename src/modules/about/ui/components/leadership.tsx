@@ -44,7 +44,7 @@ const Leadership = () => {
       <div ref={imgRef} className="order-2">
         <div className="md:rotate-1 rounded-2xl overflow-hidden shadow-lg">
           <Image
-            src="/images/cover/6-studio.JPG"
+            src="/images/cover/HCI_OpenHouse-5.jpg"
             alt="HCI Lab students at a conference"
             width={600}
             height={400}

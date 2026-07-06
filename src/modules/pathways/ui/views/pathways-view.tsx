@@ -12,7 +12,7 @@ const PathwaysView = () => (
       titlePrefix="Explore Human-Centered"
       titleAccent="Technology."
       body="The Temple HCI Lab helps students explore careers in technology, design, research, and AI. Whether you are curious about user experience design, data visualization, artificial intelligence, or academic research, there are multiple ways to get involved."
-      imageSrc="/images/cover/6-studio.JPG"
+      imageSrc="/images/cover/HCI_OpenHouse-5.jpg"
       imageAlt="HCI Lab studio"
     />
 

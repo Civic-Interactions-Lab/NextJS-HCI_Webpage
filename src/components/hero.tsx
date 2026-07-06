@@ -5,18 +5,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const COVER_MAP: Record<string, string> = {
-  "/about": "/images/cover/6-studio.JPG",
-  "/about/events": "/images/cover/6-studio.JPG",
-  "/about/news": "/images/cover/6-studio.JPG",
-  "/about/contact": "/images/cover/6-studio.JPG",
-  "/research": "/images/cover/6-studio.JPG",
-  "/people": "/images/cover/6-studio.JPG",
-  "/people/alumni": "/images/cover/6-studio.JPG",
-  "/people/collaborators": "/images/cover/6-studio.JPG",
-  "/pathways": "/images/cover/6-studio.JPG",
-  "/sponsors": "/images/cover/6-studio.JPG",
-  "/sponsors/become": "/images/cover/6-studio.JPG",
-  "/join": "/images/cover/6-studio.JPG",
+  "/about": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/about/events": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/about/news": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/about/contact": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/research": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/people": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/people/alumni": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/people/collaborators": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/pathways": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/sponsors": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/sponsors/become": "/images/cover/HCI_OpenHouse-5.jpg",
+  "/join": "/images/cover/HCI_OpenHouse-5.jpg",
 };
 
 const LABEL_OVERRIDES: Record<string, string> = {
@@ -36,7 +36,7 @@ const Hero = () => {
   const coverImage =
     COVER_MAP[pathname] ??
     COVER_MAP[`/${pathname.split("/").filter(Boolean)[0]}`] ??
-    "/images/cover/6-studio.JPG";
+    "/images/cover/HCI_OpenHouse-5.jpg";
 
   const segments = pathname.split("/").filter(Boolean);
   const parent = segments[0] ? capitalize(segments[0]) : "";
