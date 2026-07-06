@@ -19,6 +19,7 @@ const ResearchCard = ({ research }: { research: Research }) => (
         src={getImageSrc(research.imageUrl)}
         alt={research.title || "Temple HCI Lab research project"}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="object-cover"
       />
     </div>

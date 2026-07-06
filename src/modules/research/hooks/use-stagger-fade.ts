@@ -44,6 +44,7 @@ export function useStaggerFade(
   } = options;
 
   useEffect(() => {
+    if (!rootRef.current?.querySelector(selector)) return;
     const ctx = gsap.context(() => {
       gsap.from(selector, {
         immediateRender,

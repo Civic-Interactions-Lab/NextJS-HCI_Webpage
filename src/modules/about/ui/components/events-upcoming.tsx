@@ -26,6 +26,7 @@ const EventsUpcoming = () => {
             src="/images/cover/6-studio.JPG"
             alt={featured.title}
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-linear-to-r from-transparent to-alabaster/20 md:bg-linear-to-r" />
@@ -76,6 +77,7 @@ const EventsUpcoming = () => {
                 src="/images/cover/6-studio.JPG"
                 alt={title}
                 fill
+                sizes="(max-width: 640px) 100vw, 33vw"
                 className="object-cover"
               />
             </div>

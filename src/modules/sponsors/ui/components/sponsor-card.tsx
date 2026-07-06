@@ -34,6 +34,7 @@ const SponsorCard = ({ sponsor }: { sponsor: Sponsors }) => {
               src={getImageSrc(sponsor.logo)}
               alt={sponsor.altText || `${sponsor.name} logo — Temple HCI Lab sponsor`}
               fill
+              sizes="80px"
               className="object-contain"
               loading="lazy"
             />
