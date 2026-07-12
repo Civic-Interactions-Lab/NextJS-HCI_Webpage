@@ -1,51 +1,55 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import ResearchHero from "@/modules/research/ui/components/research-hero";
+import ResearchHeroLogo from "@/modules/research/ui/components/research-hero-logo";
+import NavCardsList from "@/components/nav-cards-list";
 import CtaBanner from "@/components/cta-banner";
-import { SectionTitle } from "@/components/section-title";
 import { CATEGORIES } from "@/modules/research/constants";
 import { useStaggerFade } from "@/modules/research/hooks/use-stagger-fade";
 
 const ResearchView = () => {
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
-  useStaggerFade(cardsRef, ".other-card");
-  useStaggerFade(cardsRef, ".featured-video", { y: 40, duration: 0.8, stagger: 0 });
+  useStaggerFade(ref, ".featured-video", { y: 40, duration: 0.8, stagger: 0 });
 
   return (
-    <div className="space-y-20">
-      <ResearchHero />
-
-      {/* Category sections */}
-      <nav
-        ref={cardsRef}
-        aria-label="Temple HCI Lab research topics"
-        className="border-t border-thunder/8"
-      >
-        {CATEGORIES.map((cat, i) => (
-          <Link
-            key={cat.label}
-            href={cat.href}
-            aria-label={`Learn more about ${cat.label} research at the Temple HCI Lab`}
-            className={`other-card group flex flex-col gap-3 py-8 border-b border-thunder/8 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
-          >
-            <SectionTitle>{cat.label}</SectionTitle>
-            <p className="text-p1 text-thunder/60 leading-relaxed max-w-xl">
-              {cat.tagline}
-            </p>
-            <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
-              Learn More{" "}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </span>
-          </Link>
-        ))}
-      </nav>
+    <div ref={ref} className="space-y-20">
+      <ResearchHero
+        ariaLabel="Temple HCI Lab research overview"
+        title={
+          <>
+            Human. Technology. <span className="text-well-red">Impact.</span>
+          </>
+        }
+        paragraphs={[
+          {
+            content: (
+              <>
+                <span className="font-semibold text-thunder">
+                  Here at the Temple HCI Lab,
+                </span>{" "}
+                we study how people learn, communicate, and collaborate with
+                technology. Our work brings together perspectives from human-computer
+                interaction, communication, learning sciences, and participatory
+                design to address real-world challenges in education, accessibility,
+                and artificial intelligence. We take a pragmatic approach to
+                technology — rather than viewing AI and emerging technologies as
+                inherently beneficial or harmful, we seek to understand how their
+                design shapes human experiences, relationships, and opportunities.
+              </>
+            ),
+          },
+          {
+            content:
+              "We believe technology should be evaluated not only by what it can do, but by how it affects the people and communities who use it. We are especially sensitive to uncovering the potential harms of AI systems such as social displacement and disruptions to metacognitive processes.",
+          },
+        ]}
+        logo={<ResearchHeroLogo />}
+      />
 
       {/* Teaser video */}
-      <figure className="featured-video flex flex-col lg:flex-row gap-8 pb-14 m-0">
+      <figure className="featured-video flex flex-col lg:flex-row gap-8 pt-12">
         <div className="w-full lg:w-1/2 shrink-0">
           <iframe
             src="https://www.youtube.com/embed/-s1_uc-BPqs"
@@ -70,6 +74,13 @@ const ResearchView = () => {
           </p>
         </figcaption>
       </figure>
+
+      {/* Category sections */}
+      <NavCardsList
+        ariaLabel="Temple HCI Lab research topics"
+        items={CATEGORIES}
+        linkDescription={(item) => `Learn more about ${item.label} research at the Temple HCI Lab`}
+      />
 
       <CtaBanner
         label="Get Involved"

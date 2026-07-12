@@ -25,8 +25,7 @@ type StaggerFadeOptions = {
 };
 
 /** Fades in the elements matching `selector` as they scroll into view — used for the
- * repeated ".other-card" / ".featured-video" / ".hero-line" reveal patterns across
- * the research views. */
+ * repeated ".featured-video" / ".hero-line" reveal patterns across the research views. */
 export function useStaggerFade(
   rootRef: RefObject<Element | null>,
   selector: string,

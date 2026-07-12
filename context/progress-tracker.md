@@ -126,6 +126,26 @@ Update this file whenever the current phase, active feature, or implementation s
 
 - **Feature 17 (Constants/Animation Restructuring & SEO Pass)** — Systematic refactor applied module-by-module across home, about, join, pathways, people, research, and sponsors. For each module: hardcoded data arrays and Framer Motion animation variants (previously duplicated inline across components) were extracted into a per-module `constants/` folder with an `index.ts` barrel export; repeated GSAP `ScrollTrigger` reveal patterns (the same `.other-card`/`.people-nav-card`/fade-up boilerplate copy-pasted across multiple views) were consolidated into small reusable hooks, kept local to each module rather than shared globally. Alongside the refactor, an accessibility/SEO pass added descriptive image `alt` text, `aria-label`s on icon-only and ambiguous links, `aria-hidden` on decorative icons/animations, and semantic landmarks (`section`/`nav`/`article`/`figure`, proper `ul`/`li` list structure) throughout. Fixed a site-wide duplicate `<h1>` bug: `ViewIntroHeader` was rendering its own `<h1>` on top of the one already rendered by the shared page `Hero`, affecting `/join`, `/people`, `/pathways`, `/sponsors`, and all research topic pages — downgraded to `<h2>` everywhere.
 
+---
+
+- **Feedback (Post-Launch Fixes & Polish)** — Round of fixes from user feedback after the redesign shipped.
+  - Added `sharp` as a real `dependencies` entry — it was only in `pnpm.onlyBuiltDependencies`, so the self-hosted Docker/standalone server had no image processor and `/_next/image` returned 400s (Vercel had masked this since it bundles sharp automatically).
+  - Added `images.qualities: [75, 85]` to `next.config.ts`.
+  - Added missing `sizes` props to several `Image fill` usages (`recent-news-section.tsx`, `events-upcoming.tsx`, `research-card.tsx`, `sponsor-card.tsx`).
+  - Replaced the `6-studio.JPG` placeholder image site-wide with `HCI_OpenHouse-5.jpg`.
+  - Home testimonials carousel: added drag support (pointer down/move/up on the card container) alongside the existing arrow buttons, plus a capped 5-dot pagination indicator with a sliding window for >5 testimonials.
+  - "Meet the people" link moved onto the same line as the section title, justified right.
+  - Research module: moved the featured video block to sit above the topic-nav list (was previously at the very bottom) on both the overview and topic pages.
+  - Consolidated the duplicated two-column hero markup (overview vs. topic pages) into one shared `research-hero.tsx` component.
+  - Navbar: dropdown now opens on hover instead of click, and the trigger link itself navigates directly to the parent page.
+  - Fixed a hover-dropdown dead-zone bug where the `mt-2` margin gap between the trigger and the panel caused `mouseleave` to fire before the cursor reached the menu — replaced with `pt-2` padding on the same hoverable element so there's no gap in the hit area.
+  - People page filter: fixed a Framer Motion bug where cards would render invisible-but-space-reserved after switching filters post-initial-reveal (`whileInView` + `once: true` never re-fires for children mounted after the first reveal) — switched to `key={activeFilters}` + unconditional `initial="hidden" animate="visible"` so the stagger fade reliably replays on every filter change.
+  - Applied the same filter-animation fix preventively to the sponsors filter grid, which had the identical risk.
+  - Consolidated the near-duplicate "quick nav" card list (Alumni/Collaborators links, Become a Sponsor, other-research-topics) — previously copy-pasted across `people-view.tsx`, `alumni-view.tsx`, `collaborators-view.tsx`, `sponsors-view.tsx`, and the research views — into a single shared `src/components/nav-cards-list.tsx` with a self-contained GSAP reveal and one consistent bordered-pill "Learn More" button style everywhere.
+  - Deleted the now-dead duplicate `use-nav-card-reveal.ts` hooks (people/sponsors) and `research-topics-nav.tsx`.
+  - Research card grid: cards now stretch to equal height per row (`h-full flex flex-col` + `mt-auto` on the action badges) regardless of description length.
+  - Each research card is now a single clickable link to its primary action URL (preferring "pdf") opening in a new tab, with the remaining actions shown as non-interactive badges to avoid nested anchors.
+
 ## In Progress
 
 - None.

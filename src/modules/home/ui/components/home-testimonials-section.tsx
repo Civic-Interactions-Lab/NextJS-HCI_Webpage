@@ -17,15 +17,26 @@ const QUOTE_COLORS  = ["text-well-red", "text-gold", "text-sky", "text-grass"];
 const SIDE_SCALE    = 0.82;
 const SIDE_OPACITY  = 0.45;
 const SIDE_MAX_H    = 440;
-const QUOTE_SIDE_H  = 176; // ~6 lines at text-p1 leading-relaxed
+const QUOTE_SIDE_H  = 176;
 const QUOTE_FULL_H  = 600;
 const GAP = 28;
+const DRAG_THRESHOLD = 50;
+const MAX_DOTS = 5;
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const circSlot = (i: number, active: number, n: number): number => {
   const raw = ((i - active) % n + n) % n;
   return raw <= Math.floor(n / 2) ? raw : raw - n;
+};
+
+/** Indices of the dots to render — a sliding window of at most MAX_DOTS,
+ * centered on `active` when there are more testimonials than dots. */
+const dotWindow = (active: number, n: number): number[] => {
+  if (n <= MAX_DOTS) return Array.from({ length: n }, (_, i) => i);
+  const half  = Math.floor(MAX_DOTS / 2);
+  const start = Math.max(0, Math.min(active - half, n - MAX_DOTS));
+  return Array.from({ length: MAX_DOTS }, (_, i) => start + i);
 };
 
 const slotX = (slot: number, cardW: number): number => {
@@ -40,9 +51,11 @@ const slotX = (slot: number, cardW: number): number => {
 
 const TestimonialsSection = ({ testimonials }: Props) => {
   const [active, setActive] = useState(0);
-  const activeRef  = useRef(0);
-  const cardsRef   = useRef<(HTMLDivElement | null)[]>([]);
-  const animating  = useRef(false);
+  const activeRef   = useRef(0);
+  const cardsRef    = useRef<(HTMLDivElement | null)[]>([]);
+  const animating   = useRef(false);
+  const dragStartX  = useRef<number | null>(null);
+  const isDragging  = useRef(false);
   const n = testimonials.length;
 
   const updateCards = useCallback((newActive: number, animate: boolean) => {
@@ -94,7 +107,6 @@ const TestimonialsSection = ({ testimonials }: Props) => {
     const cardW   = cards[0].offsetWidth;
     const wrapped = ((newActive % n) + n) % n;
 
-    // Pre-snap wrap-around cards so they enter from the correct side
     cards.forEach((card, i) => {
       const oldSlot    = circSlot(i, activeRef.current, n);
       const newSlotVal = circSlot(i, wrapped, n);
@@ -109,6 +121,30 @@ const TestimonialsSection = ({ testimonials }: Props) => {
     setActive(wrapped);
     updateCards(wrapped, true);
   }, [n, updateCards]);
+
+  // Drag handlers — only decide direction; goTo (same path as the arrow buttons) fires on release
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (animating.current) return;
+    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+    dragStartX.current = e.clientX;
+    isDragging.current = false;
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartX.current === null) return;
+    if (Math.abs(e.clientX - dragStartX.current) > 4) isDragging.current = true;
+  }, []);
+
+  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartX.current === null) return;
+    const delta = e.clientX - dragStartX.current;
+    dragStartX.current = null;
+    isDragging.current = false;
+
+    if (Math.abs(delta) >= DRAG_THRESHOLD) {
+      goTo(activeRef.current + (delta < 0 ? 1 : -1));
+    }
+  }, [goTo]);
 
   useEffect(() => {
     const cards = cardsRef.current.filter((c): c is HTMLDivElement => c !== null);
@@ -131,31 +167,20 @@ const TestimonialsSection = ({ testimonials }: Props) => {
 
   return (
     <section className="w-full space-y-8">
-      <div className="flex items-end justify-between">
-        <div className="flex flex-col gap-2">
-          <SectionTitle>What People Say</SectionTitle>
-          <SectionLink href="/people">Meet the people</SectionLink>
-        </div>
-
-        {n > 1 && (
-          <div className="flex gap-2 shrink-0 pb-1">
-            {([[-1, ChevronLeft, "Previous testimonial"], [1, ChevronRight, "Next testimonial"]] as const).map(([dir, Icon, label]) => (
-              <button
-                key={dir}
-                onClick={() => goTo(active + dir)}
-                aria-label={label}
-                className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
-              >
-                <Icon className="w-5 h-5" />
-              </button>
-            ))}
-          </div>
-        )}
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <SectionTitle>What People Say</SectionTitle>
+        <SectionLink href="/people">Meet the people</SectionLink>
       </div>
 
-      {/* Ghost: invisible in-flow element that sets the container height
-          to the active card's natural size. */}
-      <div className="relative overflow-hidden">
+      <div
+        className="relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        style={{ touchAction: "pan-y" }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+        {/* Ghost: sets container height to active card's natural size */}
         <div
           aria-hidden="true"
           className="invisible pointer-events-none flex flex-col gap-4 rounded-2xl p-6 md:p-8
@@ -208,6 +233,41 @@ const TestimonialsSection = ({ testimonials }: Props) => {
           );
         })}
       </div>
+
+      {n > 1 && (
+        <div className="flex items-center justify-center gap-4">
+          <button
+            onClick={() => goTo(active - 1)}
+            aria-label="Previous testimonial"
+            className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <div className="flex items-center gap-1.5" role="tablist" aria-label="Testimonial pagination">
+            {dotWindow(active, n).map((i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`Go to testimonial ${i + 1}`}
+                onClick={() => goTo(i)}
+                className={`rounded-full transition-all duration-300 ${
+                  i === active ? "w-6 h-2 bg-thunder" : "w-2 h-2 bg-thunder/20 hover:bg-thunder/40"
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={() => goTo(active + 1)}
+            aria-label="Next testimonial"
+            className="w-10 h-10 rounded-full border border-thunder/20 flex items-center justify-center text-thunder/60 hover:border-thunder/60 hover:text-thunder transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      )}
     </section>
   );
 };

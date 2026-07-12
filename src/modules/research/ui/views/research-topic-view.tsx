@@ -2,15 +2,14 @@
 
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Research } from "../../../../../sanity.types";
 import ResearchCard from "@/modules/research/ui/components/research-card";
+import ResearchHero from "@/modules/research/ui/components/research-hero";
+import NavCardsList from "@/components/nav-cards-list";
 import CtaBanner from "@/components/cta-banner";
 import TopicLogoGenAI from "@/modules/research/ui/components/topic-logo-gen-ai";
 import TopicLogoAccessibility from "@/modules/research/ui/components/topic-logo-accessibility";
 import TopicLogoSocial from "@/modules/research/ui/components/topic-logo-social";
-import { SectionTitle } from "@/components/section-title";
 import { CATEGORIES, fadeUp, stagger, gridViewport } from "@/modules/research/constants";
 import { useStaggerFade } from "@/modules/research/hooks/use-stagger-fade";
 
@@ -38,39 +37,29 @@ const ResearchTopicView = ({
   const otherCategories = CATEGORIES.filter((c) => c.label !== label);
   const cat = CATEGORIES.find((c) => c.label === label);
 
-  useStaggerFade(ref, ".topic-header-line", { y: 40, stagger: 0.1, duration: 0.8 });
   useStaggerFade(ref, ".featured-video", { y: 40, duration: 0.8, stagger: 0 });
-  useStaggerFade(ref, ".other-card");
 
   return (
     <div ref={ref} className="space-y-20">
-      {/* Two-column hero — matches research overview layout */}
-      <section
-        aria-label={`${label} research at the Temple HCI Lab`}
-        className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 overflow-hidden"
-      >
-        {/* Left: label + title + body */}
-        <div className="flex flex-col gap-4 flex-1">
-          <p className="topic-header-line font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
-            Temple HCI Lab Research
-          </p>
-          <h2 className="topic-header-line font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
+      <ResearchHero
+        ariaLabel={`${label} research at the Temple HCI Lab`}
+        title={
+          <>
             {label.split(" ").slice(0, -1).join(" ")}{" "}
             <span className="text-well-red">
               {label.split(" ").slice(-1)[0]}
             </span>
-          </h2>
-          <p className="topic-header-line text-p1 text-thunder/60 leading-relaxed italic">
-            &ldquo;{tagline}&rdquo;
-          </p>
-          <p className="topic-header-line text-p1 text-thunder/70 leading-relaxed">
-            {description}
-          </p>
-        </div>
-
-        {/* Right: topic-specific animated logo */}
-        <div className="w-full lg:w-[360px] shrink-0">{LOGO_MAP[label]}</div>
-      </section>
+          </>
+        }
+        paragraphs={[
+          {
+            content: <>&ldquo;{tagline}&rdquo;</>,
+            className: "text-thunder/60 italic",
+          },
+          { content: description },
+        ]}
+        logo={LOGO_MAP[label]}
+      />
 
       {/* Papers grid */}
       {research.length > 0 ? (
@@ -101,30 +90,9 @@ const ResearchTopicView = ({
         </div>
       )}
 
-      {/* Other topics */}
-      <nav aria-label="Other Temple HCI Lab research topics" className="border-t border-thunder/8">
-        {otherCategories.map((c, i) => (
-          <Link
-            key={c.label}
-            href={c.href}
-            aria-label={`Learn more about ${c.label} research at the Temple HCI Lab`}
-            className={`other-card group flex flex-col gap-4 py-12 px-0 border-b border-thunder/8 ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
-          >
-            <SectionTitle>{c.label}</SectionTitle>
-            <p className="text-p1 text-thunder/60 leading-relaxed max-w-xl">
-              {c.tagline}
-            </p>
-            <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
-              Learn More{" "}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </span>
-          </Link>
-        ))}
-      </nav>
-
       {/* Featured video */}
       {cat?.videoUrl && (
-        <figure className="featured-video flex flex-col lg:flex-row gap-8 py-14 border-t border-thunder/8 m-0">
+        <figure className="featured-video flex flex-col lg:flex-row gap-8 pt-12">
           <div className="w-full lg:w-1/2 shrink-0">
             <iframe
               src={cat.videoUrl}
@@ -148,6 +116,13 @@ const ResearchTopicView = ({
           </figcaption>
         </figure>
       )}
+
+      {/* Other topics */}
+      <NavCardsList
+        ariaLabel="Other Temple HCI Lab research topics"
+        items={otherCategories}
+        linkDescription={(item) => `Learn more about ${item.label} research at the Temple HCI Lab`}
+      />
 
       <CtaBanner
         label="Get Involved"
