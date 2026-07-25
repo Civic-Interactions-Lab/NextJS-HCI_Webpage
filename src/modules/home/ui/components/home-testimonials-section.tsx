@@ -172,6 +172,46 @@ const TestimonialsSection = ({ testimonials }: Props) => {
         <SectionLink href="/people">Meet the people</SectionLink>
       </div>
 
+      {/* JSON-LD: structured data for search engines and AI crawlers */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Testimonials — Temple HCI Lab",
+            "itemListElement": testimonials.map((t, i) => ({
+              "@type": "ListItem",
+              "position": i + 1,
+              "item": {
+                "@type": "Review",
+                "reviewBody": t.quote,
+                "author": {
+                  "@type": "Person",
+                  "name": t.person?.name,
+                  "jobTitle": t.role,
+                },
+              },
+            })),
+          }),
+        }}
+      />
+
+      {/* Always-present semantic list for crawlers */}
+      <ul className="sr-only" aria-label="Testimonials" aria-hidden="true">
+        {testimonials.map((t) => (
+          <li key={t._id}>
+            <blockquote>
+              <p className="text-p1 text-thunder/80 leading-relaxed">{t.quote}</p>
+              <footer className="mt-2">
+                <cite className="not-italic font-semibold text-thunder">{t.person?.name}</cite>
+                {t.role && <span className="text-sm text-thunder/55"> — {t.role}</span>}
+              </footer>
+            </blockquote>
+          </li>
+        ))}
+      </ul>
+
       <div
         className="relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
         style={{ touchAction: "pan-y" }}

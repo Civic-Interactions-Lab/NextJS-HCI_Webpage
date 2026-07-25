@@ -9,7 +9,7 @@ export const COMMUNITY_RESEARCH_STATS = [
   },
 ];
 
-export const LEADERSHIP_STATS = [
+export const CONFERENCE_TRAVEL_STATS = [
   { number: "30+", desc: "students have traveled to present their work" },
   { number: "10+", desc: "students have traveled internationally" },
 ];

@@ -22,7 +22,7 @@ const SPONSOR_NAV_ITEMS = [
   },
 ];
 
-const SponsorsView = ({ sponsors }: SponsorsViewProps) => {
+export default function SponsorsView({ sponsors }: SponsorsViewProps) {
   const [activeTiers, setActiveTiers] = useState<string[]>([]);
 
   const filtered = useMemo(() => {
@@ -35,7 +35,7 @@ const SponsorsView = ({ sponsors }: SponsorsViewProps) => {
   }, [sponsors, activeTiers]);
 
   return (
-    <div className="space-y-20">
+    <div className="space-y-32">
       {/* Intro header */}
       <ViewIntroHeader
         label="Our Sponsors"
@@ -77,4 +77,3 @@ const SponsorsView = ({ sponsors }: SponsorsViewProps) => {
   );
 };
 
-export default SponsorsView;

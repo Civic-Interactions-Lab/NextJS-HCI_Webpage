@@ -9,13 +9,23 @@ import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
 const EventsUpcoming = () => {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  useStaggerReveal(rootRef, ".featured-card", { y: 60, duration: 0.7, ease: "power3.out", trigger: ".featured-card" });
-  useStaggerReveal(rootRef, ".side-card", { y: 50, stagger: 0.12, duration: 0.6, trigger: ".side-card" });
+  useStaggerReveal(rootRef, ".featured-card", {
+    y: 60,
+    duration: 0.7,
+    ease: "power3.out",
+    trigger: ".featured-card",
+  });
+  useStaggerReveal(rootRef, ".side-card", {
+    y: 50,
+    stagger: 0.12,
+    duration: 0.6,
+    trigger: ".side-card",
+  });
 
   const [featured, ...rest] = UPCOMING_EVENTS;
 
   return (
-    <section ref={rootRef} className="flex flex-col gap-10">
+    <section ref={rootRef} className="flex flex-col gap-8">
       <SectionTitle>Upcoming Events</SectionTitle>
 
       {/* Featured card */}

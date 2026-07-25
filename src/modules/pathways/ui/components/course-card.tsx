@@ -13,6 +13,11 @@ const CourseCard = ({ course }: { course: Course }) => (
     <p className="text-p2 text-thunder/60 leading-relaxed flex-1">
       {course.description}
     </p>
+    {course.instructor && (
+      <p className="font-outfit text-xs text-thunder/50">
+        {course.instructor}
+      </p>
+    )}
     {course.href && (
       <Link
         href={course.href}

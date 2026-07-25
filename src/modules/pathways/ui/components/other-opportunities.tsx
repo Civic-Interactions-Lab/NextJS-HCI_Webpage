@@ -6,7 +6,15 @@ import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
 import { ORGANIZATIONS, sectionFadeUp } from "@/modules/pathways/constants";
 
-const OrgBadge = ({ name, logo, href }: { name: string; logo: string; href: string }) => (
+const OrgBadge = ({
+  name,
+  logo,
+  href,
+}: {
+  name: string;
+  logo: string;
+  href: string;
+}) => (
   <Link
     href={href}
     target="_blank"
@@ -21,7 +29,7 @@ const OrgBadge = ({ name, logo, href }: { name: string; logo: string; href: stri
 
 const OtherOpportunities = () => (
   <motion.div
-    className="-mx-6 md:-mx-12 px-6 md:px-12 py-14 bg-alabaster flex flex-col gap-6"
+    className="-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster flex flex-col gap-6"
     {...sectionFadeUp}
   >
     <div className="flex flex-col gap-1 max-w-2xl">

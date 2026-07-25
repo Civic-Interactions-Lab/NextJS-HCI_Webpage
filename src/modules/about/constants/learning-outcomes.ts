@@ -9,7 +9,7 @@ export const LEARNING_OUTCOMES = [
   {
     id: 2,
     category: "LEAD",
-    description: "Learn to tackle large systemic problems with solutions that actually meet people's needs.",
+    description: "Learn to tackle large systemic problems by taking risks and make consequential decisions.",
     badgeColor: "bg-grass",
     radius: "rounded-xl",
   },

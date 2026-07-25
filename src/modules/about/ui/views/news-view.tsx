@@ -2,11 +2,11 @@ import NewsTimeline from "@/modules/about/ui/components/news-timeline";
 import CtaBanner from "@/components/cta-banner";
 import { getAllNews } from "@/sanity/lib/news/getNews";
 
-const NewsView = async () => {
+export default async function NewsView() {
   const allNews = await getAllNews();
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-32">
       <NewsTimeline allNews={allNews} />
       <CtaBanner
         label="Share your story"
@@ -18,5 +18,3 @@ const NewsView = async () => {
     </div>
   );
 };
-
-export default NewsView;

@@ -9,11 +9,21 @@ interface CtaBannerProps {
   ctaHref: string;
 }
 
-const CtaBanner = ({ label, title, body, ctaLabel, ctaHref }: CtaBannerProps) => {
-  const isExternal = ctaHref.startsWith("http") || ctaHref.startsWith("mailto:");
+const CtaBanner = ({
+  label,
+  title,
+  body,
+  ctaLabel,
+  ctaHref,
+}: CtaBannerProps) => {
+  const isExternal =
+    ctaHref.startsWith("http") || ctaHref.startsWith("mailto:");
 
   return (
-    <section aria-label={label} className="-mx-6 md:-mx-12 bg-alabaster px-6 md:px-12 py-14">
+    <section
+      aria-label={label}
+      className="-mx-6 md:-mx-12 bg-alabaster px-6 md:px-12 py-6"
+    >
       <div className="flex flex-col items-center gap-5 text-center max-w-2xl mx-auto">
         <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
           {label}
@@ -30,7 +40,10 @@ const CtaBanner = ({ label, title, body, ctaLabel, ctaHref }: CtaBannerProps) =>
           className="group inline-flex items-center gap-2 font-outfit font-medium text-sm text-white bg-well-red hover:bg-well-red/90 px-6 py-3 rounded-full transition-colors mt-2"
         >
           {ctaLabel}
-          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          <ArrowRight
+            className="w-4 h-4 transition-transform group-hover:translate-x-1"
+            aria-hidden="true"
+          />
         </Link>
       </div>
     </section>

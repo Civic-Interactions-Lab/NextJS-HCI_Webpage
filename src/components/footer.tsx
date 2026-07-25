@@ -21,7 +21,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex flex-col gap-4 shrink-0 lg:w-56">
             <Logo size={44} />
-            <p className="font-outfit text-sm text-white/50 leading-relaxed">
+            <p className="font-outfit text-base text-white/50 leading-relaxed">
               The largest undergraduate research lab at Temple University.
             </p>
             <div className="flex gap-4 mt-1">
@@ -52,7 +52,7 @@ const Footer = () => {
               <div key={item.href} className="flex flex-col gap-3">
                 <Link
                   href={item.href}
-                  className="font-outfit font-semibold text-sm text-white hover:text-well-red transition-colors"
+                  className="font-outfit font-semibold text-base text-white hover:text-well-red transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -62,7 +62,7 @@ const Footer = () => {
                       <li key={child.href}>
                         <Link
                           href={child.href}
-                          className="font-outfit text-xs text-white/45 hover:text-white/80 transition-colors leading-snug"
+                          className="font-outfit text-sm text-white/45 hover:text-white/80 transition-colors leading-snug"
                         >
                           {child.label}
                         </Link>
@@ -77,10 +77,10 @@ const Footer = () => {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-outfit text-xs text-white/30">
+          <p className="font-outfit text-sm text-white/30">
             © {new Date().getFullYear()} Temple University HCI Lab. All rights reserved.
           </p>
-          <p className="font-outfit text-xs text-white/20">
+          <p className="font-outfit text-sm text-white/20">
             College of Science and Technology · Philadelphia, PA
           </p>
         </div>

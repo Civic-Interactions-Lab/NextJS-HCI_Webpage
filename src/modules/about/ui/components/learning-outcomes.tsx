@@ -11,7 +11,7 @@ const LearningOutcomes = () => {
   useStaggerReveal(rootRef, ".outcome-card");
 
   return (
-    <section ref={rootRef} className="-mx-6 md:-mx-12 px-6 md:px-12 py-14 bg-alabaster">
+    <section ref={rootRef} className="-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster">
       <div className="flex flex-col gap-10 max-w-7xl">
         <SectionTitle>Learning Outcomes</SectionTitle>
 

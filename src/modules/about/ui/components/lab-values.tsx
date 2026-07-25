@@ -18,13 +18,10 @@ const LabValues = () => {
       <div ref={textRef} className="flex flex-col gap-6">
         <SectionTitle>Lab Values</SectionTitle>
         <p className="text-p1 text-thunder/75 leading-relaxed">
-          Our lab is built on values that guide how we learn, create, and work together. We
-          prioritize collaboration, curiosity, and inclusivity — ensuring every member feels
-          supported and empowered to contribute their ideas.
+          Our lab is built on values that guide how we learn, create, and work together. We prioritize collaboration, curiosity, and inclusivity, ensuring every member feels supported and empowered to contribute their ideas.
         </p>
         <p className="text-p1 text-thunder/75 leading-relaxed">
-          We believe in designing with empathy, questioning with intention, and pursuing research
-          that makes a positive impact on people and technology.
+          We believe in designing with empathy, questioning with intention, and pursuing research that makes a positive impact on people and technology.
         </p>
       </div>
 

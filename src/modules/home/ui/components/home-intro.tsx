@@ -21,21 +21,30 @@ const HomeIntro = () => {
         </SectionTitle>
       </motion.div>
       <motion.p variants={fadeUp} className="text-p1 text-thunder/85 max-w-3xl">
-        Welcome! We&apos;re the Temple HCI Lab — the largest undergraduate
-        research lab at Temple University. You&apos;ll find us in the{" "}
+        Welcome to the Temple HCI Lab! Located in Philadelphia, we&apos;re the
+        largest undergraduate research lab at Temple University. Based in the{" "}
         <Link
           href="https://cst.temple.edu"
-          className="underline underline-offset-2 hover:text-well-red transition-colors"
+          className="text-well-red underline underline-offset-2 hover:opacity-80 transition-opacity"
         >
           College of Science and Technology
-        </Link>{" "}
-        within the Department of Computer and Information Sciences, led by{" "}
+        </Link>
+        &apos;s Department of Computer and Information Sciences, our lab is led
+        by{" "}
         <Link
           href="https://stevemacn.github.io/"
-          className="underline underline-offset-2 hover:text-well-red transition-colors"
+          className="text-well-red underline underline-offset-2 hover:opacity-80 transition-opacity"
         >
-          Dr. Stephen MacNeil.
+          Dr. Stephen MacNeil
         </Link>
+        . We conduct interdisciplinary research at the intersection of
+        human-computer interaction (HCI), artificial intelligence (AI),
+        computing education, assistive technology, and responsible AI. Our
+        community includes students from many disciplines, including computer
+        science, psychology, design, and management information systems. Our
+        commitment to undergraduate research has led to more than 80
+        undergraduate researchers co-authoring peer-reviewed papers and
+        conference posters through the lab.
       </motion.p>
     </motion.section>
   );
