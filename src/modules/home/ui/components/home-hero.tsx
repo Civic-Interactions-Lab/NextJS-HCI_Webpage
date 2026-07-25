@@ -13,11 +13,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TOP_GAP = 80;
 const BOTTOM_GAP = 80;
+const MIN_CARDS_SLIDE_GAP = 24;
 const EASE_POWER = 4;
 const CARD_DELAYS = [0, 0.45, 0.78];
 const CARD_EASE_POWERS = [1, EASE_POWER, EASE_POWER];
 
-type CardsBox = { top: number; height: number };
+type CardsBox = { top: number; height: number; minSafeTop: number };
 
 const getSlideDistance = (box: CardsBox, vh: number): number =>
   Math.max(Math.min(((vh - box.top) / 2) * 4, vh - box.top - 20), 1);
@@ -64,28 +65,56 @@ const getCardBg = (
 
 const ResearchCardContent = ({
   area,
+  compact,
 }: {
   area: (typeof RESEARCH_AREAS)[number];
+  compact?: boolean;
 }) => (
   <>
-    <p className="font-oxanium font-semibold text-white text-sm md:text-2xl leading-snug">
+    <p
+      className={`font-oxanium font-semibold text-white leading-snug ${
+        compact ? "text-sm md:text-base" : "text-sm md:text-2xl"
+      }`}
+    >
       {area.title}
     </p>
-    <p className="text-[10px] md:text-base text-white/70 leading-snug">
+    <p
+      className={`text-white/70 leading-snug ${
+        compact ? "text-[10px] md:text-xs" : "text-[10px] md:text-base"
+      }`}
+    >
       {area.description}
     </p>
     <div className="flex items-end justify-between gap-1 md:gap-2 mt-auto">
-      <span className="font-oxanium text-[9px] md:text-sm font-medium text-white/80 inline-flex items-center gap-0.5 whitespace-nowrap">
+      <span
+        className={`font-oxanium font-medium text-white/80 inline-flex items-center gap-0.5 whitespace-nowrap rounded-full border border-white/25 group-hover:border-white/60 group-hover:text-white transition-colors ${
+          compact
+            ? "text-[9px] md:text-xs px-1.5 py-0.5 md:px-2.5 md:py-1"
+            : "text-[9px] md:text-sm px-1.5 py-0.5 md:px-3 md:py-1.5"
+        }`}
+      >
         See more{" "}
         <ArrowRight className="w-2 h-2 md:w-3 md:h-3 transition-transform group-hover:translate-x-1" />
       </span>
-      <area.Icon className="w-4 h-4 md:w-12 md:h-12 text-white/60 shrink-0" />
+      <area.Icon
+        className={`text-white/60 shrink-0 ${
+          compact ? "w-4 h-4 md:w-7 md:h-7" : "w-4 h-4 md:w-12 md:h-12"
+        }`}
+      />
     </div>
   </>
 );
 
-const ResearchGrid = ({ animated }: { animated?: boolean }) => (
-  <div className="grid grid-cols-3 gap-2 md:gap-4">
+const ResearchGrid = ({
+  animated,
+  compact,
+}: {
+  animated?: boolean;
+  compact?: boolean;
+}) => (
+  <div
+    className={`grid grid-cols-3 gap-2 ${compact ? "md:gap-2" : "md:gap-4"}`}
+  >
     {RESEARCH_AREAS.map((area, index) =>
       animated ? (
         <div
@@ -96,18 +125,22 @@ const ResearchGrid = ({ animated }: { animated?: boolean }) => (
         >
           <Link
             href={area.href}
-            className="flex flex-col gap-2 md:gap-3 p-3 md:p-7"
+            className={`flex flex-col gap-2 p-3 ${
+              compact ? "md:gap-2 md:p-4" : "md:gap-3 md:p-7"
+            }`}
           >
-            <ResearchCardContent area={area} />
+            <ResearchCardContent area={area} compact={compact} />
           </Link>
         </div>
       ) : (
         <Link
           key={area.id}
           href={area.href}
-          className="group flex flex-col gap-2 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-3 md:p-7"
+          className={`group flex flex-col gap-2 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-3 ${
+            compact ? "md:gap-2 md:p-4" : "md:gap-3 md:p-7"
+          }`}
         >
-          <ResearchCardContent area={area} />
+          <ResearchCardContent area={area} compact={compact} />
         </Link>
       ),
     )}
@@ -117,8 +150,16 @@ const ResearchGrid = ({ animated }: { animated?: boolean }) => (
 const HomeHero = () => {
   const [cardsBox, setCardsBox] = useState<CardsBox | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isCompact, setIsCompact] = useState(false);
   const autoSlideRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    const update = () => setIsCompact(window.innerHeight < 850);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const restartAutoSlide = () => {
     if (autoSlideRef.current) clearInterval(autoSlideRef.current);
@@ -344,7 +385,10 @@ const HomeHero = () => {
         vh,
       );
       const headingOffset = window.innerWidth < 768 ? 40 : 72;
-      const headingY = Math.min(hb - 60, ct - headingOffset);
+      const headingY = Math.max(
+        Math.min(hb - 60, ct - headingOffset),
+        cardsBox.minSafeTop + MIN_CARDS_SLIDE_GAP,
+      );
       const fadeOpacity = v > 0 ? Math.max(0, 1 - v / 60) : 1;
       gsap.set(el, { y: headingY, opacity: fadeOpacity });
       if (strip)
@@ -364,8 +408,26 @@ const HomeHero = () => {
       const saved = heroRef.current.style.height;
       heroRef.current.style.height = `${window.innerHeight}px`;
       const r = cardsRef.current.getBoundingClientRect();
+      const slideContentEls = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-hero-slide-content]"),
+      );
+      if (titleContainerRef.current) slideContentEls.push(titleContainerRef.current);
+      const maxSlideBottom = slideContentEls.reduce(
+        (max, el) => Math.max(max, el.getBoundingClientRect().bottom),
+        0,
+      );
+      const headingHeight = headingRef.current?.getBoundingClientRect().height ?? 0;
+      const safeCardTop =
+        maxSlideBottom +
+        MIN_CARDS_SLIDE_GAP +
+        headingHeight +
+        MIN_CARDS_SLIDE_GAP;
       heroRef.current.style.height = saved;
-      setCardsBox({ top: r.top, height: r.height });
+      setCardsBox({
+        top: Math.max(r.top, safeCardTop),
+        height: r.height,
+        minSafeTop: maxSlideBottom,
+      });
     };
     measure();
     const raf = requestAnimationFrame(() => requestAnimationFrame(measure));
@@ -374,6 +436,10 @@ const HomeHero = () => {
     const observer = new ResizeObserver(measure);
     observer.observe(cardsRef.current);
     if (titleRef.current) observer.observe(titleRef.current);
+    if (headingRef.current) observer.observe(headingRef.current);
+    document
+      .querySelectorAll<HTMLElement>("[data-hero-slide-content]")
+      .forEach((el) => observer.observe(el));
     window.addEventListener("resize", measure);
     return () => {
       cancelAnimationFrame(raf);
@@ -450,7 +516,13 @@ const HomeHero = () => {
                 />
               </div>
               <div ref={titleContainerRef} className="invisible text-center">
-                <h1 className="font-oxanium font-semibold leading-[0.88] tracking-tight text-[68px] md:text-[80px] lg:text-[112px]">
+                <h1
+                  className={`font-oxanium font-semibold leading-[0.88] tracking-tight ${
+                    isCompact
+                      ? "text-[40px] md:text-[48px] lg:text-[64px]"
+                      : "text-[68px] md:text-[80px] lg:text-[112px]"
+                  }`}
+                >
                   <span className="font-outfit! text-white">Temple </span>
                   <span className="font-outfit! text-well-red">HCI</span>
                   <span className="font-outfit! text-white"> Lab</span>
@@ -475,21 +547,32 @@ const HomeHero = () => {
             >
               <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
                 <div
+                  data-hero-slide-content
                   onMouseEnter={() => {
                     isPausedRef.current = true;
                   }}
                   onMouseLeave={() => {
                     isPausedRef.current = false;
                   }}
-                  className="w-full md:max-w-md flex flex-col gap-3 md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl md:p-5"
+                  className={`w-full flex md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl ${
+                    isCompact
+                      ? "md:max-w-sm flex-col gap-2 md:p-3"
+                      : "md:max-w-md flex-col gap-3 md:p-5"
+                  }`}
                 >
-                  <p className="text-sm text-white/90 leading-relaxed">
+                  <p
+                    className={`text-white/90 leading-relaxed ${
+                      isCompact ? "text-xs" : "text-sm"
+                    }`}
+                  >
                     {slide.content.text}
                   </p>
                   <a
                     href={slide.content.href}
                     aria-label={slide.content.cta}
-                    className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors"
+                    className={`group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-white/90 hover:text-white border border-white/60 hover:border-white rounded-full transition-colors ${
+                      isCompact ? "text-xs px-4 py-1.5" : "text-sm px-6 py-2"
+                    }`}
                   >
                     {slide.content.cta}{" "}
                     <ArrowRight
@@ -525,9 +608,13 @@ const HomeHero = () => {
 
         {/* Ghost grid — invisible, used only to measure card positions */}
         <div className="relative z-10 h-full flex flex-col justify-end pointer-events-none">
-          <div className="max-w-7xl w-full mx-auto px-6 md:px-12 pb-24 md:pb-28">
+          <div
+            className={`max-w-7xl w-full mx-auto px-6 md:px-12 ${
+              isCompact ? "pb-12 md:pb-14" : "pb-24 md:pb-28"
+            }`}
+          >
             <div ref={cardsRef} className="invisible pointer-events-none">
-              <ResearchGrid />
+              <ResearchGrid compact={isCompact} />
             </div>
           </div>
         </div>
@@ -549,7 +636,7 @@ const HomeHero = () => {
             >
               <SectionTitle light>Check out our research focus</SectionTitle>
             </div>
-            <ResearchGrid animated />
+            <ResearchGrid animated compact={isCompact} />
           </div>
 
           {/* Page indicator dots — below research cards, fades on scroll */}
