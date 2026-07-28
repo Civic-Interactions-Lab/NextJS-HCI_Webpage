@@ -60,7 +60,7 @@ const NavCardsList = ({
     <nav
       ref={ref}
       aria-label={ariaLabel}
-      className="border-t border-thunder/8 space-y-8"
+      className="border-t border-thunder/8 space-y-16"
     >
       {items.map((item, i) => (
         <Link

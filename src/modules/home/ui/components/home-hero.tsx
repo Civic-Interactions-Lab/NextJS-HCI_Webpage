@@ -489,44 +489,46 @@ const HomeHero = () => {
         <div className="hidden md:block absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black/95" />
 
         {/* Slide 0: Title */}
-        <div
-          className="absolute top-1/2 md:top-0 bottom-[30%] md:bottom-0 left-0 right-0 flex items-center justify-center px-6 md:px-12 z-10 transition-all duration-500"
-          style={{
-            opacity: activeSlide === 0 ? 1 : 0,
-            transform:
-              activeSlide === 0 ? "translateX(0)" : "translateX(-28px)",
-            pointerEvents: activeSlide === 0 ? "auto" : "none",
-          }}
-        >
-          <div className="flex flex-col items-center gap-4">
-            {/* Title with rolling logo entrance */}
-            <div ref={titleRef} className="origin-bottom-center relative">
-              <div
-                ref={rollingLogoRef}
-                className="absolute pointer-events-none z-10 opacity-0"
-                style={{ top: 0, left: 0 }}
-              >
-                <Image
-                  src="/logos/hci-logo.png"
-                  alt="Temnple HCI Lab Logo"
-                  aria-hidden="true"
-                  width={88}
-                  height={88}
-                  className="rounded-md"
-                />
-              </div>
-              <div ref={titleContainerRef} className="invisible text-center">
-                <h1
-                  className={`font-oxanium font-semibold leading-[0.88] tracking-tight ${
-                    isCompact
-                      ? "text-[40px] md:text-[48px] lg:text-[64px]"
-                      : "text-[68px] md:text-[80px] lg:text-[112px]"
-                  }`}
+        <div className="absolute top-[60%] -translate-y-1/2 md:top-0 md:translate-y-0 md:bottom-0 left-0 right-0 flex items-center justify-center px-6 md:px-12 z-10">
+          <div
+            className="transition-all duration-500"
+            style={{
+              opacity: activeSlide === 0 ? 1 : 0,
+              transform:
+                activeSlide === 0 ? "translateX(0)" : "translateX(-28px)",
+              pointerEvents: activeSlide === 0 ? "auto" : "none",
+            }}
+          >
+            <div className="flex flex-col items-center gap-4">
+              {/* Title with rolling logo entrance */}
+              <div ref={titleRef} className="origin-bottom-center relative">
+                <div
+                  ref={rollingLogoRef}
+                  className="absolute pointer-events-none z-10 opacity-0"
+                  style={{ top: 0, left: 0 }}
                 >
-                  <span className="font-outfit! text-white">Temple </span>
-                  <span className="font-outfit! text-well-red">HCI</span>
-                  <span className="font-outfit! text-white"> Lab</span>
-                </h1>
+                  <Image
+                    src="/logos/hci-logo.png"
+                    alt="Temnple HCI Lab Logo"
+                    aria-hidden="true"
+                    width={88}
+                    height={88}
+                    className="rounded-md"
+                  />
+                </div>
+                <div ref={titleContainerRef} className="invisible text-center">
+                  <h1
+                    className={`font-oxanium font-semibold leading-[0.88] tracking-tight ${
+                      isCompact
+                        ? "text-[40px] md:text-[48px] lg:text-[64px]"
+                        : "text-[68px] md:text-[80px] lg:text-[112px]"
+                    }`}
+                  >
+                    <span className="font-outfit! text-white">Temple </span>
+                    <span className="font-outfit! text-well-red">HCI</span>
+                    <span className="font-outfit! text-white"> Lab</span>
+                  </h1>
+                </div>
               </div>
             </div>
           </div>
@@ -537,49 +539,53 @@ const HomeHero = () => {
             <div
               key={i}
               aria-hidden={activeSlide !== i}
-              className="absolute top-1/2 md:top-32 bottom-[30%] md:bottom-auto left-0 right-0 w-full px-5 md:px-12 z-10 transition-all duration-500 flex items-center md:block"
-              style={{
-                opacity: activeSlide === i ? 1 : 0,
-                transform:
-                  activeSlide === i ? "translateX(0)" : "translateX(28px)",
-                pointerEvents: activeSlide === i ? "auto" : "none",
-              }}
+              className="absolute top-[60%] -translate-y-1/2 md:top-32 md:translate-y-0 left-0 right-0 z-10"
             >
-              <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
-                <div
-                  data-hero-slide-content
-                  onMouseEnter={() => {
-                    isPausedRef.current = true;
-                  }}
-                  onMouseLeave={() => {
-                    isPausedRef.current = false;
-                  }}
-                  className={`w-full flex md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl ${
-                    isCompact
-                      ? "md:max-w-sm flex-col gap-2 md:p-3"
-                      : "md:max-w-md flex-col gap-3 md:p-5"
-                  }`}
-                >
-                  <p
-                    className={`text-white/90 leading-relaxed ${
-                      isCompact ? "text-xs" : "text-sm"
+              <div
+                className="w-full px-5 md:px-12 transition-all duration-500"
+                style={{
+                  opacity: activeSlide === i ? 1 : 0,
+                  transform:
+                    activeSlide === i ? "translateX(0)" : "translateX(28px)",
+                  pointerEvents: activeSlide === i ? "auto" : "none",
+                }}
+              >
+                <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
+                  <div
+                    data-hero-slide-content
+                    onMouseEnter={() => {
+                      isPausedRef.current = true;
+                    }}
+                    onMouseLeave={() => {
+                      isPausedRef.current = false;
+                    }}
+                    className={`w-full flex md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl ${
+                      isCompact
+                        ? "md:max-w-sm flex-col gap-2 md:p-3"
+                        : "md:max-w-md flex-col gap-3 md:p-5"
                     }`}
                   >
-                    {slide.content.text}
-                  </p>
-                  <a
-                    href={slide.content.href}
-                    aria-label={slide.content.cta}
-                    className={`group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-white/90 hover:text-white border border-white/60 hover:border-white rounded-full transition-colors ${
-                      isCompact ? "text-xs px-4 py-1.5" : "text-sm px-6 py-2"
-                    }`}
-                  >
-                    {slide.content.cta}{" "}
-                    <ArrowRight
-                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </a>
+                    <p
+                      className={`text-white/90 leading-relaxed ${
+                        isCompact ? "text-xs" : "text-sm"
+                      }`}
+                    >
+                      {slide.content.text}
+                    </p>
+                    <a
+                      href={slide.content.href}
+                      aria-label={slide.content.cta}
+                      className={`group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-white/90 hover:text-white border border-white/60 hover:border-white rounded-full transition-colors ${
+                        isCompact ? "text-xs px-4 py-1.5" : "text-sm px-6 py-2"
+                      }`}
+                    >
+                      {slide.content.cta}{" "}
+                      <ArrowRight
+                        className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
