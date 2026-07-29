@@ -39,7 +39,7 @@ const FoundingPatrons = () => (
             rel="noopener noreferrer"
             className="group flex items-center gap-6 h-full rounded-2xl border border-dashed border-thunder/20 bg-white p-8 transition-colors hover:border-gold/50"
           >
-            <div className="flex items-center justify-center w-24 h-24 md:w-28 md:h-28 shrink-0 rounded-full border border-dashed border-thunder/20 bg-alabaster">
+            <div className="flex items-center justify-center w-24 h-24 md:w-28 md:h-28 shrink-0 rounded-full border border-dashed border-thunder/20">
               <Sparkles className="w-9 h-9 text-gold/70" aria-hidden="true" />
             </div>
             <div className="flex flex-col gap-2">

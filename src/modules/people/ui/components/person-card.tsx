@@ -24,7 +24,7 @@ const PersonCard = ({ person }: { person: People }) => {
   const inner = (
     <div className="rounded-2xl overflow-hidden bg-white border border-thunder/10 hover:shadow-md hover:border-thunder/20 transition-all duration-200 h-full">
       {/* Square avatar */}
-      <div className="relative w-full aspect-square bg-alabaster">
+      <div className="relative w-full aspect-square">
         {imgSrc ? (
           <Image
             src={imgSrc}

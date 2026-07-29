@@ -29,7 +29,7 @@ const CommunityResearch = () => {
         {COMMUNITY_RESEARCH_STATS.map(({ number, desc }) => (
           <div
             key={number}
-            className="stat-item flex flex-col gap-2 p-5 bg-alabaster rounded-2xl"
+            className="stat-item flex flex-col gap-2 p-5 rounded-2xl"
           >
             <span className="font-outfit font-bold text-5xl text-well-red leading-none">
               {number}

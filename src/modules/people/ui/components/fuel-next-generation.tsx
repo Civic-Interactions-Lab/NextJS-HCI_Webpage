@@ -39,7 +39,7 @@ const FuelNextGeneration = () => (
       </p>
     </div>
 
-    <div className="rounded-3xl border border-thunder/10 bg-alabaster p-6 md:p-10 flex flex-col gap-6">
+    <div className="rounded-3xl border border-thunder/10 p-6 md:p-10 flex flex-col gap-6">
       <motion.ul
         role="list"
         className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"

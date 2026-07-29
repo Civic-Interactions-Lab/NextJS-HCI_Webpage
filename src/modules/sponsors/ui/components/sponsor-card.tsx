@@ -29,7 +29,7 @@ const SponsorCard = ({ sponsor }: { sponsor: Sponsors }) => {
       <div className="rounded-2xl border border-thunder/10 bg-white shadow-sm hover:shadow-md hover:border-thunder/20 transition-all duration-200 overflow-hidden p-5 flex flex-col gap-4">
         {/* Logo + description */}
         <div className="flex gap-4 items-start">
-          <div className="shrink-0 w-20 h-14 relative rounded-xl overflow-hidden bg-alabaster flex items-center justify-center p-2">
+          <div className="shrink-0 w-20 h-14 relative rounded-xl overflow-hidden flex items-center justify-center p-2">
             <Image
               src={getImageSrc(sponsor.logo)}
               alt={sponsor.altText || `${sponsor.name} logo — Temple HCI Lab sponsor`}

@@ -15,7 +15,7 @@ const GetInTouch = () => {
     <section ref={rootRef} className="flex flex-col gap-10">
       <SectionTitle>Get In Touch</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="contact-card flex flex-col gap-4 p-8 bg-alabaster rounded-2xl border border-thunder/8">
+        <div className="contact-card flex flex-col gap-4 p-8 rounded-2xl border border-thunder/8">
           <Mail className="w-8 h-8 text-well-red" aria-hidden="true" />
           <div className="flex flex-col gap-1">
             <p className="font-outfit font-semibold text-lg text-thunder">Email Us</p>
@@ -33,7 +33,7 @@ const GetInTouch = () => {
           </Link>
         </div>
 
-        <div className="contact-card flex flex-col gap-4 p-8 bg-alabaster rounded-2xl border border-thunder/8">
+        <div className="contact-card flex flex-col gap-4 p-8 rounded-2xl border border-thunder/8">
           <Users className="w-8 h-8 text-well-red" aria-hidden="true" />
           <div className="flex flex-col gap-1">
             <p className="font-outfit font-semibold text-lg text-thunder">Join the Lab</p>

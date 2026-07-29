@@ -29,7 +29,7 @@ const OrgBadge = ({
 
 const OtherOpportunities = () => (
   <motion.div
-    className="-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster flex flex-col gap-6"
+    className="-mx-6 md:-mx-12 px-6 md:px-12 flex flex-col gap-6"
     {...sectionFadeUp}
   >
     <div className="flex flex-col gap-1 max-w-2xl">

@@ -40,7 +40,7 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
           className={`whitespace-nowrap font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors duration-150 shrink-0 ${
             active.length === 0
               ? "bg-thunder text-white border-thunder"
-              : "bg-alabaster text-thunder/70 border-thunder/10 hover:border-thunder/25"
+              : "text-thunder/70 border-thunder/10 hover:border-thunder/25"
           }`}
         >
           All
@@ -57,7 +57,7 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
               className={`whitespace-nowrap font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors duration-150 shrink-0 ${
                 isActive
                   ? "bg-well-red text-white border-well-red"
-                  : "bg-alabaster text-thunder/70 border-thunder/10 hover:border-thunder/25"
+                  : "text-thunder/70 border-thunder/10 hover:border-thunder/25"
               }`}
             >
               {label}

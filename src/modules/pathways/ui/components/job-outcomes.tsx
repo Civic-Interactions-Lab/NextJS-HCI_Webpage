@@ -24,7 +24,7 @@ const LogoBadge = ({
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex items-center justify-center p-3 rounded-xl bg-alabaster hover:shadow-sm transition-shadow"
+    className="flex items-center justify-center p-3 rounded-xl hover:shadow-sm transition-shadow"
   >
     <div className="relative h-8 w-20">
       <Image src={logo} alt={`${name} logo`} fill className="object-contain" />
@@ -71,7 +71,7 @@ const JobOutcomes = () => (
             {JOB_TITLES.map((title) => (
               <span
                 key={title}
-                className="font-outfit text-xs font-medium px-3 py-1.5 rounded-full bg-alabaster border border-thunder/10 text-thunder/70"
+                className="font-outfit text-xs font-medium px-3 py-1.5 rounded-full border border-thunder/10 text-thunder/70"
               >
                 {title}
               </span>

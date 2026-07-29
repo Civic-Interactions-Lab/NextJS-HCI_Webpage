@@ -22,7 +22,7 @@ const EventsGallery = () => {
       <SectionTitle>Past Events</SectionTitle>
 
       {/* Alabaster strip */}
-      <div className="-mx-6 md:-mx-12 bg-alabaster px-6 md:px-12">
+      <div className="-mx-6 md:-mx-12 px-6 md:px-12">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {EVENTS_GALLERY.map(({ src, caption, rotate }, i) => (
             <div

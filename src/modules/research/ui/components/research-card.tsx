@@ -47,7 +47,7 @@ const ResearchCard = ({ research }: { research: Research }) => {
             {validActions.map((action) => (
               <span
                 key={action._key}
-                className="inline-flex items-center gap-1.5 font-outfit text-xs font-medium px-3 py-1 rounded-full bg-alabaster text-thunder/70"
+                className="inline-flex items-center gap-1.5 font-outfit text-xs font-medium px-3 py-1 rounded-full text-thunder/70"
               >
                 {ICON_MAP[action.label.toLowerCase()]}
                 {action.label}

@@ -26,7 +26,7 @@ const ImpactStories = () => (
         <motion.blockquote
           key={story.id}
           variants={fadeUp}
-          className="flex flex-col gap-4 bg-alabaster rounded-2xl p-6"
+          className="flex flex-col gap-4 rounded-2xl p-6"
         >
           <Quote className="w-5 h-5 text-well-red shrink-0" fill="currentColor" strokeWidth={0} />
           <p className="text-p1 text-thunder/80 leading-relaxed flex-1">{story.quote}</p>

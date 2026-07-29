@@ -22,7 +22,7 @@ const SponsorshipTiers = () => (
         <motion.li key={tier.id} variants={fadeUp} className="list-none flex flex-col gap-3">
           <SectionTitle>{tier.title}</SectionTitle>
 
-          <div className={`rounded-2xl border border-thunder/10 p-6 md:p-8 flex flex-col gap-4 ${i % 2 === 1 ? "bg-alabaster" : "bg-white shadow-sm"}`}>
+          <div className={`rounded-2xl border border-thunder/10 p-6 md:p-8 flex flex-col gap-4 ${i % 2 === 1 ? "" : "bg-white shadow-sm"}`}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
               <span className="font-outfit font-medium text-2xl text-well-red">
                 {tier.price}

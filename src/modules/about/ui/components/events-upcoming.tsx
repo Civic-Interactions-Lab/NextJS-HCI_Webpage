@@ -29,7 +29,7 @@ const EventsUpcoming = () => {
       <SectionTitle>Upcoming Events</SectionTitle>
 
       {/* Featured card */}
-      <div className="featured-card group relative rounded-3xl overflow-hidden bg-alabaster border border-thunder/8 flex flex-col md:flex-row gap-0 shadow-sm hover:shadow-lg transition-shadow">
+      <div className="featured-card group relative rounded-3xl overflow-hidden border border-thunder/8 flex flex-col md:flex-row gap-0 shadow-sm hover:shadow-lg transition-shadow">
         {/* Image */}
         <div className="relative w-full md:w-1/2 h-64 md:h-auto shrink-0">
           <Image
@@ -80,7 +80,7 @@ const EventsUpcoming = () => {
         {rest.map(({ title, date, year, location, tag, description }, i) => (
           <div
             key={title}
-            className="side-card flex flex-col gap-5 rounded-2xl overflow-hidden bg-alabaster border border-thunder/8 shadow-sm hover:shadow-md transition-shadow"
+            className="side-card flex flex-col gap-5 rounded-2xl overflow-hidden border border-thunder/8 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="relative w-full h-40 shrink-0">
               <Image

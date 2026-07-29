@@ -90,7 +90,7 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
                     className="size-12 md:size-14 rounded-full object-cover shrink-0"
                   />
                 ) : (
-                  <div className="size-12 md:size-14 rounded-full bg-alabaster shrink-0" />
+                  <div className="size-12 md:size-14 rounded-full shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
                   {action?.url ? (

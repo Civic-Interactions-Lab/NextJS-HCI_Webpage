@@ -71,7 +71,7 @@ const NavCardsList = ({
               ? linkDescription(item)
               : `Learn more about ${item.label} — Temple HCI Lab`
           }
-          className={`nav-card group flex flex-col gap-3 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
+          className={`nav-card group flex flex-col gap-3 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12" : ""}`}
         >
           <SectionTitle>{item.label}</SectionTitle>
           <p className="text-p1 text-thunder/60 leading-relaxed max-w-xl">

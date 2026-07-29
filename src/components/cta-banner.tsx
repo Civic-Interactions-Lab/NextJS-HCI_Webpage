@@ -22,7 +22,7 @@ const CtaBanner = ({
   return (
     <section
       aria-label={label}
-      className="-mx-6 md:-mx-12 bg-alabaster px-6 md:px-12 py-6"
+      className="-mx-6 md:-mx-12 px-6 md:px-12 py-6"
     >
       <div className="flex flex-col items-center gap-5 text-center max-w-2xl mx-auto">
         <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">

@@ -245,7 +245,7 @@ const TestimonialsSection = ({ testimonials }: Props) => {
               ref={(el) => { cardsRef.current[i] = el; }}
               className="absolute top-1/2 left-1/2 overflow-hidden
                          w-[65vw] md:w-[380px] lg:w-[420px]
-                         flex flex-col gap-4 bg-alabaster rounded-2xl p-6 md:p-8"
+                         flex flex-col gap-4 rounded-2xl p-6 md:p-8"
               style={{ willChange: "transform, opacity" }}
             >
               <Quote className={`w-6 h-6 shrink-0 ${QUOTE_COLORS[i % QUOTE_COLORS.length]}`} fill="currentColor" strokeWidth={0} />
