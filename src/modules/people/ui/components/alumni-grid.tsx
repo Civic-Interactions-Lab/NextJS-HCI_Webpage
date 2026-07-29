@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { People } from "../../../../../sanity.types";
-import PersonCard from "@/modules/people/ui/components/person-card";
+import AlumniCard from "@/modules/people/ui/components/alumni-card";
 import { fadeUp, stagger, gridViewport } from "@/modules/people/constants";
 
 const AlumniGrid = ({ alumni }: { alumni: People[] }) => {
@@ -22,7 +22,7 @@ const AlumniGrid = ({ alumni }: { alumni: People[] }) => {
     >
       {alumni.map((person) => (
         <motion.li key={person._id} variants={fadeUp} className="list-none">
-          <PersonCard person={person} />
+          <AlumniCard person={person} />
         </motion.li>
       ))}
     </motion.ul>
