@@ -15,7 +15,6 @@ import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
   CircleDollarSignIcon,
   CircleQuestionMark,
-  Globe,
   MicroscopeIcon,
   NewspaperIcon,
   User,
@@ -40,14 +39,6 @@ export default defineConfig({
                 S.list()
                   .title("People")
                   .items([
-                    orderableDocumentListDeskItem({
-                      type: "people",
-                      title: "All People",
-                      id: "all-people",
-                      S,
-                      context,
-                    }),
-                    S.divider(),
                     orderableDocumentListDeskItem({
                       type: "people",
                       title: "Active",
@@ -82,13 +73,6 @@ export default defineConfig({
                 S.list()
                   .title("News")
                   .items([
-                    orderableDocumentListDeskItem({
-                      type: "news",
-                      title: "All News",
-                      id: "all-news",
-                      S,
-                      context,
-                    }),
                     orderableDocumentListDeskItem({
                       type: "news",
                       title: "Featured News",
@@ -150,13 +134,6 @@ export default defineConfig({
                   .items([
                     orderableDocumentListDeskItem({
                       type: "research",
-                      title: "All Research",
-                      id: "all-research",
-                      S,
-                      context,
-                    }),
-                    orderableDocumentListDeskItem({
-                      type: "research",
                       title: "Featured Research",
                       filter: "featured == true",
                       id: "featured-research",
@@ -205,14 +182,6 @@ export default defineConfig({
               S,
               context,
               icon: UserRoundCheck,
-            }),
-
-            orderableDocumentListDeskItem({
-              type: "conference",
-              title: "Conference",
-              S,
-              context,
-              icon: Globe,
             }),
 
             orderableDocumentListDeskItem({

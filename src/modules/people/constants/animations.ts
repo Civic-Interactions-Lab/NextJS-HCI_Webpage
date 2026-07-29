@@ -11,3 +11,13 @@ export const stagger: Variants = {
 };
 
 export const gridViewport = { once: true, amount: 0.1 } as const;
+
+export const quoteReveal: Variants = {
+  rest: { height: 0, opacity: 0, marginTop: 0 },
+  hover: {
+    height: "auto",
+    opacity: 1,
+    marginTop: 4,
+    transition: { duration: 0.3, ease: "easeOut" },
+  },
+};

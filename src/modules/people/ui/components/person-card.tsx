@@ -1,10 +1,11 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import { statusColors, statusLabels } from "@/modules/people/constants";
+import { statusColors, statusLabels, quoteReveal } from "@/modules/people/constants";
 
 const getInitials = (name: string) =>
   name
@@ -22,7 +23,12 @@ const PersonCard = ({ person }: { person: People }) => {
   const statusLabel = person.status ? statusLabels[person.status] : null;
 
   const inner = (
-    <div className="rounded-2xl overflow-hidden bg-white border border-thunder/10 hover:shadow-md hover:border-thunder/20 transition-all duration-200 h-full">
+    <motion.div
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      className="rounded-2xl overflow-hidden bg-white border border-thunder/10 hover:shadow-md hover:border-thunder/20 transition-all duration-200 h-full"
+    >
       {/* Square avatar */}
       <div className="relative w-full aspect-square">
         {imgSrc ? (
@@ -66,8 +72,16 @@ const PersonCard = ({ person }: { person: People }) => {
             Now: {person.now}
           </p>
         )}
+        {person.quote && (
+          <motion.p
+            variants={quoteReveal}
+            className="text-[11px] text-thunder/60 italic leading-snug overflow-hidden"
+          >
+            &ldquo;{person.quote}&rdquo;
+          </motion.p>
+        )}
       </div>
-    </div>
+    </motion.div>
   );
 
   if (person.url) {

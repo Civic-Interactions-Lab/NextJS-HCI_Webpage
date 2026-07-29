@@ -105,6 +105,20 @@ export const peopleType = defineType({
       type: "string",
       description: "Where they are now (for alumni)",
     }),
+    defineField({
+      name: "quote",
+      title: "Quote",
+      type: "text",
+      description: "An optional quote from this person (max 100 words)",
+      validation: (rule) =>
+        rule.custom((value) => {
+          if (!value) return true;
+          const wordCount = value.trim().split(/\s+/).filter(Boolean).length;
+          return wordCount <= 100
+            ? true
+            : `Quote must be 100 words or fewer (currently ${wordCount})`;
+        }),
+    }),
   ],
   preview: {
     select: {
