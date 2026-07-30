@@ -1,10 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
-import { fadeUp, stagger, gridViewport } from "@/modules/people/constants";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
+
+const gridViewport = { once: true, amount: 0.1 } as const;
 
 const PLACEHOLDER_PATRONS = [{ id: "patron-slot-1" }, { id: "patron-slot-2" }];
 

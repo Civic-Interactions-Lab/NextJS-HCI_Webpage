@@ -1,11 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { People } from "../../../../../sanity.types";
 import PersonCard from "@/modules/people/ui/components/person-card";
 import PeopleFilter from "@/modules/people/ui/components/people-filter";
-import { fadeUp, stagger } from "@/modules/people/constants";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
 
 interface CurrentMembersProps {
   currentMembers: People[];

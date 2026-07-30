@@ -1,10 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
-import { fadeUp, stagger, sectionViewport } from "@/modules/home/constants";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const sectionViewport = { once: true, margin: "-80px" } as const;
 
 const PARTNERS = [
   { name: "ACM", color: "bg-sky/15 text-sky" },

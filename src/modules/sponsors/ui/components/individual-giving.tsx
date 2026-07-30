@@ -1,10 +1,16 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
-import { fadeUp, gridViewport } from "@/modules/sponsors/constants";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const gridViewport = { once: true, amount: 0.1 } as const;
 
 const IndividualGiving = () => (
   <motion.section

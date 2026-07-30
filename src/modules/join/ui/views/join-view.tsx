@@ -1,11 +1,22 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { FaqsQueryResult } from "../../../../../sanity.types";
 import ViewIntroHeader from "@/components/view-intro-header";
 import { SectionTitle } from "@/components/section-title";
-import { fadeUp, stagger, faqViewport } from "@/modules/join/constants";
 import CtaBanner from "@/components/cta-banner";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const faqViewport = { once: true, amount: 0.1 } as const;
 
 interface JoinViewProps {
   faqs: FaqsQueryResult;

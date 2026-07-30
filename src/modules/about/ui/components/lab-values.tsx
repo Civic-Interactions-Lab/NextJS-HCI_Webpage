@@ -3,8 +3,12 @@
 import { useRef } from "react";
 import { SectionTitle } from "@/components/section-title";
 import ImageCarousel from "@/components/image-carousel";
-import { LAB_VALUES_IMAGES } from "@/modules/about/constants";
 import { useSideReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const LAB_VALUES_IMAGES = Array.from({ length: 5 }, (_, i) => ({
+  src: "/images/cover/HCI_OpenHouse-5.jpg",
+  alt: `Lab values — HCI Lab community ${i + 1}`,
+}));
 
 const LabValues = () => {
   const rootRef = useRef<HTMLDivElement>(null);

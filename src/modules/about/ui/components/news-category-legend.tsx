@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { NEWS_CATEGORIES } from "@/modules/about/constants";
+
+const NEWS_CATEGORIES = [
+  { key: "Collaborations", color: "bg-gold" },
+  { key: "Grants / Awards", color: "bg-violet" },
+  { key: "Conference Talk", color: "bg-grass" },
+  { key: "Published Papers", color: "bg-sky" },
+  { key: "Alumni", color: "bg-ember" },
+];
 
 interface FilterState {
   categories: string[];

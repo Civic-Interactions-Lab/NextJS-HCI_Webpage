@@ -1,11 +1,36 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import { statusColors, statusLabels, quoteReveal } from "@/modules/people/constants";
+
+const statusLabels: Record<string, string> = {
+  assistant_professor: "Assistant Professor",
+  phd_student: "PhD Student",
+  master_student: "Masters Student",
+  undergraduate: "Undergraduate",
+  highschool: "High School",
+};
+
+const statusColors: Record<string, string> = {
+  assistant_professor: "#AA2C45",
+  phd_student: "rgba(170, 44, 69, 0.90)",
+  master_student: "rgba(170, 44, 69, 0.80)",
+  undergraduate: "rgba(170, 44, 69, 0.70)",
+  highschool: "rgba(170, 44, 69, 0.60)",
+};
+
+const quoteReveal: Variants = {
+  rest: { height: 0, opacity: 0, marginTop: 0 },
+  hover: {
+    height: "auto",
+    opacity: 1,
+    marginTop: 4,
+    transition: { duration: 0.3, ease: "easeOut" },
+  },
+};
 
 const getInitials = (name: string) =>
   name

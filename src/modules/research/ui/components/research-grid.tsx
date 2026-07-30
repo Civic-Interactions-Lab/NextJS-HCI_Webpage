@@ -1,9 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Research } from "../../../../../sanity.types";
 import ResearchCard from "@/modules/research/ui/components/research-card";
-import { fadeUp, stagger, gridViewport } from "@/modules/research/constants";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const gridViewport = { once: true, amount: 0.1 } as const;
 
 interface ResearchGridProps {
   label: string;

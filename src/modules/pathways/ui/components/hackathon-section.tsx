@@ -3,7 +3,13 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
-import { sectionFadeUp } from "@/modules/pathways/constants";
+
+const sectionFadeUp = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: "easeOut" },
+} as const;
 
 const IMAGES = [
   {

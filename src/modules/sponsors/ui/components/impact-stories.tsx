@@ -1,9 +1,44 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Quote } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
-import { IMPACT_STORIES, fadeUp, stagger, gridViewport } from "@/modules/sponsors/constants";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+};
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const gridViewport = { once: true, amount: 0.1 } as const;
+
+const IMPACT_STORIES = [
+  {
+    id: "hannah",
+    quote:
+      "A sponsorship covered my CHI registration — it was the first time I had ever presented research in front of thousands of people. That moment changed how I saw myself as a researcher.",
+    name: "Hannah Vy Nguyen",
+    role: "UX Designer at URBN",
+  },
+  {
+    id: "andrew",
+    quote:
+      "The lab's resources gave me access to tools and conferences I never could have afforded on my own. By the time I graduated, I had a portfolio and a network that landed me my role at Amazon.",
+    name: "Andrew Tran",
+    role: "Software Engineer at Amazon",
+  },
+  {
+    id: "irene",
+    quote:
+      "Sponsorship funding meant I could stay in the lab instead of taking a second job. That time became my PhD application. I would not be at UCSD today without it.",
+    name: "Irene Hou",
+    role: "PhD Student at UCSD",
+  },
+];
 
 const ImpactStories = () => (
   <section className="flex flex-col gap-6">

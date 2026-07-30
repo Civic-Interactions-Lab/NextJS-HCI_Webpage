@@ -6,8 +6,23 @@ import Link from "next/link";
 import { News } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
 import NewsCategoryLegend from "@/modules/about/ui/components/news-category-legend";
-import { CATEGORY_COLORS, CATEGORY_BORDER } from "@/modules/about/constants";
 import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Collaborations: "bg-gold",
+  "Grants / Awards": "bg-violet",
+  "Conference Talk": "bg-grass",
+  "Published Papers": "bg-sky",
+  Alumni: "bg-ember",
+};
+
+const CATEGORY_BORDER: Record<string, string> = {
+  Collaborations: "border-l-gold",
+  "Grants / Awards": "border-l-violet",
+  "Conference Talk": "border-l-grass",
+  "Published Papers": "border-l-sky",
+  Alumni: "border-l-ember",
+};
 
 interface FilterState {
   categories: string[];

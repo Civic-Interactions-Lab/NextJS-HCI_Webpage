@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FILTER_TIERS } from "@/modules/sponsors/constants";
+
+const FILTER_TIERS = [
+  { key: "supporter", label: "Supporter" },
+  { key: "partner", label: "Partner" },
+  { key: "champion", label: "Champion" },
+  { key: "visionary", label: "Visionary" },
+];
 
 interface SponsorFilterProps {
   total: number;

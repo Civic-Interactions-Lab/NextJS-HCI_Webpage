@@ -3,8 +3,53 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
-import { UPCOMING_EVENTS, EVENT_TAG_BG } from "@/modules/about/constants";
 import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const UPCOMING_EVENTS = [
+  {
+    title: "HCI Open House",
+    date: "Mar 15",
+    year: "2025",
+    location: "SERC 306",
+    tag: "Social",
+    description:
+      "An open invitation to see the lab in action — meet researchers, explore projects, and find out how to join.",
+  },
+  {
+    title: "OwlHacks",
+    date: "Apr 5–6",
+    year: "2025",
+    location: "SERC 306",
+    tag: "Hackathon",
+    description:
+      "Temple's flagship hackathon — 24 hours of human-centered design challenges led by HCI Lab members.",
+  },
+  {
+    title: "CHI 2025",
+    date: "Apr 26",
+    year: "2025",
+    location: "SERC 306",
+    tag: "Conference",
+    description:
+      "Lab members present peer-reviewed research at the world's top HCI conference.",
+  },
+  {
+    title: "Studio Showcase",
+    date: "May 10",
+    year: "2025",
+    location: "SERC 306",
+    tag: "Showcase",
+    description:
+      "Students present their semester projects in a gallery-style showcase open to all.",
+  },
+];
+
+const EVENT_TAG_BG: Record<string, string> = {
+  Social: "bg-well-red text-white",
+  Hackathon: "bg-gold text-thunder",
+  Conference: "bg-sky text-white",
+  Showcase: "bg-grass text-white",
+};
 
 const EventsUpcoming = () => {
   const rootRef = useRef<HTMLDivElement>(null);

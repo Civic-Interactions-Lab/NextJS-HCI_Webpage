@@ -3,8 +3,12 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
-import { CONFERENCE_TRAVEL_STATS } from "@/modules/about/constants";
 import { useSideReveal, useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const CONFERENCE_TRAVEL_STATS = [
+  { number: "30+", desc: "students have traveled to present their work" },
+  { number: "10+", desc: "students have traveled internationally" },
+];
 
 const ConferenceTravel = () => {
   const rootRef = useRef<HTMLDivElement>(null);

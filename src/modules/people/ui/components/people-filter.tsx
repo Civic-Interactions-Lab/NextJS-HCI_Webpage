@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { statusLabels } from "@/modules/people/constants";
+
+const statusLabels: Record<string, string> = {
+  assistant_professor: "Assistant Professor",
+  phd_student: "PhD Student",
+  master_student: "Masters Student",
+  undergraduate: "Undergraduate",
+  highschool: "High School",
+};
 
 const STATUS_OPTIONS = Object.entries(statusLabels).map(([value, label]) => ({
   value,

@@ -2,8 +2,18 @@
 
 import { useRef } from "react";
 import { SectionTitle } from "@/components/section-title";
-import { COMMUNITY_RESEARCH_STATS } from "@/modules/about/constants";
 import { useFadeReveal, useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const COMMUNITY_RESEARCH_STATS = [
+  {
+    number: "77",
+    desc: "undergraduate students have been an author on peer-reviewed work.",
+  },
+  {
+    number: "~45",
+    desc: "active researchers working collaboratively on challenging projects.",
+  },
+];
 
 const CommunityResearch = () => {
   const rootRef = useRef<HTMLDivElement>(null);

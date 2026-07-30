@@ -4,12 +4,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
-import {
-  COMPANIES,
-  UNIVERSITIES,
-  JOB_TITLES,
-  sectionFadeUp,
-} from "@/modules/pathways/constants";
+
+const sectionFadeUp = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: "easeOut" },
+} as const;
+
+const JOB_TITLES = [
+  "Software Engineer",
+  "UX/UI Designer",
+  "UX Researcher",
+  "UX Specialist",
+  "Information Architect",
+  "Design Researcher",
+];
+
+const COMPANIES = [
+  { name: "Google", logo: "/logos/google.webp", href: "https://google.com" },
+  { name: "Microsoft", logo: "/logos/microsoft.png", href: "https://microsoft.com" },
+  { name: "SAP", logo: "/logos/sap.png", href: "https://sap.com" },
+  { name: "Comcast", logo: "/logos/comcast.png", href: "https://corporate.comcast.com/" },
+  { name: "JP Morgan", logo: "/logos/jpmorgan.png", href: "https://jpmorgan.com" },
+];
+
+const UNIVERSITIES = [
+  { name: "UMich", logo: "/logos/umich.png", href: "https://umich.edu" },
+  { name: "UCSD", logo: "/logos/ucsd.png", href: "https://ucsd.edu" },
+  { name: "MIT", logo: "/logos/mit.png", href: "https://mit.edu" },
+  { name: "Georgia Tech", logo: "/logos/gtech.png", href: "https://gatech.edu" },
+  { name: "Harvard", logo: "/logos/harvard.png", href: "https://harvard.edu" },
+  { name: "UIUC", logo: "/logos/Illinoisu.png", href: "https://illinois.edu" },
+];
 
 const LogoBadge = ({
   name,

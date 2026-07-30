@@ -2,7 +2,13 @@
 
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
-import { sectionFadeUp } from "@/modules/pathways/constants";
+
+const sectionFadeUp = {
+  initial: { opacity: 0, y: 30 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: "easeOut" },
+} as const;
 
 const AiMajorSection = () => (
   <motion.section className="flex flex-col gap-4 max-w-3xl" {...sectionFadeUp}>
