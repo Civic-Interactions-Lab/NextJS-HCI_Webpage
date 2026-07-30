@@ -1,22 +1,11 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { SectionTitle } from "@/components/section-title";
 import CourseCard, { type Course } from "./course-card";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const courseGridViewport = { once: true, amount: 0.1 } as const;
+import { fadeUp, stagger, motionViewport } from "@/lib/motion-tokens";
 
 const COURSES: Course[] = [
   {
@@ -107,7 +96,7 @@ const CourseList = () => (
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
         initial="hidden"
         whileInView="visible"
-        viewport={courseGridViewport}
+        viewport={motionViewport}
         variants={stagger}
       >
         {COURSES.map((course) => (

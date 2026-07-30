@@ -223,12 +223,12 @@ const TestimonialsSection = ({ testimonials }: Props) => {
         {/* Ghost: sets container height to active card's natural size */}
         <div
           aria-hidden="true"
-          className="invisible pointer-events-none flex flex-col gap-4 rounded-2xl p-6 md:p-8
+          className="invisible pointer-events-none flex flex-col gap-3 md:gap-4 rounded-2xl p-4 md:p-8
                      w-[65vw] md:w-[380px] lg:w-[420px] mx-auto"
         >
-          <Quote className="w-6 h-6 opacity-0" />
-          <p className="text-p1 leading-relaxed">{testimonials[active]?.quote}</p>
-          <div className="flex items-center gap-3 pt-4 border-t border-thunder/10">
+          <Quote className="w-4 h-4 md:w-6 md:h-6 opacity-0" />
+          <p className="font-outfit text-[14px] leading-[1.6] md:text-[18px] md:leading-[1.7]">{testimonials[active]?.quote}</p>
+          <div className="flex items-center gap-3 pt-3 md:pt-4 border-t border-thunder/10">
             <div className="w-10 h-10 rounded-full shrink-0" />
             <div>
               <p className="label-4">Name</p>
@@ -245,14 +245,14 @@ const TestimonialsSection = ({ testimonials }: Props) => {
               ref={(el) => { cardsRef.current[i] = el; }}
               className="absolute top-1/2 left-1/2 overflow-hidden
                          w-[65vw] md:w-[380px] lg:w-[420px]
-                         flex flex-col gap-4 rounded-2xl p-6 md:p-8"
+                         flex flex-col gap-3 md:gap-4 rounded-2xl p-4 md:p-8"
               style={{ willChange: "transform, opacity" }}
             >
-              <Quote className={`w-6 h-6 shrink-0 ${QUOTE_COLORS[i % QUOTE_COLORS.length]}`} fill="currentColor" strokeWidth={0} />
-              <p data-quote className="text-p1 text-thunder/80 leading-relaxed overflow-hidden">
+              <Quote className={`w-4 h-4 md:w-6 md:h-6 shrink-0 ${QUOTE_COLORS[i % QUOTE_COLORS.length]}`} fill="currentColor" strokeWidth={0} />
+              <p data-quote className="font-outfit text-[14px] leading-[1.6] md:text-[18px] md:leading-[1.7] text-thunder/80 overflow-hidden">
                 {t.quote}
               </p>
-              <div className="flex items-center gap-3 pt-4 border-t border-thunder/10 mt-auto">
+              <div className="flex items-center gap-3 pt-3 md:pt-4 border-t border-thunder/10 mt-auto">
                 {imgSrc ? (
                   <Image
                     src={imgSrc}

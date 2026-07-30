@@ -1,19 +1,8 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const gridViewport = { once: true, amount: 0.1 } as const;
+import { fadeUp, stagger, motionViewport } from "@/lib/motion-tokens";
 
 const PRICING_TIERS = [
   {
@@ -55,7 +44,7 @@ const SponsorshipTiers = () => (
       className="flex flex-col gap-8"
       initial="hidden"
       whileInView="visible"
-      viewport={gridViewport}
+      viewport={motionViewport}
       variants={stagger}
     >
       {PRICING_TIERS.map((tier, i) => (

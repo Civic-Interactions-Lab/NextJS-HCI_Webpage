@@ -1,20 +1,9 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { People } from "../../../../../sanity.types";
 import PersonCard from "@/modules/people/ui/components/person-card";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
-};
-
-const gridViewport = { once: true, amount: 0.1 } as const;
+import { fadeUp, stagger, motionViewport } from "@/lib/motion-tokens";
 
 const AlumniGrid = ({ alumni }: { alumni: People[] }) => {
   if (alumni.length === 0) {
@@ -28,7 +17,7 @@ const AlumniGrid = ({ alumni }: { alumni: People[] }) => {
       className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"
       initial="hidden"
       whileInView="visible"
-      viewport={gridViewport}
+      viewport={motionViewport}
       variants={stagger}
     >
       {alumni.map((person) => (

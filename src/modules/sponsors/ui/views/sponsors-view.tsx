@@ -1,22 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { SponsorsQueryResult } from "../../../../../sanity.types";
 import SponsorCard from "@/modules/sponsors/ui/components/sponsor-card";
 import SponsorFilter from "@/modules/sponsors/ui/components/sponsor-filter";
 import NavCardsList from "@/components/nav-cards-list";
 import ViewIntroHeader from "@/components/view-intro-header";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
+import { fadeUp, stagger } from "@/lib/motion-tokens";
 
 interface SponsorsViewProps {
   sponsors: SponsorsQueryResult;

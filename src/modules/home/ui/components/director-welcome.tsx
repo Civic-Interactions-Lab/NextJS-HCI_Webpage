@@ -1,27 +1,16 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const sectionViewport = { once: true, margin: "-80px" } as const;
+import { fadeUp, stagger, motionViewportMargin } from "@/lib/motion-tokens";
 
 const DirectorWelcome = () => {
   return (
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={sectionViewport}
+      viewport={motionViewportMargin}
       variants={stagger}
       aria-label="Welcome from the Director"
       className="flex flex-col md:flex-row gap-10 md:gap-16 items-start"

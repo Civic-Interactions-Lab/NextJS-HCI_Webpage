@@ -2,12 +2,13 @@
 
 import { motion } from "framer-motion";
 import { SectionTitle } from "@/components/section-title";
+import { motionDuration, motionEase } from "@/lib/motion-tokens";
 
 const sectionFadeUp = {
   initial: { opacity: 0, y: 30 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, amount: 0.15 },
-  transition: { duration: 0.6, ease: "easeOut" },
+  transition: { duration: motionDuration.slow, ease: motionEase },
 } as const;
 
 const AiMajorSection = () => (

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
+import { motionDuration, motionEase } from "@/lib/motion-tokens";
 
 const statusLabels: Record<string, string> = {
   assistant_professor: "Assistant Professor",
@@ -28,7 +29,7 @@ const quoteReveal: Variants = {
     height: "auto",
     opacity: 1,
     marginTop: 4,
-    transition: { duration: 0.3, ease: "easeOut" },
+    transition: { duration: motionDuration.fast, ease: motionEase },
   },
 };
 

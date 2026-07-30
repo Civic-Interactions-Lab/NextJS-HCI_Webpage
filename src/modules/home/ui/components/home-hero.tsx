@@ -256,6 +256,7 @@ const HomeHero = () => {
   const headingRef = useRef<HTMLDivElement>(null);
   const bgStripRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
+  const hasEnteredRef = useRef(false);
 
   // Hero shrinks as user scrolls
   useEffect(() => {
@@ -426,21 +427,29 @@ const HomeHero = () => {
     const strip = bgStripRef.current;
     const dots = dotsRef.current;
     if (!cardsBox || !el) return;
-    (
-      [
-        [el, 0.5],
-        [strip, 0.5],
-        [dots, 0.7],
-      ] as [Element | null, number][]
-    ).forEach(([target, delay]) => {
-      if (target)
-        gsap.to(target, {
-          opacity: 1,
-          duration: 0.4,
-          delay,
-          ease: "power2.out",
-        });
-    });
+    // This effect re-runs on every resize (cardsBox is remeasured on
+    // resize). The fade-in below is a one-time entrance for page load —
+    // only play it the first time cardsBox becomes available, otherwise a
+    // resize while scrolled down would replay it and pop the heading/dots
+    // back into view regardless of scroll position.
+    if (!hasEnteredRef.current) {
+      hasEnteredRef.current = true;
+      (
+        [
+          [el, 0.5],
+          [strip, 0.5],
+          [dots, 0.7],
+        ] as [Element | null, number][]
+      ).forEach(([target, delay]) => {
+        if (target)
+          gsap.to(target, {
+            opacity: 1,
+            duration: 0.4,
+            delay,
+            ease: "power2.out",
+          });
+      });
+    }
     const update = () => {
       const v = window.scrollY;
       const vh = window.innerHeight;
@@ -459,8 +468,20 @@ const HomeHero = () => {
       );
       const fadeOpacity = v > 0 ? Math.max(0, 1 - v / 60) : 1;
       gsap.set(el, { y: headingY, opacity: fadeOpacity });
-      if (strip)
-        gsap.set(strip, { y: headingY - 16, opacity: v > 0 ? fadeOpacity : 1 });
+      if (strip) {
+        // The strip's top tracks headingY (moves with scroll) but the dots
+        // sit at a fixed y (cardsBox.top + cardsBox.height + 48, set once,
+        // never re-tracked). A static height can't keep the strip reaching
+        // the dots at every scroll depth, so recompute its height each tick
+        // to always extend a bit past them instead.
+        const stripTop = headingY - 16;
+        const dotsBottom = cardsBox.top + cardsBox.height + 48 + 40;
+        gsap.set(strip, {
+          y: stripTop,
+          height: Math.max(dotsBottom - stripTop, 0),
+          opacity: v > 0 ? fadeOpacity : 1,
+        });
+      }
       if (dots) gsap.set(dots, { opacity: v > 0 ? fadeOpacity : 1 });
     };
     update();
@@ -554,7 +575,7 @@ const HomeHero = () => {
           }}
         />
         {/* Desktop: original subtle gradient */}
-        <div className="hidden md:block absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black/95" />
+        <div className="hidden md:block absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black" />
 
         {/* Slide 0: Title */}
         <div className="absolute top-[60%] -translate-y-1/2 md:top-0 md:translate-y-0 md:bottom-0 left-0 right-0 flex items-center justify-center px-6 md:px-12 z-10">
@@ -706,7 +727,7 @@ const HomeHero = () => {
           <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative">
             <div
               ref={headingRef}
-              className="absolute top-0 left-6 md:left-12 opacity-0 hidden md:block"
+              className="absolute top-0 left-6 md:left-12 opacity-0"
             >
               <SectionTitle light>Check out our research focus</SectionTitle>
             </div>

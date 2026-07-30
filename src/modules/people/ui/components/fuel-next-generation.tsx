@@ -1,21 +1,10 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Heart } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
-};
-
-const gridViewport = { once: true, amount: 0.1 } as const;
+import { fadeUp, stagger, motionViewport } from "@/lib/motion-tokens";
 
 // Placeholder progress until this is wired to a real donation total.
 const FUNDRAISER_GOAL = 10000;
@@ -66,7 +55,7 @@ const FuelNextGeneration = () => (
     className="flex flex-col gap-6"
     initial="hidden"
     whileInView="visible"
-    viewport={gridViewport}
+    viewport={motionViewport}
     variants={fadeUp}
   >
     <div className="flex flex-col gap-2 max-w-2xl">
@@ -86,7 +75,7 @@ const FuelNextGeneration = () => (
         className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"
         initial="hidden"
         whileInView="visible"
-        viewport={gridViewport}
+        viewport={motionViewport}
         variants={stagger}
       >
         {FUNDRAISER_TIERS.map((tier) => (
