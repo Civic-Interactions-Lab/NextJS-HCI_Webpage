@@ -58,7 +58,6 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "@clerk/shared",
       "esbuild",
       "sharp",
       "unrs-resolver"

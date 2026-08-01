@@ -3,6 +3,7 @@ import { Roboto, JetBrains_Mono, Outfit, Oxanium } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
 import { SanityLive } from "@/sanity/lib/live";
+import { SITE_URL } from "@/constants/site";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -26,6 +27,7 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Temple University HCI Lab",
   description: "Human-Computer Interaction Research at Temple University",
   icons: {

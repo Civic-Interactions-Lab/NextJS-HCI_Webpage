@@ -151,6 +151,10 @@ Update this file whenever the current phase, active feature, or implementation s
   - Alumni page (`alumni-view.tsx`) redesigned against a provided design reference: added `ViewIntroHeader` intro (reusing the existing shared component, `group-1.jpg` image), a new `FuelNextGeneration` donation section (suggested-giving tiers linking out to `giving.temple.edu`, segmented "loading_next_generation …" progress bar with placeholder $ raised/goal in `fundraiser-tiers.ts`), and a `TopPatrons` section (renamed from "Founding Patrons") showing two "This spot is open" placeholder cards rather than fabricated named donors. New `AlumniCard` component added (kept separate from the shared `PersonCard`, which is also used by Current Members) that reveals each alumnus's "Now:" text on hover via a Framer Motion `rest`/`hover` variant instead of always showing it.
   - Changed images across the site.
 
+---
+
+- **Feature 18 (Sitemap for Google Crawling)** — Added a sitemap listing every public page (with per-page priority and how often it changes) and a matching robots file that allows crawlers everywhere except the CMS studio, the password-verification page, and internal API routes, pointing them at the sitemap. Set a canonical production URL used consistently across the sitemap, robots file, and page metadata. Also fixed a real bug this surfaced: the site's password-gate middleware wasn't letting crawler-facing files like these through, so they'd have been redirected to the password page instead of being readable — confirmed both now load correctly even with the password gate turned on. Cleaned up a couple of small leftovers from the earlier Clerk removal while in the area.
+
 ## In Progress
 
 - None.
