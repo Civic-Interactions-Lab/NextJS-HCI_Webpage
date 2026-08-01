@@ -81,7 +81,9 @@ export default function HciNavbar() {
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map((item) => {
+              const dropdownImage = ROUTE_IMAGES[item.href] ?? DEFAULT_ROUTE_IMAGE;
+              return (
               <div
                 key={item.href}
                 className="relative"
@@ -128,8 +130,8 @@ export default function HciNavbar() {
                         >
                           <div className="relative h-28 overflow-hidden">
                             <Image
-                              src={ROUTE_IMAGES[item.href] ?? DEFAULT_ROUTE_IMAGE}
-                              alt={item.label}
+                              src={dropdownImage.src}
+                              alt={dropdownImage.alt}
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
                             />
@@ -171,7 +173,8 @@ export default function HciNavbar() {
                   </div>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Mobile Hamburger */}

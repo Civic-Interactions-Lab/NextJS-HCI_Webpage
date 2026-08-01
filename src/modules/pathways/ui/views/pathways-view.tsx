@@ -15,8 +15,8 @@ export default function PathwaysView() {
         titlePrefix="Explore Human-Centered"
         titleAccent="Technology."
         body="The Temple HCI Lab helps students explore careers in technology, design, research, and AI. Whether you are curious about user experience design, data visualization, artificial intelligence, or academic research, there are multiple ways to get involved."
-        imageSrc="/images/cover/studio-2.jpeg"
-        imageAlt="HCI Lab studio"
+        imageSrc="/images/cover/news-4.jpg"
+        imageAlt="Professor Steven MacNeil, Temple HCI Lab, Temple University, Philadelphia, PA"
       />
 
       <CourseList />

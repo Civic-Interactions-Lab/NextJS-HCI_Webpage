@@ -27,12 +27,12 @@ type HeroSlide = {
 const SLIDES: HeroSlide[] = [
   {
     image: "/images/cover/group-1.jpg",
-    alt: "Temple HCI Lab members gathered together",
+    alt: "Temple HCI Lab members gathered together on Temple University campus, Philadelphia, Pennsylvania",
     position: "center 36%",
   },
   {
     image: "/images/cover/hci-logo-1.jpg",
-    alt: "HCI Lab research materials and documentation",
+    alt: "HCI Lab research logo, Temple University, Philadelphia, Pennsylvania",
     position: "center 30%",
     content: {
       text: "Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate learning and empower non-experts to participate in work that has been previously reserved for trained professionals.",
@@ -42,7 +42,7 @@ const SLIDES: HeroSlide[] = [
   },
   {
     image: "/images/cover/open-house-3.jpg",
-    alt: "Students collaborating at the Temple HCI Lab",
+    alt: "Students discussing at the Temple HCI Lab Open House, Temple University, Philadelphia, Pennsylvania",
     position: "center 40%",
     content: {
       text: "We love helping students build the skills and confidence to design, lead, and innovate within their own communities — collaborating with organizations like ACM, TUDev, OwlByte, and OwlHacks to turn ideas into real-world impact.",
@@ -52,7 +52,7 @@ const SLIDES: HeroSlide[] = [
   },
   {
     image: "/images/cover/news-2.jpg",
-    alt: "Temple HCI Lab open house event with students and faculty",
+    alt: "Temple HCI Lab alumni talk in SERC, Temple University, Philadelphia, Pennsylvania",
     position: "center 30%",
     content: {
       text: "Stay up to date with the latest publications, awards, and highlights from the Temple HCI Lab — from conference talks to student achievements.",

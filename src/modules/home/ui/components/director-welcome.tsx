@@ -20,7 +20,7 @@ const DirectorWelcome = () => {
         <div className="rounded-2xl overflow-hidden bg-thunder/8">
           <Image
             src="/images/people/macneil.jpg"
-            alt="Dr. Stephen MacNeil, Director of the Temple HCI Lab, Temple University"
+            alt="Dr. Stephen MacNeil, Director of the Temple HCI Lab, received an award at Temple University"
             width={384}
             height={480}
             className="w-full h-auto object-cover object-top"

@@ -51,7 +51,7 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
         <div className="overflow-hidden rounded-3xl border border-thunder/10 shadow-sm">
           <Image
             src="/images/cover/research-2.jpg"
-            alt="Christine Kapp from Temple HCI Lab presenting her research poster at SERC, Temple University"
+            alt="Christine Kapp from Temple HCI Lab presenting her research poster at SERC, Temple University, Philadelphia, Pennsylvania"
             width={500}
             height={400}
             className="w-full h-64 md:h-80 object-cover"

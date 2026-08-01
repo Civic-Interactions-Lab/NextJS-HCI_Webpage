@@ -1,19 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { PERSON_STATUS_LABELS } from "@/modules/people/constants/person-status";
 
-const statusLabels: Record<string, string> = {
-  assistant_professor: "Assistant Professor",
-  phd_student: "PhD Student",
-  master_student: "Masters Student",
-  undergraduate: "Undergraduate",
-  highschool: "High School",
-};
-
-const STATUS_OPTIONS = Object.entries(statusLabels).map(([value, label]) => ({
-  value,
-  label,
-}));
+const STATUS_OPTIONS = Object.entries(PERSON_STATUS_LABELS).map(
+  ([value, label]) => ({ value, label }),
+);
 
 interface PeopleFilterProps {
   total: number;
@@ -37,7 +29,11 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mb-6" role="group" aria-label="Filter Temple HCI Lab members by role">
+    <div
+      className="flex flex-col gap-2 mb-6"
+      role="group"
+      aria-label="Filter Temple HCI Lab members by role"
+    >
       <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1 scrollbar-none">
         {/* All chip */}
         <button

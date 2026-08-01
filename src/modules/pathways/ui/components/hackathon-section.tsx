@@ -17,27 +17,31 @@ const IMAGES = [
   {
     src: "/images/cover/hacks-3.jpg",
     alt: "OwlHacks 2025 full committee, Temple University, Philadelphia, PA",
-    caption: "OwlHacks Committee 2025",
+    caption:
+      "OwlHacks Committee 2025, SERC, Temple University, Philadelphia, PA",
   },
   {
     src: "/images/cover/hacks-4.jpg",
     alt: "OwlHacks 2025 Participants, Temple University, Philadelphia, PA",
-    caption: "OwlHacks 2025 Participants",
+    caption:
+      "OwlHacks 2025 Participants, SERC, Temple University, Philadelphia, PA",
   },
   {
     src: "/images/cover/hacks-5.jpg",
     alt: "OwlHacks Guest Speaker, Temple University, Philadelphia, PA",
-    caption: "OwlHacks Guest Speaker",
+    caption:
+      "OwlHacks Guest Speaker, SERC, Temple University, Philadelphia, PA",
   },
   {
     src: "/images/cover/hacks-2.jpg",
     alt: "OwlHacks 2024 full committee, Temple University, Philadelphia, PA",
-    caption: "OwlHacks Committee 2024",
+    caption:
+      "OwlHacks Committee 2024, SERC, Temple University, Philadelphia, PA",
   },
   {
     src: "/images/cover/hacks-1.jpg",
     alt: "OwlHacks team, Temple University, Philadelphia, PA",
-    caption: "OwlHacks Afterhours",
+    caption: "OwlHacks Afterhours, SERC, Temple University, Philadelphia, PA",
   },
 ];
 

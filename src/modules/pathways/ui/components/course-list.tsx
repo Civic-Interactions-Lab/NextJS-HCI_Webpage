@@ -64,22 +64,22 @@ const CourseList = () => (
         <p className="text-p1 text-thunder/65 leading-relaxed">
           Many students begin their journey in human-computer interaction (HCI),
           user experience (UX) design, artificial intelligence (AI), and data
-          visualization through our undergraduate courses. These classes introduce
-          students to the principles of designing human-centered technology while
-          building practical skills that are valued in industry and research
-          careers.
+          visualization through our undergraduate courses. These classes
+          introduce students to the principles of designing human-centered
+          technology while building practical skills that are valued in industry
+          and research careers.
         </p>
         <p className="text-p1 text-thunder/65 leading-relaxed">
           Students learn skills in UX design, user research, AI literacy, data
           storytelling, and human-centered technology development. Many students
-          use these courses as a pathway into undergraduate research, internships,
-          leadership opportunities, and careers in technology.
+          use these courses as a pathway into undergraduate research,
+          internships, leadership opportunities, and careers in technology.
         </p>
       </div>
       <div className="shrink-0 w-full md:w-64 lg:w-72 h-72 md:h-80 rounded-2xl overflow-hidden">
         <Image
           src="/images/people/macneil.jpg"
-          alt="Dr. Stephen MacNeil"
+          alt="Dr. Stephen MacNeil won an award, Temple University, Philadelphia, PA"
           width={300}
           height={380}
           className="w-full h-full object-cover object-top"

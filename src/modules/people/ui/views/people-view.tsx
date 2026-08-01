@@ -42,7 +42,7 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
         titleAccent="lab members."
         body="PhD candidates, master's students, undergraduate researchers, and participants in the Research Scholars Program — who bring creativity, curiosity, and collaboration to every project. Together, we explore ideas, share knowledge, and support one another's growth as we advance our lab's research and impact."
         imageSrc="/images/cover/3-studio.jpg"
-        imageAlt="Students working together in the Temple HCI Lab studio"
+        imageAlt="Temple HCI Lab members taking a group photo"
       />
 
       <CurrentMembers currentMembers={currentMembers} />

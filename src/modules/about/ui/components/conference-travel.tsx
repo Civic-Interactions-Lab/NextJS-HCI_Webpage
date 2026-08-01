@@ -63,7 +63,7 @@ const ConferenceTravel = () => {
         <div className="md:rotate-1 rounded-2xl overflow-hidden shadow-lg">
           <Image
             src="/images/cover/conference.jpg"
-            alt="HCI Lab students at a conference"
+            alt="HCI Lab students having fun at a conference"
             width={600}
             height={400}
             className="w-full h-64 md:h-80 object-cover"

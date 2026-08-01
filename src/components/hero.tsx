@@ -35,8 +35,8 @@ const Hero = () => {
     <div className="relative w-full bg-cover h-80 md:h-[360px] lg:h-[450px] overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src={coverImage}
-          alt={child ?? parent ?? "Cover"}
+          src={coverImage.src}
+          alt={coverImage.alt}
           fill
           className="object-cover"
           style={{ objectPosition: "center 25%" }}

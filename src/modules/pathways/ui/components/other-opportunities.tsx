@@ -52,6 +52,7 @@ const OrgBadge = ({
 }) => (
   <Link
     href={href}
+    aria-label={`${name} logo, Temple HCI Lab`}
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center justify-center p-3 rounded-xl bg-white border border-thunder/10 hover:shadow-sm transition-shadow"

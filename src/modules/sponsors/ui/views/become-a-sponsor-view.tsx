@@ -16,7 +16,7 @@ export default function BecomeASponsorView() {
         titleAccent="they shape innovators."
         body="Your sponsorship gives undergraduate students the resources to tackle real-world challenges, design technology that serves people, and grow as the next generation of HCI and UX leaders. Unlike traditional recruiting, you see students' ideas, skills, and research in action."
         imageSrc="/images/cover/conference-1.jpeg"
-        imageAlt="Students presenting research at the Temple HCI Lab"
+        imageAlt="Seth Bernstein presenting at Koli conference in Finland"
         ctaLabel="Get in touch"
         ctaHref="mailto:stevemacn@temple.edu"
       />

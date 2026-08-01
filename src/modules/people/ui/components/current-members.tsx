@@ -27,7 +27,7 @@ const CurrentMembers = ({ currentMembers }: CurrentMembersProps) => {
         Current Members
       </p>
       <PeopleFilter
-        total={currentMembers.length}
+        total={filtered.length}
         onFilterChange={setActiveFilters}
       />
       <motion.ul

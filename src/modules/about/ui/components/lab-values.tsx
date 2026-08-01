@@ -8,11 +8,11 @@ import { useSideReveal } from "@/modules/about/hooks/use-scroll-reveal";
 const LAB_VALUES_IMAGES = [
   {
     src: "/images/cover/studio-4.jpg",
-    alt: "HCI Lab studio session, Temple University, Philadelphia, Pennsylvania",
+    alt: "HCI Lab studio time, Temple University, Philadelphia, Pennsylvania",
   },
   {
     src: "/images/cover/studio-2.jpeg",
-    alt: "HCI Lab studio session, Temple University, Philadelphia, Pennsylvania",
+    alt: "HCI Lab studio time, Temple University, Philadelphia, Pennsylvania",
   },
 
   {
@@ -21,7 +21,7 @@ const LAB_VALUES_IMAGES = [
   },
   {
     src: "/images/cover/group-4.jpg",
-    alt: "HCI Lab studio session, Temple University, Philadelphia, Pennsylvania",
+    alt: "HCI Lab studio time taking a group photo, Temple University, Philadelphia, Pennsylvania",
   },
 ];
 

@@ -43,7 +43,7 @@ export default function SponsorsView({ sponsors }: SponsorsViewProps) {
         titleAccent="work possible."
         body="Thank you to our sponsors for your generous support. Your contributions help the HCI Lab continue to grow, innovate, and empower students to make a real impact through research and design."
         imageSrc="/images/cover/news-3.jpg"
-        imageAlt="Temple HCI Lab research materials on display"
+        imageAlt="Professor Steve Macneil giving a speech"
       />
 
       {/* Filter */}

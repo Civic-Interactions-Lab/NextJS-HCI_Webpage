@@ -24,17 +24,33 @@ const JOB_TITLES = [
 
 const COMPANIES = [
   { name: "Google", logo: "/logos/google.webp", href: "https://google.com" },
-  { name: "Microsoft", logo: "/logos/microsoft.png", href: "https://microsoft.com" },
+  {
+    name: "Microsoft",
+    logo: "/logos/microsoft.png",
+    href: "https://microsoft.com",
+  },
   { name: "SAP", logo: "/logos/sap.png", href: "https://sap.com" },
-  { name: "Comcast", logo: "/logos/comcast.png", href: "https://corporate.comcast.com/" },
-  { name: "JP Morgan", logo: "/logos/jpmorgan.png", href: "https://jpmorgan.com" },
+  {
+    name: "Comcast",
+    logo: "/logos/comcast.png",
+    href: "https://corporate.comcast.com/",
+  },
+  {
+    name: "JP Morgan",
+    logo: "/logos/jpmorgan.png",
+    href: "https://jpmorgan.com",
+  },
 ];
 
 const UNIVERSITIES = [
   { name: "UMich", logo: "/logos/umich.png", href: "https://umich.edu" },
   { name: "UCSD", logo: "/logos/ucsd.png", href: "https://ucsd.edu" },
   { name: "MIT", logo: "/logos/mit.png", href: "https://mit.edu" },
-  { name: "Georgia Tech", logo: "/logos/gtech.png", href: "https://gatech.edu" },
+  {
+    name: "Georgia Tech",
+    logo: "/logos/gtech.png",
+    href: "https://gatech.edu",
+  },
   { name: "Harvard", logo: "/logos/harvard.png", href: "https://harvard.edu" },
   { name: "UIUC", logo: "/logos/Illinoisu.png", href: "https://illinois.edu" },
 ];
@@ -50,6 +66,7 @@ const LogoBadge = ({
 }) => (
   <Link
     href={href}
+    aria-label={`${name} logo, Temple HCI Lab`}
     target="_blank"
     rel="noopener noreferrer"
     className="flex items-center justify-center p-3 rounded-xl hover:shadow-sm transition-shadow"
@@ -68,18 +85,18 @@ const JobOutcomes = () => (
       {/* Left — description text */}
       <div>
         <p className="text-p1 text-thunder/65 leading-relaxed">
-          Doing research in the Temple HCI Lab prepares students for a wide range
-          of careers by developing skills that extend far beyond technical
+          Doing research in the Temple HCI Lab prepares students for a wide
+          range of careers by developing skills that extend far beyond technical
           expertise. By working on complex, open-ended problems, students learn
           resilience, creativity, and design thinking. By collaborating with
           teammates and interdisciplinary partners, students develop leadership,
           communication, and project management skills. Through designing,
           building, and evaluating new technologies, students learn to make
           informed decisions, balance opportunities and risks, and develop an
-          entrepreneurial mindset. These experiences prepare students for careers
-          in user experience design, product management, software development,
-          artificial intelligence, data science, research, and other
-          technology-focused fields.
+          entrepreneurial mindset. These experiences prepare students for
+          careers in user experience design, product management, software
+          development, artificial intelligence, data science, research, and
+          other technology-focused fields.
         </p>
       </div>
 

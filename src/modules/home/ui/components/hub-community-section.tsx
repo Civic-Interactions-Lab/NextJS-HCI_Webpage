@@ -56,7 +56,7 @@ const HubCommunitySection = () => {
           <div className="overflow-hidden rounded-2xl">
             <Image
               src="/images/cover/group-3.jpg"
-              alt="HCI Lab community"
+              alt="Temple HCI Lab members gathered together in Steve's office, Temple University, Philadelphia, Pennsylvania"
               width={500}
               height={360}
               className="w-full h-64 md:h-80 object-cover"

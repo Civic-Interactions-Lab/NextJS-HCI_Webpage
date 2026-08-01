@@ -6,22 +6,7 @@ import Link from "next/link";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import { motionDuration, motionEase } from "@/lib/motion-tokens";
-
-const statusLabels: Record<string, string> = {
-  assistant_professor: "Assistant Professor",
-  phd_student: "PhD Student",
-  master_student: "Masters Student",
-  undergraduate: "Undergraduate",
-  highschool: "High School",
-};
-
-const statusColors: Record<string, string> = {
-  assistant_professor: "#AA2C45",
-  phd_student: "rgba(170, 44, 69, 0.90)",
-  master_student: "rgba(170, 44, 69, 0.80)",
-  undergraduate: "rgba(170, 44, 69, 0.70)",
-  highschool: "rgba(170, 44, 69, 0.60)",
-};
+import { PERSON_STATUS_LABELS, PERSON_STATUS_COLORS } from "@/modules/people/constants/person-status";
 
 const quoteReveal: Variants = {
   rest: { height: 0, opacity: 0, marginTop: 0 },
@@ -44,9 +29,11 @@ const getInitials = (name: string) =>
 const PersonCard = ({ person }: { person: People }) => {
   if (!person.name) return null;
 
-  const imgSrc = person.img ? urlFor(person.img).width(800).height(800).url() : null;
-  const statusColor = person.status ? statusColors[person.status] : null;
-  const statusLabel = person.status ? statusLabels[person.status] : null;
+  const imgSrc = person.img
+    ? urlFor(person.img).width(800).height(800).url()
+    : null;
+  const statusColor = person.status ? PERSON_STATUS_COLORS[person.status] : null;
+  const statusLabel = person.status ? PERSON_STATUS_LABELS[person.status] : null;
 
   const inner = (
     <motion.div
@@ -60,7 +47,7 @@ const PersonCard = ({ person }: { person: People }) => {
         {imgSrc ? (
           <Image
             src={imgSrc}
-            alt={person.name}
+            alt={`${person.name} at Temple HCI Lab, Philadelphia, Pennsylvania`}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

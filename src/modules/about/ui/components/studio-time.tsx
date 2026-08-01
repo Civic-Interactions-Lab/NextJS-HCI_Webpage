@@ -24,7 +24,7 @@ const StudioTime = () => {
         <div className="rounded-2xl overflow-hidden shadow-lg">
           <Image
             src="/images/cover/studio-1.jpg"
-            alt="Studio Time — students collaborating in the HCI Lab"
+            alt="Studio Time — students collaborating in the HCI Lab, Temple University, Philadelphia, Pennsylvania"
             width={600}
             height={400}
             className="w-full h-64 md:h-80 object-cover"
