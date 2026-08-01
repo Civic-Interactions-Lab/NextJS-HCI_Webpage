@@ -7,7 +7,7 @@ import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
 import { FeaturedResearchQueryResult } from "../../../../../sanity.types";
 import { getImageSrc } from "@/lib/utils";
-import { fadeUp, stagger, sectionViewport } from "@/modules/home/constants";
+import { fadeUp, stagger, motionViewportMargin } from "@/lib/motion-tokens";
 
 interface FeatureProjectsProps {
   research: FeaturedResearchQueryResult;
@@ -42,21 +42,24 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={sectionViewport}
+      viewport={motionViewportMargin}
       variants={stagger}
       className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-start"
     >
       {/* Left — featured image */}
-      <motion.div variants={fadeUp} className="order-2 lg:order-1 relative">
-        <div className="overflow-hidden rounded-2xl">
+      <motion.div variants={fadeUp} className="order-2 lg:order-1">
+        <div className="overflow-hidden rounded-3xl border border-thunder/10 shadow-sm">
           <Image
-            src="/images/cover/HCI_OpenHouse-5.jpg"
-            alt="HCI Lab featured research"
+            src="/images/cover/research-2.jpg"
+            alt="Christine Kapp from Temple HCI Lab presenting her research poster at SERC, Temple University, Philadelphia, Pennsylvania"
             width={500}
-            height={300}
+            height={400}
             className="w-full h-64 md:h-80 object-cover"
           />
         </div>
+        <p className="mt-2 font-outfit text-xs text-thunder/50">
+          Christine Kapp · SERC, Temple University
+        </p>
       </motion.div>
 
       {/* Right — research list */}
@@ -89,7 +92,7 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
                     className="size-12 md:size-14 rounded-full object-cover shrink-0"
                   />
                 ) : (
-                  <div className="size-12 md:size-14 rounded-full bg-alabaster shrink-0" />
+                  <div className="size-12 md:size-14 rounded-full shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
                   {action?.url ? (

@@ -3,54 +3,43 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const COVER_MAP: Record<string, string> = {
-  "/about": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/about/events": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/about/news": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/about/contact": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/research": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/people": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/people/alumni": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/people/collaborators": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/pathways": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/sponsors": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/sponsors/become": "/images/cover/HCI_OpenHouse-5.jpg",
-  "/join": "/images/cover/HCI_OpenHouse-5.jpg",
-};
+import { ROUTE_IMAGES, DEFAULT_ROUTE_IMAGE } from "@/constants/route-images";
 
 const LABEL_OVERRIDES: Record<string, string> = {
-  "become": "Become a Sponsor",
+  become: "Become a Sponsor",
 };
 
 function capitalize(segment: string) {
-  return LABEL_OVERRIDES[segment] ?? segment
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+  return (
+    LABEL_OVERRIDES[segment] ??
+    segment
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ")
+  );
 }
 
 const Hero = () => {
   const pathname = usePathname();
 
   const coverImage =
-    COVER_MAP[pathname] ??
-    COVER_MAP[`/${pathname.split("/").filter(Boolean)[0]}`] ??
-    "/images/cover/HCI_OpenHouse-5.jpg";
+    ROUTE_IMAGES[pathname] ??
+    ROUTE_IMAGES[`/${pathname.split("/").filter(Boolean)[0]}`] ??
+    DEFAULT_ROUTE_IMAGE;
 
   const segments = pathname.split("/").filter(Boolean);
   const parent = segments[0] ? capitalize(segments[0]) : "";
   const child = segments[1] ? capitalize(segments[1]) : null;
 
   return (
-    <div className="relative w-full bg-cover h-[320px] md:h-[360px] lg:h-[400px] overflow-hidden">
+    <div className="relative w-full bg-cover h-80 md:h-[360px] lg:h-[450px] overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src={coverImage}
-          alt={child ?? parent ?? "Cover"}
+          src={coverImage.src}
+          alt={coverImage.alt}
           fill
           className="object-cover"
-          style={{ objectPosition: "center 36%" }}
+          style={{ objectPosition: "center 25%" }}
           priority
           sizes="100vw"
         />

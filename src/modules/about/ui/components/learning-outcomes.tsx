@@ -2,8 +2,31 @@
 
 import { useRef } from "react";
 import { SectionTitle } from "@/components/section-title";
-import { LEARNING_OUTCOMES } from "@/modules/about/constants";
 import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const LEARNING_OUTCOMES = [
+  {
+    id: 1,
+    category: "DESIGN",
+    description: "Think critically, collaborate with others, and communicate complex ideas simply.",
+    badgeColor: "bg-sky",
+    radius: "rounded-tl-2xl rounded-br-2xl",
+  },
+  {
+    id: 2,
+    category: "LEAD",
+    description: "Learn to tackle large systemic problems by taking risks and make consequential decisions.",
+    badgeColor: "bg-grass",
+    radius: "rounded-xl",
+  },
+  {
+    id: 3,
+    category: "CREATE",
+    description: "Apply AI, ML, Web Dev, and Software Engineering skills on real projects used by real people.",
+    badgeColor: "bg-gold",
+    radius: "rounded-tr-2xl rounded-bl-2xl",
+  },
+];
 
 const LearningOutcomes = () => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -11,7 +34,7 @@ const LearningOutcomes = () => {
   useStaggerReveal(rootRef, ".outcome-card");
 
   return (
-    <section ref={rootRef} className="-mx-6 md:-mx-12 px-6 md:px-12 py-14 bg-alabaster">
+    <section ref={rootRef} className="-mx-6 md:-mx-12 px-6 md:px-12">
       <div className="flex flex-col gap-10 max-w-7xl">
         <SectionTitle>Learning Outcomes</SectionTitle>
 

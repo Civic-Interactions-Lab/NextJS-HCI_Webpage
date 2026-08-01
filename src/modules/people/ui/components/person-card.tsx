@@ -1,10 +1,22 @@
 "use client";
 
+import { motion, type Variants } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { People } from "../../../../../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import { statusColors, statusLabels } from "@/modules/people/constants";
+import { motionDuration, motionEase } from "@/lib/motion-tokens";
+import { PERSON_STATUS_LABELS, PERSON_STATUS_COLORS } from "@/modules/people/constants/person-status";
+
+const quoteReveal: Variants = {
+  rest: { height: 0, opacity: 0, marginTop: 0 },
+  hover: {
+    height: "auto",
+    opacity: 1,
+    marginTop: 4,
+    transition: { duration: motionDuration.fast, ease: motionEase },
+  },
+};
 
 const getInitials = (name: string) =>
   name
@@ -17,18 +29,25 @@ const getInitials = (name: string) =>
 const PersonCard = ({ person }: { person: People }) => {
   if (!person.name) return null;
 
-  const imgSrc = person.img ? urlFor(person.img).width(800).height(800).url() : null;
-  const statusColor = person.status ? statusColors[person.status] : null;
-  const statusLabel = person.status ? statusLabels[person.status] : null;
+  const imgSrc = person.img
+    ? urlFor(person.img).width(800).height(800).url()
+    : null;
+  const statusColor = person.status ? PERSON_STATUS_COLORS[person.status] : null;
+  const statusLabel = person.status ? PERSON_STATUS_LABELS[person.status] : null;
 
   const inner = (
-    <div className="rounded-2xl overflow-hidden bg-white border border-thunder/10 hover:shadow-md hover:border-thunder/20 transition-all duration-200 h-full">
+    <motion.div
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      className="rounded-2xl overflow-hidden bg-white border border-thunder/10 hover:shadow-md hover:border-thunder/20 transition-all duration-200 h-full"
+    >
       {/* Square avatar */}
-      <div className="relative w-full aspect-square bg-alabaster">
+      <div className="relative w-full aspect-square">
         {imgSrc ? (
           <Image
             src={imgSrc}
-            alt={person.name}
+            alt={`${person.name} at Temple HCI Lab, Philadelphia, Pennsylvania`}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -66,8 +85,16 @@ const PersonCard = ({ person }: { person: People }) => {
             Now: {person.now}
           </p>
         )}
+        {person.quote && (
+          <motion.p
+            variants={quoteReveal}
+            className="text-[11px] text-thunder/60 italic leading-snug overflow-hidden"
+          >
+            &ldquo;{person.quote}&rdquo;
+          </motion.p>
+        )}
       </div>
-    </div>
+    </motion.div>
   );
 
   if (person.url) {

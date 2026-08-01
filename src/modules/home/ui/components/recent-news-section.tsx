@@ -7,7 +7,7 @@ import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
 import { News } from "../../../../../sanity.types";
 import { formatDate, getImageSrc } from "@/lib/utils";
-import { fadeUp, stagger, sectionViewport } from "@/modules/home/constants";
+import { fadeUp, stagger, motionViewportMargin } from "@/lib/motion-tokens";
 
 interface RecentNewsSectionProps {
   recentNews: News[];
@@ -27,7 +27,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
       id="news"
       initial="hidden"
       whileInView="visible"
-      viewport={sectionViewport}
+      viewport={motionViewportMargin}
       variants={stagger}
       className="w-full space-y-8"
     >
@@ -75,7 +75,7 @@ const RecentNewsSection = ({ recentNews }: RecentNewsSectionProps) => {
                   />
                 </div>
               ) : (
-                <div className="h-40 bg-alabaster shrink-0" />
+                <div className="h-40 shrink-0" />
               )}
               <div className="flex flex-col gap-2 p-4 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">

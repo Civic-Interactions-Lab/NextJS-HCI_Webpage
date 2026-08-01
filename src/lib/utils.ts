@@ -19,7 +19,7 @@ export const formatDate = (dateString?: string) => {
 export const getImageSrc = (
   img: string | SanityImageSource | null | undefined,
 ): string => {
-  if (!img) return "/images/cover/NC_09802.jpg"; // fallback
+  if (!img) return "/images/cover/hci-logo-1.jpg"; // fallback
   if (typeof img === "string") {
     return img.startsWith("/") ? img : `/${img}`;
   }

@@ -2,8 +2,18 @@
 
 import { useRef } from "react";
 import { SectionTitle } from "@/components/section-title";
-import { COMMUNITY_RESEARCH_STATS } from "@/modules/about/constants";
 import { useFadeReveal, useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const COMMUNITY_RESEARCH_STATS = [
+  {
+    number: "77",
+    desc: "undergraduate students have been an author on peer-reviewed work.",
+  },
+  {
+    number: "~45",
+    desc: "active researchers working collaboratively on challenging projects.",
+  },
+];
 
 const CommunityResearch = () => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -29,7 +39,7 @@ const CommunityResearch = () => {
         {COMMUNITY_RESEARCH_STATS.map(({ number, desc }) => (
           <div
             key={number}
-            className="stat-item flex flex-col gap-2 p-5 bg-alabaster rounded-2xl"
+            className="stat-item flex flex-col gap-2 p-5 rounded-2xl"
           >
             <span className="font-outfit font-bold text-5xl text-well-red leading-none">
               {number}

@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { statusLabels } from "@/modules/people/constants";
+import { PERSON_STATUS_LABELS } from "@/modules/people/constants/person-status";
 
-const STATUS_OPTIONS = Object.entries(statusLabels).map(([value, label]) => ({
-  value,
-  label,
-}));
+const STATUS_OPTIONS = Object.entries(PERSON_STATUS_LABELS).map(
+  ([value, label]) => ({ value, label }),
+);
 
 interface PeopleFilterProps {
   total: number;
@@ -30,7 +29,11 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mb-6" role="group" aria-label="Filter Temple HCI Lab members by role">
+    <div
+      className="flex flex-col gap-2 mb-6"
+      role="group"
+      aria-label="Filter Temple HCI Lab members by role"
+    >
       <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1 scrollbar-none">
         {/* All chip */}
         <button
@@ -40,7 +43,7 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
           className={`whitespace-nowrap font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors duration-150 shrink-0 ${
             active.length === 0
               ? "bg-thunder text-white border-thunder"
-              : "bg-alabaster text-thunder/70 border-thunder/10 hover:border-thunder/25"
+              : "text-thunder/70 border-thunder/10 hover:border-thunder/25"
           }`}
         >
           All
@@ -57,7 +60,7 @@ const PeopleFilter = ({ total, onFilterChange }: PeopleFilterProps) => {
               className={`whitespace-nowrap font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full border transition-colors duration-150 shrink-0 ${
                 isActive
                   ? "bg-well-red text-white border-well-red"
-                  : "bg-alabaster text-thunder/70 border-thunder/10 hover:border-thunder/25"
+                  : "text-thunder/70 border-thunder/10 hover:border-thunder/25"
               }`}
             >
               {label}

@@ -2,8 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { SLIDES, RESEARCH_AREAS } from "@/modules/home/constants";
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  BrainCircuit,
+  PersonStanding,
+  WandSparkles,
+} from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,13 +17,85 @@ import { SectionTitle } from "@/components/section-title";
 
 gsap.registerPlugin(ScrollTrigger);
 
+type HeroSlide = {
+  image: string;
+  alt: string;
+  position: string;
+  content?: { text: string; cta: string; href: string };
+};
+
+const SLIDES: HeroSlide[] = [
+  {
+    image: "/images/cover/group-1.jpg",
+    alt: "Temple HCI Lab members gathered together on Temple University campus, Philadelphia, Pennsylvania",
+    position: "center 36%",
+  },
+  {
+    image: "/images/cover/hci-logo-1.jpg",
+    alt: "HCI Lab research logo, Temple University, Philadelphia, Pennsylvania",
+    position: "center 30%",
+    content: {
+      text: "Our research lab takes a human-centered approach to using AI, NLP, and Visualization to facilitate learning and empower non-experts to participate in work that has been previously reserved for trained professionals.",
+      cta: "Learn more about us",
+      href: "#intro",
+    },
+  },
+  {
+    image: "/images/cover/open-house-3.jpg",
+    alt: "Students discussing at the Temple HCI Lab Open House, Temple University, Philadelphia, Pennsylvania",
+    position: "center 40%",
+    content: {
+      text: "We love helping students build the skills and confidence to design, lead, and innovate within their own communities — collaborating with organizations like ACM, TUDev, OwlByte, and OwlHacks to turn ideas into real-world impact.",
+      cta: "A Hub for Communities",
+      href: "#hub",
+    },
+  },
+  {
+    image: "/images/cover/news-2.jpg",
+    alt: "Temple HCI Lab alumni talk in SERC, Temple University, Philadelphia, Pennsylvania",
+    position: "center 30%",
+    content: {
+      text: "Stay up to date with the latest publications, awards, and highlights from the Temple HCI Lab — from conference talks to student achievements.",
+      cta: "Recent News",
+      href: "#news",
+    },
+  },
+];
+
+const RESEARCH_AREAS = [
+  {
+    id: "computing-education",
+    title: "Gen AI & Education",
+    href: "/research/gen-ai-education",
+    Icon: BrainCircuit,
+    description:
+      "Studying AI harms and building scaffolding for responsible use.",
+  },
+  {
+    id: "assistive-tech",
+    title: "Accessibility Technology",
+    href: "/research/accessibility-technology",
+    Icon: PersonStanding,
+    description:
+      "AAC tools to foster self-direction and expressive communication.",
+  },
+  {
+    id: "future-of-work",
+    title: "Future of Work",
+    href: "/research/future-of-work",
+    Icon: WandSparkles,
+    description: "Tools to build better workplaces and reimagine how we work.",
+  },
+] as const;
+
 const TOP_GAP = 80;
 const BOTTOM_GAP = 80;
+const MIN_CARDS_SLIDE_GAP = 24;
 const EASE_POWER = 4;
 const CARD_DELAYS = [0, 0.45, 0.78];
 const CARD_EASE_POWERS = [1, EASE_POWER, EASE_POWER];
 
-type CardsBox = { top: number; height: number };
+type CardsBox = { top: number; height: number; minSafeTop: number };
 
 const getSlideDistance = (box: CardsBox, vh: number): number =>
   Math.max(Math.min(((vh - box.top) / 2) * 4, vh - box.top - 20), 1);
@@ -64,50 +142,82 @@ const getCardBg = (
 
 const ResearchCardContent = ({
   area,
+  compact,
 }: {
   area: (typeof RESEARCH_AREAS)[number];
+  compact?: boolean;
 }) => (
   <>
-    <p className="font-oxanium font-semibold text-white text-sm md:text-2xl leading-snug">
+    <p
+      className={`font-oxanium font-semibold text-white leading-snug ${
+        compact ? "text-sm md:text-base" : "text-sm md:text-2xl"
+      }`}
+    >
       {area.title}
     </p>
-    <p className="text-[10px] md:text-base text-white/70 leading-snug">
+    <p
+      className={`text-white/70 leading-snug ${
+        compact ? "text-[10px] md:text-xs" : "text-[10px] md:text-base"
+      }`}
+    >
       {area.description}
     </p>
     <div className="flex items-end justify-between gap-1 md:gap-2 mt-auto">
-      <span className="font-oxanium text-[9px] md:text-sm font-medium text-white/80 inline-flex items-center gap-0.5 whitespace-nowrap">
+      <span
+        className={`font-oxanium font-medium text-white/80 inline-flex items-center gap-0.5 whitespace-nowrap rounded-full border border-white/25 group-hover:border-white/60 group-hover:text-white transition-colors ${
+          compact
+            ? "text-[9px] md:text-xs px-1.5 py-0.5 md:px-2.5 md:py-1"
+            : "text-[9px] md:text-sm px-1.5 py-0.5 md:px-3 md:py-1.5"
+        }`}
+      >
         See more{" "}
         <ArrowRight className="w-2 h-2 md:w-3 md:h-3 transition-transform group-hover:translate-x-1" />
       </span>
-      <area.Icon className="w-4 h-4 md:w-12 md:h-12 text-white/60 shrink-0" />
+      <area.Icon
+        className={`text-white/60 shrink-0 ${
+          compact ? "w-4 h-4 md:w-7 md:h-7" : "w-4 h-4 md:w-12 md:h-12"
+        }`}
+      />
     </div>
   </>
 );
 
-const ResearchGrid = ({ animated }: { animated?: boolean }) => (
-  <div className="grid grid-cols-3 gap-2 md:gap-4">
+const ResearchGrid = ({
+  animated,
+  compact,
+}: {
+  animated?: boolean;
+  compact?: boolean;
+}) => (
+  <div
+    className={`grid grid-cols-3 gap-2 ${compact ? "md:gap-2" : "md:gap-4"}`}
+  >
     {RESEARCH_AREAS.map((area, index) =>
       animated ? (
         <div
           key={area.id}
           data-gsap-card={index}
           style={{ opacity: 0 }}
-          className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
+          className="group h-full backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
         >
           <Link
             href={area.href}
-            className="flex flex-col gap-2 md:gap-3 p-3 md:p-7"
+            className={`flex flex-col gap-2 p-3 h-full ${
+              compact ? "md:gap-2 md:p-4" : "md:gap-3 md:p-7"
+            }`}
           >
-            <ResearchCardContent area={area} />
+            <ResearchCardContent area={area} compact={compact} />
           </Link>
         </div>
       ) : (
         <Link
           key={area.id}
           href={area.href}
-          className="group flex flex-col gap-2 md:gap-3 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-3 md:p-7"
+          className={`group flex flex-col gap-2 bg-black/45 backdrop-blur-md border border-white/10 rounded-xl p-3 ${
+            compact ? "md:gap-2 md:p-4" : "md:gap-3 md:p-7"
+          }`}
         >
-          <ResearchCardContent area={area} />
+          <ResearchCardContent area={area} compact={compact} />
         </Link>
       ),
     )}
@@ -117,8 +227,16 @@ const ResearchGrid = ({ animated }: { animated?: boolean }) => (
 const HomeHero = () => {
   const [cardsBox, setCardsBox] = useState<CardsBox | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isCompact, setIsCompact] = useState(false);
   const autoSlideRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    const update = () => setIsCompact(window.innerHeight < 850);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   const restartAutoSlide = () => {
     if (autoSlideRef.current) clearInterval(autoSlideRef.current);
@@ -147,6 +265,7 @@ const HomeHero = () => {
   const headingRef = useRef<HTMLDivElement>(null);
   const bgStripRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<HTMLDivElement>(null);
+  const hasEnteredRef = useRef(false);
 
   // Hero shrinks as user scrolls
   useEffect(() => {
@@ -317,21 +436,29 @@ const HomeHero = () => {
     const strip = bgStripRef.current;
     const dots = dotsRef.current;
     if (!cardsBox || !el) return;
-    (
-      [
-        [el, 0.5],
-        [strip, 0.5],
-        [dots, 0.7],
-      ] as [Element | null, number][]
-    ).forEach(([target, delay]) => {
-      if (target)
-        gsap.to(target, {
-          opacity: 1,
-          duration: 0.4,
-          delay,
-          ease: "power2.out",
-        });
-    });
+    // This effect re-runs on every resize (cardsBox is remeasured on
+    // resize). The fade-in below is a one-time entrance for page load —
+    // only play it the first time cardsBox becomes available, otherwise a
+    // resize while scrolled down would replay it and pop the heading/dots
+    // back into view regardless of scroll position.
+    if (!hasEnteredRef.current) {
+      hasEnteredRef.current = true;
+      (
+        [
+          [el, 0.5],
+          [strip, 0.5],
+          [dots, 0.7],
+        ] as [Element | null, number][]
+      ).forEach(([target, delay]) => {
+        if (target)
+          gsap.to(target, {
+            opacity: 1,
+            duration: 0.4,
+            delay,
+            ease: "power2.out",
+          });
+      });
+    }
     const update = () => {
       const v = window.scrollY;
       const vh = window.innerHeight;
@@ -344,11 +471,26 @@ const HomeHero = () => {
         vh,
       );
       const headingOffset = window.innerWidth < 768 ? 40 : 72;
-      const headingY = Math.min(hb - 60, ct - headingOffset);
+      const headingY = Math.max(
+        Math.min(hb - 60, ct - headingOffset),
+        cardsBox.minSafeTop + MIN_CARDS_SLIDE_GAP,
+      );
       const fadeOpacity = v > 0 ? Math.max(0, 1 - v / 60) : 1;
       gsap.set(el, { y: headingY, opacity: fadeOpacity });
-      if (strip)
-        gsap.set(strip, { y: headingY - 16, opacity: v > 0 ? fadeOpacity : 1 });
+      if (strip) {
+        // The strip's top tracks headingY (moves with scroll) but the dots
+        // sit at a fixed y (cardsBox.top + cardsBox.height + 48, set once,
+        // never re-tracked). A static height can't keep the strip reaching
+        // the dots at every scroll depth, so recompute its height each tick
+        // to always extend a bit past them instead.
+        const stripTop = headingY - 16;
+        const dotsBottom = cardsBox.top + cardsBox.height + 48 + 40;
+        gsap.set(strip, {
+          y: stripTop,
+          height: Math.max(dotsBottom - stripTop, 0),
+          opacity: v > 0 ? fadeOpacity : 1,
+        });
+      }
       if (dots) gsap.set(dots, { opacity: v > 0 ? fadeOpacity : 1 });
     };
     update();
@@ -364,8 +506,28 @@ const HomeHero = () => {
       const saved = heroRef.current.style.height;
       heroRef.current.style.height = `${window.innerHeight}px`;
       const r = cardsRef.current.getBoundingClientRect();
+      const slideContentEls = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-hero-slide-content]"),
+      );
+      if (titleContainerRef.current)
+        slideContentEls.push(titleContainerRef.current);
+      const maxSlideBottom = slideContentEls.reduce(
+        (max, el) => Math.max(max, el.getBoundingClientRect().bottom),
+        0,
+      );
+      const headingHeight =
+        headingRef.current?.getBoundingClientRect().height ?? 0;
+      const safeCardTop =
+        maxSlideBottom +
+        MIN_CARDS_SLIDE_GAP +
+        headingHeight +
+        MIN_CARDS_SLIDE_GAP;
       heroRef.current.style.height = saved;
-      setCardsBox({ top: r.top, height: r.height });
+      setCardsBox({
+        top: Math.max(r.top, safeCardTop),
+        height: r.height,
+        minSafeTop: maxSlideBottom,
+      });
     };
     measure();
     const raf = requestAnimationFrame(() => requestAnimationFrame(measure));
@@ -374,6 +536,10 @@ const HomeHero = () => {
     const observer = new ResizeObserver(measure);
     observer.observe(cardsRef.current);
     if (titleRef.current) observer.observe(titleRef.current);
+    if (headingRef.current) observer.observe(headingRef.current);
+    document
+      .querySelectorAll<HTMLElement>("[data-hero-slide-content]")
+      .forEach((el) => observer.observe(el));
     window.addEventListener("resize", measure);
     return () => {
       cancelAnimationFrame(raf);
@@ -420,41 +586,49 @@ const HomeHero = () => {
           }}
         />
         {/* Desktop: original subtle gradient */}
-        <div className="hidden md:block absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black/95" />
+        <div className="hidden md:block absolute inset-0 bg-linear-to-b from-black/15 via-black/20 to-black" />
 
         {/* Slide 0: Title */}
-        <div
-          className="absolute top-1/2 md:top-0 bottom-[30%] md:bottom-0 left-0 right-0 flex items-center justify-center px-6 md:px-12 z-10 transition-all duration-500"
-          style={{
-            opacity: activeSlide === 0 ? 1 : 0,
-            transform:
-              activeSlide === 0 ? "translateX(0)" : "translateX(-28px)",
-            pointerEvents: activeSlide === 0 ? "auto" : "none",
-          }}
-        >
-          <div className="flex flex-col items-center gap-4">
-            {/* Title with rolling logo entrance */}
-            <div ref={titleRef} className="origin-bottom-center relative">
-              <div
-                ref={rollingLogoRef}
-                className="absolute pointer-events-none z-10 opacity-0"
-                style={{ top: 0, left: 0 }}
-              >
-                <Image
-                  src="/logos/hci-logo.png"
-                  alt="Temnple HCI Lab Logo"
-                  aria-hidden="true"
-                  width={88}
-                  height={88}
-                  className="rounded-md"
-                />
-              </div>
-              <div ref={titleContainerRef} className="invisible text-center">
-                <h1 className="font-oxanium font-semibold leading-[0.88] tracking-tight text-[68px] md:text-[80px] lg:text-[112px]">
-                  <span className="font-outfit! text-white">Temple </span>
-                  <span className="font-outfit! text-well-red">HCI</span>
-                  <span className="font-outfit! text-white"> Lab</span>
-                </h1>
+        <div className="absolute top-[60%] -translate-y-1/2 md:top-0 md:translate-y-0 md:bottom-0 left-0 right-0 flex items-center justify-center px-6 md:px-12 z-10">
+          <div
+            className="transition-all duration-500"
+            style={{
+              opacity: activeSlide === 0 ? 1 : 0,
+              transform:
+                activeSlide === 0 ? "translateX(0)" : "translateX(-28px)",
+              pointerEvents: activeSlide === 0 ? "auto" : "none",
+            }}
+          >
+            <div className="flex flex-col items-center gap-4">
+              {/* Title with rolling logo entrance */}
+              <div ref={titleRef} className="origin-bottom-center relative">
+                <div
+                  ref={rollingLogoRef}
+                  className="absolute pointer-events-none z-10 opacity-0"
+                  style={{ top: 0, left: 0 }}
+                >
+                  <Image
+                    src="/logos/hci-logo.png"
+                    alt="Temnple HCI Lab Logo"
+                    aria-hidden="true"
+                    width={88}
+                    height={88}
+                    className="rounded-md"
+                  />
+                </div>
+                <div ref={titleContainerRef} className="invisible text-center">
+                  <h1
+                    className={`font-oxanium font-semibold leading-[0.88] tracking-tight ${
+                      isCompact
+                        ? "text-[40px] md:text-[48px] lg:text-[64px]"
+                        : "text-[68px] md:text-[80px] lg:text-[112px]"
+                    }`}
+                  >
+                    <span className="font-outfit! text-white">Temple </span>
+                    <span className="font-outfit! text-well-red">HCI</span>
+                    <span className="font-outfit! text-white"> Lab</span>
+                  </h1>
+                </div>
               </div>
             </div>
           </div>
@@ -465,38 +639,53 @@ const HomeHero = () => {
             <div
               key={i}
               aria-hidden={activeSlide !== i}
-              className="absolute top-1/2 md:top-32 bottom-[30%] md:bottom-auto left-0 right-0 w-full px-5 md:px-12 z-10 transition-all duration-500 flex items-center md:block"
-              style={{
-                opacity: activeSlide === i ? 1 : 0,
-                transform:
-                  activeSlide === i ? "translateX(0)" : "translateX(28px)",
-                pointerEvents: activeSlide === i ? "auto" : "none",
-              }}
+              className="absolute top-[60%] -translate-y-1/2 md:top-32 md:translate-y-0 left-0 right-0 z-10"
             >
-              <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
-                <div
-                  onMouseEnter={() => {
-                    isPausedRef.current = true;
-                  }}
-                  onMouseLeave={() => {
-                    isPausedRef.current = false;
-                  }}
-                  className="w-full md:max-w-md flex flex-col gap-3 md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl md:p-5"
-                >
-                  <p className="text-sm text-white/90 leading-relaxed">
-                    {slide.content.text}
-                  </p>
-                  <a
-                    href={slide.content.href}
-                    aria-label={slide.content.cta}
-                    className="group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-sm text-white/90 hover:text-white border border-white/60 hover:border-white px-6 py-2 rounded-full transition-colors"
+              <div
+                className="w-full px-5 md:px-12 transition-all duration-500"
+                style={{
+                  opacity: activeSlide === i ? 1 : 0,
+                  transform:
+                    activeSlide === i ? "translateX(0)" : "translateX(28px)",
+                  pointerEvents: activeSlide === i ? "auto" : "none",
+                }}
+              >
+                <div className="max-w-7xl mx-auto flex justify-start md:justify-end">
+                  <div
+                    data-hero-slide-content
+                    onMouseEnter={() => {
+                      isPausedRef.current = true;
+                    }}
+                    onMouseLeave={() => {
+                      isPausedRef.current = false;
+                    }}
+                    className={`w-full flex md:bg-black/50 md:backdrop-blur-md md:border md:border-white/10 md:rounded-2xl ${
+                      isCompact
+                        ? "md:max-w-sm flex-col gap-2 md:p-3"
+                        : "md:max-w-md flex-col gap-3 md:p-5"
+                    }`}
                   >
-                    {slide.content.cta}{" "}
-                    <ArrowRight
-                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </a>
+                    <p
+                      className={`text-white/90 leading-relaxed ${
+                        isCompact ? "text-xs" : "text-sm"
+                      }`}
+                    >
+                      {slide.content.text}
+                    </p>
+                    <a
+                      href={slide.content.href}
+                      aria-label={slide.content.cta}
+                      className={`group self-start inline-flex items-center gap-1.5 font-oxanium font-medium text-white/90 hover:text-white border border-white/60 hover:border-white rounded-full transition-colors ${
+                        isCompact ? "text-xs px-4 py-1.5" : "text-sm px-6 py-2"
+                      }`}
+                    >
+                      {slide.content.cta}{" "}
+                      <ArrowRight
+                        className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -525,9 +714,13 @@ const HomeHero = () => {
 
         {/* Ghost grid — invisible, used only to measure card positions */}
         <div className="relative z-10 h-full flex flex-col justify-end pointer-events-none">
-          <div className="max-w-7xl w-full mx-auto px-6 md:px-12 pb-24 md:pb-28">
+          <div
+            className={`max-w-7xl w-full mx-auto px-6 md:px-12 ${
+              isCompact ? "pb-12 md:pb-14" : "pb-24 md:pb-28"
+            }`}
+          >
             <div ref={cardsRef} className="invisible pointer-events-none">
-              <ResearchGrid />
+              <ResearchGrid compact={isCompact} />
             </div>
           </div>
         </div>
@@ -545,11 +738,11 @@ const HomeHero = () => {
           <div className="max-w-7xl w-full mx-auto px-6 md:px-12 relative">
             <div
               ref={headingRef}
-              className="absolute top-0 left-6 md:left-12 opacity-0 hidden md:block"
+              className="absolute top-0 left-6 md:left-12 opacity-0"
             >
               <SectionTitle light>Check out our research focus</SectionTitle>
             </div>
-            <ResearchGrid animated />
+            <ResearchGrid animated compact={isCompact} />
           </div>
 
           {/* Page indicator dots — below research cards, fades on scroll */}

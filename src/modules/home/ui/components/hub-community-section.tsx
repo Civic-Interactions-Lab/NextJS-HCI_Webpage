@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
-import { fadeUp, stagger, sectionViewport } from "@/modules/home/constants";
+import { fadeUp, stagger, motionViewportMargin } from "@/lib/motion-tokens";
 
 const PARTNERS = [
   { name: "ACM", color: "bg-sky/15 text-sky" },
@@ -19,7 +19,7 @@ const HubCommunitySection = () => {
       id="hub"
       initial="hidden"
       whileInView="visible"
-      viewport={sectionViewport}
+      viewport={motionViewportMargin}
       variants={stagger}
       className="py-4"
     >
@@ -55,8 +55,8 @@ const HubCommunitySection = () => {
         <motion.div variants={fadeUp} className="relative">
           <div className="overflow-hidden rounded-2xl">
             <Image
-              src="/images/cover/group.jpg"
-              alt="HCI Lab community"
+              src="/images/cover/group-3.jpg"
+              alt="Temple HCI Lab members gathered together in Steve's office, Temple University, Philadelphia, Pennsylvania"
               width={500}
               height={360}
               className="w-full h-64 md:h-80 object-cover"

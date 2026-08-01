@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FILTER_TIERS } from "@/modules/sponsors/constants";
+
+const FILTER_TIERS = [
+  { key: "supporter", label: "Supporter" },
+  { key: "partner", label: "Partner" },
+  { key: "champion", label: "Champion" },
+  { key: "visionary", label: "Visionary" },
+];
 
 interface SponsorFilterProps {
   total: number;
@@ -37,7 +43,7 @@ const SponsorFilter = ({ total, onFilterChange }: SponsorFilterProps) => {
         className={`font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors duration-150 border ${
           active.length === 0
             ? "bg-well-red text-white border-well-red"
-            : "bg-alabaster text-thunder/70 border-thunder/10"
+            : "text-thunder/70 border-thunder/10"
         }`}
       >
         All
@@ -51,7 +57,7 @@ const SponsorFilter = ({ total, onFilterChange }: SponsorFilterProps) => {
           className={`font-outfit text-xs font-medium px-3.5 py-1.5 rounded-full whitespace-nowrap cursor-pointer transition-colors duration-150 border ${
             active.includes(key)
               ? "bg-well-red text-white border-well-red"
-              : "bg-alabaster text-thunder/70 border-thunder/10"
+              : "text-thunder/70 border-thunder/10"
           }`}
         >
           {label}

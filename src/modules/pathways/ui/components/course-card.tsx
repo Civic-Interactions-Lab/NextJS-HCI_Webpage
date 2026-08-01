@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Course } from "@/modules/pathways/constants";
+
+export interface Course {
+  code: string;
+  name: string;
+  description: string;
+  instructor?: string;
+  href?: string;
+}
 
 const CourseCard = ({ course }: { course: Course }) => (
   <article className="rounded-2xl bg-white border border-thunder/10 hover:shadow-md hover:border-thunder/20 transition-all duration-200 p-6 flex flex-col gap-3 h-full">
@@ -13,6 +20,11 @@ const CourseCard = ({ course }: { course: Course }) => (
     <p className="text-p2 text-thunder/60 leading-relaxed flex-1">
       {course.description}
     </p>
+    {course.instructor && (
+      <p className="font-outfit text-xs text-thunder/50">
+        {course.instructor}
+      </p>
+    )}
     {course.href && (
       <Link
         href={course.href}

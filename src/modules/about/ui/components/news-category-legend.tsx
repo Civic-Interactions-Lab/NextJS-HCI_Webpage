@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { X } from "lucide-react";
-import { NEWS_CATEGORIES } from "@/modules/about/constants";
+
+const NEWS_CATEGORIES = [
+  { key: "Collaborations", color: "bg-gold" },
+  { key: "Grants / Awards", color: "bg-violet" },
+  { key: "Conference Talk", color: "bg-grass" },
+  { key: "Published Papers", color: "bg-sky" },
+  { key: "Alumni", color: "bg-ember" },
+];
 
 interface FilterState {
   categories: string[];
@@ -41,7 +48,7 @@ const NewsCategoryLegend = ({ onFilterChange }: NewsCategoryLegendProps) => {
             className={`font-outfit text-xs font-medium px-4 py-2 rounded-full border-2 transition-all duration-200 hover:scale-105 ${
               isActive
                 ? `${color} text-white border-transparent shadow-md`
-                : "bg-alabaster text-thunder/60 border-transparent hover:text-thunder"
+                : "text-thunder/60 border-transparent hover:text-thunder"
             }`}
           >
             {key}

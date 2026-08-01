@@ -3,8 +3,16 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
-import { EVENTS_GALLERY } from "@/modules/about/constants";
 import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
+
+const EVENTS_GALLERY = [
+  { src: "/images/cover/open-house-6.jpg", caption: "OwlHacks 2024", rotate: "-rotate-2" },
+  { src: "/images/cover/open-house-6.jpg", caption: "HCI Open House", rotate: "rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "CHI 2024 — Honolulu", rotate: "-rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "Studio Showcase", rotate: "rotate-2" },
+  { src: "/images/cover/open-house-6.jpg", caption: "CSCW 2023", rotate: "-rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "Spring Social", rotate: "rotate-1" },
+];
 
 const EventsGallery = () => {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -22,7 +30,7 @@ const EventsGallery = () => {
       <SectionTitle>Past Events</SectionTitle>
 
       {/* Alabaster strip */}
-      <div className="-mx-6 md:-mx-12 bg-alabaster px-6 md:px-12 py-10">
+      <div className="-mx-6 md:-mx-12 px-6 md:px-12">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {EVENTS_GALLERY.map(({ src, caption, rotate }, i) => (
             <div

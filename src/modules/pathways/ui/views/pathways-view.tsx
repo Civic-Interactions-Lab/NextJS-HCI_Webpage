@@ -1,25 +1,29 @@
 "use client";
 
 import CourseList from "@/modules/pathways/ui/components/course-list";
+import HackathonSection from "@/modules/pathways/ui/components/hackathon-section";
+import AiMajorSection from "@/modules/pathways/ui/components/ai-major-section";
 import JobOutcomes from "@/modules/pathways/ui/components/job-outcomes";
 import OtherOpportunities from "@/modules/pathways/ui/components/other-opportunities";
 import ViewIntroHeader from "@/components/view-intro-header";
 
-const PathwaysView = () => (
-  <div className="space-y-20">
-    <ViewIntroHeader
-      label="Temple HCI Lab"
-      titlePrefix="Explore Human-Centered"
-      titleAccent="Technology."
-      body="The Temple HCI Lab helps students explore careers in technology, design, research, and AI. Whether you are curious about user experience design, data visualization, artificial intelligence, or academic research, there are multiple ways to get involved."
-      imageSrc="/images/cover/HCI_OpenHouse-5.jpg"
-      imageAlt="HCI Lab studio"
-    />
+export default function PathwaysView() {
+  return (
+    <>
+      <ViewIntroHeader
+        label="Temple HCI Lab"
+        titlePrefix="Explore Human-Centered"
+        titleAccent="Technology."
+        body="The Temple HCI Lab helps students explore careers in technology, design, research, and AI. Whether you are curious about user experience design, data visualization, artificial intelligence, or academic research, there are multiple ways to get involved."
+        imageSrc="/images/cover/news-4.jpg"
+        imageAlt="Professor Steven MacNeil, Temple HCI Lab, Temple University, Philadelphia, PA"
+      />
 
-    <CourseList />
-    <JobOutcomes />
-    <OtherOpportunities />
-  </div>
-);
-
-export default PathwaysView;
+      <CourseList />
+      <HackathonSection />
+      <AiMajorSection />
+      <JobOutcomes />
+      <OtherOpportunities />
+    </>
+  );
+}

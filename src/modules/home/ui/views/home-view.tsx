@@ -1,5 +1,6 @@
 import HomeHero from "@/modules/home/ui/components/home-hero";
 import HomeIntro from "@/modules/home/ui/components/home-intro";
+import DirectorWelcome from "@/modules/home/ui/components/director-welcome";
 import RecentPapers from "@/modules/home/ui/components/recent-papers";
 import HubCommunitySection from "@/modules/home/ui/components/hub-community-section";
 import RecentNewsSection from "@/modules/home/ui/components/recent-news-section";
@@ -23,6 +24,7 @@ const HomeView = async () => {
       <main className="bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-12 pb-20 space-y-20">
           <HomeIntro />
+          <DirectorWelcome />
           <RecentPapers research={featuredResearch} />
           <HubCommunitySection />
           <TestimonialsSection testimonials={testimonials} />

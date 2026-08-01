@@ -1,18 +1,58 @@
 "use client";
 
 import { useRef } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Research } from "../../../../../sanity.types";
-import ResearchCard from "@/modules/research/ui/components/research-card";
+import ResearchHero from "@/modules/research/ui/components/research-hero";
+import NavCardsList from "@/components/nav-cards-list";
 import CtaBanner from "@/components/cta-banner";
 import TopicLogoGenAI from "@/modules/research/ui/components/topic-logo-gen-ai";
 import TopicLogoAccessibility from "@/modules/research/ui/components/topic-logo-accessibility";
 import TopicLogoSocial from "@/modules/research/ui/components/topic-logo-social";
-import { SectionTitle } from "@/components/section-title";
-import { CATEGORIES, fadeUp, stagger, gridViewport } from "@/modules/research/constants";
+import ResearchGrid from "@/modules/research/ui/components/research-grid";
+import FeaturedVideo from "@/modules/research/ui/components/featured-video";
 import { useStaggerFade } from "@/modules/research/hooks/use-stagger-fade";
+
+const CATEGORIES = [
+  {
+    label: "Gen AI & Education",
+    tagline:
+      "Generative AI in education is the use of advanced AI tools that can create text, images, code, and other content to support teaching and learning.",
+    description:
+      "Our Gen AI & Education research investigates how large language models and generative AI tools are transforming teaching, learning, and assessment in computer science and beyond. We study how students use AI for coding assistance, writing, and problem-solving — examining both the benefits and risks, from reduced cognitive load to over-reliance and academic integrity concerns. Our work informs the design of scaffolded AI tools that promote critical thinking, metacognition, and genuine understanding rather than surface-level productivity.",
+    videoUrl: "https://www.youtube.com/embed/Pq-d6wipGRQ",
+    videoTitle: "AI-Powered Learning Revolution",
+    videoDescription:
+      "Discover how generative AI is transforming education through personalized learning experiences, automated content creation, and intelligent tutoring systems that adapt to each student's unique learning style and pace.",
+    accent: "bg-well-red",
+    href: "/research/gen-ai-education",
+  },
+  {
+    label: "Accessibility Technology",
+    tagline:
+      "Accessibility technology empowers everyone to connect, create, and participate — no barriers, just possibilities.",
+    description:
+      "Our Accessibility Technology research focuses on building and studying tools that remove barriers for people with disabilities — particularly in communication, education, and everyday digital life. We design and evaluate augmentative and alternative communication (AAC) systems, screen reader interfaces, and adaptive input methods. Our work is grounded in participatory design with disabled communities, ensuring that the people who use these tools shape how they are built. We publish at ASSETS and CHI, and collaborate with clinicians, educators, and disability advocates.",
+    videoUrl: "https://www.youtube.com/embed/QuJmaYuhKH0",
+    videoTitle: "Breaking Barriers with Accessible Technology",
+    videoDescription:
+      "Explore our innovative approaches to creating inclusive digital experiences that empower users with disabilities through voice interfaces, haptic feedback, and adaptive technologies that make technology accessible to everyone.",
+    accent: "bg-sky",
+    href: "/research/accessibility-technology",
+  },
+  {
+    label: "Future of Work",
+    tagline:
+      "The future of work reimagines how people collaborate, communicate, and thrive through technology.",
+    description:
+      "Our Future of Work research explores how emerging technologies are reshaping professional life — from AI-assisted decision-making and remote collaboration tools to the changing nature of expertise and autonomy in the workplace. We investigate how workers adapt to intelligent systems, how organizations can design workflows that amplify human capability rather than replace it, and what it means to find meaning and agency in an increasingly automated world. Our work bridges HCI, organizational behavior, and AI ethics to inform the design of workplaces that are more humane, equitable, and effective.",
+    videoUrl: "https://www.youtube.com/embed/pUbHCAl1vco",
+    videoTitle: "The Future of Work",
+    videoDescription:
+      "Learn about our groundbreaking research in collaborative platforms, digital wellbeing, and virtual communities reshaping how people connect and solve problems together.",
+    accent: "bg-grass",
+    href: "/research/future-of-work",
+  },
+];
 
 const LOGO_MAP: Record<string, React.ReactNode> = {
   "Gen AI & Education": <TopicLogoGenAI />,
@@ -28,126 +68,56 @@ interface ResearchTopicViewProps {
   research: Research[];
 }
 
-const ResearchTopicView = ({
+export default function ResearchTopicView({
   label,
   tagline,
   description,
   research,
-}: ResearchTopicViewProps) => {
+}: ResearchTopicViewProps) {
   const ref = useRef<HTMLDivElement>(null);
   const otherCategories = CATEGORIES.filter((c) => c.label !== label);
   const cat = CATEGORIES.find((c) => c.label === label);
 
-  useStaggerFade(ref, ".topic-header-line", { y: 40, stagger: 0.1, duration: 0.8 });
   useStaggerFade(ref, ".featured-video", { y: 40, duration: 0.8, stagger: 0 });
-  useStaggerFade(ref, ".other-card");
 
   return (
-    <div ref={ref} className="space-y-20">
-      {/* Two-column hero — matches research overview layout */}
-      <section
-        aria-label={`${label} research at the Temple HCI Lab`}
-        className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 overflow-hidden"
-      >
-        {/* Left: label + title + body */}
-        <div className="flex flex-col gap-4 flex-1">
-          <p className="topic-header-line font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
-            Temple HCI Lab Research
-          </p>
-          <h2 className="topic-header-line font-outfit font-medium text-4xl md:text-5xl lg:text-6xl text-thunder leading-tight">
+    <div ref={ref} className="space-y-32">
+      <ResearchHero
+        ariaLabel={`${label} research at the Temple HCI Lab`}
+        title={
+          <>
             {label.split(" ").slice(0, -1).join(" ")}{" "}
             <span className="text-well-red">
               {label.split(" ").slice(-1)[0]}
             </span>
-          </h2>
-          <p className="topic-header-line text-p1 text-thunder/60 leading-relaxed italic">
-            &ldquo;{tagline}&rdquo;
-          </p>
-          <p className="topic-header-line text-p1 text-thunder/70 leading-relaxed">
-            {description}
-          </p>
-        </div>
+          </>
+        }
+        paragraphs={[
+          {
+            content: <>&ldquo;{tagline}&rdquo;</>,
+            className: "text-thunder/60 italic",
+          },
+          { content: description },
+        ]}
+        logo={LOGO_MAP[label]}
+      />
 
-        {/* Right: topic-specific animated logo */}
-        <div className="w-full lg:w-[360px] shrink-0">{LOGO_MAP[label]}</div>
-      </section>
+      <ResearchGrid label={label} research={research} />
 
-      {/* Papers grid */}
-      {research.length > 0 ? (
-        <section aria-label={`Published papers in ${label}`} className="pt-12">
-          <p className="font-outfit text-sm font-medium text-thunder/40 uppercase tracking-widest mb-6">
-            Our papers in {label}
-          </p>
-          <motion.ul
-            role="list"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-            initial="hidden"
-            whileInView="visible"
-            viewport={gridViewport}
-            variants={stagger}
-          >
-            {research.map((r) => (
-              <motion.li key={r._id} variants={fadeUp} className="list-none">
-                <ResearchCard research={r} />
-              </motion.li>
-            ))}
-          </motion.ul>
-        </section>
-      ) : (
-        <div className="py-14">
-          <p className="text-p1 text-thunder/50">
-            No papers yet for this category.
-          </p>
-        </div>
+      {cat?.videoUrl && (
+        <FeaturedVideo
+          src={cat.videoUrl}
+          title={cat.videoTitle}
+          description={cat.videoDescription}
+        />
       )}
 
       {/* Other topics */}
-      <nav aria-label="Other Temple HCI Lab research topics" className="border-t border-thunder/8">
-        {otherCategories.map((c, i) => (
-          <Link
-            key={c.label}
-            href={c.href}
-            aria-label={`Learn more about ${c.label} research at the Temple HCI Lab`}
-            className={`other-card group flex flex-col gap-4 py-12 px-0 border-b border-thunder/8 ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12 bg-alabaster" : ""}`}
-          >
-            <SectionTitle>{c.label}</SectionTitle>
-            <p className="text-p1 text-thunder/60 leading-relaxed max-w-xl">
-              {c.tagline}
-            </p>
-            <span className="inline-flex items-center gap-1.5 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder group-hover:text-well-red transition-colors w-fit mt-1">
-              Learn More{" "}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </span>
-          </Link>
-        ))}
-      </nav>
-
-      {/* Featured video */}
-      {cat?.videoUrl && (
-        <figure className="featured-video flex flex-col lg:flex-row gap-8 py-14 border-t border-thunder/8 m-0">
-          <div className="w-full lg:w-1/2 shrink-0">
-            <iframe
-              src={cat.videoUrl}
-              title={cat.videoTitle}
-              className="w-full aspect-video rounded-2xl"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-            />
-          </div>
-          <figcaption className="flex flex-col justify-center gap-3">
-            <p className="font-outfit text-sm font-medium text-well-red uppercase tracking-widest">
-              Featured
-            </p>
-            <p className="font-outfit font-medium text-xl text-thunder leading-snug">
-              {cat.videoTitle}
-            </p>
-            <p className="text-p1 text-thunder/65 leading-relaxed">
-              {cat.videoDescription}
-            </p>
-          </figcaption>
-        </figure>
-      )}
+      <NavCardsList
+        ariaLabel="Other Temple HCI Lab research topics"
+        items={otherCategories}
+        linkDescription={(item) => `Learn more about ${item.label} research at the Temple HCI Lab`}
+      />
 
       <CtaBanner
         label="Get Involved"
@@ -158,6 +128,4 @@ const ResearchTopicView = ({
       />
     </div>
   );
-};
-
-export default ResearchTopicView;
+}
