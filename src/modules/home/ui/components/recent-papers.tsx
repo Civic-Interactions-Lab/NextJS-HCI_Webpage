@@ -50,14 +50,16 @@ const RecentPapers = ({ research }: FeatureProjectsProps) => {
       <motion.div variants={fadeUp} className="order-2 lg:order-1">
         <div className="overflow-hidden rounded-3xl border border-thunder/10 shadow-sm">
           <Image
-            src="/images/cover/NC_09755.jpg"
-            alt="Christine Kapp presenting her research poster at SERC, Temple University"
+            src="/images/cover/research-2.jpg"
+            alt="Christine Kapp from Temple HCI Lab presenting her research poster at SERC, Temple University"
             width={500}
             height={400}
             className="w-full h-64 md:h-80 object-cover"
           />
         </div>
-        <p className="mt-2 font-outfit text-xs text-thunder/50">Christine Kapp · SERC, Temple University</p>
+        <p className="mt-2 font-outfit text-xs text-thunder/50">
+          Christine Kapp · SERC, Temple University
+        </p>
       </motion.div>
 
       {/* Right — research list */}

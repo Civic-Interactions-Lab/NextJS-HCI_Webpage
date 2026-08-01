@@ -6,7 +6,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import Logo from "@/components/logo";
-import { NAV_ITEMS, type NavItem } from "@/constants/nav";
+import { NAV_ITEMS } from "@/constants/nav";
+import { ROUTE_IMAGES, DEFAULT_ROUTE_IMAGE } from "@/constants/route-images";
 
 export default function HciNavbar() {
   const pathname = usePathname();
@@ -54,7 +55,10 @@ export default function HciNavbar() {
         className="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300"
         style={{
           backgroundColor: `rgba(255, 255, 255, ${bgOpacity * 0.85})`,
-          boxShadow: bgOpacity > 0.1 ? `0 1px 8px rgba(0,0,0,${bgOpacity * 0.08})` : "none",
+          boxShadow:
+            bgOpacity > 0.1
+              ? `0 1px 8px rgba(0,0,0,${bgOpacity * 0.08})`
+              : "none",
         }}
       >
         <div
@@ -67,7 +71,9 @@ export default function HciNavbar() {
             <Link
               href="/"
               className={`font-outfit font-medium text-lg transition-colors duration-300 ${isLight ? "text-thunder" : "text-white"}`}
-              style={{ opacity: Math.min(Math.max((scrollY - 280) / 160, 0), 1) }}
+              style={{
+                opacity: Math.min(Math.max((scrollY - 280) / 160, 0), 1),
+              }}
             >
               Temple HCI Lab
             </Link>
@@ -89,7 +95,9 @@ export default function HciNavbar() {
                   } ${
                     isActive(item.href)
                       ? "text-well-red"
-                      : isLight ? "text-thunder/70 hover:text-thunder" : "text-white/90 hover:text-white"
+                      : isLight
+                        ? "text-thunder/70 hover:text-thunder"
+                        : "text-white/90 hover:text-white"
                   }`}
                 >
                   {item.label}
@@ -107,7 +115,9 @@ export default function HciNavbar() {
                     crossing from the link down into the panel; the visual offset
                     comes from padding on this same element instead of a margin. */}
                 {item.children && openDropdown === item.href && (
-                  <div className={`absolute top-full pt-2 ${item.href === "/about" ? "left-0" : "right-0"}`}>
+                  <div
+                    className={`absolute top-full pt-2 ${item.href === "/about" ? "left-0" : "right-0"}`}
+                  >
                     <div className="min-w-[560px] bg-thunder/95 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
                       <div className="flex">
                         {/* Featured card — main route */}
@@ -118,7 +128,7 @@ export default function HciNavbar() {
                         >
                           <div className="relative h-28 overflow-hidden">
                             <Image
-                              src={item.children[0].image ?? "/images/cover/HCI_OpenHouse-5.jpg"}
+                              src={ROUTE_IMAGES[item.href] ?? DEFAULT_ROUTE_IMAGE}
                               alt={item.label}
                               fill
                               className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -128,7 +138,9 @@ export default function HciNavbar() {
                           <div className="p-3">
                             <p className="label-5 text-white">{item.label}</p>
                             {item.description && (
-                              <p className="text-p3 text-white/60 mt-0.5">{item.description}</p>
+                              <p className="text-p3 text-white/60 mt-0.5">
+                                {item.description}
+                              </p>
                             )}
                           </div>
                         </Link>
@@ -143,9 +155,13 @@ export default function HciNavbar() {
                               onClick={() => setOpenDropdown(null)}
                               className="flex flex-col px-2 py-1.5 rounded-md hover:bg-white/10 transition-colors group"
                             >
-                              <span className="label-5 text-white/80 group-hover:text-white transition-colors">{child.label}</span>
+                              <span className="label-5 text-white/80 group-hover:text-white transition-colors">
+                                {child.label}
+                              </span>
                               {child.description && (
-                                <span className="text-p3 text-white/40 group-hover:text-white/60 transition-colors mt-0.5">{child.description}</span>
+                                <span className="text-p3 text-white/40 group-hover:text-white/60 transition-colors mt-0.5">
+                                  {child.description}
+                                </span>
                               )}
                             </Link>
                           ))}
@@ -173,7 +189,9 @@ export default function HciNavbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-thunder overflow-y-auto lg:hidden">
           <div className="flex items-center justify-between px-6 h-16 border-b border-white/10">
-            <div onClick={() => setMobileOpen(false)}><Logo size={40} /></div>
+            <div onClick={() => setMobileOpen(false)}>
+              <Logo size={40} />
+            </div>
             <button
               className="text-white p-2 rounded-md hover:bg-white/10 transition-colors"
               onClick={() => setMobileOpen(false)}
@@ -221,9 +239,13 @@ export default function HciNavbar() {
                             onClick={() => setMobileOpen(false)}
                             className="flex flex-col py-2 pl-3 border-l border-white/20 hover:border-white/50 transition-colors group"
                           >
-                            <span className="text-p2 text-white/70 group-hover:text-white transition-colors">{child.label}</span>
+                            <span className="text-p2 text-white/70 group-hover:text-white transition-colors">
+                              {child.label}
+                            </span>
                             {child.description && (
-                              <span className="text-p3 text-white/40 group-hover:text-white/60 transition-colors mt-0.5">{child.description}</span>
+                              <span className="text-p3 text-white/40 group-hover:text-white/60 transition-colors mt-0.5">
+                                {child.description}
+                              </span>
                             )}
                           </Link>
                         ))}

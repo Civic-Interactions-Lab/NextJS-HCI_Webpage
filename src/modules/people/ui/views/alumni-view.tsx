@@ -40,7 +40,7 @@ const AlumniView = ({ alumni }: { alumni: People[] }) => {
         titlePrefix="Meet our"
         titleAccent="alumni network."
         body="They pulled the all-nighters, soldered the prototypes, and presented the posters. Now they're out in the world — and many of them are helping the next generation do the same."
-        imageSrc="/images/cover/NC_05301.jpg"
+        imageSrc="/images/cover/group-2.jpg"
         imageAlt="Temple HCI Lab alumni and students together"
       />
 

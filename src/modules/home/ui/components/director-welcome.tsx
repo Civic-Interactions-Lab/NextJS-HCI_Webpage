@@ -20,14 +20,18 @@ const DirectorWelcome = () => {
         <div className="rounded-2xl overflow-hidden bg-thunder/8">
           <Image
             src="/images/people/macneil.jpg"
-            alt="Dr. Stephen MacNeil, Director of the Temple HCI Lab"
+            alt="Dr. Stephen MacNeil, Director of the Temple HCI Lab, Temple University"
             width={384}
             height={480}
             className="w-full h-auto object-cover object-top"
           />
         </div>
-        <p className="mt-3 font-outfit text-sm font-semibold text-thunder">Dr. Stephen MacNeil</p>
-        <p className="font-outfit text-xs text-thunder/50">Director, Temple HCI Lab</p>
+        <p className="mt-3 font-outfit text-sm font-semibold text-thunder">
+          Dr. Stephen MacNeil
+        </p>
+        <p className="font-outfit text-xs text-thunder/50">
+          Director, Temple HCI Lab
+        </p>
       </motion.div>
 
       {/* Text */}

@@ -55,7 +55,7 @@ const HubCommunitySection = () => {
         <motion.div variants={fadeUp} className="relative">
           <div className="overflow-hidden rounded-2xl">
             <Image
-              src="/images/cover/group.jpg"
+              src="/images/cover/group-3.jpg"
               alt="HCI Lab community"
               width={500}
               height={360}

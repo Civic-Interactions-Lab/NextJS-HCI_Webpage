@@ -19,7 +19,7 @@ export default function JoinView({ faqs }: JoinViewProps) {
         titlePrefix="Have questions before"
         titleAccent="joining us?"
         body="We welcome undergraduate and graduate students who are curious, driven, and passionate about human-centered design, AI, accessibility, and social computing. Here's everything you need to know before applying."
-        imageSrc="/images/cover/HCI_OpenHouse-5.jpg"
+        imageSrc="/images/cover/group-6.jpg"
         imageAlt="Students collaborating in the Temple HCI Lab studio"
       />
 

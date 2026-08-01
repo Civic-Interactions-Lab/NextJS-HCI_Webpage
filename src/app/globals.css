@@ -263,16 +263,6 @@
   }
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-1920px); }
-}
-
-.marquee-track {
-  animation: marquee 30s linear infinite;
-  will-change: transform;
-}
-
 @layer components {
   .body-text {
     @apply text-sm md:text-base text-gray-700 leading-relaxed font-roboto;

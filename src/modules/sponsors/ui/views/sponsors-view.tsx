@@ -42,7 +42,7 @@ export default function SponsorsView({ sponsors }: SponsorsViewProps) {
         titlePrefix="The organizations that make our"
         titleAccent="work possible."
         body="Thank you to our sponsors for your generous support. Your contributions help the HCI Lab continue to grow, innovate, and empower students to make a real impact through research and design."
-        imageSrc="/images/cover/NC_09802.jpg"
+        imageSrc="/images/cover/news-3.jpg"
         imageAlt="Temple HCI Lab research materials on display"
       />
 
@@ -72,8 +72,10 @@ export default function SponsorsView({ sponsors }: SponsorsViewProps) {
       </motion.ul>
 
       {/* Become a Sponsor nav card */}
-      <NavCardsList ariaLabel="Sponsorship opportunities" items={SPONSOR_NAV_ITEMS} />
+      <NavCardsList
+        ariaLabel="Sponsorship opportunities"
+        items={SPONSOR_NAV_ITEMS}
+      />
     </div>
   );
-};
-
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { SectionTitle } from "@/components/section-title";
@@ -14,29 +15,72 @@ const sectionFadeUp = {
 
 const IMAGES = [
   {
-    src: "/images/cover/owlhacks-2024-full-committee.jpg",
-    alt: "OwlHacks 2024 full committee",
-    caption: "OwlHacks 2024",
+    src: "/images/cover/hacks-3.jpg",
+    alt: "OwlHacks 2025 full committee, Temple University, Philadelphia, PA",
+    caption: "OwlHacks Committee 2025",
   },
   {
-    src: "/images/cover/owlhacks-2025-full-committee.jpg",
-    alt: "OwlHacks 2025 full committee",
-    caption: "OwlHacks 2025",
+    src: "/images/cover/hacks-4.jpg",
+    alt: "OwlHacks 2025 Participants, Temple University, Philadelphia, PA",
+    caption: "OwlHacks 2025 Participants",
   },
   {
-    src: "/images/cover/HCI_OpenHouse-5.jpg",
-    alt: "Temple HCI Lab Open House",
-    caption: "HCI Open House",
+    src: "/images/cover/hacks-5.jpg",
+    alt: "OwlHacks Guest Speaker, Temple University, Philadelphia, PA",
+    caption: "OwlHacks Guest Speaker",
   },
   {
-    src: "/images/cover/NC_09802.jpg",
-    alt: "Temple HCI Lab students",
-    caption: "Temple HCI Lab",
+    src: "/images/cover/hacks-2.jpg",
+    alt: "OwlHacks 2024 full committee, Temple University, Philadelphia, PA",
+    caption: "OwlHacks Committee 2024",
+  },
+  {
+    src: "/images/cover/hacks-1.jpg",
+    alt: "OwlHacks team, Temple University, Philadelphia, PA",
+    caption: "OwlHacks Afterhours",
   },
 ];
 
+const MARQUEE_SPEED = 60; // px/second
+
 export default function HackathonSection() {
-  const marqueeImages = [...IMAGES, ...IMAGES];
+  const [images, setImages] = useState(IMAGES);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let frameId: number;
+    let lastTime = performance.now();
+
+    const tick = (time: number) => {
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      offsetRef.current += MARQUEE_SPEED * dt;
+
+      const itemWidth =
+        track.firstElementChild?.getBoundingClientRect().width ?? 0;
+      if (itemWidth > 0 && offsetRef.current >= itemWidth) {
+        offsetRef.current -= itemWidth;
+        setImages((prev) => [...prev.slice(1), prev[0]]);
+      } else {
+        track.style.transform = `translateX(-${offsetRef.current}px)`;
+      }
+
+      frameId = requestAnimationFrame(tick);
+    };
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    if (track) track.style.transform = `translateX(-${offsetRef.current}px)`;
+  }, [images]);
 
   return (
     <motion.section className="flex flex-col gap-10" {...sectionFadeUp}>
@@ -65,9 +109,9 @@ export default function HackathonSection() {
       </div>
 
       <div className="overflow-hidden">
-        <div className="flex marquee-track">
-          {marqueeImages.map((img, i) => (
-            <div key={i} className="shrink-0 w-[480px] pr-5">
+        <div ref={trackRef} className="flex">
+          {images.map((img) => (
+            <div key={img.src} className="shrink-0 w-[480px] pr-5">
               <div className="overflow-hidden rounded-3xl border border-thunder/10 shadow-sm">
                 <Image
                   src={img.src}

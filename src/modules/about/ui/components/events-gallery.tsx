@@ -6,12 +6,12 @@ import { SectionTitle } from "@/components/section-title";
 import { useStaggerReveal } from "@/modules/about/hooks/use-scroll-reveal";
 
 const EVENTS_GALLERY = [
-  { src: "/images/cover/HCI_OpenHouse-5.jpg", caption: "OwlHacks 2024", rotate: "-rotate-2" },
-  { src: "/images/cover/HCI_OpenHouse-5.jpg", caption: "HCI Open House", rotate: "rotate-1" },
-  { src: "/images/cover/HCI_OpenHouse-5.jpg", caption: "CHI 2024 — Honolulu", rotate: "-rotate-1" },
-  { src: "/images/cover/HCI_OpenHouse-5.jpg", caption: "Studio Showcase", rotate: "rotate-2" },
-  { src: "/images/cover/HCI_OpenHouse-5.jpg", caption: "CSCW 2023", rotate: "-rotate-1" },
-  { src: "/images/cover/HCI_OpenHouse-5.jpg", caption: "Spring Social", rotate: "rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "OwlHacks 2024", rotate: "-rotate-2" },
+  { src: "/images/cover/open-house-6.jpg", caption: "HCI Open House", rotate: "rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "CHI 2024 — Honolulu", rotate: "-rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "Studio Showcase", rotate: "rotate-2" },
+  { src: "/images/cover/open-house-6.jpg", caption: "CSCW 2023", rotate: "-rotate-1" },
+  { src: "/images/cover/open-house-6.jpg", caption: "Spring Social", rotate: "rotate-1" },
 ];
 
 const EventsGallery = () => {

@@ -2,7 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, BrainCircuit, PersonStanding, WandSparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  BrainCircuit,
+  PersonStanding,
+  WandSparkles,
+} from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -19,12 +26,12 @@ type HeroSlide = {
 
 const SLIDES: HeroSlide[] = [
   {
-    image: "/images/cover/group.jpg",
+    image: "/images/cover/group-1.jpg",
     alt: "Temple HCI Lab members gathered together",
     position: "center 36%",
   },
   {
-    image: "/images/cover/NC_09802.jpg",
+    image: "/images/cover/hci-logo-1.jpg",
     alt: "HCI Lab research materials and documentation",
     position: "center 30%",
     content: {
@@ -34,7 +41,7 @@ const SLIDES: HeroSlide[] = [
     },
   },
   {
-    image: "/images/cover/NC_05301.jpg",
+    image: "/images/cover/open-house-3.jpg",
     alt: "Students collaborating at the Temple HCI Lab",
     position: "center 40%",
     content: {
@@ -44,7 +51,7 @@ const SLIDES: HeroSlide[] = [
     },
   },
   {
-    image: "/images/cover/HCI_OpenHouse-38.jpg",
+    image: "/images/cover/news-2.jpg",
     alt: "Temple HCI Lab open house event with students and faculty",
     position: "center 30%",
     content: {
@@ -61,14 +68,16 @@ const RESEARCH_AREAS = [
     title: "Gen AI & Education",
     href: "/research/gen-ai-education",
     Icon: BrainCircuit,
-    description: "Studying AI harms and building scaffolding for responsible use.",
+    description:
+      "Studying AI harms and building scaffolding for responsible use.",
   },
   {
     id: "assistive-tech",
     title: "Accessibility Technology",
     href: "/research/accessibility-technology",
     Icon: PersonStanding,
-    description: "AAC tools to foster self-direction and expressive communication.",
+    description:
+      "AAC tools to foster self-direction and expressive communication.",
   },
   {
     id: "future-of-work",
@@ -189,11 +198,11 @@ const ResearchGrid = ({
           key={area.id}
           data-gsap-card={index}
           style={{ opacity: 0 }}
-          className="group backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
+          className="group h-full backdrop-blur-md border border-white/10 rounded-xl hover:border-white/30 transition-colors"
         >
           <Link
             href={area.href}
-            className={`flex flex-col gap-2 p-3 ${
+            className={`flex flex-col gap-2 p-3 h-full ${
               compact ? "md:gap-2 md:p-4" : "md:gap-3 md:p-7"
             }`}
           >
@@ -500,12 +509,14 @@ const HomeHero = () => {
       const slideContentEls = Array.from(
         document.querySelectorAll<HTMLElement>("[data-hero-slide-content]"),
       );
-      if (titleContainerRef.current) slideContentEls.push(titleContainerRef.current);
+      if (titleContainerRef.current)
+        slideContentEls.push(titleContainerRef.current);
       const maxSlideBottom = slideContentEls.reduce(
         (max, el) => Math.max(max, el.getBoundingClientRect().bottom),
         0,
       );
-      const headingHeight = headingRef.current?.getBoundingClientRect().height ?? 0;
+      const headingHeight =
+        headingRef.current?.getBoundingClientRect().height ?? 0;
       const safeCardTop =
         maxSlideBottom +
         MIN_CARDS_SLIDE_GAP +
