@@ -136,6 +136,34 @@ export type Research = {
   featured?: boolean;
 };
 
+export type Event = {
+  _id: string;
+  _type: "event";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  location?: string;
+  link?: string;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category?: "Social" | "Hackathon" | "Conference" | "Showcase";
+  featured?: boolean;
+};
+
 export type News = {
   _id: string;
   _type: "news";
@@ -297,8 +325,68 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Research | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Research | Event | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/sanity/lib/events/getEvents.ts
+// Variable: upcomingEventsQuery
+// Query: *[_type == "event" && date >= now()] | order(date asc)
+export type UpcomingEventsQueryResult = Array<{
+  _id: string;
+  _type: "event";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  location?: string;
+  link?: string;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category?: "Conference" | "Hackathon" | "Showcase" | "Social";
+  featured?: boolean;
+}>;
+// Variable: pastEventsQuery
+// Query: *[_type == "event" && date < now()] | order(date desc)
+export type PastEventsQueryResult = Array<{
+  _id: string;
+  _type: "event";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderRank?: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  location?: string;
+  link?: string;
+  imageUrl?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category?: "Conference" | "Hackathon" | "Showcase" | "Social";
+  featured?: boolean;
+}>;
+
 // Source: ./src/sanity/lib/faq/getFAQs.ts
 // Variable: faqsQuery
 // Query: *[_type == "faq"] | order(orderRank)
@@ -710,6 +798,8 @@ export type TestimonialsQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    "\n    *[_type == \"event\" && date >= now()] | order(date asc)\n  ": UpcomingEventsQueryResult;
+    "\n    *[_type == \"event\" && date < now()] | order(date desc)\n  ": PastEventsQueryResult;
     "\n    *[_type == \"faq\"] | order(orderRank)\n  ": FaqsQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
