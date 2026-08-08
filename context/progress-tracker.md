@@ -155,6 +155,10 @@ Update this file whenever the current phase, active feature, or implementation s
 
 - **Feature 18 (Sitemap for Google Crawling)** — Added a sitemap listing every public page (with per-page priority and how often it changes) and a matching robots file that allows crawlers everywhere except the CMS studio, the password-verification page, and internal API routes, pointing them at the sitemap. Set a canonical production URL used consistently across the sitemap, robots file, and page metadata. Also fixed a real bug this surfaced: the site's password-gate middleware wasn't letting crawler-facing files like these through, so they'd have been redirected to the password page instead of being readable — confirmed both now load correctly even with the password gate turned on. Cleaned up a couple of small leftovers from the earlier Clerk removal while in the area.
 
+---
+
+- **Feature 19 (Events Content Type)** — Events are now a real Sanity content type instead of hardcoded placeholder data, following the same pattern already established for news. Editors can create event entries with a title, description, date, location, an optional link, an image, a category, and a featured flag (with the same "only one featured at a time" rule news already has), manageable from the Studio with a dedicated Events section grouped by category, matching how news and research are organized there. The public events page now pulls upcoming and past events live from Sanity — split automatically by date rather than a manual flag — and shows a clear "no events yet" message instead of silently rendering nothing when there's no content.
+
 ## In Progress
 
 - None.
