@@ -13,6 +13,7 @@ import { apiVersion, dataset, projectId } from "@/sanity/env";
 import { schema } from "@/sanity/schemaTypes";
 import { orderableDocumentListDeskItem } from "@sanity/orderable-document-list";
 import {
+  CalendarIcon,
   CircleDollarSignIcon,
   CircleQuestionMark,
   MicroscopeIcon,
@@ -119,6 +120,57 @@ export default defineConfig({
                       title: "Alumni",
                       filter: 'category == "Alumni"',
                       id: "alumni-news",
+                      S,
+                      context,
+                    }),
+                  ]),
+              ),
+
+            S.listItem()
+              .title("Events")
+              .icon(CalendarIcon)
+              .child(
+                S.list()
+                  .title("Events")
+                  .items([
+                    orderableDocumentListDeskItem({
+                      type: "event",
+                      title: "Featured Events",
+                      filter: "featured == true",
+                      id: "featured-events",
+                      S,
+                      context,
+                    }),
+                    S.divider(),
+                    orderableDocumentListDeskItem({
+                      type: "event",
+                      title: "Social",
+                      filter: 'category == "Social"',
+                      id: "social-events",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "event",
+                      title: "Hackathon",
+                      filter: 'category == "Hackathon"',
+                      id: "hackathon-events",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "event",
+                      title: "Conference",
+                      filter: 'category == "Conference"',
+                      id: "conference-events",
+                      S,
+                      context,
+                    }),
+                    orderableDocumentListDeskItem({
+                      type: "event",
+                      title: "Showcase",
+                      filter: 'category == "Showcase"',
+                      id: "showcase-events",
                       S,
                       context,
                     }),
