@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ROUTE_IMAGES, DEFAULT_ROUTE_IMAGE } from "@/constants/route-images";
+import { getRouteImage } from "@/constants/route-images";
 
 const LABEL_OVERRIDES: Record<string, string> = {
   become: "Become a Sponsor",
@@ -22,10 +22,7 @@ function capitalize(segment: string) {
 const Hero = () => {
   const pathname = usePathname();
 
-  const coverImage =
-    ROUTE_IMAGES[pathname] ??
-    ROUTE_IMAGES[`/${pathname.split("/").filter(Boolean)[0]}`] ??
-    DEFAULT_ROUTE_IMAGE;
+  const coverImage = getRouteImage(pathname);
 
   const segments = pathname.split("/").filter(Boolean);
   const parent = segments[0] ? capitalize(segments[0]) : "";

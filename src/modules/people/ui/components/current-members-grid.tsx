@@ -11,7 +11,7 @@ interface CurrentMembersProps {
   currentMembers: People[];
 }
 
-const CurrentMembers = ({ currentMembers }: CurrentMembersProps) => {
+const CurrentMembersGrid = ({ currentMembers }: CurrentMembersProps) => {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
   const filtered = useMemo(() => {
@@ -54,4 +54,4 @@ const CurrentMembers = ({ currentMembers }: CurrentMembersProps) => {
   );
 };
 
-export default CurrentMembers;
+export default CurrentMembersGrid;

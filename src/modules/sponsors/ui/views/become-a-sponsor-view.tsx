@@ -1,5 +1,3 @@
-"use client";
-
 import CtaBanner from "@/components/cta-banner";
 import ViewIntroHeader from "@/components/view-intro-header";
 import ImpactStories from "@/modules/sponsors/ui/components/impact-stories";
@@ -9,7 +7,6 @@ import SponsorshipTiers from "@/modules/sponsors/ui/components/sponsorship-tiers
 export default function BecomeASponsorView() {
   return (
     <div className="space-y-32">
-      {/* Intro header */}
       <ViewIntroHeader
         label="Become a Sponsor"
         titlePrefix="Sponsors don't just fund research —"
@@ -21,14 +18,12 @@ export default function BecomeASponsorView() {
         ctaHref="mailto:stevemacn@temple.edu"
       />
 
-      {/* Impact stories */}
       <ImpactStories />
 
       <IndividualGiving />
 
       <SponsorshipTiers />
 
-      {/* CTA strip */}
       <CtaBanner
         label="Ready to Partner?"
         title="Let's talk about how we can work together."

@@ -136,6 +136,31 @@ export type Research = {
   featured?: boolean;
 };
 
+export type Question = {
+  _id: string;
+  _type: "question";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  question?: string;
+  targetPerson?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "people";
+  };
+  status?: "pending" | "answered";
+  answer?: string;
+  answeredBy?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "people";
+  };
+  answeredAt?: string;
+  slackThreadTs?: string;
+};
+
 export type Event = {
   _id: string;
   _type: "event";
@@ -221,6 +246,7 @@ export type People = {
   affiliation?: string;
   now?: string;
   quote?: string;
+  slackUserId?: string;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -325,7 +351,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Research | Event | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Research | Question | Event | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/events/getEvents.ts
 // Variable: upcomingEventsQuery
@@ -493,6 +519,7 @@ export type CurrentPeopleQueryResult = Array<{
   affiliation?: string;
   now?: string;
   quote?: string;
+  slackUserId?: string;
 }>;
 // Variable: alumniPeopleQuery
 // Query: *[_type == "people" && association == "alumni"] | order(orderRank)
@@ -526,6 +553,7 @@ export type AlumniPeopleQueryResult = Array<{
   affiliation?: string;
   now?: string;
   quote?: string;
+  slackUserId?: string;
 }>;
 // Variable: collaboratorsPeopleQuery
 // Query: *[_type == "people" && association == "collaborator"] | order(orderRank)
@@ -559,6 +587,7 @@ export type CollaboratorsPeopleQueryResult = Array<{
   affiliation?: string;
   now?: string;
   quote?: string;
+  slackUserId?: string;
 }>;
 
 // Source: ./src/sanity/lib/research/getResearch.ts
