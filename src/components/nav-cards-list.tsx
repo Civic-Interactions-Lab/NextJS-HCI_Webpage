@@ -18,9 +18,8 @@ interface NavCardItem {
 interface NavCardsListProps {
   ariaLabel: string;
   items: NavCardItem[];
-  /** Link text for each card — defaults to "Learn More". */
-  cta?: (item: NavCardItem) => string;
-  /** Accessible label suffix for each link — defaults to "— Temple HCI Lab". */
+  ctaVariant?: "learnMore" | "view";
+  linkDescriptionVariant?: "default" | "research";
   linkDescription?: (item: NavCardItem) => string;
 }
 
@@ -49,7 +48,8 @@ const useNavCardReveal = (rootRef: React.RefObject<HTMLElement | null>) => {
 const NavCardsList = ({
   ariaLabel,
   items,
-  cta,
+  ctaVariant = "learnMore",
+  linkDescriptionVariant = "default",
   linkDescription,
 }: NavCardsListProps) => {
   const ref = useRef<HTMLElement>(null);
@@ -69,7 +69,9 @@ const NavCardsList = ({
           aria-label={
             linkDescription
               ? linkDescription(item)
-              : `Learn more about ${item.label} — Temple HCI Lab`
+              : linkDescriptionVariant === "research"
+                ? `Learn more about ${item.label} research at the Temple HCI Lab`
+                : `Learn more about ${item.label} — Temple HCI Lab`
           }
           className={`nav-card group flex flex-col gap-3 transition-colors ${i % 2 === 1 ? "-mx-6 md:-mx-12 px-6 md:px-12" : ""}`}
         >
@@ -78,7 +80,7 @@ const NavCardsList = ({
             {item.tagline}
           </p>
           <span className="inline-flex items-center gap-2 font-outfit text-sm font-semibold uppercase tracking-widest text-thunder border border-thunder/20 rounded-full px-4 py-2 w-fit mt-1 group-hover:border-well-red group-hover:text-well-red transition-colors">
-            {cta ? cta(item) : "Learn More"}
+            {ctaVariant === "view" ? `View ${item.label}` : "Learn More"}
             <ArrowRight
               className="w-4 h-4 transition-transform group-hover:translate-x-1"
               aria-hidden="true"

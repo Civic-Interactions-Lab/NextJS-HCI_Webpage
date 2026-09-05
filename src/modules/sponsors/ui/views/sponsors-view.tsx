@@ -1,42 +1,16 @@
-"use client";
-
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { SponsorsQueryResult } from "../../../../../sanity.types";
-import SponsorCard from "@/modules/sponsors/ui/components/sponsor-card";
-import SponsorFilter from "@/modules/sponsors/ui/components/sponsor-filter";
 import NavCardsList from "@/components/nav-cards-list";
 import ViewIntroHeader from "@/components/view-intro-header";
-import { fadeUp, stagger } from "@/lib/motion-tokens";
+import SponsorsGrid from "@/modules/sponsors/ui/components/sponsors-grid";
+import { SPONSOR_NAV_ITEMS } from "@/modules/sponsors/constants/sponsor-nav-items";
 
 interface SponsorsViewProps {
   sponsors: SponsorsQueryResult;
 }
 
-const SPONSOR_NAV_ITEMS = [
-  {
-    label: "Become a Sponsor",
-    href: "/sponsors/become",
-    tagline:
-      "Partner with the Temple HCI Lab to support student researchers and advance human-centered technology.",
-  },
-];
-
 export default function SponsorsView({ sponsors }: SponsorsViewProps) {
-  const [activeTiers, setActiveTiers] = useState<string[]>([]);
-
-  const filtered = useMemo(() => {
-    if (activeTiers.length === 0) return sponsors;
-    return sponsors.filter(
-      (s) =>
-        (s as { tier?: string }).tier &&
-        activeTiers.includes((s as { tier?: string }).tier!),
-    );
-  }, [sponsors, activeTiers]);
-
   return (
     <div className="space-y-32">
-      {/* Intro header */}
       <ViewIntroHeader
         label="Our Sponsors"
         titlePrefix="The organizations that make our"
@@ -46,32 +20,8 @@ export default function SponsorsView({ sponsors }: SponsorsViewProps) {
         imageAlt="Professor Steve Macneil giving a speech"
       />
 
-      {/* Filter */}
-      <SponsorFilter total={filtered.length} onFilterChange={setActiveTiers} />
+      <SponsorsGrid sponsors={sponsors} />
 
-      {/* Sponsor grid */}
-      <motion.ul
-        key={activeTiers.join(",")}
-        role="list"
-        aria-label="Temple HCI Lab sponsors"
-        className="flex flex-col gap-12"
-        initial="hidden"
-        animate="visible"
-        variants={stagger}
-      >
-        {filtered.map((sponsor) => (
-          <motion.li key={sponsor._id} variants={fadeUp} className="list-none">
-            <SponsorCard sponsor={sponsor} />
-          </motion.li>
-        ))}
-        {filtered.length === 0 && (
-          <p className="text-p1 text-thunder/50 py-12">
-            No sponsors match the selected tier.
-          </p>
-        )}
-      </motion.ul>
-
-      {/* Become a Sponsor nav card */}
       <NavCardsList
         ariaLabel="Sponsorship opportunities"
         items={SPONSOR_NAV_ITEMS}

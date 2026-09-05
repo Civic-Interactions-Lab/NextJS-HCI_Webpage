@@ -16,6 +16,7 @@ import {
   CalendarIcon,
   CircleDollarSignIcon,
   CircleQuestionMark,
+  MessageCircleQuestionMark,
   MicroscopeIcon,
   NewspaperIcon,
   User,
@@ -217,6 +218,32 @@ export default defineConfig({
                       S,
                       context,
                     }),
+                  ]),
+              ),
+
+            S.listItem()
+              .title("Questions")
+              .icon(MessageCircleQuestionMark)
+              .child(
+                S.list()
+                  .title("Questions")
+                  .items([
+                    S.listItem()
+                      .title("Pending")
+                      .child(
+                        S.documentList()
+                          .title("Pending Questions")
+                          .filter('_type == "question" && status == "pending"')
+                          .defaultOrdering([{ field: "_createdAt", direction: "desc" }]),
+                      ),
+                    S.listItem()
+                      .title("Answered")
+                      .child(
+                        S.documentList()
+                          .title("Answered Questions")
+                          .filter('_type == "question" && status == "answered"')
+                          .defaultOrdering([{ field: "answeredAt", direction: "desc" }]),
+                      ),
                   ]),
               ),
 

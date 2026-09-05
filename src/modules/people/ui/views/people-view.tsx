@@ -1,31 +1,9 @@
-"use client";
-
 import { People } from "../../../../../sanity.types";
 import ViewIntroHeader from "@/components/view-intro-header";
-import CurrentMembers from "@/modules/people/ui/components/current-members";
+import CurrentMembersGrid from "@/modules/people/ui/components/current-members-grid";
 import NavCardsList from "@/components/nav-cards-list";
 import CtaBanner from "@/components/cta-banner";
-
-const PEOPLE_NAV_LINKS = [
-  {
-    label: "Current Members",
-    href: "/people",
-    tagline:
-      "PhD candidates, master's students, undergraduate researchers, and Research Scholars — the people driving our work.",
-  },
-  {
-    label: "Alumni",
-    href: "/people/alumni",
-    tagline:
-      "Former lab members who have gone on to careers in industry, academia, and beyond.",
-  },
-  {
-    label: "Collaborators",
-    href: "/people/collaborators",
-    tagline:
-      "Researchers and practitioners from other institutions who work alongside our lab.",
-  },
-];
+import { PEOPLE_NAV_LINKS } from "@/modules/people/constants/people-nav-links";
 
 interface PeopleViewProps {
   currentMembers: People[];
@@ -41,16 +19,16 @@ const PeopleView = ({ currentMembers }: PeopleViewProps) => {
         titlePrefix="Meet our current"
         titleAccent="lab members."
         body="PhD candidates, master's students, undergraduate researchers, and participants in the Research Scholars Program — who bring creativity, curiosity, and collaboration to every project. Together, we explore ideas, share knowledge, and support one another's growth as we advance our lab's research and impact."
-        imageSrc="/images/cover/3-studio.jpg"
-        imageAlt="Temple HCI Lab members taking a group photo"
+        imageSrc="/images/cover/studio-3.jpg"
+        imageAlt="Temple HCI Lab members doing Palentines Day"
       />
 
-      <CurrentMembers currentMembers={currentMembers} />
+      <CurrentMembersGrid currentMembers={currentMembers} />
 
       <NavCardsList
         ariaLabel="Other Temple HCI Lab people pages"
         items={navLinks}
-        cta={(item) => `View ${item.label}`}
+        ctaVariant="view"
       />
 
       <CtaBanner

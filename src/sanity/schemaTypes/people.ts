@@ -119,6 +119,13 @@ export const peopleType = defineType({
             : `Quote must be 100 words or fewer (currently ${wordCount})`;
         }),
     }),
+    defineField({
+      name: "slackUserId",
+      title: "Slack User ID",
+      type: "string",
+      description:
+        "This person's Slack member ID (e.g. U0123ABC456), used to tag them in #q&a and to match their replies back to a question. Leave blank if they don't have Slack access or shouldn't be tagged.",
+    }),
   ],
   preview: {
     select: {
