@@ -70,3 +70,8 @@ export const DEFAULT_ROUTE_IMAGE: RouteImage = {
   src: "/images/cover/open-house-6.jpg",
   alt: "Temple HCI Lab open house event, Temple University, Philadelphia, PA",
 };
+
+export const getRouteImage = (href: string): RouteImage =>
+  ROUTE_IMAGES[href] ??
+  ROUTE_IMAGES[`/${href.split("/").filter(Boolean)[0]}`] ??
+  DEFAULT_ROUTE_IMAGE;
