@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { orderRankField } from "@sanity/orderable-document-list";
+import { AssociationInput } from "@/sanity/components/association-input";
 
 export const peopleType = defineType({
   name: "people",
@@ -80,6 +81,9 @@ export const peopleType = defineType({
           { title: "Collaborator", value: "collaborator" },
         ],
       },
+      components: {
+        input: AssociationInput,
+      },
     }),
     defineField({
       name: "start",
@@ -98,12 +102,6 @@ export const peopleType = defineType({
       title: "Affiliation",
       type: "string",
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "now",
-      title: "Current Status",
-      type: "string",
-      description: "Where they are now (for alumni)",
     }),
     defineField({
       name: "quote",

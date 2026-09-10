@@ -6,11 +6,14 @@ export async function getTestimonials() {
     *[_type == "testimonials" && isActive == true] | order(orderRank) {
       _id,
       quote,
-      role,
       person-> {
         name,
-        img
-      }
+        img,
+        association,
+        status,
+        affiliation
+      },
+      "personNow": *[_type == "alumniProfile" && person._ref == ^.person._ref][0].now
     }
   `);
 

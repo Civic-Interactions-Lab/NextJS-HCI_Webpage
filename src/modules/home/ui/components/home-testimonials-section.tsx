@@ -7,11 +7,21 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { SectionTitle } from "@/components/section-title";
 import { SectionLink } from "@/components/section-link";
 import { getImageSrc } from "@/lib/utils";
+import { TestimonialsQueryResult } from "../../../../../sanity.types";
+import { PERSON_STATUS_LABELS } from "@/modules/people/constants/person-status";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Testimonial = { _id: string; quote: string | null; role: string | null; person: { name: string | null; img: any } | null };
+type Testimonial = TestimonialsQueryResult[number];
 
 interface Props { testimonials: Testimonial[] }
+
+const testimonialRole = (t: Testimonial): string | null => {
+  if (!t.person) return null;
+  if (t.person.association === "alumni") return t.personNow ?? null;
+
+  const statusLabel = t.person.status ? PERSON_STATUS_LABELS[t.person.status] : null;
+  if (statusLabel && t.person.affiliation) return `${statusLabel} at ${t.person.affiliation}`;
+  return statusLabel ?? t.person.affiliation ?? null;
+};
 
 const QUOTE_COLORS  = ["text-well-red", "text-gold", "text-sky", "text-grass"];
 const SIDE_SCALE    = 0.82;
@@ -30,8 +40,6 @@ const circSlot = (i: number, active: number, n: number): number => {
   return raw <= Math.floor(n / 2) ? raw : raw - n;
 };
 
-/** Indices of the dots to render — a sliding window of at most MAX_DOTS,
- * centered on `active` when there are more testimonials than dots. */
 const dotWindow = (active: number, n: number): number[] => {
   if (n <= MAX_DOTS) return Array.from({ length: n }, (_, i) => i);
   const half  = Math.floor(MAX_DOTS / 2);
@@ -122,7 +130,6 @@ const TestimonialsSection = ({ testimonials }: Props) => {
     updateCards(wrapped, true);
   }, [n, updateCards]);
 
-  // Drag handlers — only decide direction; goTo (same path as the arrow buttons) fires on release
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (animating.current) return;
     (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
@@ -189,7 +196,7 @@ const TestimonialsSection = ({ testimonials }: Props) => {
                 "author": {
                   "@type": "Person",
                   "name": t.person?.name,
-                  "jobTitle": t.role,
+                  "jobTitle": testimonialRole(t),
                 },
               },
             })),
@@ -199,17 +206,20 @@ const TestimonialsSection = ({ testimonials }: Props) => {
 
       {/* Always-present semantic list for crawlers */}
       <ul className="sr-only" aria-label="Testimonials" aria-hidden="true">
-        {testimonials.map((t) => (
-          <li key={t._id}>
-            <blockquote>
-              <p className="text-p1 text-thunder/80 leading-relaxed">{t.quote}</p>
-              <footer className="mt-2">
-                <cite className="not-italic font-semibold text-thunder">{t.person?.name}</cite>
-                {t.role && <span className="text-sm text-thunder/55"> — {t.role}</span>}
-              </footer>
-            </blockquote>
-          </li>
-        ))}
+        {testimonials.map((t) => {
+          const role = testimonialRole(t);
+          return (
+            <li key={t._id}>
+              <blockquote>
+                <p className="text-p1 text-thunder/80 leading-relaxed">{t.quote}</p>
+                <footer className="mt-2">
+                  <cite className="not-italic font-semibold text-thunder">{t.person?.name}</cite>
+                  {role && <span className="text-sm text-thunder/55"> — {role}</span>}
+                </footer>
+              </blockquote>
+            </li>
+          );
+        })}
       </ul>
 
       <div
@@ -239,6 +249,7 @@ const TestimonialsSection = ({ testimonials }: Props) => {
 
         {testimonials.map((t, i) => {
           const imgSrc = t.person?.img ? getImageSrc(t.person.img) : null;
+          const role = testimonialRole(t);
           return (
             <div
               key={t._id}
@@ -266,7 +277,7 @@ const TestimonialsSection = ({ testimonials }: Props) => {
                 )}
                 <div>
                   <p className="label-4 text-thunder">{t.person?.name}</p>
-                  <p className="text-p3 text-thunder/55">{t.role}</p>
+                  <p className="text-p3 text-thunder/55">{role}</p>
                 </div>
               </div>
             </div>

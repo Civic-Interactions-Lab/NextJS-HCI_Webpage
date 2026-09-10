@@ -1,5 +1,6 @@
 import { type SchemaTypeDefinition } from "sanity";
 import { peopleType } from "@/sanity/schemaTypes/people";
+import { alumniProfileType } from "@/sanity/schemaTypes/alumniProfile";
 import { newsType } from "@/sanity/schemaTypes/news";
 import { eventType } from "@/sanity/schemaTypes/event";
 import { questionType } from "@/sanity/schemaTypes/question";
@@ -11,6 +12,7 @@ import { sponsorType } from "@/sanity/schemaTypes/sponsors";
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     peopleType,
+    alumniProfileType,
     newsType,
     eventType,
     questionType,
