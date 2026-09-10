@@ -79,7 +79,6 @@ export type Testimonials = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "people";
   };
-  role?: string;
   isActive?: boolean;
 };
 
@@ -216,6 +215,22 @@ export type News = {
   featured?: boolean;
 };
 
+export type AlumniProfile = {
+  _id: string;
+  _type: "alumniProfile";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  person?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "people";
+  };
+  nowType?: "working" | "studying" | "other";
+  now?: string;
+};
+
 export type People = {
   _id: string;
   _type: "people";
@@ -244,7 +259,6 @@ export type People = {
   start?: number;
   end?: number;
   affiliation?: string;
-  now?: string;
   quote?: string;
   slackUserId?: string;
 };
@@ -351,7 +365,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Research | Question | Event | News | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
+export type AllSanitySchemaTypes = Sponsors | SanityImageCrop | SanityImageHotspot | Testimonials | Faq | Research | Question | Event | News | AlumniProfile | People | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/events/getEvents.ts
 // Variable: upcomingEventsQuery
@@ -517,12 +531,11 @@ export type CurrentPeopleQueryResult = Array<{
   start?: number;
   end?: number;
   affiliation?: string;
-  now?: string;
   quote?: string;
   slackUserId?: string;
 }>;
 // Variable: alumniPeopleQuery
-// Query: *[_type == "people" && association == "alumni"] | order(orderRank)
+// Query: *[_type == "people" && association == "alumni"] | order(orderRank) {      ...,      "profile": *[_type == "alumniProfile" && references(^._id)][0]{ nowType, now }    }
 export type AlumniPeopleQueryResult = Array<{
   _id: string;
   _type: "people";
@@ -551,9 +564,12 @@ export type AlumniPeopleQueryResult = Array<{
   start?: number;
   end?: number;
   affiliation?: string;
-  now?: string;
   quote?: string;
   slackUserId?: string;
+  profile: {
+    nowType: "other" | "studying" | "working" | null;
+    now: string | null;
+  } | null;
 }>;
 // Variable: collaboratorsPeopleQuery
 // Query: *[_type == "people" && association == "collaborator"] | order(orderRank)
@@ -585,7 +601,6 @@ export type CollaboratorsPeopleQueryResult = Array<{
   start?: number;
   end?: number;
   affiliation?: string;
-  now?: string;
   quote?: string;
   slackUserId?: string;
 }>;
@@ -801,11 +816,10 @@ export type SponsorsQueryResult = Array<{
 
 // Source: ./src/sanity/lib/testimonials/getTestimonials.ts
 // Variable: testimonialsQuery
-// Query: *[_type == "testimonials" && isActive == true] | order(orderRank) {      _id,      quote,      role,      person-> {        name,        img      }    }
+// Query: *[_type == "testimonials" && isActive == true] | order(orderRank) {      _id,      quote,      person-> {        name,        img,        association,        status,        affiliation      },      "personNow": *[_type == "alumniProfile" && person._ref == ^.person._ref][0].now    }
 export type TestimonialsQueryResult = Array<{
   _id: string;
   quote: string | null;
-  role: string | null;
   person: {
     name: string | null;
     img: {
@@ -820,7 +834,11 @@ export type TestimonialsQueryResult = Array<{
       crop?: SanityImageCrop;
       _type: "image";
     } | null;
+    association: "active" | "alumni" | "collaborator" | null;
+    status: "assistant_professor" | "highschool" | "master_student" | "phd_student" | "undergraduate" | null;
+    affiliation: string | null;
   } | null;
+  personNow: string | null;
 }>;
 
 // Query TypeMap
@@ -833,13 +851,13 @@ declare module "@sanity/client" {
     "\n    *[_type == \"news\"] | order(date desc)[0...3]\n  ": RecentNewsQueryResult;
     "\n    *[_type == \"news\"] | order(date desc)\n  ": AllNewsQueryResult;
     "\n    *[_type == \"people\" && association == \"active\"] | order(orderRank)\n  ": CurrentPeopleQueryResult;
-    "\n    *[_type == \"people\" && association == \"alumni\"] | order(orderRank)\n  ": AlumniPeopleQueryResult;
+    "\n    *[_type == \"people\" && association == \"alumni\"] | order(orderRank) {\n      ...,\n      \"profile\": *[_type == \"alumniProfile\" && references(^._id)][0]{ nowType, now }\n    }\n  ": AlumniPeopleQueryResult;
     "\n    *[_type == \"people\" && association == \"collaborator\"] | order(orderRank)\n  ": CollaboratorsPeopleQueryResult;
     "\n    *[_type == \"research\" && featured == true] | order(orderRank)\n  ": FeaturedResearchQueryResult;
     "\n    *[_type == \"research\" && category == \"Gen AI & Education\"] | order(orderRank)\n  ": GenAIEducationQueryResult;
     "\n    *[_type == \"research\" && category == \"Accessibility Technology\"] | order(orderRank)\n  ": AccessibilityTechQueryResult;
     "\n    *[_type == \"research\" && category == \"Future of Work\"] | order(orderRank)\n  ": FutureOfWorkQueryResult;
     "\n    *[_type == \"sponsors\"] | order(orderRank)\n  ": SponsorsQueryResult;
-    "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      role,\n      person-> {\n        name,\n        img\n      }\n    }\n  ": TestimonialsQueryResult;
+    "\n    *[_type == \"testimonials\" && isActive == true] | order(orderRank) {\n      _id,\n      quote,\n      person-> {\n        name,\n        img,\n        association,\n        status,\n        affiliation\n      },\n      \"personNow\": *[_type == \"alumniProfile\" && person._ref == ^.person._ref][0].now\n    }\n  ": TestimonialsQueryResult;
   }
 }

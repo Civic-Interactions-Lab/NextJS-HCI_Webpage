@@ -16,6 +16,7 @@ import {
   CalendarIcon,
   CircleDollarSignIcon,
   CircleQuestionMark,
+  GraduationCap,
   MessageCircleQuestionMark,
   MicroscopeIcon,
   NewspaperIcon,
@@ -65,6 +66,18 @@ export default defineConfig({
                       S,
                       context,
                     }),
+                    S.divider(),
+                    S.listItem()
+                      .title("Alumni Profiles")
+                      .icon(GraduationCap)
+                      .child(
+                        S.documentList()
+                          .title("Alumni Profiles")
+                          .filter('_type == "alumniProfile"')
+                          .defaultOrdering([
+                            { field: "_createdAt", direction: "desc" },
+                          ]),
+                      ),
                   ]),
               ),
 

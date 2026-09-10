@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { People } from "../../../../../sanity.types";
+import { AlumniPerson } from "@/sanity/lib/people/getPeople";
 import PersonCard from "@/modules/people/ui/components/person-card";
 import { fadeUp, stagger, motionViewport } from "@/lib/motion-tokens";
 
-const AlumniGrid = ({ alumni }: { alumni: People[] }) => {
+const AlumniGrid = ({ alumni }: { alumni: AlumniPerson[] }) => {
   if (alumni.length === 0) {
     return <p className="text-p1 text-thunder/50 py-12">No alumni found.</p>;
   }

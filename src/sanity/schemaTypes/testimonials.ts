@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { orderRankField } from "@sanity/orderable-document-list";
+import { PERSON_STATUS_LABELS } from "@/modules/people/constants/person-status";
 
 export const testimonials = defineType({
   name: "testimonials",
@@ -23,13 +24,6 @@ export const testimonials = defineType({
       description: "Reference to the person who gave this testimonial",
     }),
     defineField({
-      name: "role",
-      title: "Current Role",
-      type: "string",
-      validation: (rule) => rule.required(),
-      description: "Their current position/role (e.g., 'UX Designer at URBN')",
-    }),
-    defineField({
       name: "isActive",
       title: "Is Active",
       type: "boolean",
@@ -41,18 +35,41 @@ export const testimonials = defineType({
     select: {
       quote: "quote",
       personName: "person.name",
-      role: "role",
+      personAssociation: "person.association",
+      personStatus: "person.status",
+      personAffiliation: "person.affiliation",
       personImage: "person.img",
       isActive: "isActive",
     },
-    prepare({ quote, personName, role, personImage, isActive }) {
+    prepare({
+      quote,
+      personName,
+      personAssociation,
+      personStatus,
+      personAffiliation,
+      personImage,
+      isActive,
+    }) {
       const truncatedQuote =
         quote?.length > 100 ? `${quote.slice(0, 100)}...` : quote;
-      const status = isActive ? "" : " (Inactive)";
+      const activeSuffix = isActive ? "" : " (Inactive)";
+
+      // Best-effort preview only — this can't do the reverse-reference
+      // lookup into `alumniProfile` that the live site's query does, so
+      // alumni just show "Alumni" here rather than their "now" text.
+      const statusLabel =
+        personStatus &&
+        PERSON_STATUS_LABELS[personStatus as keyof typeof PERSON_STATUS_LABELS];
+      const roleHint =
+        personAssociation === "alumni"
+          ? "Alumni"
+          : [statusLabel, personAffiliation && `at ${personAffiliation}`]
+              .filter(Boolean)
+              .join(" ") || undefined;
 
       return {
-        title: personName ? `${personName}${status}` : "New Testimonial",
-        subtitle: role ? `${role} • "${truncatedQuote}"` : truncatedQuote,
+        title: personName ? `${personName}${activeSuffix}` : "New Testimonial",
+        subtitle: roleHint ? `${roleHint} • "${truncatedQuote}"` : truncatedQuote,
         media: personImage,
       };
     },

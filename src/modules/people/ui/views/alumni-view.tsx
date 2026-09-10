@@ -1,4 +1,4 @@
-import { People } from "../../../../../sanity.types";
+import { AlumniPerson } from "@/sanity/lib/people/getPeople";
 import ViewIntroHeader from "@/components/view-intro-header";
 import AlumniGrid from "@/modules/people/ui/components/alumni-grid";
 import FuelNextGeneration from "@/modules/people/ui/components/fuel-next-generation";
@@ -6,7 +6,7 @@ import FoundingPatrons from "@/modules/people/ui/components/founding-patrons";
 import NavCardsList from "@/components/nav-cards-list";
 import { PEOPLE_NAV_LINKS } from "@/modules/people/constants/people-nav-links";
 
-const AlumniView = ({ alumni }: { alumni: People[] }) => {
+const AlumniView = ({ alumni }: { alumni: AlumniPerson[] }) => {
   const navLinks = PEOPLE_NAV_LINKS.filter(
     (link) => link.href !== "/people/alumni",
   );
